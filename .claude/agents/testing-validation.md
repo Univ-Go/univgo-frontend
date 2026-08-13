@@ -45,7 +45,7 @@ jsdom no implementa `window.matchMedia`, que PrimeNG usa en componentes con brea
 Toast). Está stubbeado en `src/test-setup.ts`. Si un componente de PrimeNG falla en tests por una API
 del navegador que falta, ese es el sitio donde añadir el stub.
 
-Comandos: `npm test`, `npm run test:coverage`, `npm run build` (valida además que las traducciones
+Comandos: `pnpm test`, `pnpm test:coverage`, `pnpm build` (valida además que las traducciones
 estén completas).
 
 ## Cómo respondes

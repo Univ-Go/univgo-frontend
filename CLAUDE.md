@@ -170,7 +170,7 @@ y descriptiva. No usar traducciones directamente dentro del código.
 (`@@feature.elemento`).
 
 1. Marcar: `i18n="@@algo.id"` en templates, `` $localize`:@@algo.id:Texto` `` en TypeScript.
-2. `npm run i18n:extract`.
+2. `pnpm i18n:extract`.
 3. Añadir el `<trans-unit>` correspondiente en `src/locale/messages.en.xlf`.
 
 Las builds de producción usan `i18nMissingTranslation: "error"`: una cadena sin traducir **rompe la
@@ -305,16 +305,16 @@ accesibilidad, responsive, duplicación, código muerto, nombres y separación d
 
 ### Comandos
 
-| Comando                 | Para qué                                                          |
-| ----------------------- | ----------------------------------------------------------------- |
-| `npm start`             | Servidor de desarrollo, locale fuente (`es`)                      |
-| `npm run start:en`      | Servidor con la traducción inglesa (detecta roturas de layout)    |
-| `npm run build`         | Build de producción, emite `dist/univgo-frontend/browser/{es,en}` |
-| `npm test`              | Tests unitarios y de componente (Vitest + jsdom)                  |
-| `npm run test:coverage` | Cobertura en `coverage/univgo-frontend/lcov.info`                 |
-| `npm run lint`          | ESLint, incluye reglas de accesibilidad de templates              |
-| `npm run format`        | Prettier                                                          |
-| `npm run i18n:extract`  | Regenera `src/locale/messages.xlf`                                |
+| Comando              | Para qué                                                          |
+| -------------------- | ----------------------------------------------------------------- |
+| `pnpm start`         | Servidor de desarrollo, locale fuente (`es`)                      |
+| `pnpm start:en`      | Servidor con la traducción inglesa (detecta roturas de layout)    |
+| `pnpm build`         | Build de producción, emite `dist/univgo-frontend/browser/{es,en}` |
+| `pnpm test`          | Tests unitarios y de componente (Vitest + jsdom)                  |
+| `pnpm test:coverage` | Cobertura en `coverage/univgo-frontend/lcov.info`                 |
+| `pnpm lint`          | ESLint, incluye reglas de accesibilidad de templates              |
+| `pnpm format`        | Prettier                                                          |
+| `pnpm i18n:extract`  | Regenera `src/locale/messages.xlf`                                |
 
 ### Auditorías de calidad
 
@@ -574,6 +574,33 @@ se cubre con estructura semántica y metadatos por ruta. Se puede añadir SSR de
 
 Angular 22 exige `^22.22.3 || ^24.15.0 || >=26.0.0`. El proyecto usa **24.19.0**. Está fijado en
 `engines` de `package.json` para que el fallo sea temprano y explícito.
+
+### Gestor de paquetes: pnpm
+
+**pnpm**, fijado en `packageManager` de `package.json` y en `cli.packageManager` de `angular.json`.
+El único lockfile válido es `pnpm-lock.yaml`.
+
+Matiz sobre el pin: **pnpm sí respeta `packageManager`** y se niega a ejecutarse si el campo nombra
+otro gestor (comprobado). **npm no lo respeta**; hoy falla aquí sólo de rebote, al no entender el
+`node_modules` de pnpm. Para que el pin sea vinculante de verdad hay que habilitar Corepack una vez
+por máquina (`corepack enable`). Sin eso, el campo es documentación, no una barrera.
+
+Se migró desde npm por dos propiedades concretas, no por preferencia:
+
+1. **Ningún paquete puede ejecutar scripts de instalación.** `pnpm-workspace.yaml` fija
+   `onlyBuiltDependencies: []`. Un paquete transitivo comprometido no ejecuta código sólo por
+   instalarse. Se verificó que build, tests y lint funcionan con la lista vacía: esbuild resuelve su
+   binario por dependencia opcional según plataforma, y `lmdb`/`msgpackr-extract`/`@parcel/watcher`
+   caen a JS o a prebuilds.
+2. **`node_modules` estricto:** no existen dependencias fantasma. Todo lo que el código importa está
+   declarado en `package.json`.
+
+Si alguna vez una build falla por los scripts bloqueados, añade **ese paquete concreto** a
+`onlyBuiltDependencies`. **Nunca** ejecutes `pnpm approve-builds` aceptando la lista entera: eso
+anula la principal defensa de cadena de suministro del proyecto.
+
+El registro es el mismo que el de npm, así que esto no protege frente a un paquete malicioso
+publicado — protege frente a que se ejecute solo al instalarlo.
 
 ### ⚠️ Licencia de PrimeNG — decisión pendiente
 

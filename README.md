@@ -9,24 +9,46 @@ colour and endpoints are all resolved through configuration rather than written 
 Angular 22 requires Node `^22.22.3 || ^24.15.0 || >=26.0.0` (this is enforced by `engines` in
 `package.json`). Older Node releases fail during the CLI's own version check.
 
+The package manager is **pnpm**, pinned by `packageManager` in `package.json`. pnpm honours that
+field and refuses to run if it names a different manager. npm does **not** honour it — it currently
+fails here only incidentally, by crashing on pnpm's `node_modules` layout. To make the pin binding
+for every manager, enable Corepack once per machine:
+
 ```bash
-npm install
-npm start          # http://localhost:4200 in Spanish
-npm run start:en   # the same app served from the English translation
+corepack enable
 ```
+
+The only valid lockfile is `pnpm-lock.yaml`.
+
+```bash
+pnpm install
+pnpm start        # http://localhost:4200 in Spanish
+pnpm start:en     # the same app served from the English translation
+```
+
+### Install scripts are disabled
+
+`pnpm-workspace.yaml` sets `onlyBuiltDependencies: []`, so **no dependency may run install scripts**.
+This is the main supply-chain hardening in the project: a compromised transitive package cannot
+execute code merely because it was installed. The toolchain was verified to build, test and lint
+with the allowlist empty — esbuild resolves its binary through a platform-specific optional
+dependency, and `lmdb`/`msgpackr-extract`/`@parcel/watcher` fall back to JS or prebuilt binaries.
+
+If a build ever fails because of this, add **that one package** to `onlyBuiltDependencies`. Never run
+`pnpm approve-builds` and accept everything.
 
 ## Scripts
 
-| Script                  | Purpose                                                                             |
-| ----------------------- | ----------------------------------------------------------------------------------- |
-| `npm start`             | Dev server, source locale (`es`)                                                    |
-| `npm run start:en`      | Dev server, English translation — use it to catch layout breaks from longer strings |
-| `npm run build`         | Production build, emits `dist/univgo-frontend/browser/{es,en}`                      |
-| `npm test`              | Unit and component tests (Vitest + jsdom)                                           |
-| `npm run test:coverage` | Same, writing `coverage/univgo-frontend/lcov.info`                                  |
-| `npm run lint`          | ESLint, including Angular template accessibility rules                              |
-| `npm run format`        | Prettier                                                                            |
-| `npm run i18n:extract`  | Refresh `src/locale/messages.xlf` from the source                                   |
+| Script               | Purpose                                                                             |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `pnpm start`         | Dev server, source locale (`es`)                                                    |
+| `pnpm start:en`      | Dev server, English translation — use it to catch layout breaks from longer strings |
+| `pnpm build`         | Production build, emits `dist/univgo-frontend/browser/{es,en}`                      |
+| `pnpm test`          | Unit and component tests (Vitest + jsdom)                                           |
+| `pnpm test:coverage` | Same, writing `coverage/univgo-frontend/lcov.info`                                  |
+| `pnpm lint`          | ESLint, including Angular template accessibility rules                              |
+| `pnpm format`        | Prettier                                                                            |
+| `pnpm i18n:extract`  | Refresh `src/locale/messages.xlf` from the source                                   |
 
 ## Architecture
 
@@ -86,7 +108,7 @@ string is marked with an explicit, stable id (`@@feature.element`).
 Adding or changing wording:
 
 1. Mark it up — `i18n="@@some.id"` in templates, `` $localize`:@@some.id:Texto` `` in TypeScript.
-2. Run `npm run i18n:extract`.
+2. Run `pnpm i18n:extract`.
 3. Add the matching `<trans-unit>` to `src/locale/messages.en.xlf`.
 
 Production builds set `i18nMissingTranslation: "error"`, so an untranslated string fails the build
@@ -136,9 +158,9 @@ expose in `core/i18n/primeng-translation.ts` as you adopt more components.
 
 ## Quality gates
 
-- `npm run lint` — includes `@angular-eslint` template accessibility rules.
-- `npm test` — behaviour-level tests; keep them off implementation details.
-- `npm run build` — enforces the bundle budget (750 kB warning / 900 kB error on the initial
+- `pnpm lint` — includes `@angular-eslint` template accessibility rules.
+- `pnpm test` — behaviour-level tests; keep them off implementation details.
+- `pnpm build` — enforces the bundle budget (750 kB warning / 900 kB error on the initial
   bundle; the current baseline is ~691 kB raw, ~159 kB transferred).
 - `sonar-project.properties` is ready for SonarCloud; fill in `sonar.projectKey` and
   `sonar.organization` before the first analysis.

@@ -1,0 +1,12 @@
+# Ningún paquete tiene permiso para ejecutar scripts de instalación.
+# El toolchain (Angular, esbuild, Vitest) funciona sin ellos: esbuild resuelve su binario
+# por dependencia opcional según plataforma, y lmdb/msgpackr/watcher caen a implementaciones
+# JS o prebuilds. Si algún día una build falla por esto, mover el paquete concreto a
+# onlyBuiltDependencies — nunca aprobar la lista entera.
+onlyBuiltDependencies: []
+
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - lmdb
+  - msgpackr-extract

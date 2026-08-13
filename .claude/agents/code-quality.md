@@ -35,7 +35,7 @@ más es un hallazgo.
 
 ## Verificación
 
-Puedes ejecutar `npm run lint`, `npm run format:check` y `npm test`. Úsalos: un hallazgo confirmado
+Puedes ejecutar `pnpm lint`, `pnpm format:check` y `pnpm test`. Úsalos: un hallazgo confirmado
 por la herramienta vale más que una sospecha.
 
 ## Qué no hacer

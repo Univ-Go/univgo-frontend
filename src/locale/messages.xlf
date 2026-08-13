@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="es" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="home.pageTitle" datatype="html">
+        <source>Reserva de espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.metaDescription" datatype="html">
+        <source>Consulta la disponibilidad de instalaciones deportivas y salas de estudio de tu universidad y reserva en unos pocos pasos.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.pageTitle" datatype="html">
+        <source>Página no encontrada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.metaDescription" datatype="html">
+        <source>La página que buscas no está disponible.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.network.summary" datatype="html">
+        <source>Sin conexión</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.network.detail" datatype="html">
+        <source>No hemos podido conectar con el servidor. Revisa tu conexión a internet e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unauthorized.summary" datatype="html">
+        <source>Sesión caducada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unauthorized.detail" datatype="html">
+        <source>Tu sesión ha caducado. Vuelve a iniciar sesión para continuar.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.forbidden.summary" datatype="html">
+        <source>Sin permisos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.forbidden.detail" datatype="html">
+        <source>No tienes permiso para realizar esta acción. Si crees que se trata de un error, contacta con tu universidad.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.notFound.summary" datatype="html">
+        <source>No encontrado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.notFound.detail" datatype="html">
+        <source>No hemos encontrado la información que buscabas. Es posible que ya no esté disponible.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.conflict.summary" datatype="html">
+        <source>La información ha cambiado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.conflict.detail" datatype="html">
+        <source>Otra persona se ha adelantado y los datos han cambiado. Actualiza la página e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.validation.summary" datatype="html">
+        <source>Revisa los datos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.validation.detail" datatype="html">
+        <source>Algunos datos no son correctos. Revísalos e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.rateLimited.summary" datatype="html">
+        <source>Demasiados intentos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.rateLimited.detail" datatype="html">
+        <source>Has hecho muchas solicitudes seguidas. Espera unos segundos e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.server.summary" datatype="html">
+        <source>Algo ha fallado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.server.detail" datatype="html">
+        <source>Estamos teniendo un problema técnico. Inténtalo de nuevo en unos minutos.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unknown.summary" datatype="html">
+        <source>Algo ha fallado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unknown.detail" datatype="html">
+        <source>No hemos podido completar la operación. Inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="navigation.label" datatype="html">
+        <source>Navegación principal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/i18n/primeng-translation.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/app-header/app-header.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.reference" datatype="html">
+        <source>Referencia: <x id="reference" equiv-text="reference"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/notifications/notification.service.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.title" datatype="html">
+        <source> Reserva los espacios de tu universidad </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.html</context>
+          <context context-type="linenumber">6,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.subtitle" datatype="html">
+        <source> Consulta la disponibilidad de instalaciones deportivas y salas de estudio, y reserva en unos pocos pasos. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.html</context>
+          <context context-type="linenumber">12,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.steps.heading" datatype="html">
+        <source> Cómo funciona </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.html</context>
+          <context context-type="linenumber">23,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.steps.space.title" datatype="html">
+        <source>Elige un espacio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.steps.space.description" datatype="html">
+        <source>Consulta las instalaciones deportivas y salas de estudio disponibles.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.steps.slot.title" datatype="html">
+        <source>Elige un horario</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.steps.slot.description" datatype="html">
+        <source>Comprueba la disponibilidad en tiempo real y selecciona la franja que te venga bien.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.steps.confirm.title" datatype="html">
+        <source>Confirma tu reserva</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.steps.confirm.description" datatype="html">
+        <source>Recibe la confirmación al instante y consulta tus reservas cuando quieras.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.code" datatype="html">
+        <source>Error 404</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/presentation/not-found-page.html</context>
+          <context context-type="linenumber">2,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.title" datatype="html">
+        <source> No hemos encontrado esta página </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/presentation/not-found-page.html</context>
+          <context context-type="linenumber">8,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.detail" datatype="html">
+        <source> Es posible que el enlace haya cambiado o que la página ya no esté disponible. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/presentation/not-found-page.html</context>
+          <context context-type="linenumber">15,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.backToHome" datatype="html">
+        <source>Volver al inicio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/presentation/not-found-page.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="footer.copyright" datatype="html">
+        <source>© <x id="INTERPOLATION" equiv-text="{{ currentYear }}"/> <x id="INTERPOLATION_1" equiv-text="{{ organizationName }}"/>. UniveGo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/app-footer/app-footer.html</context>
+          <context context-type="linenumber">7,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="navigation.home" datatype="html">
+        <source>Inicio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/app-header/app-header.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="layout.skipToContent" datatype="html">
+        <source>Saltar al contenido principal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/main-layout/main-layout.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

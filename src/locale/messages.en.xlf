@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="es" target-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="home.pageTitle" datatype="html">
+        <source>Reserva de espacios</source>
+        <target>Book a space</target>
+      </trans-unit>
+      <trans-unit id="home.metaDescription" datatype="html">
+        <source>Consulta la disponibilidad de instalaciones deportivas y salas de estudio de tu universidad y reserva en unos pocos pasos.</source>
+        <target>Check the availability of sports facilities and study rooms at your university and book in just a few steps.</target>
+      </trans-unit>
+      <trans-unit id="notFound.pageTitle" datatype="html">
+        <source>Página no encontrada</source>
+        <target>Page not found</target>
+      </trans-unit>
+      <trans-unit id="notFound.metaDescription" datatype="html">
+        <source>La página que buscas no está disponible.</source>
+        <target>The page you are looking for is not available.</target>
+      </trans-unit>
+      <trans-unit id="error.network.summary" datatype="html">
+        <source>Sin conexión</source>
+        <target>No connection</target>
+      </trans-unit>
+      <trans-unit id="error.network.detail" datatype="html">
+        <source>No hemos podido conectar con el servidor. Revisa tu conexión a internet e inténtalo de nuevo.</source>
+        <target>We couldn't reach the server. Check your internet connection and try again.</target>
+      </trans-unit>
+      <trans-unit id="error.unauthorized.summary" datatype="html">
+        <source>Sesión caducada</source>
+        <target>Session expired</target>
+      </trans-unit>
+      <trans-unit id="error.unauthorized.detail" datatype="html">
+        <source>Tu sesión ha caducado. Vuelve a iniciar sesión para continuar.</source>
+        <target>Your session has expired. Sign in again to continue.</target>
+      </trans-unit>
+      <trans-unit id="error.forbidden.summary" datatype="html">
+        <source>Sin permisos</source>
+        <target>No permission</target>
+      </trans-unit>
+      <trans-unit id="error.forbidden.detail" datatype="html">
+        <source>No tienes permiso para realizar esta acción. Si crees que se trata de un error, contacta con tu universidad.</source>
+        <target>You don't have permission to do this. If you think this is a mistake, contact your university.</target>
+      </trans-unit>
+      <trans-unit id="error.notFound.summary" datatype="html">
+        <source>No encontrado</source>
+        <target>Not found</target>
+      </trans-unit>
+      <trans-unit id="error.notFound.detail" datatype="html">
+        <source>No hemos encontrado la información que buscabas. Es posible que ya no esté disponible.</source>
+        <target>We couldn't find the information you were looking for. It may no longer be available.</target>
+      </trans-unit>
+      <trans-unit id="error.conflict.summary" datatype="html">
+        <source>La información ha cambiado</source>
+        <target>The information has changed</target>
+      </trans-unit>
+      <trans-unit id="error.conflict.detail" datatype="html">
+        <source>Otra persona se ha adelantado y los datos han cambiado. Actualiza la página e inténtalo de nuevo.</source>
+        <target>Someone got there first and the data has changed. Refresh the page and try again.</target>
+      </trans-unit>
+      <trans-unit id="error.validation.summary" datatype="html">
+        <source>Revisa los datos</source>
+        <target>Check the details</target>
+      </trans-unit>
+      <trans-unit id="error.validation.detail" datatype="html">
+        <source>Algunos datos no son correctos. Revísalos e inténtalo de nuevo.</source>
+        <target>Some of the details aren't correct. Review them and try again.</target>
+      </trans-unit>
+      <trans-unit id="error.rateLimited.summary" datatype="html">
+        <source>Demasiados intentos</source>
+        <target>Too many attempts</target>
+      </trans-unit>
+      <trans-unit id="error.rateLimited.detail" datatype="html">
+        <source>Has hecho muchas solicitudes seguidas. Espera unos segundos e inténtalo de nuevo.</source>
+        <target>You've made too many requests in a row. Wait a few seconds and try again.</target>
+      </trans-unit>
+      <trans-unit id="error.server.summary" datatype="html">
+        <source>Algo ha fallado</source>
+        <target>Something went wrong</target>
+      </trans-unit>
+      <trans-unit id="error.server.detail" datatype="html">
+        <source>Estamos teniendo un problema técnico. Inténtalo de nuevo en unos minutos.</source>
+        <target>We're having a technical problem. Try again in a few minutes.</target>
+      </trans-unit>
+      <trans-unit id="error.unknown.summary" datatype="html">
+        <source>Algo ha fallado</source>
+        <target>Something went wrong</target>
+      </trans-unit>
+      <trans-unit id="error.unknown.detail" datatype="html">
+        <source>No hemos podido completar la operación. Inténtalo de nuevo.</source>
+        <target>We couldn't complete the operation. Try again.</target>
+      </trans-unit>
+      <trans-unit id="error.reference" datatype="html">
+        <source>Referencia: <x id="reference" equiv-text="reference"/></source>
+        <target>Reference: <x id="reference" equiv-text="reference"/></target>
+      </trans-unit>
+      <trans-unit id="home.title" datatype="html">
+        <source> Reserva los espacios de tu universidad </source>
+        <target> Book spaces at your university </target>
+      </trans-unit>
+      <trans-unit id="home.subtitle" datatype="html">
+        <source> Consulta la disponibilidad de instalaciones deportivas y salas de estudio, y reserva en unos pocos pasos. </source>
+        <target> Check the availability of sports facilities and study rooms, and book in just a few steps. </target>
+      </trans-unit>
+      <trans-unit id="home.steps.heading" datatype="html">
+        <source> Cómo funciona </source>
+        <target> How it works </target>
+      </trans-unit>
+      <trans-unit id="home.steps.space.title" datatype="html">
+        <source>Elige un espacio</source>
+        <target>Choose a space</target>
+      </trans-unit>
+      <trans-unit id="home.steps.space.description" datatype="html">
+        <source>Consulta las instalaciones deportivas y salas de estudio disponibles.</source>
+        <target>Browse the sports facilities and study rooms available.</target>
+      </trans-unit>
+      <trans-unit id="home.steps.slot.title" datatype="html">
+        <source>Elige un horario</source>
+        <target>Choose a time</target>
+      </trans-unit>
+      <trans-unit id="home.steps.slot.description" datatype="html">
+        <source>Comprueba la disponibilidad en tiempo real y selecciona la franja que te venga bien.</source>
+        <target>Check real-time availability and pick the slot that suits you.</target>
+      </trans-unit>
+      <trans-unit id="home.steps.confirm.title" datatype="html">
+        <source>Confirma tu reserva</source>
+        <target>Confirm your booking</target>
+      </trans-unit>
+      <trans-unit id="home.steps.confirm.description" datatype="html">
+        <source>Recibe la confirmación al instante y consulta tus reservas cuando quieras.</source>
+        <target>Get instant confirmation and check your bookings whenever you like.</target>
+      </trans-unit>
+      <trans-unit id="notFound.code" datatype="html">
+        <source>Error 404</source>
+        <target>Error 404</target>
+      </trans-unit>
+      <trans-unit id="notFound.title" datatype="html">
+        <source> No hemos encontrado esta página </source>
+        <target> We couldn't find this page </target>
+      </trans-unit>
+      <trans-unit id="notFound.detail" datatype="html">
+        <source> Es posible que el enlace haya cambiado o que la página ya no esté disponible. </source>
+        <target> The link may have changed, or the page may no longer be available. </target>
+      </trans-unit>
+      <trans-unit id="notFound.backToHome" datatype="html">
+        <source>Volver al inicio</source>
+        <target>Back to home</target>
+      </trans-unit>
+      <trans-unit id="footer.copyright" datatype="html">
+        <source>© <x id="INTERPOLATION" equiv-text="{{ currentYear }}"/> <x id="INTERPOLATION_1" equiv-text="{{ organizationName }}"/>. UniveGo.</source>
+        <target>© <x id="INTERPOLATION" equiv-text="{{ currentYear }}"/> <x id="INTERPOLATION_1" equiv-text="{{ organizationName }}"/>. UniveGo.</target>
+      </trans-unit>
+      <trans-unit id="navigation.label" datatype="html">
+        <source>Navegación principal</source>
+        <target>Main navigation</target>
+      </trans-unit>
+      <trans-unit id="navigation.home" datatype="html">
+        <source>Inicio</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id="layout.skipToContent" datatype="html">
+        <source>Saltar al contenido principal</source>
+        <target>Skip to main content</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

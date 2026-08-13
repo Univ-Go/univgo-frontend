@@ -1,0 +1,26 @@
+<header
+  class="sticky top-0 z-(--z-header) border-b border-surface-200 bg-surface-0 dark:border-surface-800 dark:bg-surface-900"
+>
+  <div class="mx-auto w-full max-w-(--container-content) px-4 sm:px-6">
+    <p-menubar
+      [model]="navigation"
+      [ariaLabel]="navigationLabel"
+      class="border-0 bg-transparent px-0"
+    >
+      <ng-template #start>
+        <a
+          routerLink="/"
+          class="mr-4 flex items-center gap-2 rounded-(--radius-control) py-1 text-lg font-semibold tracking-tight text-surface-900 no-underline dark:text-surface-0"
+        >
+          <span
+            class="grid size-8 place-items-center rounded-(--radius-control) bg-primary text-primary-contrast"
+            aria-hidden="true"
+          >
+            <i class="pi pi-calendar text-base"></i>
+          </span>
+          {{ organizationName }}
+        </a>
+      </ng-template>
+    </p-menubar>
+  </div>
+</header>

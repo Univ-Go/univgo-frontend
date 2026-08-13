@@ -1,0 +1,44 @@
+<section class="mx-auto max-w-3xl text-center">
+  <h1
+    class="text-3xl font-bold tracking-tight text-balance text-surface-900 sm:text-4xl dark:text-surface-0"
+    i18n="@@home.title"
+  >
+    Reserva los espacios de tu universidad
+  </h1>
+  <p
+    class="mt-4 text-base text-pretty text-surface-600 sm:text-lg dark:text-surface-300"
+    i18n="@@home.subtitle"
+  >
+    Consulta la disponibilidad de instalaciones deportivas y salas de estudio, y reserva en unos
+    pocos pasos.
+  </p>
+</section>
+
+<section class="mt-10 sm:mt-14" aria-labelledby="how-it-works-heading">
+  <h2
+    id="how-it-works-heading"
+    class="text-xl font-semibold tracking-tight text-surface-900 dark:text-surface-0"
+    i18n="@@home.steps.heading"
+  >
+    Cómo funciona
+  </h2>
+
+  <ol class="mt-6 grid list-none gap-4 p-0 sm:grid-cols-3">
+    @for (step of steps; track step.title) {
+      <li>
+        <p-card styleClass="h-full">
+          <span
+            class="mb-3 grid size-10 place-items-center rounded-(--radius-control) bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-200"
+            aria-hidden="true"
+          >
+            <i [class]="step.icon"></i>
+          </span>
+          <h3 class="text-base font-semibold text-surface-900 dark:text-surface-0">
+            {{ step.title }}
+          </h3>
+          <p class="mt-1 text-sm text-surface-600 dark:text-surface-300">{{ step.description }}</p>
+        </p-card>
+      </li>
+    }
+  </ol>
+</section>

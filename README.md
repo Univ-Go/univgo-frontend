@@ -21,9 +21,9 @@ npm run start:en   # the same app served from the English translation
 | ----------------------- | ----------------------------------------------------------------------------------- |
 | `npm start`             | Dev server, source locale (`es`)                                                    |
 | `npm run start:en`      | Dev server, English translation — use it to catch layout breaks from longer strings |
-| `npm run build`         | Production build, emits `dist/univego-frontend/browser/{es,en}`                     |
+| `npm run build`         | Production build, emits `dist/univgo-frontend/browser/{es,en}`                      |
 | `npm test`              | Unit and component tests (Vitest + jsdom)                                           |
-| `npm run test:coverage` | Same, writing `coverage/univego-frontend/lcov.info`                                 |
+| `npm run test:coverage` | Same, writing `coverage/univgo-frontend/lcov.info`                                  |
 | `npm run lint`          | ESLint, including Angular template accessibility rules                              |
 | `npm run format`        | Prettier                                                                            |
 | `npm run i18n:extract`  | Refresh `src/locale/messages.xlf` from the source                                   |
@@ -66,7 +66,7 @@ equivalent, and say why in the component.
 
 ## Design tokens
 
-Colour is defined once, in `core/theme/univego-theme.preset.ts`. PrimeNG emits that palette as
+Colour is defined once, in `core/theme/univgo-theme.preset.ts`. PrimeNG emits that palette as
 `--p-*` custom properties, and `tailwindcss-primeui` re-exposes them as Tailwind utilities
 (`bg-primary`, `text-surface-600`, …), so components and utility classes can never drift apart.
 Retheming for another institution means changing the preset, nothing else.

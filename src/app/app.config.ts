@@ -10,7 +10,7 @@ import { httpErrorInterceptor } from './core/http/http-error.interceptor';
 import { primeNgTranslation } from './core/i18n/primeng-translation';
 import { ConsoleLogger, Logger } from './core/logging/logger';
 import { PageMetadataStrategy } from './core/seo/page-metadata.strategy';
-import { univegoThemePreset } from './core/theme/univego-theme.preset';
+import { univgoThemePreset } from './core/theme/univgo-theme.preset';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       license: environment.primeUiLicense,
       translation: primeNgTranslation,
       theme: {
-        preset: univegoThemePreset,
+        preset: univgoThemePreset,
         options: {
           darkModeSelector: '[data-theme="dark"]',
           // Keeps PrimeNG's generated rules below Tailwind utilities so utility overrides win.

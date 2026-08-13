@@ -8,6 +8,6 @@ import type { AppConfig } from './app-config';
  */
 export const defaultAppConfig: AppConfig = {
   tenantId: 'default',
-  organizationName: 'Universidad UniveGo',
+  organizationName: 'Universidad UnivGo',
   apiBaseUrl: environment.apiBaseUrl,
 };

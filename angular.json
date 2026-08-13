@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "univego-frontend": {
+    "univgo-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -90,13 +90,13 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "univego-frontend:build:production"
+              "buildTarget": "univgo-frontend:build:production"
             },
             "development": {
-              "buildTarget": "univego-frontend:build:development"
+              "buildTarget": "univgo-frontend:build:development"
             },
             "development-en": {
-              "buildTarget": "univego-frontend:build:development-en"
+              "buildTarget": "univgo-frontend:build:development-en"
             }
           },
           "defaultConfiguration": "development"
@@ -104,7 +104,7 @@
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
           "options": {
-            "buildTarget": "univego-frontend:build:development",
+            "buildTarget": "univgo-frontend:build:development",
             "outputPath": "src/locale",
             "outFile": "messages.xlf",
             "format": "xlf"
@@ -114,7 +114,7 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "buildTarget": "univego-frontend:build:development",
+            "buildTarget": "univgo-frontend:build:development",
             "runner": "vitest",
             "setupFiles": ["src/test-setup.ts"],
             "coverageReporters": ["text-summary", "lcovonly"],

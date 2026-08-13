@@ -7,7 +7,7 @@
 
 /*
  * Tokens that are not colour. Colour tokens are owned by the PrimeNG preset
- * (see core/theme/univego-theme.preset.ts) and reach Tailwind through tailwindcss-primeui,
+ * (see core/theme/univgo-theme.preset.ts) and reach Tailwind through tailwindcss-primeui,
  * so they are deliberately absent here to keep a single source of truth.
  */
 @theme {

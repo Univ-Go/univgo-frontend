@@ -1,13 +1,13 @@
-# UniveGo — Contexto maestro del frontend
+# UnivGo — Contexto maestro del frontend
 
-Este archivo es la fuente de verdad para el desarrollo del frontend de UniveGo. Ninguna regla aquí
+Este archivo es la fuente de verdad para el desarrollo del frontend de UnivGo. Ninguna regla aquí
 definida puede omitirse por conveniencia o velocidad.
 
 ---
 
 ## 0. Contexto del proyecto
 
-**UniveGo** es una plataforma de gestión de reservas de espacios universitarios, inicialmente
+**UnivGo** es una plataforma de gestión de reservas de espacios universitarios, inicialmente
 orientada a espacios deportivos y de estudio. El objetivo es que los usuarios consulten y reserven
 espacios de forma rápida, clara e intuitiva.
 
@@ -141,7 +141,7 @@ uno nuevo sólo si es realmente necesario. No duplicar valores equivalentes en d
 
 ### Implementación en este proyecto
 
-- **El color se define una sola vez** en `src/app/core/theme/univego-theme.preset.ts`. PrimeNG emite
+- **El color se define una sola vez** en `src/app/core/theme/univgo-theme.preset.ts`. PrimeNG emite
   esa paleta como propiedades `--p-*` y `tailwindcss-primeui` las reexpone como utilidades de
   Tailwind (`bg-primary`, `text-surface-600`, …). Componentes y utilidades no pueden divergir.
   Retematizar para otra institución = cambiar el preset, nada más.
@@ -305,16 +305,16 @@ accesibilidad, responsive, duplicación, código muerto, nombres y separación d
 
 ### Comandos
 
-| Comando                 | Para qué                                                           |
-| ----------------------- | ------------------------------------------------------------------ |
-| `npm start`             | Servidor de desarrollo, locale fuente (`es`)                       |
-| `npm run start:en`      | Servidor con la traducción inglesa (detecta roturas de layout)     |
-| `npm run build`         | Build de producción, emite `dist/univego-frontend/browser/{es,en}` |
-| `npm test`              | Tests unitarios y de componente (Vitest + jsdom)                   |
-| `npm run test:coverage` | Cobertura en `coverage/univego-frontend/lcov.info`                 |
-| `npm run lint`          | ESLint, incluye reglas de accesibilidad de templates               |
-| `npm run format`        | Prettier                                                           |
-| `npm run i18n:extract`  | Regenera `src/locale/messages.xlf`                                 |
+| Comando                 | Para qué                                                          |
+| ----------------------- | ----------------------------------------------------------------- |
+| `npm start`             | Servidor de desarrollo, locale fuente (`es`)                      |
+| `npm run start:en`      | Servidor con la traducción inglesa (detecta roturas de layout)    |
+| `npm run build`         | Build de producción, emite `dist/univgo-frontend/browser/{es,en}` |
+| `npm test`              | Tests unitarios y de componente (Vitest + jsdom)                  |
+| `npm run test:coverage` | Cobertura en `coverage/univgo-frontend/lcov.info`                 |
+| `npm run lint`          | ESLint, incluye reglas de accesibilidad de templates              |
+| `npm run format`        | Prettier                                                          |
+| `npm run i18n:extract`  | Regenera `src/locale/messages.xlf`                                |
 
 ### Auditorías de calidad
 

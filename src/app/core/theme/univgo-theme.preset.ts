@@ -21,7 +21,7 @@ const primaryPalette = {
   950: '#171d54',
 } as const;
 
-export const univegoThemePreset = definePreset(Aura, {
+export const univgoThemePreset = definePreset(Aura, {
   semantic: {
     primary: primaryPalette,
     // WCAG 2.2 requires focus to stay perceivable; Aura's default ring is thinner than we want.

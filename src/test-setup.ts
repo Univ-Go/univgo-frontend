@@ -1,7 +1,8 @@
 /**
- * jsdom implements no CSS Object Model media queries, but PrimeNG components that adapt to a
- * breakpoint (Menubar, Toast) call `matchMedia` on init. The stub reports "does not match", so
- * components render their wide layout under test.
+ * jsdom implements no CSS Object Model media queries, but Taiga UI calls `matchMedia` while
+ * bootstrapping: `TUI_BREAKPOINT` resolves the current layout from it and `TUI_DARK_MODE` reads
+ * `prefers-color-scheme` from it. The stub reports "does not match", so components render their
+ * wide, light layout under test.
  */
 if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
   window.matchMedia = (query: string): MediaQueryList =>

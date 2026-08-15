@@ -1,42 +1,57 @@
 import { Injectable, inject } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { TuiNotificationService } from '@taiga-ui/core';
 import type { AppError } from '../errors/app-error';
 import { resolveErrorMessage } from '../errors/error-message.resolver';
+
+type NotificationAppearance = 'info' | 'negative' | 'positive' | 'warning';
 
 const TRANSIENT_LIFE_MS = 4000;
 /** Failures need longer on screen: the user has to read a recovery step, not just an outcome. */
 const ERROR_LIFE_MS = 8000;
 
 /**
- * The single entry point for transient user feedback. Wrapping PrimeNG's MessageService keeps
- * toast configuration in one place and guarantees that errors are translated through
+ * The single entry point for transient user feedback. Wrapping Taiga's notification service keeps
+ * alert configuration in one place and guarantees that errors are translated through
  * `resolveErrorMessage` instead of being rendered raw.
  */
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  private readonly messages = inject(MessageService);
+  private readonly notifications = inject(TuiNotificationService);
 
   success(summary: string, detail?: string): void {
-    this.messages.add({ severity: 'success', summary, detail, life: TRANSIENT_LIFE_MS });
+    this.show('positive', TRANSIENT_LIFE_MS, summary, detail);
   }
 
   info(summary: string, detail?: string): void {
-    this.messages.add({ severity: 'info', summary, detail, life: TRANSIENT_LIFE_MS });
+    this.show('info', TRANSIENT_LIFE_MS, summary, detail);
   }
 
   warn(summary: string, detail?: string): void {
-    this.messages.add({ severity: 'warn', summary, detail, life: TRANSIENT_LIFE_MS });
+    this.show('warning', TRANSIENT_LIFE_MS, summary, detail);
   }
 
   error(error: AppError): void {
     const { summary, detail } = resolveErrorMessage(error.code);
 
-    this.messages.add({
-      severity: 'error',
+    this.show(
+      'negative',
+      ERROR_LIFE_MS,
       summary,
-      detail: error.reference ? `${detail} ${this.referenceHint(error.reference)}` : detail,
-      life: ERROR_LIFE_MS,
-    });
+      error.reference ? `${detail} ${this.referenceHint(error.reference)}` : detail,
+    );
+  }
+
+  private show(
+    appearance: NotificationAppearance,
+    autoClose: number,
+    summary: string,
+    detail?: string,
+  ): void {
+    // `label` es el encabezado de la alerta y el contenido es el cuerpo: un aviso sin detalle se
+    // lee mejor como una sola línea que como un título sobre un bloque vacío.
+    this.notifications
+      .open(detail ?? summary, { appearance, autoClose, label: detail ? summary : '' })
+      .subscribe();
   }
 
   private referenceHint(reference: string): string {

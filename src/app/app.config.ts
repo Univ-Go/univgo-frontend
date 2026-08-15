@@ -18,8 +18,8 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
     ),
     provideHttpClient(withFetch(), withInterceptors([httpErrorInterceptor])),
-    // Aporta los plugins de evento que necesitan las plantillas de la librería y engancha
-    // `TUI_DARK_MODE` al atributo `tuiTheme` del documento.
+    // Supplies the event plugins the library's own templates rely on and mirrors `TUI_DARK_MODE`
+    // onto the document's `tuiTheme` attribute.
     provideTaiga(),
     provideTaigaLanguage(),
     { provide: APP_CONFIG, useValue: defaultAppConfig },

@@ -1,0 +1,269 @@
+:host {
+  display: block;
+}
+
+.skip-link {
+  position: absolute;
+  inset-block-start: var(--univgo-space-s);
+  inset-inline-start: var(--univgo-space-s);
+  z-index: 1;
+  padding: var(--univgo-space-s) var(--univgo-space-l);
+  border-radius: var(--tui-radius-s);
+  background: var(--tui-background-elevation-1);
+  color: var(--tui-text-primary);
+  font: var(--tui-typography-ui-s);
+  transform: translateY(-200%);
+
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+.login {
+  display: grid;
+  // Mobile: a short hero states where the user is, then the form takes the rest of the screen. The
+  // hero is sized by its content so it never competes with the task.
+  grid-template-rows: auto 1fr;
+  // `svh` rather than `dvh`: the dynamic unit resizes with the mobile URL bar mid-scroll.
+  min-block-size: 100svh;
+}
+
+// The brand panel leads on mobile too: it is short enough to keep the form above the fold, and it
+// carries the same content as on desktop rather than a trimmed version of it.
+.brand {
+  display: flex;
+  position: relative;
+  align-items: center;
+  overflow: hidden;
+  padding: var(--univgo-space-xl) var(--univgo-layout-gutter);
+  background: var(--univgo-brand-surface);
+  color: var(--univgo-on-brand-surface);
+
+  // Stands in for the campus photograph: depth without an image request.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 20%, rgb(255 255 255 / 18%), transparent 45%),
+      radial-gradient(circle at 85% 0%, rgb(255 255 255 / 10%), transparent 40%),
+      linear-gradient(160deg, transparent 40%, rgb(0 0 0 / 24%));
+  }
+}
+
+.brand__inner {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  inline-size: 100%;
+  max-inline-size: 34rem;
+  margin-inline: auto;
+}
+
+.brand__watermark {
+  position: absolute;
+  inset-block-start: -10%;
+  inset-inline-end: -12%;
+  block-size: 60%;
+  inline-size: auto;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+// Taiga's neutral appearance resolves against the page surface, and this pill sits on the brand
+// panel instead: it needs a scrim of its own to stay legible in both themes.
+.brand [tuiBadge] {
+  background: rgb(255 255 255 / 18%);
+  color: inherit;
+}
+
+.brand__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--univgo-space-l);
+}
+
+// The lead and the highlights are the expanded pitch: they belong to the desktop hero. On a phone
+// the hero keeps only the badge and the headline, which is what states where the user landed.
+.brand__lead,
+.brand__highlights {
+  display: none;
+}
+
+.brand__lead {
+  max-inline-size: 44ch;
+  margin: 0;
+  font: var(--tui-typography-body-l);
+  opacity: 0.88;
+}
+
+.brand__highlights {
+  flex-wrap: wrap;
+  gap: var(--univgo-space-l) var(--univgo-space-2xl);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.highlight {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  font: var(--tui-typography-ui-s);
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-s);
+}
+
+.topbar__logo {
+  block-size: 2.25rem;
+  inline-size: auto;
+  // The wordmark is crimson ink: on the dark theme it needs a light plate to stay readable.
+  padding: var(--univgo-space-xs) var(--univgo-space-s);
+  border-radius: var(--tui-radius-s);
+  background: var(--univgo-logo-plate);
+}
+
+.panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--univgo-space-xl) var(--univgo-layout-gutter);
+  background: var(--tui-background-base);
+}
+
+.panel__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+  inline-size: 100%;
+  max-inline-size: 26rem;
+}
+
+.panel__inner .panel__header {
+  margin-block-start: var(--univgo-space-l);
+}
+
+.panel__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.panel__subtitle {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+// Taiga buttons size to their content; centring them keeps the form's axis instead of leaving them
+// hanging on the left edge.
+.form [tuiButton] {
+  align-self: center;
+  min-inline-size: 15rem;
+}
+
+.form__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-s);
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  font: var(--tui-typography-ui-s);
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+  text-transform: uppercase;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    block-size: 1px;
+    background: var(--tui-border-normal);
+  }
+}
+
+.panel__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  text-align: center;
+}
+
+.services {
+  display: flex;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-xs);
+}
+
+@media (min-width: 64rem) {
+  .login {
+    grid-template-rows: 1fr;
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  .brand {
+    padding: var(--univgo-space-3xl);
+  }
+
+  .panel {
+    padding: var(--univgo-space-3xl) var(--univgo-space-2xl);
+    background: var(--tui-background-elevation-1);
+  }
+
+  .brand__inner {
+    gap: var(--univgo-space-xl);
+  }
+
+  .brand__lead {
+    display: block;
+  }
+
+  .brand__highlights {
+    display: flex;
+  }
+}

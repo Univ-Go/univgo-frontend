@@ -1,0 +1,72 @@
+.footer {
+  border-block-start: 1px solid var(--tui-border-normal);
+  background: var(--tui-background-elevation-1);
+}
+
+// Same three-track grid as the header, so the legal line sits on the centre of the viewport instead
+// of wherever the logo and the link list leave room.
+.footer__inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  inline-size: 100%;
+  max-inline-size: var(--univgo-content-max-width);
+  margin-inline: auto;
+  padding: var(--univgo-space-xl) var(--univgo-layout-gutter);
+}
+
+.footer__logo {
+  justify-self: start;
+  block-size: 2.25rem;
+  inline-size: auto;
+  padding: var(--univgo-space-xs) var(--univgo-space-s);
+  border-radius: var(--tui-radius-s);
+  background: var(--univgo-logo-plate);
+}
+
+.footer__legal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-xs);
+  text-align: center;
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  justify-self: end;
+  gap: var(--univgo-space-l);
+  font: var(--tui-typography-ui-xs);
+}
+
+// One centred column on a phone: logo, links, then the legal line. This block stays last on
+// purpose — it resets the `justify-self` above, and with equal specificity source order decides.
+@media (max-width: 47.99rem) {
+  .footer__inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: var(--univgo-space-xl);
+    padding-block: var(--univgo-space-2xl);
+    text-align: center;
+  }
+
+  .footer__logo,
+  .footer__legal,
+  .footer__links {
+    justify-self: center;
+  }
+
+  .footer__links {
+    justify-content: center;
+  }
+
+  // Legal last: the links are what someone actually reaches for.
+  .footer__legal {
+    order: 3;
+  }
+}

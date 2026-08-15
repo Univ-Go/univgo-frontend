@@ -1,0 +1,6 @@
+dist
+coverage
+.angular
+node_modules
+src/locale/*.xlf
+package-lock.json

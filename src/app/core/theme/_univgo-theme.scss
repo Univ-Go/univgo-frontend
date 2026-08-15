@@ -1,0 +1,58 @@
+// La marca se define una sola vez. Retematizar para otra institución es cambiar esta escala:
+// ningún componente ni hoja de estilos referencia un color directamente.
+$brand-50: #eef4ff;
+$brand-100: #dbe6fe;
+$brand-200: #bfd3fe;
+$brand-300: #93b4fd;
+$brand-400: #608cfa;
+$brand-500: #3b65f6;
+$brand-600: #2544eb;
+$brand-700: #1d33d8;
+$brand-800: #1e2caf;
+$brand-900: #1e2b8a;
+$brand-950: #171d54;
+
+@mixin brand-light {
+  --tui-background-accent-1: #{$brand-600};
+  --tui-background-accent-1-hover: #{$brand-500};
+  --tui-background-accent-1-pressed: #{$brand-800};
+  --tui-text-primary-on-accent-1: #ffffff;
+  --tui-text-action: #{$brand-700};
+  --tui-text-action-hover: #{$brand-600};
+}
+
+@mixin brand-dark {
+  --tui-background-accent-1: #{$brand-400};
+  --tui-background-accent-1-hover: #{$brand-300};
+  --tui-background-accent-1-pressed: #{$brand-500};
+  --tui-text-primary-on-accent-1: #{$brand-950};
+  --tui-text-action: #{$brand-300};
+  --tui-text-action-hover: #{$brand-200};
+}
+
+:root {
+  // Pila del sistema a propósito: sin petición de webfont, el texto pinta de inmediato en móvil.
+  --tui-typography-family-text:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+  --tui-typography-family-display: var(--tui-typography-family-text);
+}
+
+// Se reproduce el reparto de Taiga entre pantalla e impresión: al imprimir siempre se usa el tema
+// claro, y sin este bloque nuestras sobrescrituras oscuras ganarían por orden de cascada.
+@media screen {
+  :root,
+  [tuiTheme='light'] {
+    @include brand-light;
+  }
+
+  [tuiTheme='dark'] {
+    @include brand-dark;
+  }
+}
+
+@media print {
+  :root,
+  [tuiTheme] {
+    @include brand-light;
+  }
+}

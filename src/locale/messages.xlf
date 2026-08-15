@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="es" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="error.network.summary" datatype="html">
+        <source>Sin conexión</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.network.detail" datatype="html">
+        <source>No hemos podido conectar con el servidor. Revisa tu conexión a internet e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unauthorized.summary" datatype="html">
+        <source>Sesión caducada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unauthorized.detail" datatype="html">
+        <source>Tu sesión ha caducado. Vuelve a iniciar sesión para continuar.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.forbidden.summary" datatype="html">
+        <source>Sin permisos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.forbidden.detail" datatype="html">
+        <source>No tienes permiso para realizar esta acción. Si crees que se trata de un error, contacta con tu universidad.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.notFound.summary" datatype="html">
+        <source>No encontrado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.notFound.detail" datatype="html">
+        <source>No hemos encontrado la información que buscabas. Es posible que ya no esté disponible.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.conflict.summary" datatype="html">
+        <source>La información ha cambiado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.conflict.detail" datatype="html">
+        <source>Otra persona se ha adelantado y los datos han cambiado. Actualiza la página e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.validation.summary" datatype="html">
+        <source>Revisa los datos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.validation.detail" datatype="html">
+        <source>Algunos datos no son correctos. Revísalos e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.rateLimited.summary" datatype="html">
+        <source>Demasiados intentos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.rateLimited.detail" datatype="html">
+        <source>Has hecho muchas solicitudes seguidas. Espera unos segundos e inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.server.summary" datatype="html">
+        <source>Algo ha fallado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.server.detail" datatype="html">
+        <source>Estamos teniendo un problema técnico. Inténtalo de nuevo en unos minutos.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unknown.summary" datatype="html">
+        <source>Algo ha fallado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.unknown.detail" datatype="html">
+        <source>No hemos podido completar la operación. Inténtalo de nuevo.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/errors/error-message.resolver.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.reference" datatype="html">
+        <source>Referencia: <x id="reference" equiv-text="reference"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/notifications/notification.service.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

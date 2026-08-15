@@ -1,0 +1,31 @@
+@use './app/core/theme/univgo-theme';
+
+html {
+  block-size: 100%;
+}
+
+body {
+  margin: 0;
+  min-block-size: 100%;
+  background: var(--tui-background-base);
+  color: var(--tui-text-primary);
+  font: var(--tui-typography-body-m);
+  -webkit-font-smoothing: antialiased;
+}
+
+// Taiga dibuja el foco de sus propios componentes; esto cubre los elementos nativos del producto.
+:focus-visible {
+  outline: var(--tui-stroke-width) solid var(--tui-border-focus);
+  outline-offset: var(--tui-stroke-width);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

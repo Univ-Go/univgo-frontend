@@ -24,7 +24,8 @@
   // Mobile: a short hero states where the user is, then the form takes the rest of the screen. The
   // hero is sized by its content so it never competes with the task.
   grid-template-rows: auto 1fr;
-  min-block-size: 100dvh;
+  // `svh` rather than `dvh`: the dynamic unit resizes with the mobile URL bar mid-scroll.
+  min-block-size: 100svh;
 }
 
 // The brand panel leads on mobile too: it is short enough to keep the form above the fold, and it

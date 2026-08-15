@@ -2,7 +2,8 @@ import type { Routes } from '@angular/router';
 
 /**
  * Every route declares `title` and `data.description`, which `PageMetadataStrategy` turns into
- * document metadata, so that no page can ship without a title.
+ * document metadata, so that no page can ship without a title. Sign-in sits outside the shell:
+ * a navigation bar is meaningless before there is a session.
  */
 export const routes: Routes = [
   {
@@ -16,7 +17,18 @@ export const routes: Routes = [
   },
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'login',
+    loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./features/home/presentation/home-page/home-page').then((m) => m.HomePage),
+        title: $localize`:@@home.pageTitle:Inicio`,
+        data: {
+          description: $localize`:@@home.pageDescription:Consulta tu próxima reserva y los espacios destacados del campus.`,
+        },
+      },
+    ],
   },
 ];

@@ -1,0 +1,122 @@
+<section class="greeting">
+  <div class="greeting__copy">
+    <h1 i18n="@@home.greeting">Hola, {{ userName }}</h1>
+    <p class="greeting__lead" i18n="@@home.greetingLead">
+      Tus espacios favoritos están libres hoy. Elige uno y resérvalo en menos de un minuto.
+    </p>
+  </div>
+
+  <button
+    tuiButton
+    type="button"
+    size="l"
+    appearance="primary"
+    iconStart="@tui.circle-plus"
+    i18n="@@home.newReservation"
+  >
+    Nueva reserva
+  </button>
+</section>
+
+<section class="section" aria-labelledby="next-reservation">
+  <header tuiHeader class="section__header">
+    <span class="section__title">
+      <h2 id="next-reservation" tuiTitle i18n="@@home.nextReservation">Próxima reserva</h2>
+      <span tuiBadge appearance="positive" size="l" i18n="@@home.statusConfirmed">Confirmada</span>
+    </span>
+  </header>
+
+  <article tuiCardLarge tuiSurface tuiAppearance="floating" class="reservation">
+    <span class="reservation__icon" aria-hidden="true">
+      <tui-icon [icon]="nextReservation.icon" />
+    </span>
+
+    <div class="reservation__identity">
+      <h3 class="reservation__name">{{ nextReservation.name }}</h3>
+      <p class="reservation__location">{{ nextReservation.location }}</p>
+    </div>
+
+    <dl class="reservation__facts">
+      <div class="fact">
+        <dt i18n="@@home.factTime">Horario</dt>
+        <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ nextReservation.time }}</dd>
+      </div>
+      <div class="fact">
+        <dt i18n="@@home.factDate">Fecha</dt>
+        <dd><tui-icon icon="@tui.calendar" aria-hidden="true" />{{ nextReservation.date }}</dd>
+      </div>
+    </dl>
+
+    <a tuiLink href="#" iconEnd="@tui.arrow-right" i18n="@@home.viewDetails">Ver detalles</a>
+  </article>
+</section>
+
+<section class="section" aria-labelledby="featured">
+  <header tuiHeader class="section__header">
+    <h2 id="featured" tuiTitle i18n="@@home.featuredSpaces">Espacios destacados</h2>
+    <a tuiLink href="#" iconEnd="@tui.arrow-right" i18n="@@home.viewAll">Ver todos</a>
+  </header>
+
+  <ul class="spaces">
+    @for (space of featuredSpaces; track space.id) {
+      <li class="spaces__item">
+        <article tuiCardLarge tuiSurface tuiAppearance="outline" class="space">
+          <div class="space__media">
+            <tui-icon class="space__mark" [icon]="space.icon" aria-hidden="true" />
+
+            @if (space.available) {
+              <span
+                tuiBadge
+                appearance="positive"
+                size="l"
+                iconStart="@tui.circle-check"
+                i18n="@@home.spaceAvailable"
+              >
+                Disponible
+              </span>
+            } @else {
+              <span
+                tuiBadge
+                appearance="negative"
+                size="l"
+                iconStart="@tui.circle-x"
+                i18n="@@home.spaceBusy"
+              >
+                Ocupado
+              </span>
+            }
+          </div>
+
+          <div class="space__body">
+            <h3 class="space__name">{{ space.name }}</h3>
+            <p class="space__location">{{ space.location }}</p>
+
+            <ul class="space__tags">
+              @for (tag of space.tags; track tag) {
+                <li>
+                  <span tuiChip appearance="neutral" size="xs">{{ tag }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          @if (space.available) {
+            <button tuiButton type="button" size="m" appearance="outline" i18n="@@home.book">
+              Reservar
+            </button>
+          } @else {
+            <button
+              tuiButton
+              type="button"
+              size="m"
+              appearance="outline"
+              i18n="@@home.viewSchedule"
+            >
+              Ver horarios
+            </button>
+          }
+        </article>
+      </li>
+    }
+  </ul>
+</section>

@@ -1,0 +1,235 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+.greeting {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--univgo-space-l);
+  padding-block-end: var(--univgo-space-xl);
+  border-block-end: 1px solid var(--tui-border-normal);
+}
+
+.greeting__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+.greeting__lead {
+  max-inline-size: 52ch;
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.section__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.section__header h2,
+.section__title {
+  margin-inline-end: auto;
+}
+
+.section__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+// `tuiCardLarge` stacks its content in a column; this card is a row, and the extra attribute in the
+// selector is what it takes to outrank the library's own rule.
+article.reservation[tuiCardLarge] {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: var(--univgo-space-l);
+
+  // The card pushes trailing links down, which is right for a column and wrong for this row: the
+  // margin is what kept the action off the card's vertical centre.
+  a[tuiLink] {
+    margin-block-start: 0;
+  }
+}
+
+.reservation__icon {
+  display: grid;
+  place-items: center;
+  inline-size: var(--tui-height-l);
+  block-size: var(--tui-height-l);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-neutral-1);
+}
+
+.reservation__identity {
+  margin-inline-end: auto;
+}
+
+.reservation__name {
+  margin: 0;
+  font: var(--tui-typography-ui-l);
+}
+
+.reservation__location {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+.reservation__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-xl);
+  margin: 0;
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+}
+
+// Uniform rows: the grid stretches every item, and each card is a column that pushes its action to
+// the bottom, so cards line up whatever the length of a name or the number of tags.
+.spaces {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: var(--univgo-space-l);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spaces__item {
+  display: flex;
+}
+
+.space {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  inline-size: 100%;
+}
+
+// Taiga's appearances do carry hover states, but only for interactive hosts — an `<article>` never
+// enters them, and turning the card into a link would nest its own button inside another control.
+// So the whole card reacts here, using the library's own elevation and shadow tokens.
+.reservation,
+.space {
+  transition:
+    box-shadow var(--tui-duration),
+    transform var(--tui-duration);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// The outline appearance draws its edge as an inset ring, so the hover shadow has to carry it along
+// or the card loses its border exactly when it gains emphasis.
+.space:hover {
+  box-shadow:
+    inset 0 0 0 1px var(--tui-border-hover),
+    var(--tui-shadow-medium-hover);
+}
+
+.reservation:hover {
+  box-shadow: var(--tui-shadow-medium-hover);
+}
+
+.space__media {
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: var(--univgo-space-s);
+  border-radius: var(--tui-radius-m);
+  // Stands in for the photograph until real images exist, built from brand tokens so it reads as a
+  // deliberate surface rather than a broken image.
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
+    var(--univgo-brand-surface);
+  aspect-ratio: 16 / 9;
+}
+
+// The status pill sits on the crimson media, so Taiga's translucent status background leaves it
+// unreadable. It gets a solid fill in the status colour with white text and icon — and since the
+// surface underneath is fixed across themes, these colours are fixed too.
+.space__media [tuiBadge] {
+  color: var(--univgo-on-status-fixed);
+
+  &[data-appearance='positive'] {
+    background: var(--univgo-status-positive-fixed);
+  }
+
+  &[data-appearance='negative'] {
+    background: var(--univgo-status-negative-fixed);
+  }
+
+  // Taiga colours badge icons through the appearance; the pill is one solid colour now.
+  &::before,
+  &::after {
+    color: currentcolor;
+  }
+}
+
+.space__mark {
+  position: absolute;
+  inset-block-end: var(--univgo-space-m);
+  inset-inline-start: var(--univgo-space-m);
+  color: var(--univgo-on-brand-surface);
+  font-size: 2rem;
+  opacity: 0.9;
+}
+
+.space__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+.space__name {
+  margin: 0;
+  font: var(--tui-typography-ui-l);
+}
+
+.space__location {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+.space__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.space [tuiButton] {
+  margin-block-start: auto;
+}

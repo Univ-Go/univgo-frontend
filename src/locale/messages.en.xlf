@@ -170,6 +170,126 @@
         <source>Idioma</source>
         <target>Language</target>
       </trans-unit>
+      <trans-unit id="home.pageTitle" datatype="html">
+        <source>Inicio</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id="home.pageDescription" datatype="html">
+        <source>Consulta tu próxima reserva y los espacios destacados del campus.</source>
+        <target>Check your next booking and the featured spaces on campus.</target>
+      </trans-unit>
+      <trans-unit id="home.greetingLead" datatype="html">
+        <source>Tus espacios favoritos están libres hoy. Elige uno y resérvalo en menos de un minuto.</source>
+        <target>Your favourite spaces are free today. Pick one and book it in under a minute.</target>
+      </trans-unit>
+      <trans-unit id="home.newReservation" datatype="html">
+        <source>Nueva reserva</source>
+        <target>New booking</target>
+      </trans-unit>
+      <trans-unit id="home.nextReservation" datatype="html">
+        <source>Próxima reserva</source>
+        <target>Next booking</target>
+      </trans-unit>
+      <trans-unit id="home.statusConfirmed" datatype="html">
+        <source>Confirmada</source>
+        <target>Confirmed</target>
+      </trans-unit>
+      <trans-unit id="home.factTime" datatype="html">
+        <source>Horario</source>
+        <target>Time</target>
+      </trans-unit>
+      <trans-unit id="home.factDate" datatype="html">
+        <source>Fecha</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="home.viewDetails" datatype="html">
+        <source>Ver detalles</source>
+        <target>View details</target>
+      </trans-unit>
+      <trans-unit id="home.featuredSpaces" datatype="html">
+        <source>Espacios destacados</source>
+        <target>Featured spaces</target>
+      </trans-unit>
+      <trans-unit id="home.viewAll" datatype="html">
+        <source>Ver todos</source>
+        <target>View all</target>
+      </trans-unit>
+      <trans-unit id="home.spaceAvailable" datatype="html">
+        <source>Disponible</source>
+        <target>Available</target>
+      </trans-unit>
+      <trans-unit id="home.spaceBusy" datatype="html">
+        <source>Ocupado</source>
+        <target>Busy</target>
+      </trans-unit>
+      <trans-unit id="home.book" datatype="html">
+        <source>Reservar</source>
+        <target>Book</target>
+      </trans-unit>
+      <trans-unit id="home.viewSchedule" datatype="html">
+        <source>Ver horarios</source>
+        <target>View schedule</target>
+      </trans-unit>
+      <trans-unit id="footer.rights" datatype="html">
+        <source>Todos los derechos reservados.</source>
+        <target>All rights reserved.</target>
+      </trans-unit>
+      <trans-unit id="footer.linksLabel" datatype="html">
+        <source>Enlaces legales</source>
+        <target>Legal links</target>
+      </trans-unit>
+      <trans-unit id="footer.privacy" datatype="html">
+        <source>Privacidad</source>
+        <target>Privacy</target>
+      </trans-unit>
+      <trans-unit id="footer.support" datatype="html">
+        <source>Soporte</source>
+        <target>Support</target>
+      </trans-unit>
+      <trans-unit id="footer.campus" datatype="html">
+        <source>Campus</source>
+        <target>Campus</target>
+      </trans-unit>
+      <trans-unit id="footer.directory" datatype="html">
+        <source>Directorio</source>
+        <target>Directory</target>
+      </trans-unit>
+      <trans-unit id="navigation.mainLabel" datatype="html">
+        <source>Navegación principal</source>
+        <target>Main navigation</target>
+      </trans-unit>
+      <trans-unit id="navigation.home" datatype="html">
+        <source>Inicio</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id="navigation.reservations" datatype="html">
+        <source>Reservas</source>
+        <target>Bookings</target>
+      </trans-unit>
+      <trans-unit id="navigation.notifications" datatype="html">
+        <source>Notificaciones</source>
+        <target>Notifications</target>
+      </trans-unit>
+      <trans-unit id="navigation.profile" datatype="html">
+        <source>Tu perfil</source>
+        <target>Your profile</target>
+      </trans-unit>
+      <trans-unit id="layout.skipToContent" datatype="html">
+        <source>Saltar al contenido</source>
+        <target>Skip to content</target>
+      </trans-unit>
+      <trans-unit id="home.greeting" datatype="html">
+        <source>Hola, <x id="INTERPOLATION" equiv-text="{{ userName }}"/></source>
+        <target>Hi, <x id="INTERPOLATION" equiv-text="{{ userName }}"/></target>
+      </trans-unit>
+      <trans-unit id="navigation.accountMenu" datatype="html">
+        <source>Tu cuenta</source>
+        <target>Your account</target>
+      </trans-unit>
+      <trans-unit id="navigation.signOut" datatype="html">
+        <source>Cerrar sesión</source>
+        <target>Sign out</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

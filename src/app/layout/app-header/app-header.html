@@ -1,0 +1,74 @@
+<header class="header">
+  <a class="logo" routerLink="/">
+    <img src="images/UnivGo_logo.png" alt="UnivGo" width="1743" height="568" />
+  </a>
+
+  <nav class="nav" i18n-aria-label="@@navigation.mainLabel" aria-label="Navegación principal">
+    <a
+      tuiLink
+      routerLink="/"
+      routerLinkActive="nav__item--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="nav__item"
+      i18n="@@navigation.home"
+      >Inicio</a
+    >
+    <button tuiLink type="button" class="nav__item" i18n="@@navigation.reservations">
+      Reservas
+    </button>
+  </nav>
+
+  <div class="actions">
+    <!-- Notifications stay in the bar at every size: a pending alert nobody can see is pointless. -->
+    <tui-badged-content>
+      <tui-badge-notification tuiSlot="top" size="s" />
+      <button
+        tuiIconButton
+        type="button"
+        appearance="flat"
+        size="s"
+        iconStart="@tui.bell"
+        i18n-aria-label="@@navigation.notifications"
+        aria-label="Notificaciones"
+      ></button>
+    </tui-badged-content>
+
+    @if (!compact()) {
+      <app-language-selector />
+      <app-theme-toggle />
+    }
+
+    <button
+      tuiAvatar
+      type="button"
+      size="m"
+      appearance="primary"
+      class="profile"
+      i18n-aria-label="@@navigation.accountMenu"
+      aria-label="Tu cuenta"
+      [tuiDropdown]="accountMenu"
+      [(tuiDropdownOpen)]="menuOpen"
+    >
+      {{ initials }}
+    </button>
+  </div>
+</header>
+
+<ng-template #accountMenu>
+  <tui-data-list>
+    @if (compact()) {
+      <div class="menu__utilities">
+        <app-language-selector />
+        <app-theme-toggle />
+      </div>
+    }
+
+    <button tuiOption type="button" iconStart="@tui.user" i18n="@@navigation.profile">
+      Tu perfil
+    </button>
+
+    <button tuiOption type="button" iconStart="@tui.log-out" i18n="@@navigation.signOut">
+      Cerrar sesión
+    </button>
+  </tui-data-list>
+</ng-template>

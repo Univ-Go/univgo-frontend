@@ -1,0 +1,109 @@
+:host {
+  display: block;
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  // Its own compositing layer: without it the browser re-rasterises the bar on every frame and
+  // snaps it to device pixels a step behind the page, which reads as a one-pixel shiver.
+  will-change: transform;
+}
+
+// Three tracks with equal outer columns: the nav is centred on the viewport, not on the space the
+// brand and the account controls happen to leave. `margin: auto` cannot do that.
+// The bar is sized by its content — a fixed height is what made it overflow.
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  padding: var(--univgo-space-s) var(--univgo-layout-gutter);
+  border-block-end: 1px solid var(--tui-border-normal);
+  background: var(--tui-background-elevation-1);
+  // A sticky element and the viewport edge round to different device pixels while scrolling, and
+  // the sub-pixel seam lets the content behind flicker through. Painting the strip above the bar in
+  // its own background leaves nothing to show through.
+  box-shadow: 0 -1rem 0 var(--tui-background-elevation-1);
+}
+
+.logo {
+  display: flex;
+  justify-self: start;
+  align-items: center;
+}
+
+.logo img {
+  display: block;
+  block-size: 2.25rem;
+  inline-size: auto;
+  padding: var(--univgo-space-xs) var(--univgo-space-s);
+  border-radius: var(--tui-radius-s);
+  background: var(--univgo-logo-plate);
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--univgo-space-xl);
+}
+
+// Nested to outrank `[tuiLink]`, which sets its own colour and left the active item unreadable.
+.nav {
+  .nav__item {
+    color: var(--tui-text-secondary);
+    font: var(--tui-typography-ui-s);
+  }
+
+  // Not colour alone: the active item is also underlined, so it reads without seeing hue.
+  .nav__item--active {
+    color: var(--tui-text-primary);
+    box-shadow: inset 0 -2px 0 var(--tui-background-accent-1);
+  }
+}
+
+.actions {
+  display: flex;
+  justify-self: end;
+  align-items: center;
+  gap: var(--univgo-space-s);
+}
+
+// The account is the anchor of the right-hand side: larger than the utilities beside it and ringed,
+// so it reads as the primary control rather than one more icon.
+.profile {
+  cursor: pointer;
+  box-shadow:
+    0 0 0 2px var(--tui-background-elevation-1),
+    0 0 0 4px var(--tui-background-accent-1);
+  transition: box-shadow var(--tui-duration);
+
+  &:hover {
+    box-shadow:
+      0 0 0 2px var(--tui-background-elevation-1),
+      0 0 0 4px var(--tui-background-accent-1-hover);
+  }
+}
+
+.menu__utilities {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  padding: var(--univgo-space-s) var(--univgo-space-m);
+  border-block-end: 1px solid var(--tui-border-normal);
+}
+
+@media (max-width: 47.99rem) {
+  .header {
+    gap: var(--univgo-space-s);
+    padding-inline: var(--univgo-space-l);
+  }
+
+  .logo img {
+    block-size: 1.75rem;
+  }
+
+  .nav {
+    gap: var(--univgo-space-l);
+  }
+}

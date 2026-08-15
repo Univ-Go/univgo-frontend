@@ -1,40 +1,286 @@
-// The brand is defined once. Retheming for another institution means changing this scale:
-// no component or stylesheet references a colour directly.
-$brand-50: #eef4ff;
-$brand-100: #dbe6fe;
-$brand-200: #bfd3fe;
-$brand-300: #93b4fd;
-$brand-400: #608cfa;
-$brand-500: #3b65f6;
-$brand-600: #2544eb;
-$brand-700: #1d33d8;
-$brand-800: #1e2caf;
-$brand-900: #1e2b8a;
-$brand-950: #171d54;
+// Single source of truth for the brand. Retheming for another institution means changing the
+// scales and the font face below: no component or stylesheet references a colour directly.
+
+// Teachers (Google Fonts, SIL Open Font License 1.1) — self-hosted variable font, latin subsets.
+// Self-hosting keeps the critical path free of third-party connections and of user IP leakage.
+@font-face {
+  font-family: 'Teachers';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('fonts/teachers-latin.woff2') format('woff2');
+  unicode-range:
+    u+0000-00ff, u+0131, u+0152-0153, u+02bb-02bc, u+02c6, u+02da, u+02dc, u+0304, u+0308, u+0329,
+    u+2000-206f, u+20ac, u+2122, u+2191, u+2193, u+2212, u+2215, u+feff, u+fffd;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('fonts/teachers-latin-ext.woff2') format('woff2');
+  unicode-range:
+    u+0100-02ba, u+02bd-02c5, u+02c7-02cc, u+02ce-02d7, u+02dd-02ff, u+0304, u+0308, u+0329,
+    u+1d00-1dbf, u+1e00-1e9f, u+1ef2-1eff, u+2020, u+20a0-20ab, u+20ad-20c0, u+2113, u+2c60-2c7f,
+    u+a720-a7ff;
+}
+
+// Brand crimson. 800 is the institutional red that drives primary actions.
+$brand-50: #fff1f0;
+$brand-100: #ffdad7;
+$brand-200: #ffb3af;
+$brand-300: #ff817d;
+$brand-400: #e8484f;
+$brand-500: #c8323a;
+$brand-600: #ab3336;
+$brand-700: #8e101c;
+$brand-800: #7f0013;
+$brand-900: #560009;
+$brand-950: #410005;
+
+// Secondary accent. Carries "available / confirmed / progress" so success never competes with the
+// brand red, which would otherwise make an error and a confirmation look alike.
+$teal-50: #e6f7f5;
+$teal-100: #a3f1ea;
+$teal-200: #87d4ce;
+$teal-300: #67b4ae;
+$teal-400: #3d918a;
+$teal-500: #1c6f69;
+$teal-600: #00504c;
+$teal-700: #004441;
+$teal-800: #003a37;
+$teal-900: #002c2a;
+$teal-950: #00201e;
+
+// Warm neutrals: the greys carry a trace of the brand hue so surfaces and borders sit with the red
+// instead of next to it.
+$neutral-0: #ffffff;
+$neutral-25: #f8f9fa;
+$neutral-50: #f3f4f5;
+$neutral-100: #edeeef;
+$neutral-200: #e1e3e4;
+$neutral-500: #8d706e;
+$neutral-600: #7a5f5d;
+$neutral-700: #59413f;
+$neutral-800: #2e3132;
+$neutral-900: #191c1d;
+$neutral-inverse: #f0f1f2;
+
+// Error leans orange on purpose: a pure red would be indistinguishable from the brand accent.
+$danger-light: #cc3300;
+$danger-light-strong: #a32900;
+$danger-dark: #ff8a65;
+
+// Dark enough to clear 4.5:1 as text on the light surfaces, unlike a pure amber.
+$warning-light: #9a5b00;
+$warning-dark: #ffc773;
+
+$info-light: #2563c9;
+$info-dark: #8ab4f8;
+
+$shadow-tint: 65, 0, 5;
 
 @mixin brand-light {
-  --tui-background-accent-1: #{$brand-600};
-  --tui-background-accent-1-hover: #{$brand-500};
-  --tui-background-accent-1-pressed: #{$brand-800};
-  --tui-text-primary-on-accent-1: #ffffff;
-  --tui-text-action: #{$brand-700};
-  --tui-text-action-hover: #{$brand-600};
+  --tui-background-base: #{$neutral-25};
+  --tui-background-base-alt: #{$neutral-100};
+  --tui-background-elevation-1: #{$neutral-0};
+  --tui-background-elevation-2: #{$neutral-0};
+  --tui-background-elevation-3: #{$neutral-0};
+
+  --tui-background-neutral-1: rgba(89, 65, 63, 0.06);
+  --tui-background-neutral-1-hover: rgba(89, 65, 63, 0.1);
+  --tui-background-neutral-1-pressed: rgba(89, 65, 63, 0.14);
+  --tui-background-neutral-2: rgba(89, 65, 63, 0.1);
+  --tui-background-neutral-2-hover: rgba(89, 65, 63, 0.14);
+  --tui-background-neutral-2-pressed: rgba(89, 65, 63, 0.18);
+
+  --tui-background-accent-1: #{$brand-800};
+  --tui-background-accent-1-hover: #{$brand-700};
+  --tui-background-accent-1-pressed: #{$brand-900};
+  --tui-background-accent-2: #{$teal-700};
+  --tui-background-accent-2-hover: #{$teal-600};
+  --tui-background-accent-2-pressed: #{$teal-900};
+  --tui-background-accent-opposite: #{$neutral-900};
+  --tui-background-accent-opposite-hover: #{$neutral-800};
+  --tui-background-accent-opposite-pressed: #{$neutral-600};
+
+  --tui-text-primary: #{$neutral-900};
+  --tui-text-secondary: #{$neutral-700};
+  --tui-text-tertiary: #{$neutral-600};
+  --tui-text-primary-on-accent-1: #{$neutral-0};
+  --tui-text-primary-on-accent-2: #{$neutral-0};
+  --tui-text-action: #{$brand-800};
+  --tui-text-action-hover: #{$brand-700};
+  --tui-text-positive: #{$teal-600};
+  --tui-text-positive-hover: #{$teal-800};
+  --tui-text-negative: #{$danger-light};
+  --tui-text-negative-hover: #{$danger-light-strong};
+
+  --tui-border-normal: rgba(89, 65, 63, 0.18);
+  --tui-border-hover: rgba(89, 65, 63, 0.32);
+  // Neutral on purpose: a red focus ring disappears on a red button, where the ring matters most.
+  --tui-border-focus: rgba(25, 28, 29, 0.72);
+  // The hairlines above are decorative separators and stay below 3:1, as in Taiga's own defaults.
+  // A control whose boundary is its only affordance uses this instead: 4.26:1 on the page and
+  // 4.49:1 on a card, so WCAG 1.4.11 holds on both surfaces.
+  --univgo-border-control: #{$neutral-500};
+
+  --tui-status-negative: #{$danger-light};
+  --tui-status-negative-pale: rgba(204, 51, 0, 0.1);
+  --tui-status-negative-pale-hover: rgba(204, 51, 0, 0.18);
+  --tui-status-positive: #{$teal-600};
+  --tui-status-positive-pale: rgba(0, 80, 76, 0.1);
+  --tui-status-positive-pale-hover: rgba(0, 80, 76, 0.18);
+  --tui-status-warning: #{$warning-light};
+  --tui-status-warning-pale: rgba(154, 91, 0, 0.12);
+  --tui-status-warning-pale-hover: rgba(154, 91, 0, 0.2);
+  --tui-status-info: #{$info-light};
+  --tui-status-info-pale: rgba(37, 99, 201, 0.1);
+  --tui-status-info-pale-hover: rgba(37, 99, 201, 0.18);
+  --tui-status-neutral: #{$neutral-600};
+
+  --tui-service-selection-background: rgba(127, 0, 19, 0.12);
+  --tui-service-backdrop: rgba(25, 28, 29, 0.72);
+
+  --tui-shadow-small: 0 0.125rem 0.625rem rgba(#{$shadow-tint}, 0.1);
+  --tui-shadow-small-hover: 0 0.5rem 1.5rem rgba(#{$shadow-tint}, 0.14);
+  --tui-shadow-medium: 0 0.375rem 1.5rem rgba(#{$shadow-tint}, 0.12);
+  --tui-shadow-medium-hover: 0 1rem 2.5rem rgba(#{$shadow-tint}, 0.16);
+  --tui-shadow-popup: 0 1rem 3rem rgba(#{$shadow-tint}, 0.2);
 }
 
 @mixin brand-dark {
-  --tui-background-accent-1: #{$brand-400};
-  --tui-background-accent-1-hover: #{$brand-300};
-  --tui-background-accent-1-pressed: #{$brand-500};
+  --tui-background-base: #{$neutral-900};
+  --tui-background-base-alt: #212526;
+  --tui-background-elevation-1: #212526;
+  --tui-background-elevation-2: #272b2c;
+  --tui-background-elevation-3: #{$neutral-800};
+
+  --tui-background-neutral-1: rgba(240, 241, 242, 0.08);
+  --tui-background-neutral-1-hover: rgba(240, 241, 242, 0.14);
+  --tui-background-neutral-1-pressed: rgba(240, 241, 242, 0.2);
+  --tui-background-neutral-2: rgba(240, 241, 242, 0.16);
+  --tui-background-neutral-2-hover: rgba(240, 241, 242, 0.24);
+  --tui-background-neutral-2-pressed: rgba(240, 241, 242, 0.32);
+
+  --tui-background-accent-1: #{$brand-200};
+  --tui-background-accent-1-hover: #{$brand-100};
+  --tui-background-accent-1-pressed: #{$brand-300};
+  --tui-background-accent-2: #{$teal-200};
+  --tui-background-accent-2-hover: #{$teal-100};
+  --tui-background-accent-2-pressed: #{$teal-300};
+  --tui-background-accent-opposite: #{$neutral-inverse};
+  --tui-background-accent-opposite-hover: #{$neutral-200};
+  --tui-background-accent-opposite-pressed: #{$neutral-500};
+
+  --tui-text-primary: #{$neutral-inverse};
+  --tui-text-secondary: rgba(240, 241, 242, 0.72);
+  --tui-text-tertiary: rgba(240, 241, 242, 0.56);
   --tui-text-primary-on-accent-1: #{$brand-950};
-  --tui-text-action: #{$brand-300};
-  --tui-text-action-hover: #{$brand-200};
+  --tui-text-primary-on-accent-2: #{$teal-950};
+  --tui-text-action: #{$brand-200};
+  --tui-text-action-hover: #{$brand-100};
+  --tui-text-positive: #{$teal-200};
+  --tui-text-positive-hover: #{$teal-100};
+  --tui-text-negative: #{$danger-dark};
+  --tui-text-negative-hover: #ffab91;
+
+  --tui-border-normal: rgba(240, 241, 242, 0.16);
+  --tui-border-hover: rgba(240, 241, 242, 0.32);
+  --tui-border-focus: rgba(240, 241, 242, 0.72);
+  --univgo-border-control: rgba(240, 241, 242, 0.48);
+
+  --tui-status-negative: #{$danger-dark};
+  --tui-status-negative-pale: rgba(255, 138, 101, 0.24);
+  --tui-status-negative-pale-hover: rgba(255, 138, 101, 0.32);
+  --tui-status-positive: #{$teal-200};
+  --tui-status-positive-pale: rgba(135, 212, 206, 0.24);
+  --tui-status-positive-pale-hover: rgba(135, 212, 206, 0.32);
+  --tui-status-warning: #{$warning-dark};
+  --tui-status-warning-pale: rgba(255, 199, 115, 0.24);
+  --tui-status-warning-pale-hover: rgba(255, 199, 115, 0.32);
+  --tui-status-info: #{$info-dark};
+  --tui-status-info-pale: rgba(138, 180, 248, 0.24);
+  --tui-status-info-pale-hover: rgba(138, 180, 248, 0.32);
+  --tui-status-neutral: #{$neutral-500};
+
+  --tui-service-selection-background: rgba(255, 179, 175, 0.24);
+  --tui-service-backdrop: rgba(0, 0, 0, 0.8);
+
+  --tui-shadow-small: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.4);
+  --tui-shadow-small-hover: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.48);
+  --tui-shadow-medium: 0 0.375rem 1.5rem rgba(0, 0, 0, 0.44);
+  --tui-shadow-medium-hover: 0 1rem 2.5rem rgba(0, 0, 0, 0.52);
+  --tui-shadow-popup: 0 1rem 3rem rgba(0, 0, 0, 0.56);
 }
 
 :root {
-  // System stack on purpose: no webfont request, so text paints immediately on mobile.
   --tui-typography-family-text:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+    'Teachers', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue',
+    arial, sans-serif;
   --tui-typography-family-display: var(--tui-typography-family-text);
+
+  // Headings fluid between mobile and desktop so long department names do not break awkwardly.
+  // `--tui-font-offset` is kept in the bounds: it is how Taiga scales type for accessibility.
+  --tui-typography-heading-h1: 700
+    clamp(calc(var(--tui-font-offset) + 2.25rem), 6vw, calc(var(--tui-font-offset) + 3rem)) / 1.16
+    var(--tui-typography-family-display);
+  --tui-typography-heading-h2: 700
+    clamp(calc(var(--tui-font-offset) + 2rem), 5vw, calc(var(--tui-font-offset) + 2.5rem)) / 1.2
+    var(--tui-typography-family-display);
+  --tui-typography-heading-h3: 700
+    clamp(calc(var(--tui-font-offset) + 1.75rem), 4vw, calc(var(--tui-font-offset) + 2rem)) / 1.25
+    var(--tui-typography-family-display);
+  --tui-typography-heading-h4: 700 calc(var(--tui-font-offset) + 1.75rem) / calc(36 / 28)
+    var(--tui-typography-family-display);
+  --tui-typography-heading-h5: 700 calc(var(--tui-font-offset) + 1.5rem) / calc(32 / 24)
+    var(--tui-typography-family-display);
+  --tui-typography-heading-h6: 600 calc(var(--tui-font-offset) + 1.25rem) / calc(28 / 20)
+    var(--tui-typography-family-display);
+
+  --tui-typography-body-l: normal calc(var(--tui-font-offset) + 1.125rem) / calc(28 / 18)
+    var(--tui-typography-family-text);
+
+  // Interactive labels (buttons, tabs, chips) carry medium weight for legibility at small sizes.
+  --tui-typography-ui-m: 500 calc(var(--tui-font-offset) + 1rem) / calc(20 / 16)
+    var(--tui-typography-family-text);
+  --tui-typography-ui-s: 500 calc(var(--tui-font-offset) + 0.875rem) / calc(20 / 14)
+    var(--tui-typography-family-text);
+  --tui-typography-ui-xs: 600 calc(var(--tui-font-offset) + 0.75rem) / calc(16 / 12)
+    var(--tui-typography-family-text);
+
+  // Rounded corners are a brand identifier: buttons 8px, cards 16px, sheets 24px.
+  --tui-radius-xs: 0.25rem;
+  --tui-radius-s: 0.5rem;
+  --tui-radius-m: 0.75rem;
+  --tui-radius-l: 1rem;
+  --tui-radius-xl: 1.5rem;
+
+  // Every interactive height is a multiple of the 8px base unit and clears the 44px touch target.
+  --tui-height-m: 3rem;
+
+  // Product-level scales Taiga does not publish. Everything visual that is not a Taiga token
+  // lives here, never inline in a component.
+  --univgo-space-xs: 0.25rem;
+  --univgo-space-s: 0.5rem;
+  --univgo-space-m: 0.75rem;
+  --univgo-space-l: 1rem;
+  --univgo-space-xl: 1.5rem;
+  --univgo-space-2xl: 2.5rem;
+  --univgo-space-3xl: 4rem;
+
+  --univgo-content-max-width: 80rem;
+  --univgo-layout-gutter: 1.25rem;
+
+  --univgo-letter-spacing-tight: -0.02em;
+  --univgo-letter-spacing-wide: 0.01em;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --univgo-layout-gutter: 3rem;
+  }
 }
 
 // Mirrors Taiga's own split between screen and print: printing always uses the light theme, and

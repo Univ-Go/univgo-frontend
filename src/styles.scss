@@ -13,6 +13,45 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+// Taiga ships the typography scale as variables but does not style semantic headings with it.
+// Binding them here keeps templates on plain h1..h6 — correct outline for screen readers and SEO,
+// no utility class needed to look right.
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+h1 {
+  font: var(--tui-typography-heading-h1);
+  letter-spacing: var(--univgo-letter-spacing-tight);
+}
+
+h2 {
+  font: var(--tui-typography-heading-h2);
+  letter-spacing: var(--univgo-letter-spacing-tight);
+}
+
+h3 {
+  font: var(--tui-typography-heading-h3);
+  letter-spacing: var(--univgo-letter-spacing-tight);
+}
+
+h4 {
+  font: var(--tui-typography-heading-h4);
+}
+
+h5 {
+  font: var(--tui-typography-heading-h5);
+}
+
+h6 {
+  font: var(--tui-typography-heading-h6);
+}
+
 // Taiga draws focus for its own components; this covers the product's native elements.
 :focus-visible {
   outline: var(--tui-stroke-width) solid var(--tui-border-focus);

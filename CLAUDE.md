@@ -192,9 +192,9 @@ No hay que construir nada de esto a mano: usar lo que trae la librería.
 
 ### Paleta de marca
 
-Decidida y reutilizable: escala 50→950 con primario `#2544eb`. Está en el historial, en
-`src/app/core/theme/univgo-theme.preset.ts` del commit `19eff2a`. Los valores sirven; el formato hay
-que traducirlo a variables de Taiga.
+Decidida y reutilizable: escala 50→950 con primario `#2544eb`. Vive en
+`src/app/core/theme/_univgo-theme.scss`, traducida a las variables de acento y de acción de Taiga
+para los temas claro y oscuro. Es el punto único que hay que tocar para retematizar.
 
 ---
 
@@ -291,9 +291,9 @@ usuario usan el **sistema de alertas de Taiga UI** como mecanismo estándar, sie
 `NotificationService`. No usar tags, mensajes fijos ni bloques persistentes cuando una alerta
 transitoria sea suficiente.
 
-`NotificationService` (`core/notifications/`) sobrevive a la migración: su API pública —`success`,
-`info`, `warn`, `error(AppError)`— no cambia. Sólo se reimplementa por dentro para hablar con Taiga
-en vez de con `MessageService`. Sus tests siguen siendo válidos.
+`NotificationService` (`core/notifications/`) sobrevivió a la migración: su API pública —`success`,
+`info`, `warn`, `error(AppError)`— no cambió. Por dentro habla con `TuiNotificationService`; sus
+tests comprueban el mismo comportamiento contra la nueva librería.
 
 Cuando una situación requiera **acción explícita del usuario para continuar o confirmar**, usar un
 **Dialog de Taiga UI**, no una alerta transitoria.
@@ -394,9 +394,11 @@ mapeos. Es lo único exigible para dar una funcionalidad por terminada.
 integración entre capas y pruebas de componente sistemáticas. Se retomarán cuando el flujo de
 reservas esté estable; el candidato natural para e2e es ese flujo.
 
-Los tests que **ya existen** se conservan y deben seguir pasando, incluidos los de componente
-(`app-header.spec.ts`) y el de integración de metadatos (`page-metadata.strategy.spec.ts`). Están
-escritos, pasan y cuestan poco: borrarlos sería perder trabajo, no reducir alcance.
+Los tests que **ya existen** se conservan y deben seguir pasando, incluido el de integración de
+metadatos (`page-metadata.strategy.spec.ts`). Están escritos, pasan y cuestan poco: borrarlos sería
+perder trabajo, no reducir alcance. `app-header.spec.ts` se fue con su componente al retirar las
+vistas del bootstrap; sus tres comprobaciones —nombre de institución desde `APP_CONFIG`, landmark
+`banner`, navegación con nombre accesible— son el criterio a recuperar cuando exista el header real.
 
 Los tests validan **comportamiento y resultados**, no detalles internos que puedan cambiar sin
 afectar el comportamiento esperado. **No crear tests artificiales sólo para subir cobertura.** Una
@@ -453,10 +455,10 @@ El rendimiento es un requisito técnico desde el inicio. Vigilar: tamaño de bun
 introducidas, JavaScript innecesario, tiempo de carga inicial, imágenes y recursos pesados,
 renderizado innecesario, operaciones costosas en la UI, rendimiento en móvil y Core Web Vitals.
 
-Budget en `angular.json`: **750 kB warning / 900 kB error** sobre el bundle inicial. ⚠️ Está
-calibrado sobre la línea base de PrimeNG (~691 kB en crudo, ~159 kB transferidos). **Hay que
-remedirlo con Taiga UI y ajustarlo**, no heredarlo a ciegas: un budget que nunca se acerca al límite
-no detecta regresiones.
+Budget en `angular.json`: **500 kB warning / 650 kB error** sobre el bundle inicial. ⚠️ Calibrado
+sobre la línea base de Taiga **sin ninguna vista** (~424 kB en crudo, ~100 kB transferidos), así que
+el margen es headroom para construirlas, no una medida de nada. **Remedir y ajustar** cuando el
+flujo de reservas exista: un budget que nunca se acerca al límite no detecta regresiones.
 
 No introducir dependencias pesadas para problemas que Angular, Taiga UI o las capacidades existentes
 ya resuelven. La optimización se basa en mediciones, no en microoptimizaciones prematuras.
@@ -634,7 +636,8 @@ Contexto que no se deduce del código y conviene no volver a descubrir.
 ### Stack
 
 Angular 22.1.x · Taiga UI 5.19.0 · SCSS · TypeScript 6.0 · Vitest 4 (jsdom) ·
-ESLint 9 + angular-eslint 22. **Sin Tailwind.**
+ESLint 9 + angular-eslint 22. **Sin Tailwind.** `less` está sólo como dependencia de desarrollo,
+para compilar el fichero de tema que distribuye Taiga; los estilos propios se escriben en SCSS.
 
 Compatibilidad verificada: `@taiga-ui/core` 5.19.0 declara `@angular/core >=19.0.0`, así que
 Angular 22 entra sin forzar peers.
@@ -690,48 +693,61 @@ No reintroducir PrimeNG sin resolver primero la licencia.
 
 ### Estado de la migración a Taiga UI
 
-> ⚠️ **Las vistas actuales son desechables.** `home-page`, `not-found-page`, `app-header` y
-> `app-footer` se crearon como prueba mínima durante el bootstrap. **Se van a rehacer desde cero**
-> con la estructura y los colores reales. No inviertas esfuerzo en portarlas, adaptarlas ni
-> conservar su maquetación: bórralas y parte de la estructura real. Lo que sí se conserva es el
-> marcado semántico como criterio (landmarks, jerarquía de encabezados, skip link, `aria-label`),
-> no el HTML concreto.
+**La migración de infraestructura está hecha. Falta construir las vistas.** El commit `19eff2a` es
+el último estado con PrimeNG funcionando, por si hace falta consultar cómo estaba resuelto algo.
 
-El commit `19eff2a` es el último estado con PrimeNG funcionando, por si hace falta consultar cómo
-estaba resuelto algo. Pendiente:
+Se eliminaron las vistas desechables del bootstrap (`home-page`, `not-found-page`, `app-header`,
+`app-footer` y `main-layout`, junto con `app-header.spec.ts`), así que **`app.routes.ts` está vacío
+y la aplicación arranca sin ninguna página**. Ese es el punto de partida esperado: las vistas
+definitivas se construyen desde cero. Lo que se conserva como criterio, no como HTML, es el marcado
+semántico: landmarks, jerarquía de encabezados, skip link y `aria-label`.
 
-1. Desinstalar `primeng`, `@primeuix/themes`, `primeicons`, `tailwindcss-primeui`, `tailwindcss`,
-   `@tailwindcss/postcss` y `postcss`. Borrar `.postcssrc.json`. Instalar los paquetes de Taiga.
-2. Rehacer `src/styles.css` como SCSS con el mecanismo de tematización de Taiga (§5): sobrescritura
-   de variables de paleta para claro y oscuro, partiendo de los valores de marca.
-3. Enlazar el modo oscuro con `TUI_DARK_MODE` en lugar de `[data-theme="dark"]`.
-4. Reimplementar por dentro `NotificationService` contra las alertas de Taiga, conservando su API.
-5. Sustituir `core/i18n/primeng-translation.ts` por la configuración de idioma de `@taiga-ui/i18n`.
-6. Construir las vistas reales desde cero.
-7. Revisar el stub de `matchMedia` en `src/test-setup.ts`: existe por los breakpoints de PrimeNG.
-   Puede seguir haciendo falta para Taiga, o sobrar. Comprobar antes de borrarlo.
-8. Recalibrar el budget del bundle con la nueva línea base. La de PrimeNG era ~691 kB en crudo /
-   ~159 kB transferidos, con budget 750 kB warning / 900 kB error. **Medir y ajustar, no heredar.**
+Cómo quedó montada la librería, que es lo que no conviene volver a deducir:
 
-Lo que **no** cambia y no hay que rehacer: arquitectura y capas, `AppError` con su mapeo y sus
-mensajes, `Logger`, `APP_CONFIG`, `PageMetadataStrategy`, la configuración de i18n y sus 40 cadenas
-es/en, los valores de la paleta de marca, la configuración de pnpm y las reglas de calidad.
+- **Providers.** `provideTaiga()` en `app.config.ts`. No es opcional: aporta `TUI_OPTIONS` —sin él
+  la aplicación no arranca—, registra los plugins de evento que necesitan las plantillas de la
+  librería (`click.prevent`, `scroll.zoneless`…) y refleja `TUI_DARK_MODE` sobre el atributo
+  `tuiTheme` del `body`. **El modo oscuro no hay que cablearlo a mano.**
+- **`tui-root`.** `App` envuelve el `router-outlet` en `<tui-root>`, que aloja los portales
+  (alertas, diálogos, dropdowns). Fuera de él, esos componentes no tienen dónde renderizarse.
+- **Estilos.** `angular.json` carga `node_modules/@taiga-ui/styles/taiga-ui-theme.less` y después
+  `src/styles.scss`. El orden importa: nuestras sobrescrituras de marca sólo ganan si van detrás.
+  La marca vive en `src/app/core/theme/_univgo-theme.scss` y se aplica reproduciendo el reparto de
+  Taiga entre `@media screen` y `@media print`.
+- **`less` es dependencia de desarrollo** por ese `.less`: sin ella el build falla con "Unable to
+  load the less stylesheet preprocessor". No es una vuelta a LESS como lenguaje de estilos.
+- **Iconos.** Se copian de `node_modules/@taiga-ui/icons/src` a `assets/taiga-ui/icons`, que es
+  donde `TUI_ASSETS_PATH` los busca por defecto. Se copia el paquete entero y una vez por locale;
+  si algún día pesa, es un candidato claro a recortar.
+- **Idioma de la librería.** `provideTaigaLanguage()` elige el paquete de `@taiga-ui/i18n` según
+  `LOCALE_ID`, es decir, según el locale con el que se compiló la build. No puede desincronizarse.
+- **Alertas.** `NotificationService` habla con `TuiNotificationService`. En Taiga 5 no hay un
+  "alert service" único: `TuiNotificationService` (core) para avisos, `TuiToastService` y
+  `TuiPushService` (kit) para los otros formatos. Las apariencias son `info`, `positive`,
+  `negative`, `warning` y `neutral`.
+- **Budget recalibrado** a 500 kB warning / 650 kB error sobre una línea base **sin vistas** de
+  ~424 kB en crudo / ~100 kB transferidos. Hay que volver a medirlo cuando existan las vistas
+  reales: hoy el margen es headroom para construirlas, no una medida de nada.
 
-Las cadenas de i18n merecen una nota: las de `error.*` describen situaciones, no vistas, así que
-siguen sirviendo enteras. Las de `home.*` y `notFound.*` se revisarán cuando existan las vistas
-reales — sus keys pueden cambiar, pero el criterio de redacción (lenguaje natural, accionable, sin
-tecnicismos) se mantiene.
+Lo que **no** cambió: arquitectura y capas, `AppError` con su mapeo y sus mensajes, `Logger`,
+`APP_CONFIG`, `PageMetadataStrategy`, la configuración de i18n, los valores de la paleta de marca,
+la configuración de pnpm y las reglas de calidad.
+
+Las cadenas de i18n se podaron con las vistas: quedan las 19 de `error.*`, que describen
+situaciones y no vistas. Las de `home.*`, `notFound.*`, `navigation.*`, `layout.*` y `footer.*` se
+retiraron de `messages.en.xlf` junto con el código que las usaba — están en el historial si sirven
+de referencia, pero las vistas nuevas definen sus propias keys. El criterio de redacción (lenguaje
+natural, accionable, sin tecnicismos) se mantiene.
 
 ### Testing
 
 jsdom no implementa `window.matchMedia`. Está stubbeado en `src/test-setup.ts`, registrado vía
-`setupFiles` en `angular.json`. El stub se añadió porque los componentes con breakpoint de PrimeNG lo
-llamaban al inicializarse; comprobar si Taiga UI lo necesita también antes de retirarlo. jsdom puede
-carecer de otras APIs del navegador (`ResizeObserver`, `IntersectionObserver`) que Taiga sí use:
+`setupFiles` en `angular.json`. **Taiga lo necesita:** `TUI_BREAKPOINT` resuelve el layout actual a
+partir de él y `TUI_DARK_MODE` lee `prefers-color-scheme`. No lo retires. jsdom puede carecer de
+otras APIs del navegador (`ResizeObserver`, `IntersectionObserver`) que Taiga sí use:
 `src/test-setup.ts` es el sitio donde añadirlas.
 
 ### Pendiente de verificar
 
-La experiencia **mobile en un viewport real** no se ha comprobado todavía: descansa en utilidades
-mobile-first estándar y en el breakpoint propio del Menubar. Conviene revisarla antes de construir
-el flujo de reservas.
+La experiencia **mobile en un viewport real** no se ha comprobado todavía. No hay vistas que probar:
+toca contemplarla al construirlas, no después.

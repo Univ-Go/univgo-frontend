@@ -74,11 +74,13 @@ src/app/
   shared/        Level 2/3 components reused across features
 ```
 
-Only `presentation/` exists under the current features, because neither of them has business rules
-yet. Add the inner layers when a feature actually gains them — not in advance.
+Add the inner layers when a feature actually gains them — not in advance.
 
-The views that currently live there (`home`, `not-found`, and the header/footer shell) are throwaway
-bootstrap placeholders and will be rebuilt from scratch with the real structure. Don't port them.
+`features/` and `layout/` are **empty on purpose**: the throwaway bootstrap views (`home`,
+`not-found`, header, footer, main layout) were removed with PrimeNG, so `app.routes.ts` declares no
+routes yet and the application boots into the Taiga shell with nothing in it. The real views are
+built from scratch. What carries over is the semantic markup as a criterion — landmarks, heading
+hierarchy, skip link, `aria-label` — not the old HTML.
 
 ### Component levels
 
@@ -151,13 +153,26 @@ development and production. Its free Community tier explicitly excludes universi
 funded educational institutions, so this project did not qualify. That is the reason for the switch —
 do not reintroduce PrimeNG without resolving the licence first.
 
-Built-in library wording (mostly accessibility labels) must follow the user's language. Taiga ships
-these in `@taiga-ui/i18n` as language packs, so pick the pack and keep it in step with the build
-locale rather than translating them by hand.
+Built-in library wording (mostly accessibility labels) follows the user's language:
+`provideTaigaLanguage()` picks the `@taiga-ui/i18n` pack from `LOCALE_ID`, so it cannot drift from
+the locale the build was compiled with.
 
-**Migration is in progress.** Commit `19eff2a` is the last working PrimeNG state and serves as the
-reference for what to replicate. See `CLAUDE.md` §21 for the outstanding checklist — most importantly
-the colour-bridge decision, which should be settled before building views.
+Wiring worth knowing before you add a view:
+
+- `provideTaiga()` in `app.config.ts` is mandatory — it supplies `TUI_OPTIONS` (the app will not
+  bootstrap without it), registers the event plugins the library's own templates rely on, and
+  mirrors `TUI_DARK_MODE` onto the document's `tuiTheme` attribute. Dark mode needs no wiring.
+- `App` wraps the router outlet in `<tui-root>`, which hosts alerts, dialogs and dropdowns.
+- `angular.json` loads `@taiga-ui/styles/taiga-ui-theme.less` before `src/styles.scss`; brand
+  overrides live in `src/app/core/theme/_univgo-theme.scss` and only win because they come second.
+  `less` is a devDependency for that one file — the project's own styles are SCSS.
+- Icons are copied from `@taiga-ui/icons/src` to `assets/taiga-ui/icons`, where `TUI_ASSETS_PATH`
+  looks for them.
+- Alerts go through `NotificationService`, which wraps `TuiNotificationService`. Taiga 5 has no
+  single alert service: notifications live in core, toasts and pushes in kit.
+
+Commit `19eff2a` is the last working PrimeNG state, kept as a reference for how something used to be
+solved. See `CLAUDE.md` §21 for the full record.
 
 ## Quality gates
 
@@ -165,9 +180,9 @@ the colour-bridge decision, which should be settled before building views.
 - `pnpm test` — **unit tests only** for now. End-to-end, cross-layer integration and systematic
   component tests are deliberately out of scope until the booking flow settles. Existing component
   and integration specs are kept and must keep passing. Test behaviour, not implementation details.
-- `pnpm build` — enforces the bundle budget (750 kB warning / 900 kB error on the initial bundle).
-  The baseline behind those numbers was measured on PrimeNG; re-measure and recalibrate after the
-  Taiga UI migration.
+- `pnpm build` — enforces the bundle budget (500 kB warning / 650 kB error on the initial bundle).
+  Those numbers sit on a Taiga baseline measured **with no views at all** (~424 kB raw, ~100 kB
+  transferred), so the margin is headroom for building them. Re-measure once the booking flow exists.
 
 Security review (threat modelling, dependency auditing, input sanitisation) is out of scope for now
 and will be picked up before the application is exposed to real users. Three invariants stay in

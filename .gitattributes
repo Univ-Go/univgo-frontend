@@ -1,0 +1,8 @@
+# The repository stores LF and the working tree keeps LF, matching Prettier's output.
+# Without this, core.autocrlf on Windows rewrites checkouts to CRLF and every `pnpm format`
+# leaves dozens of files flagged as modified with no content change.
+* text=auto eol=lf
+
+# Never run line-ending conversion over binaries.
+*.woff2 binary
+*.ico binary

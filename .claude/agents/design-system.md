@@ -8,17 +8,30 @@ Eres el responsable del sistema de diseño de UnivGo.
 
 ## Cómo está montado el sistema de tokens
 
-- **El color se define una sola vez**, en `src/app/core/theme/univgo-theme.preset.ts`. PrimeNG emite
-  esa paleta como propiedades `--p-*` y `tailwindcss-primeui` las reexpone como utilidades de
-  Tailwind (`bg-primary`, `text-surface-600`, `border-surface-200`, …). Componentes de PrimeNG y
-  clases de utilidad resuelven siempre al mismo valor.
 - **Los tokens que no son color** (tipografía, radios, sombra, tamaños de layout, z-index) viven en el
   bloque `@theme` de `src/styles.css` y se consumen como `rounded-(--radius-card)`,
   `z-(--z-header)`, `max-w-(--container-content)`.
-- **Modo oscuro** con `[data-theme="dark"]`, sincronizado entre la config de PrimeNG y la variante
-  `dark` de Tailwind.
+- **Modo oscuro** con `[data-theme="dark"]` en el elemento raíz y la variante `dark` de Tailwind.
+- **El color** lo tematiza Taiga UI mediante variables `--tui-*`, y Tailwind expone utilidades. Ver
+  abajo: es un punto sensible.
 
-## Regla principal
+## ⚠️ La regla que más debes proteger: una sola fuente de verdad para el color
+
+El proyecto venía de PrimeNG, donde `tailwindcss-primeui` garantizaba automáticamente que los
+componentes y las clases utilitarias de Tailwind resolvieran al mismo valor. **Taiga UI no trae ese
+puente**, así que la coherencia ya no es automática: hay que mantenerla a propósito.
+
+Comprueba activamente que no se haya abierto una segunda fuente de color. Síntomas:
+
+- Un hex escrito a mano en un componente en lugar de usar el token.
+- Una utilidad de Tailwind con color que no procede de la paleta compartida.
+- Un `--tui-*` sobreescrito localmente en un componente para "ajustar" un color.
+
+Si la paleta se duplica, el retematizado por tenant deja de funcionar — que es justamente lo que el
+sistema existe para permitir. Revisa `src/styles.css` y la configuración del tema para confirmar cómo
+quedó resuelto el puente, y haz que todo el código nuevo lo respete.
+
+## Regla general
 
 **Si un valor visual puede pertenecer al sistema de diseño, debe ser un token.** Marca como problema
 cualquier color, tamaño, espaciado, borde, radio, sombra, tipografía, tamaño de fuente, breakpoint o
@@ -26,13 +39,11 @@ z-index escrito a mano cuando exista o deba existir un token.
 
 Antes de proponer un token nuevo:
 
-1. Busca si ya existe uno equivalente (revisa el preset y el bloque `@theme`).
+1. Busca si ya existe uno equivalente (bloque `@theme` y variables de tema de Taiga).
 2. Si existe, reutilízalo.
 3. Sólo crea uno nuevo si es realmente necesario.
 
-**No dupliques valores equivalentes en distintos archivos.** Duplicar el color de marca en un
-componente en lugar de usar `bg-primary` es exactamente el fallo que debes impedir: rompe el
-retematizado por tenant.
+**No dupliques valores equivalentes en distintos archivos.**
 
 ## Qué no es un problema
 

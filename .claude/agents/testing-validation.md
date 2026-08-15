@@ -41,9 +41,10 @@ que puedan probarse razonablemente.
 Vitest 4 sobre jsdom, mediante `@angular/build:unit-test`. Globals activados (`describe`, `it`,
 `expect`, `vi` sin import). Los specs viven junto al código que prueban, como `*.spec.ts`.
 
-jsdom no implementa `window.matchMedia`, que PrimeNG usa en componentes con breakpoint (Menubar,
-Toast). Está stubbeado en `src/test-setup.ts`. Si un componente de PrimeNG falla en tests por una API
-del navegador que falta, ese es el sitio donde añadir el stub.
+jsdom no implementa varias APIs del navegador. `window.matchMedia` está stubbeado en
+`src/test-setup.ts`. Si un componente de la librería falla en tests por una API que falta
+(`ResizeObserver`, `IntersectionObserver`, …), ese es el sitio donde añadir el stub — no cambies el
+componente para esquivar una limitación del entorno de test.
 
 Comandos: `pnpm test`, `pnpm test:coverage`, `pnpm build` (valida además que las traducciones
 estén completas).

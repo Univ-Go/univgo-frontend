@@ -27,7 +27,7 @@ src/app/
 Reglas que haces cumplir:
 
 - Las dependencias apuntan hacia dentro. `core/` nunca importa de `features/`.
-- El dominio no conoce Angular, HTTP, PrimeNG ni el DOM.
+- El dominio no conoce Angular, HTTP, Taiga UI ni el DOM.
 - La UI no contiene lógica de negocio que corresponda a otra capa. Los componentes de presentación
   representan información, reciben entradas, emiten eventos, coordinan interacciones de la vista y
   consumen casos de uso o servicios.

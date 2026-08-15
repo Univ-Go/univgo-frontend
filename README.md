@@ -63,7 +63,7 @@ src/app/
     logging/     Logger port + console adapter
     notifications/  Toast feedback, the single entry point for transient messages
     seo/         Route-driven document metadata
-    theme/       PrimeNG preset — the source of truth for colour tokens
+    theme/       Theme configuration and brand palette
   layout/        Level 1: the application shell (header, footer, main layout)
   features/      One folder per feature
     <feature>/
@@ -83,22 +83,22 @@ yet. Add the inner layers when a feature actually gains them — not in advance.
 2. **Feature** (`features/<feature>/presentation/`) — reused within one feature.
 3. **View** — used by a single page; extract only when it earns its own file.
 
-Use PrimeNG whenever it offers the component. Write a bespoke component only when PrimeNG has no
+Use Taiga UI whenever it offers the component. Write a bespoke component only when Taiga UI has no
 equivalent, and say why in the component.
 
 ## Design tokens
-
-Colour is defined once, in `core/theme/univgo-theme.preset.ts`. PrimeNG emits that palette as
-`--p-*` custom properties, and `tailwindcss-primeui` re-exposes them as Tailwind utilities
-(`bg-primary`, `text-surface-600`, …), so components and utility classes can never drift apart.
-Retheming for another institution means changing the preset, nothing else.
 
 Non-colour tokens (font stack, radii, shadow, layout sizing, z-index) live in the `@theme` block of
 `src/styles.css`. Reach for an existing token before adding a new one, and avoid arbitrary values
 where a token exists.
 
-Dark mode is driven by `[data-theme="dark"]` on the root element, matched by both the PrimeNG
-config and the Tailwind `dark` variant. No toggle ships yet.
+Colour must have **one** source of truth, so that components and Tailwind utility classes can never
+resolve to different values — that property is what makes retheming for another institution a
+configuration change. Taiga UI themes through its own `--tui-*` variables; see `CLAUDE.md` §5 for the
+open decision on how that palette and Tailwind's are bridged.
+
+Dark mode is driven by `[data-theme="dark"]` on the root element, matched by the Tailwind `dark`
+variant. No toggle ships yet.
 
 ## Internationalisation
 
@@ -130,31 +130,24 @@ http.get(url, { context: new HttpContext().set(SKIP_ERROR_NOTIFICATION, true) })
 
 `AppError` deliberately has no `cause` field, so raw payloads cannot be rendered by accident.
 
-## PrimeNG licensing — action required
+## UI library: Taiga UI
 
-PrimeNG 22 verifies a **PrimeUI licence** at startup. Without one it logs
-`[PrimeUI] PrimeUI license is not configured.` and renders an "Invalid PrimeUI License" banner over
-the running application, in development and production alike.
+Taiga UI 5.19.0, every package **Apache-2.0**. `@taiga-ui/core` declares `@angular/core >=19.0.0`,
+so Angular 22 is supported without forcing peers.
 
-The free Community licence explicitly **excludes universities and publicly funded educational
-institutions**, so this project does not qualify on its intended deployment. A Commercial licence is
-$599 per developer (perpetual, one year of updates; $799 from 2027).
+The project was bootstrapped on PrimeNG and moved away from it: PrimeNG 22 verifies a paid PrimeUI
+licence at startup and paints an "Invalid PrimeUI License" banner over the application in both
+development and production. Its free Community tier explicitly excludes universities and publicly
+funded educational institutions, so this project did not qualify. That is the reason for the switch —
+do not reintroduce PrimeNG without resolving the licence first.
 
-Once a key is available, set `primeUiLicense` in `src/environments/environment*.ts` — it is read by
-`providePrimeNG` in `app.config.ts`. The key is not a secret: it is verified offline on the client
-and ships in the bundle regardless.
+Built-in library wording (mostly accessibility labels) must follow the user's language. Taiga ships
+these in `@taiga-ui/i18n` as language packs, so pick the pack and keep it in step with the build
+locale rather than translating them by hand.
 
-If a licence is not acquired, the alternative is PrimeNG 21, which carries no licence check — but
-its peer range is Angular ^21, so the whole framework would move down one major version.
-
-## Working with PrimeNG components
-
-PrimeNG 22 components no longer accept `styleClass`. Pass `class` instead — it is forwarded to the
-component root and merges with the generated PrimeNG classes. `styleClass` is silently ignored,
-which fails quietly rather than loudly.
-
-Built-in PrimeNG wording (mostly accessibility labels) defaults to English. Translate the keys you
-expose in `core/i18n/primeng-translation.ts` as you adopt more components.
+**Migration is in progress.** Commit `19eff2a` is the last working PrimeNG state and serves as the
+reference for what to replicate. See `CLAUDE.md` §21 for the outstanding checklist — most importantly
+the colour-bridge decision, which should be settled before building views.
 
 ## Quality gates
 

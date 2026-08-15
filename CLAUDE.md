@@ -70,11 +70,11 @@ src/app/
     config/      Contrato AppConfig + token APP_CONFIG (valores por tenant)
     errors/      Vocabulario de errores, mapeo HTTP, mensajes para el usuario
     http/        Interceptores
-    i18n/        Traducción de los textos propios de PrimeNG
+    i18n/        Idioma de los textos propios de Taiga UI
     logging/     Puerto Logger + adaptador de consola
-    notifications/  Feedback con Toast, punto único de mensajes transitorios
+    notifications/  Punto único de mensajes transitorios (alertas)
     seo/         Metadatos del documento dirigidos por rutas
-    theme/       Preset de PrimeNG — fuente de verdad de los tokens de color
+    theme/       Tema y paleta de marca
   layout/        Nivel 1: shell de la aplicación (header, footer, main layout)
   features/      Una carpeta por funcionalidad
     <feature>/
@@ -91,12 +91,12 @@ negocio.
 
 ---
 
-## 3. Librería de componentes: PrimeNG
+## 3. Librería de componentes: Taiga UI
 
-**PrimeNG es la librería oficial de componentes UI.** Todos los componentes visuales deben usar
-PrimeNG siempre que exista un equivalente.
+**Taiga UI es la librería oficial de componentes UI.** Todos los componentes visuales deben usar
+Taiga UI siempre que exista un equivalente.
 
-**REGLA PRINCIPAL: NO crear componentes UI propios cuando PrimeNG ya proporciona la funcionalidad.**
+**REGLA PRINCIPAL: NO crear componentes UI propios cuando Taiga UI ya proporciona la funcionalidad.**
 
 Incluye, entre otros: botones, inputs, selects, dropdowns, tablas, dialogs, modals, tooltips, menús,
 tabs, cards, mensajes, alerts, loaders, paginadores, formularios, calendarios y componentes de
@@ -104,10 +104,14 @@ navegación.
 
 Sólo se permite crear un componente propio cuando:
 
-1. PrimeNG no proporciona la funcionalidad requerida, **o**
+1. Taiga UI no proporciona la funcionalidad requerida, **o**
 2. existe una necesidad específica de negocio/presentación que justifique la abstracción.
 
 Incluso entonces debe estar justificado y seguir la arquitectura y jerarquía del proyecto.
+
+Paquetes: `@taiga-ui/core`, `@taiga-ui/cdk`, `@taiga-ui/kit`, `@taiga-ui/layout`, `@taiga-ui/icons`,
+`@taiga-ui/styles`, `@taiga-ui/i18n`. Todos **Apache-2.0** — sin licencia de pago, sin banner, sin
+restricción para instituciones educativas.
 
 ---
 
@@ -141,14 +145,30 @@ uno nuevo sólo si es realmente necesario. No duplicar valores equivalentes en d
 
 ### Implementación en este proyecto
 
-- **El color se define una sola vez** en `src/app/core/theme/univgo-theme.preset.ts`. PrimeNG emite
-  esa paleta como propiedades `--p-*` y `tailwindcss-primeui` las reexpone como utilidades de
-  Tailwind (`bg-primary`, `text-surface-600`, …). Componentes y utilidades no pueden divergir.
-  Retematizar para otra institución = cambiar el preset, nada más.
 - **Tokens que no son color** (tipografía, radios, sombra, tamaños de layout, z-index) viven en el
-  bloque `@theme` de `src/styles.css`.
-- **Modo oscuro** mediante `[data-theme="dark"]` en el elemento raíz, sincronizado entre la config de
-  PrimeNG y la variante `dark` de Tailwind. Aún no existe un toggle.
+  bloque `@theme` de `src/styles.css`. Esto se conserva sin cambios.
+- **La paleta de marca** ya está decidida y es reutilizable tal cual (escala 50→950, primario
+  `#2544eb`). Está en el historial, en `src/app/core/theme/univgo-theme.preset.ts` del commit
+  `19eff2a`.
+
+### ⚠️ Decisión abierta: puente de color entre Taiga UI y Tailwind
+
+Con PrimeNG el color se definía una sola vez y `tailwindcss-primeui` lo reexponía como utilidades de
+Tailwind, así que componentes y clases utilitarias no podían divergir. **Taiga UI tematiza con sus
+propias variables `--tui-*` y no existe ese puente.** Hay que reconstruir la garantía antes de
+escribir vistas, o el sistema de tokens se parte en dos.
+
+La regla que debe seguir cumpliéndose es: **una única fuente de verdad para el color**. Opciones a
+evaluar en la primera sesión de migración:
+
+1. Definir la paleta en `@theme` de Tailwind y mapear las `--tui-*` a esas variables.
+2. Definir la paleta como `--tui-*` y reexponerla en `@theme` mediante `@theme inline`.
+
+La opción 2 imita lo que hacía `tailwindcss-primeui` y probablemente encaje mejor, porque deja a
+Taiga como dueño del token y a Tailwind como consumidor. **Decidir explícitamente y anotarlo aquí.**
+
+- **Modo oscuro:** `[data-theme="dark"]` en el elemento raíz, con la variante `dark` de Tailwind ya
+  configurada en `src/styles.css`. Falta enlazarlo al mecanismo de tema de Taiga. No existe toggle.
 
 ---
 
@@ -176,8 +196,13 @@ y descriptiva. No usar traducciones directamente dentro del código.
 Las builds de producción usan `i18nMissingTranslation: "error"`: una cadena sin traducir **rompe la
 build** en lugar de caer silenciosamente al español.
 
-Los textos propios de PrimeNG (sobre todo labels de accesibilidad) vienen en inglés: se traducen en
-`src/app/core/i18n/primeng-translation.ts` a medida que se adoptan componentes.
+Los textos propios de la librería (sobre todo labels de accesibilidad) también deben quedar en el
+idioma del usuario. Taiga UI los distribuye en `@taiga-ui/i18n` con paquetes de idioma, así que en
+lugar de traducirlos a mano hay que **seleccionar el idioma correcto y mantenerlo sincronizado con el
+locale de la build**. Esto sustituye a `core/i18n/primeng-translation.ts`, que desaparece.
+
+Verificar que `@taiga-ui/i18n` incluye español; si alguna cadena concreta falta o no encaja, se
+sobreescribe puntualmente, no se traduce el paquete entero.
 
 **No interpolar nombres dentro de frases cuya gramática dependa de ellos** (artículos, género): no
 sobrevive a la traducción. Mantener el nombre de la institución en su propio elemento.
@@ -225,22 +250,27 @@ correctamente o falló.
 
 **Acciones en proceso:** el elemento accionable refleja que la operación está en curso; los botones
 se deshabilitan mientras no puedan ejecutarse de nuevo con seguridad; los botones que procesan
-muestran un spinner de PrimeNG; se evita la ejecución accidental múltiple; se restaura el estado al
-finalizar.
+muestran el indicador de carga de Taiga UI; se evita la ejecución accidental múltiple; se restaura el
+estado al finalizar.
 
-**Carga de contenido:** todo contenido que tarde debe tener estado de carga. Usar **Skeleton de
-PrimeNG** para representar la estructura mientras se obtiene la información. No dejar áreas vacías o
+**Carga de contenido:** todo contenido que tarde debe tener estado de carga. Usar el **skeleton de
+Taiga UI** para representar la estructura mientras se obtiene la información. No dejar áreas vacías o
 congeladas durante cargas perceptibles.
 
 Los estados **loading, success, empty y error** son parte de la implementación de cada vista o
 componente cuando apliquen.
 
 **Mensajes y notificaciones:** errores, notificaciones, confirmaciones informativas y mensajes al
-usuario usan el **Toast de PrimeNG** como mecanismo estándar (vía `NotificationService`). No usar
-tags, mensajes fijos ni bloques persistentes cuando un Toast sea suficiente.
+usuario usan el **sistema de alertas de Taiga UI** como mecanismo estándar, siempre a través de
+`NotificationService`. No usar tags, mensajes fijos ni bloques persistentes cuando una alerta
+transitoria sea suficiente.
+
+`NotificationService` (`core/notifications/`) sobrevive a la migración: su API pública —`success`,
+`info`, `warn`, `error(AppError)`— no cambia. Sólo se reimplementa por dentro para hablar con Taiga
+en vez de con `MessageService`. Sus tests siguen siendo válidos.
 
 Cuando una situación requiera **acción explícita del usuario para continuar o confirmar**, usar un
-**Modal/Dialog de PrimeNG**, no un Toast.
+**Dialog de Taiga UI**, no una alerta transitoria.
 
 ---
 
@@ -275,7 +305,7 @@ paralela.
 3. Localizar componentes relacionados.
 4. Localizar servicios/casos de uso relacionados.
 5. Revisar convenciones existentes.
-6. Revisar componentes PrimeNG disponibles.
+6. Revisar componentes Taiga UI disponibles.
 7. Revisar tokens existentes.
 8. Revisar traducciones existentes.
 9. Revisar abstracciones reutilizables.
@@ -298,7 +328,7 @@ corregir la estructura necesaria antes de continuar.
 ## 12. Validación
 
 Después de implementar, revisar como mínimo: compilación, errores de TypeScript, lint, imports,
-arquitectura, componenteización, reutilización, internacionalización, tokens, uso de PrimeNG,
+arquitectura, componenteización, reutilización, internacionalización, tokens, uso de Taiga UI,
 accesibilidad, responsive, duplicación, código muerto, nombres y separación de responsabilidades.
 
 **No asumir que una implementación es correcta sólo porque visualmente funciona.**
@@ -349,7 +379,7 @@ roles accesibles, labels asociados a controles, contraste adecuado, tamaño y le
 de error comprensibles y accesibles, estados de loading comunicados, lectores de pantalla, HTML
 semántico y no depender exclusivamente del color para transmitir información.
 
-Los componentes de PrimeNG deben configurarse correctamente para conservar su accesibilidad: usar
+Los componentes de Taiga UI deben configurarse correctamente para conservar su accesibilidad: usar
 una librería accesible no elimina la responsabilidad de implementarla bien.
 
 ### Seguridad
@@ -386,10 +416,12 @@ El rendimiento es un requisito técnico desde el inicio. Vigilar: tamaño de bun
 introducidas, JavaScript innecesario, tiempo de carga inicial, imágenes y recursos pesados,
 renderizado innecesario, operaciones costosas en la UI, rendimiento en móvil y Core Web Vitals.
 
-Budget actual: **750 kB warning / 900 kB error** sobre el bundle inicial. Línea base medida:
-~691 kB en crudo, ~159 kB transferidos.
+Budget en `angular.json`: **750 kB warning / 900 kB error** sobre el bundle inicial. ⚠️ Está
+calibrado sobre la línea base de PrimeNG (~691 kB en crudo, ~159 kB transferidos). **Hay que
+remedirlo con Taiga UI y ajustarlo**, no heredarlo a ciegas: un budget que nunca se acerca al límite
+no detecta regresiones.
 
-No introducir dependencias pesadas para problemas que Angular, PrimeNG o las capacidades existentes
+No introducir dependencias pesadas para problemas que Angular, Taiga UI o las capacidades existentes
 ya resuelven. La optimización se basa en mediciones, no en microoptimizaciones prematuras.
 
 ### Responsive y mobile-first
@@ -422,7 +454,7 @@ El trabajo se apoya en subagentes especializados, definidos en `.claude/agents/`
 | Subagente            | Responsabilidad                                                    |
 | -------------------- | ------------------------------------------------------------------ |
 | `architecture`       | Guardián arquitectónico: capas, acoplamiento, dónde vive cada cosa |
-| `ui-component`       | Componenteización, nivel correcto, uso obligatorio de PrimeNG      |
+| `ui-component`       | Componenteización, nivel correcto, uso obligatorio de Taiga UI     |
 | `design-system`      | Estilos, tokens, valores hardcoded, consistencia visual            |
 | `i18n`               | Textos hardcoded, keys, duplicación de traducciones                |
 | `code-quality`       | Duplicación, complejidad, naming, código muerto, clean code        |
@@ -476,7 +508,7 @@ Ante conflictos, este orden:
 3. Requisitos explícitos de la funcionalidad
 4. Reutilización
 5. Consistencia con las convenciones existentes
-6. PrimeNG
+6. Taiga UI
 7. Componenteización
 8. Internacionalización
 9. Sistema de tokens
@@ -490,7 +522,7 @@ Ante conflictos, este orden:
 ## 18. Comportamiento esperado
 
 No te limites a ejecutar literalmente cada solicitud: analízala técnicamente. Si una solicitud rompe
-la arquitectura, duplica código, introduce un componente innecesario, ignora PrimeNG, deja textos o
+la arquitectura, duplica código, introduce un componente innecesario, ignora Taiga UI, deja textos o
 estilos hardcoded, rompe la separación de responsabilidades o contradice las convenciones, **detéctalo
 y propone una alternativa mejor**.
 
@@ -505,7 +537,7 @@ Antes de dar una tarea por terminada:
 
 - ¿Respeto la arquitectura hexagonal?
 - ¿Reutilizo código existente?
-- ¿Uso PrimeNG donde corresponde?
+- ¿Uso Taiga UI donde corresponde?
 - ¿Creo componentes sólo cuando aportan valor?
 - ¿El componente está en el nivel correcto?
 - ¿Hay algún estilo hardcoded que debería ser token?
@@ -534,7 +566,7 @@ omitir la validación de los subagentes y sin exponer razonamientos internos:
 > **[Architecture Agent]**: 1-2 oraciones sobre en qué capa va el código y si respeta la arquitectura
 > hexagonal.
 >
-> **[UI & Component Agent]**: 1-2 oraciones sobre qué componente de PrimeNG se usa, o justificación
+> **[UI & Component Agent]**: 1-2 oraciones sobre qué componente de Taiga UI se usa, o justificación
 > técnica de uno nuevo y su nivel.
 >
 > **[Design System Agent]**: 1-2 oraciones sobre tokens y/o clases de Tailwind usados, confirmando
@@ -563,8 +595,11 @@ Contexto que no se deduce del código y conviene no volver a descubrir.
 
 ### Stack
 
-Angular 22.1.1 · PrimeNG 22.0.0 · `@primeuix/themes` 3.0.0 · Tailwind CSS 4.3.3 ·
-`tailwindcss-primeui` 0.6.1 · TypeScript 6.0 · Vitest 4 (jsdom) · ESLint 9 + angular-eslint 22.
+Angular 22.1.x · Taiga UI 5.19.0 · Tailwind CSS 4.3.3 · TypeScript 6.0 · Vitest 4 (jsdom) ·
+ESLint 9 + angular-eslint 22.
+
+Compatibilidad verificada: `@taiga-ui/core` 5.19.0 declara `@angular/core >=19.0.0`, así que
+Angular 22 entra sin forzar peers.
 
 Renderizado **SPA** (sin SSR): la gestión de reservas vive detrás de login y no es indexable. El SEO
 se cubre con estructura semántica y metadatos por ruta. Se puede añadir SSR después con
@@ -602,38 +637,48 @@ anula la principal defensa de cadena de suministro del proyecto.
 El registro es el mismo que el de npm, así que esto no protege frente a un paquete malicioso
 publicado — protege frente a que se ejecute solo al instalarlo.
 
-### ⚠️ Licencia de PrimeNG — decisión pendiente
+### Por qué Taiga UI y no PrimeNG
 
-PrimeNG 22 **verifica una licencia PrimeUI al arrancar**. Sin ella registra
-`[PrimeUI] PrimeUI license is not configured.` y pinta un banner "Invalid PrimeUI License" sobre la
-aplicación, en desarrollo y en producción.
+El bootstrap se hizo con PrimeNG 22 y hubo que abandonarlo: **verifica una licencia PrimeUI al
+arrancar** y, sin ella, pinta un banner "Invalid PrimeUI License" sobre la aplicación en desarrollo
+y en producción. La licencia Community gratuita **excluye explícitamente a universidades e
+instituciones educativas de financiación pública**, así que este proyecto no calificaba; la
+Commercial cuesta 599 USD por desarrollador.
 
-La licencia Community gratuita **excluye explícitamente a universidades e instituciones educativas
-de financiación pública**, por lo que este proyecto no califica en su despliegue previsto. La
-Commercial cuesta 599 USD por desarrollador (perpetua, un año de actualizaciones; 799 USD desde
-2027).
+Taiga UI es **Apache-2.0** en todos sus paquetes: sin verificación, sin banner, sin restricción por
+tipo de institución. El motivo del cambio es ese, no una preferencia estética.
 
-Cuando exista clave, se define en `primeUiLicense` de `src/environments/environment*.ts`, leída por
-`providePrimeNG` en `app.config.ts`. **No es un secreto**: se verifica offline en el cliente y viaja
-en el bundle igualmente.
+No reintroducir PrimeNG sin resolver primero la licencia.
 
-Alternativa si no se adquiere licencia: PrimeNG 21, sin verificación de licencia, pero su rango de
-peers es Angular ^21 — bajaría todo el framework una versión mayor.
+### Estado de la migración a Taiga UI
 
-**No intentar suprimir el banner:** sería eludir el control de licencia.
+El commit `19eff2a` es el último con PrimeNG funcionando y sirve de referencia para lo que hay que
+replicar. Pendiente al arrancar la migración:
 
-### Gotchas de PrimeNG 22
+1. Desinstalar `primeng`, `@primeuix/themes`, `primeicons`, `tailwindcss-primeui`; instalar los
+   paquetes de Taiga.
+2. Resolver la **decisión abierta del puente de color** (ver §5). Es el punto de diseño más
+   importante y conviene cerrarlo antes de escribir vistas.
+3. Reimplementar por dentro `NotificationService` contra las alertas de Taiga, conservando su API.
+4. Sustituir `core/i18n/primeng-translation.ts` por la configuración de idioma de `@taiga-ui/i18n`.
+5. Reescribir `app-header` (Menubar), `app-footer`, `home-page` (Card) y `not-found-page` (Button)
+   con equivalentes de Taiga. Conservar el marcado semántico, el skip link y los `aria-label`.
+6. Revisar el stub de `matchMedia` en `src/test-setup.ts`: existe por los breakpoints de PrimeNG.
+   Puede seguir haciendo falta para Taiga, o sobrar. Comprobar antes de borrarlo.
+7. Recalibrar el budget del bundle con la nueva línea base. La de PrimeNG era ~691 kB en crudo /
+   ~159 kB transferidos, con budget 750 kB warning / 900 kB error. **Medir y ajustar, no heredar.**
 
-- **`styleClass` ya no existe.** Usar `class`, que se reenvía a la raíz del componente y se fusiona
-  con las clases generadas. `styleClass` se ignora en silencio — falla sin avisar.
-- Los textos propios de PrimeNG están en inglés; se traducen en `core/i18n/primeng-translation.ts`.
-- El orden de capas CSS (`theme, base, primeng, components, utilities`) está configurado en
-  `providePrimeNG` para que las utilidades de Tailwind ganen a los estilos de PrimeNG.
+Lo que **no** cambia y no hay que rehacer: arquitectura y capas, `AppError` con su mapeo y sus
+mensajes, `Logger`, `APP_CONFIG`, `PageMetadataStrategy`, el catálogo completo de 40 cadenas es/en,
+la paleta de marca, los tokens que no son color, la configuración de pnpm y las reglas de calidad.
 
 ### Testing
 
-jsdom no implementa `window.matchMedia`, que PrimeNG usa en componentes con breakpoint (Menubar,
-Toast). Está stubbeado en `src/test-setup.ts`, registrado vía `setupFiles` en `angular.json`.
+jsdom no implementa `window.matchMedia`. Está stubbeado en `src/test-setup.ts`, registrado vía
+`setupFiles` en `angular.json`. El stub se añadió porque los componentes con breakpoint de PrimeNG lo
+llamaban al inicializarse; comprobar si Taiga UI lo necesita también antes de retirarlo. jsdom puede
+carecer de otras APIs del navegador (`ResizeObserver`, `IntersectionObserver`) que Taiga sí use:
+`src/test-setup.ts` es el sitio donde añadirlas.
 
 ### Pendiente de verificar
 

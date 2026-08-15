@@ -3,9 +3,9 @@ import { RouterOutlet } from '@angular/router';
 import { TuiRoot } from '@taiga-ui/core';
 
 /**
- * `tui-root` no es decorativo: aloja los portales de Taiga (alertas, diálogos, dropdowns), así que
- * toda la aplicación tiene que vivir dentro. El tema claro/oscuro no se controla aquí: `provideTaiga`
- * refleja `TUI_DARK_MODE` sobre el atributo `tuiTheme` del documento.
+ * `tui-root` is not decorative: it hosts Taiga's portals (alerts, dialogs, dropdowns), so the whole
+ * application has to live inside it. The light/dark theme is not controlled here — `provideTaiga`
+ * mirrors `TUI_DARK_MODE` onto the document's `tuiTheme` attribute.
  */
 @Component({
   selector: 'app-root',

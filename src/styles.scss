@@ -13,7 +13,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-// Taiga dibuja el foco de sus propios componentes; esto cubre los elementos nativos del producto.
+// Taiga draws focus for its own components; this covers the product's native elements.
 :focus-visible {
   outline: var(--tui-stroke-width) solid var(--tui-border-focus);
   outline-offset: var(--tui-stroke-width);

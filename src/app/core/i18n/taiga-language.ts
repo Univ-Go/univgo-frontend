@@ -4,9 +4,9 @@ import { TUI_ENGLISH_LANGUAGE } from '@taiga-ui/i18n/languages/english';
 import { TUI_SPANISH_LANGUAGE } from '@taiga-ui/i18n/languages/spanish';
 
 /**
- * Taiga UI distribuye sus propios textos —sobre todo etiquetas de accesibilidad— en paquetes de
- * idioma. El paquete se elige desde el locale con el que se compiló la build, de modo que no puede
- * desincronizarse de las traducciones propias.
+ * Taiga UI ships its own wording — mostly accessibility labels — as language packs. The pack is
+ * picked from the locale the build was compiled with, so it cannot drift from the project's own
+ * translations.
  */
 export function provideTaigaLanguage(): Provider {
   return {

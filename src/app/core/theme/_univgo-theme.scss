@@ -1,5 +1,5 @@
-// La marca se define una sola vez. Retematizar para otra institución es cambiar esta escala:
-// ningún componente ni hoja de estilos referencia un color directamente.
+// The brand is defined once. Retheming for another institution means changing this scale:
+// no component or stylesheet references a colour directly.
 $brand-50: #eef4ff;
 $brand-100: #dbe6fe;
 $brand-200: #bfd3fe;
@@ -31,14 +31,14 @@ $brand-950: #171d54;
 }
 
 :root {
-  // Pila del sistema a propósito: sin petición de webfont, el texto pinta de inmediato en móvil.
+  // System stack on purpose: no webfont request, so text paints immediately on mobile.
   --tui-typography-family-text:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
   --tui-typography-family-display: var(--tui-typography-family-text);
 }
 
-// Se reproduce el reparto de Taiga entre pantalla e impresión: al imprimir siempre se usa el tema
-// claro, y sin este bloque nuestras sobrescrituras oscuras ganarían por orden de cascada.
+// Mirrors Taiga's own split between screen and print: printing always uses the light theme, and
+// without this block our dark overrides would win on source order.
 @media screen {
   :root,
   [tuiTheme='light'] {

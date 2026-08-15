@@ -47,8 +47,8 @@ export class NotificationService {
     summary: string,
     detail?: string,
   ): void {
-    // `label` es el encabezado de la alerta y el contenido es el cuerpo: un aviso sin detalle se
-    // lee mejor como una sola línea que como un título sobre un bloque vacío.
+    // `label` is the alert heading and the content is its body: a summary without detail reads
+    // better as a single line than as a heading over an empty block.
     this.notifications
       .open(detail ?? summary, { appearance, autoClose, label: detail ? summary : '' })
       .subscribe();

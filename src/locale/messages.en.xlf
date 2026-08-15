@@ -2,22 +2,6 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="es" target-language="en" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="home.pageTitle" datatype="html">
-        <source>Reserva de espacios</source>
-        <target>Book a space</target>
-      </trans-unit>
-      <trans-unit id="home.metaDescription" datatype="html">
-        <source>Consulta la disponibilidad de instalaciones deportivas y salas de estudio de tu universidad y reserva en unos pocos pasos.</source>
-        <target>Check the availability of sports facilities and study rooms at your university and book in just a few steps.</target>
-      </trans-unit>
-      <trans-unit id="notFound.pageTitle" datatype="html">
-        <source>Página no encontrada</source>
-        <target>Page not found</target>
-      </trans-unit>
-      <trans-unit id="notFound.metaDescription" datatype="html">
-        <source>La página que buscas no está disponible.</source>
-        <target>The page you are looking for is not available.</target>
-      </trans-unit>
       <trans-unit id="error.network.summary" datatype="html">
         <source>Sin conexión</source>
         <target>No connection</target>
@@ -93,74 +77,6 @@
       <trans-unit id="error.reference" datatype="html">
         <source>Referencia: <x id="reference" equiv-text="reference"/></source>
         <target>Reference: <x id="reference" equiv-text="reference"/></target>
-      </trans-unit>
-      <trans-unit id="home.title" datatype="html">
-        <source> Reserva los espacios de tu universidad </source>
-        <target> Book spaces at your university </target>
-      </trans-unit>
-      <trans-unit id="home.subtitle" datatype="html">
-        <source> Consulta la disponibilidad de instalaciones deportivas y salas de estudio, y reserva en unos pocos pasos. </source>
-        <target> Check the availability of sports facilities and study rooms, and book in just a few steps. </target>
-      </trans-unit>
-      <trans-unit id="home.steps.heading" datatype="html">
-        <source> Cómo funciona </source>
-        <target> How it works </target>
-      </trans-unit>
-      <trans-unit id="home.steps.space.title" datatype="html">
-        <source>Elige un espacio</source>
-        <target>Choose a space</target>
-      </trans-unit>
-      <trans-unit id="home.steps.space.description" datatype="html">
-        <source>Consulta las instalaciones deportivas y salas de estudio disponibles.</source>
-        <target>Browse the sports facilities and study rooms available.</target>
-      </trans-unit>
-      <trans-unit id="home.steps.slot.title" datatype="html">
-        <source>Elige un horario</source>
-        <target>Choose a time</target>
-      </trans-unit>
-      <trans-unit id="home.steps.slot.description" datatype="html">
-        <source>Comprueba la disponibilidad en tiempo real y selecciona la franja que te venga bien.</source>
-        <target>Check real-time availability and pick the slot that suits you.</target>
-      </trans-unit>
-      <trans-unit id="home.steps.confirm.title" datatype="html">
-        <source>Confirma tu reserva</source>
-        <target>Confirm your booking</target>
-      </trans-unit>
-      <trans-unit id="home.steps.confirm.description" datatype="html">
-        <source>Recibe la confirmación al instante y consulta tus reservas cuando quieras.</source>
-        <target>Get instant confirmation and check your bookings whenever you like.</target>
-      </trans-unit>
-      <trans-unit id="notFound.code" datatype="html">
-        <source>Error 404</source>
-        <target>Error 404</target>
-      </trans-unit>
-      <trans-unit id="notFound.title" datatype="html">
-        <source> No hemos encontrado esta página </source>
-        <target> We couldn't find this page </target>
-      </trans-unit>
-      <trans-unit id="notFound.detail" datatype="html">
-        <source> Es posible que el enlace haya cambiado o que la página ya no esté disponible. </source>
-        <target> The link may have changed, or the page may no longer be available. </target>
-      </trans-unit>
-      <trans-unit id="notFound.backToHome" datatype="html">
-        <source>Volver al inicio</source>
-        <target>Back to home</target>
-      </trans-unit>
-      <trans-unit id="footer.copyright" datatype="html">
-        <source>© <x id="INTERPOLATION" equiv-text="{{ currentYear }}"/> <x id="INTERPOLATION_1" equiv-text="{{ organizationName }}"/>. UnivGo.</source>
-        <target>© <x id="INTERPOLATION" equiv-text="{{ currentYear }}"/> <x id="INTERPOLATION_1" equiv-text="{{ organizationName }}"/>. UnivGo.</target>
-      </trans-unit>
-      <trans-unit id="navigation.label" datatype="html">
-        <source>Navegación principal</source>
-        <target>Main navigation</target>
-      </trans-unit>
-      <trans-unit id="navigation.home" datatype="html">
-        <source>Inicio</source>
-        <target>Home</target>
-      </trans-unit>
-      <trans-unit id="layout.skipToContent" datatype="html">
-        <source>Saltar al contenido principal</source>
-        <target>Skip to main content</target>
       </trans-unit>
     </body>
   </file>

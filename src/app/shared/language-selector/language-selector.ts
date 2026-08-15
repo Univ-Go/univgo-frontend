@@ -53,8 +53,7 @@ export class LanguageSelector {
   );
 
   private readonly current =
-    APP_LOCALES.find((locale) => this.baseHref === `/${locale.code}/`)?.code ??
-    APP_LOCALES[0].code;
+    APP_LOCALES.find((locale) => this.baseHref === `/${locale.code}/`)?.code ?? APP_LOCALES[0].code;
 
   protected readonly activeIndex = Math.max(
     APP_LOCALES.findIndex((locale) => locale.code === this.current),

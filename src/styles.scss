@@ -1,5 +1,13 @@
 @use './app/core/theme/univgo-theme';
 
+// Padding counts inside the declared size. Without this, any `inline-size: 100%` with padding
+// overflows its parent, which is how a horizontal scrollbar appears on a phone.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   block-size: 100%;
 }

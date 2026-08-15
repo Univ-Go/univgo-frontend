@@ -515,6 +515,39 @@ sobre la línea base de Taiga **sin ninguna vista** (~424 kB en crudo, ~100 kB t
 el margen es headroom para construirlas, no una medida de nada. **Remedir y ajustar** cuando el
 flujo de reservas exista: un budget que nunca se acerca al límite no detecta regresiones.
 
+#### Estado tras la vista de login (pendiente de resolver)
+
+El warning **ya salta**: 507 kB en crudo, 7 kB por encima. Medido, no estimado:
+
+| Fichero         | Crudo      | Transferido | Qué contiene                                                                                          |
+| --------------- | ---------- | ----------- | ----------------------------------------------------------------------------------------------------- |
+| `chunk-*.js`    | 397 kB     | 108 kB      | Angular core + router + forms, `tui-root`, scrollbar, alertas, Polymorpheus, packs de idioma de Taiga |
+| `styles.css`    | 80 kB      | 5.8 kB      | Tema de Taiga + marca                                                                                 |
+| `main.js`       | 18 kB      | 7.2 kB      | Bootstrap y providers                                                                                 |
+| **Inicial**     | **507 kB** | **122 kB**  |                                                                                                       |
+| `login-page.js` | 135 kB     | 23 kB       | Lazy, no cuenta para el budget                                                                        |
+
+**No es alarmante y no lo provocó el login.** La vista es lazy y no entra en el inicial; lo que hay
+ahí es el arranque de Angular más el andamiaje de Taiga, que ya pesaba ~424 kB sin ninguna vista. El
+budget se fijó sobre esa línea base precisamente como headroom, así que cruzarlo con la primera
+pantalla estaba previsto. Lo que viaja al usuario son **122 kB comprimidos**, que para el shell
+completo de una SPA es razonable.
+
+Dos cosas **sí** están mal y conviene arreglar antes de recalibrar, porque cambian la medición:
+
+1. **Los dos packs de idioma de Taiga viajan en cada build.** `core/i18n/taiga-language.ts` importa
+   `TUI_SPANISH_LANGUAGE` y `TUI_ENGLISH_LANGUAGE` de forma estática, así que la build `es` incluye
+   el inglés y viceversa (~11.5 kB en crudo cada uno; se comprobó buscando `Afghanistan` dentro del
+   chunk de la build española). El locale se conoce en tiempo de compilación: debería entrar sólo el
+   que corresponde.
+2. **`@angular/forms` acaba en el inicial** sin que ninguna vista use `ReactiveFormsModule`: lo
+   arrastra el textfield de Taiga vía `NgControl`. Hay que confirmar si es evitable o es el precio
+   de la librería.
+
+**Orden correcto**: primero esas dos, después construir las vistas restantes, y **sólo entonces**
+recalibrar el budget con las tres pantallas puestas. Subir el número ahora sería maquillar la
+métrica, que es justo lo que este documento prohíbe.
+
 No introducir dependencias pesadas para problemas que Angular, Taiga UI o las capacidades existentes
 ya resuelven. La optimización se basa en mediciones, no en microoptimizaciones prematuras.
 

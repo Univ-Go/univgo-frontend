@@ -49,7 +49,7 @@ $teal-400: #3d918a;
 $teal-500: #1c6f69;
 $teal-600: #00504c;
 $teal-700: #004441;
-$teal-800: #003a37;
+$teal-800: #003734;
 $teal-900: #002c2a;
 $teal-950: #00201e;
 
@@ -67,6 +67,18 @@ $neutral-800: #2e3132;
 $neutral-900: #191c1d;
 $neutral-inverse: #f0f1f2;
 
+// Dark canvas: charcoal steps, never pure black, with warm-tinted text and outlines so the brand
+// hue survives in the neutrals.
+$dark-0: #121314;
+$dark-1: #1a1c1e;
+$dark-2: #1d2021;
+$dark-3: #282a2c;
+$dark-4: #333537;
+$dark-text: #e1e3e4;
+$dark-text-variant: #d1bcba;
+$dark-outline: #9c8987;
+$dark-outline-variant: #534341;
+
 // Error leans orange on purpose: a pure red would be indistinguishable from the brand accent.
 $danger-light: #cc3300;
 $danger-light-strong: #a32900;
@@ -77,7 +89,7 @@ $warning-light: #9a5b00;
 $warning-dark: #ffc773;
 
 $info-light: #2563c9;
-$info-dark: #8ab4f8;
+$info-dark: #a3c9ff;
 
 $shadow-tint: 65, 0, 5;
 
@@ -143,6 +155,14 @@ $shadow-tint: 65, 0, 5;
   --tui-service-selection-background: rgba(127, 0, 19, 0.12);
   --tui-service-backdrop: rgba(25, 28, 29, 0.72);
 
+  // A "fixed" role: the institutional crimson does not flip with the theme. `accent-1` inverts to a
+  // pale pink in dark mode, which is right for a button and wrong for a full brand panel.
+  --univgo-brand-surface: #{$brand-800};
+  --univgo-on-brand-surface: #{$neutral-0};
+  // The logo is crimson and teal ink with no light variant, so on dark surfaces it sits on a plate
+  // instead of being recoloured — retinting a logo is not ours to do.
+  --univgo-logo-plate: transparent;
+
   --tui-shadow-small: 0 0.125rem 0.625rem rgba(#{$shadow-tint}, 0.1);
   --tui-shadow-small-hover: 0 0.5rem 1.5rem rgba(#{$shadow-tint}, 0.14);
   --tui-shadow-medium: 0 0.375rem 1.5rem rgba(#{$shadow-tint}, 0.12);
@@ -151,62 +171,68 @@ $shadow-tint: 65, 0, 5;
 }
 
 @mixin brand-dark {
-  --tui-background-base: #{$neutral-900};
-  --tui-background-base-alt: #212526;
-  --tui-background-elevation-1: #212526;
-  --tui-background-elevation-2: #272b2c;
-  --tui-background-elevation-3: #{$neutral-800};
+  // Charcoal rather than black, stepping up in luminance as containers gain importance.
+  --tui-background-base: #{$dark-0};
+  --tui-background-base-alt: #{$dark-1};
+  --tui-background-elevation-1: #{$dark-2};
+  --tui-background-elevation-2: #{$dark-3};
+  --tui-background-elevation-3: #{$dark-4};
 
-  --tui-background-neutral-1: rgba(240, 241, 242, 0.08);
-  --tui-background-neutral-1-hover: rgba(240, 241, 242, 0.14);
-  --tui-background-neutral-1-pressed: rgba(240, 241, 242, 0.2);
-  --tui-background-neutral-2: rgba(240, 241, 242, 0.16);
-  --tui-background-neutral-2-hover: rgba(240, 241, 242, 0.24);
-  --tui-background-neutral-2-pressed: rgba(240, 241, 242, 0.32);
+  --tui-background-neutral-1: rgba(225, 227, 228, 0.08);
+  --tui-background-neutral-1-hover: rgba(225, 227, 228, 0.14);
+  --tui-background-neutral-1-pressed: rgba(225, 227, 228, 0.2);
+  --tui-background-neutral-2: rgba(225, 227, 228, 0.16);
+  --tui-background-neutral-2-hover: rgba(225, 227, 228, 0.24);
+  --tui-background-neutral-2-pressed: rgba(225, 227, 228, 0.32);
 
   --tui-background-accent-1: #{$brand-200};
   --tui-background-accent-1-hover: #{$brand-100};
   --tui-background-accent-1-pressed: #{$brand-300};
-  --tui-background-accent-2: #{$teal-200};
-  --tui-background-accent-2-hover: #{$teal-100};
-  --tui-background-accent-2-pressed: #{$teal-300};
-  --tui-background-accent-opposite: #{$neutral-inverse};
+  --tui-background-accent-2: #{$teal-300};
+  --tui-background-accent-2-hover: #{$teal-200};
+  --tui-background-accent-2-pressed: #{$teal-400};
+  --tui-background-accent-opposite: #{$dark-text};
   --tui-background-accent-opposite-hover: #{$neutral-200};
-  --tui-background-accent-opposite-pressed: #{$neutral-500};
+  --tui-background-accent-opposite-pressed: #{$dark-outline};
 
-  --tui-text-primary: #{$neutral-inverse};
-  --tui-text-secondary: rgba(240, 241, 242, 0.72);
-  --tui-text-tertiary: rgba(240, 241, 242, 0.56);
-  --tui-text-primary-on-accent-1: #{$brand-950};
-  --tui-text-primary-on-accent-2: #{$teal-950};
+  --tui-text-primary: #{$dark-text};
+  --tui-text-secondary: #{$dark-text-variant};
+  --tui-text-tertiary: #{$dark-outline};
+  --tui-text-primary-on-accent-1: #68000b;
+  --tui-text-primary-on-accent-2: #{$teal-800};
   --tui-text-action: #{$brand-200};
   --tui-text-action-hover: #{$brand-100};
-  --tui-text-positive: #{$teal-200};
-  --tui-text-positive-hover: #{$teal-100};
+  --tui-text-positive: #{$teal-300};
+  --tui-text-positive-hover: #{$teal-200};
   --tui-text-negative: #{$danger-dark};
   --tui-text-negative-hover: #ffab91;
 
-  --tui-border-normal: rgba(240, 241, 242, 0.16);
-  --tui-border-hover: rgba(240, 241, 242, 0.32);
-  --tui-border-focus: rgba(240, 241, 242, 0.72);
-  --univgo-border-control: rgba(240, 241, 242, 0.48);
+  // Edges carry elevation here: the dark palette defines card outlines instead of drop shadows.
+  --tui-border-normal: #{$dark-outline-variant};
+  --tui-border-hover: #{$dark-outline};
+  --tui-border-focus: rgba(225, 227, 228, 0.72);
+  --univgo-border-control: #{$dark-outline};
 
   --tui-status-negative: #{$danger-dark};
   --tui-status-negative-pale: rgba(255, 138, 101, 0.24);
   --tui-status-negative-pale-hover: rgba(255, 138, 101, 0.32);
-  --tui-status-positive: #{$teal-200};
-  --tui-status-positive-pale: rgba(135, 212, 206, 0.24);
-  --tui-status-positive-pale-hover: rgba(135, 212, 206, 0.32);
+  --tui-status-positive: #{$teal-300};
+  --tui-status-positive-pale: rgba(103, 180, 174, 0.24);
+  --tui-status-positive-pale-hover: rgba(103, 180, 174, 0.32);
   --tui-status-warning: #{$warning-dark};
   --tui-status-warning-pale: rgba(255, 199, 115, 0.24);
   --tui-status-warning-pale-hover: rgba(255, 199, 115, 0.32);
   --tui-status-info: #{$info-dark};
-  --tui-status-info-pale: rgba(138, 180, 248, 0.24);
-  --tui-status-info-pale-hover: rgba(138, 180, 248, 0.32);
-  --tui-status-neutral: #{$neutral-500};
+  --tui-status-info-pale: rgba(163, 201, 255, 0.24);
+  --tui-status-info-pale-hover: rgba(163, 201, 255, 0.32);
+  --tui-status-neutral: #{$dark-outline};
 
   --tui-service-selection-background: rgba(255, 179, 175, 0.24);
   --tui-service-backdrop: rgba(0, 0, 0, 0.8);
+
+  --univgo-brand-surface: #{$brand-800};
+  --univgo-on-brand-surface: #{$brand-100};
+  --univgo-logo-plate: #{$neutral-25};
 
   --tui-shadow-small: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.4);
   --tui-shadow-small-hover: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.48);

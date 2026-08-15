@@ -298,6 +298,27 @@ tests comprueban el mismo comportamiento contra la nueva librería.
 Cuando una situación requiera **acción explícita del usuario para continuar o confirmar**, usar un
 **Dialog de Taiga UI**, no una alerta transitoria.
 
+### Idioma: el código es 100% inglés
+
+**Todo lo que se escribe en el repositorio va en inglés**, sin excepciones ni mezcla de idiomas:
+
+- Identificadores: variables, funciones, clases, componentes, tipos, interfaces, constantes,
+  propiedades, tokens de inyección, selectores y nombres de fichero y de carpeta.
+- Comentarios y JSDoc.
+- Mensajes de commit y nombres de rama.
+- Mensajes de log, errores técnicos, descripciones de tests (`describe`/`it`) y textos de
+  diagnóstico interno.
+
+Lo único que **no** es código y por tanto queda fuera de esta regla:
+
+- El **contenido visible para el usuario**, que vive en i18n con `es` como locale fuente. Las
+  cadenas en español están en las plantillas y en `$localize`, no como texto suelto.
+- Los **datos de prueba** dentro de un test cuando representan contenido de usuario.
+- Este documento, que es contexto de trabajo, no código.
+
+La convención de nombres de las keys de i18n sí es inglesa (`@@home.pageTitle`), aunque su valor
+esté en español.
+
 ---
 
 ## 8. Comentarios
@@ -513,8 +534,10 @@ El trabajo se apoya en subagentes especializados, definidos en `.claude/agents/`
 - `<descripción>`: clara y concisa; permite entender qué se modificó y, si es relevante, cómo se
   resolvió.
 
-Equilibrio entre **brevedad + claridad + contexto técnico**. Nada de `fix: cambios`,
-`feat: cosas nuevas` ni `update: modificaciones`.
+**El mensaje va en inglés**, asunto y cuerpo, como el resto del código (§7).
+
+Equilibrio entre **brevedad + claridad + contexto técnico**. Nada de `fix: changes`,
+`feat: new stuff` ni `update: modifications`.
 
 ---
 
@@ -586,6 +609,7 @@ Antes de dar una tarea por terminada:
 - ¿Hay comentarios innecesarios?
 - ¿La solución es más compleja de lo necesario?
 - ¿Los nombres son claros?
+- ¿Está todo el código —identificadores, comentarios y mensaje de commit— en inglés?
 - ¿Es mantenible?
 - ¿La lógica nueva tiene tests unitarios?
 - ¿Los cambios están validados?

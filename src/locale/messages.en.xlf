@@ -78,6 +78,98 @@
         <source>Referencia: <x id="reference" equiv-text="reference"/></source>
         <target>Reference: <x id="reference" equiv-text="reference"/></target>
       </trans-unit>
+      <trans-unit id="auth.login.pageTitle" datatype="html">
+        <source>Inicia sesión</source>
+        <target>Sign in</target>
+      </trans-unit>
+      <trans-unit id="auth.login.pageDescription" datatype="html">
+        <source>Accede con las credenciales de tu universidad para reservar espacios deportivos y de estudio.</source>
+        <target>Sign in with your university credentials to book sports and study spaces.</target>
+      </trans-unit>
+      <trans-unit id="auth.login.skipToForm" datatype="html">
+        <source>Saltar al formulario</source>
+        <target>Skip to the form</target>
+      </trans-unit>
+      <trans-unit id="auth.login.brandBadge" datatype="html">
+        <source>Portal oficial de reservas</source>
+        <target>Official booking portal</target>
+      </trans-unit>
+      <trans-unit id="auth.login.brandTitle" datatype="html">
+        <source>Reserva los espacios de tu universidad en segundos.</source>
+        <target>Book your university spaces in seconds.</target>
+      </trans-unit>
+      <trans-unit id="auth.login.brandLead" datatype="html">
+        <source>Consulta la disponibilidad de canchas, salas de estudio y laboratorios, y confirma tu reserva desde cualquier dispositivo.</source>
+        <target>Check the availability of courts, study rooms and labs, and confirm your booking from any device.</target>
+      </trans-unit>
+      <trans-unit id="auth.login.highlightAvailability" datatype="html">
+        <source>Disponibilidad en tiempo real</source>
+        <target>Real-time availability</target>
+      </trans-unit>
+      <trans-unit id="auth.login.highlightSpaces" datatype="html">
+        <source>Espacios deportivos y de estudio</source>
+        <target>Sports and study spaces</target>
+      </trans-unit>
+      <trans-unit id="auth.login.title" datatype="html">
+        <source>Inicia sesión</source>
+        <target>Sign in</target>
+      </trans-unit>
+      <trans-unit id="auth.login.subtitle" datatype="html">
+        <source>Usa las credenciales de tu universidad para continuar.</source>
+        <target>Use your university credentials to continue.</target>
+      </trans-unit>
+      <trans-unit id="auth.login.identifierLabel" datatype="html">
+        <source>Correo institucional o documento</source>
+        <target>University email or ID</target>
+      </trans-unit>
+      <trans-unit id="auth.login.passwordLabel" datatype="html">
+        <source>Contraseña</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="auth.login.rememberMe" datatype="html">
+        <source>No cerrar sesión</source>
+        <target>Keep me signed in</target>
+      </trans-unit>
+      <trans-unit id="auth.login.forgotPassword" datatype="html">
+        <source>¿Olvidaste tu contraseña?</source>
+        <target>Forgot your password?</target>
+      </trans-unit>
+      <trans-unit id="auth.login.submit" datatype="html">
+        <source>Iniciar sesión</source>
+        <target>Sign in</target>
+      </trans-unit>
+      <trans-unit id="auth.login.alternativeSeparator" datatype="html">
+        <source>o</source>
+        <target>or</target>
+      </trans-unit>
+      <trans-unit id="auth.login.submitWithCard" datatype="html">
+        <source>Entrar con el carné universitario</source>
+        <target>Sign in with your student card</target>
+      </trans-unit>
+      <trans-unit id="auth.login.helpLabel" datatype="html">
+        <source>Centro de ayuda</source>
+        <target>Help centre</target>
+      </trans-unit>
+      <trans-unit id="auth.login.privacyLabel" datatype="html">
+        <source>Política de privacidad</source>
+        <target>Privacy policy</target>
+      </trans-unit>
+      <trans-unit id="auth.login.legal" datatype="html">
+        <source>Todos los derechos reservados. Acceso exclusivo para la comunidad universitaria.</source>
+        <target>All rights reserved. Access restricted to the university community.</target>
+      </trans-unit>
+      <trans-unit id="theme.switchToLight" datatype="html">
+        <source>Cambiar al tema claro</source>
+        <target>Switch to the light theme</target>
+      </trans-unit>
+      <trans-unit id="theme.switchToDark" datatype="html">
+        <source>Cambiar al tema oscuro</source>
+        <target>Switch to the dark theme</target>
+      </trans-unit>
+      <trans-unit id="i18n.languageSelector" datatype="html">
+        <source>Idioma</source>
+        <target>Language</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

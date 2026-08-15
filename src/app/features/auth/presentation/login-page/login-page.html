@@ -1,0 +1,159 @@
+<a class="skip-link" href="#signin" i18n="@@auth.login.skipToForm">Saltar al formulario</a>
+
+<div class="login">
+  <section class="brand" aria-labelledby="brand-title">
+    <!-- Decorative: the mark is crimson on crimson, so it works as a watermark and never as a logo. -->
+    <img
+      class="brand__watermark"
+      src="images/UnivGo_Icon.png"
+      alt=""
+      aria-hidden="true"
+      width="550"
+      height="567"
+    />
+
+    <div class="brand__inner">
+      <div class="brand__copy">
+        <span tuiBadge appearance="neutral" size="l" i18n="@@auth.login.brandBadge">
+          Portal oficial de reservas
+        </span>
+
+        <h1 id="brand-title" i18n="@@auth.login.brandTitle">
+          Reserva los espacios de tu universidad en segundos.
+        </h1>
+
+        <p class="brand__lead" i18n="@@auth.login.brandLead">
+          Consulta la disponibilidad de canchas, salas de estudio y laboratorios, y confirma tu
+          reserva desde cualquier dispositivo.
+        </p>
+      </div>
+
+      <ul class="brand__highlights">
+        <li class="highlight">
+          <tui-icon icon="@tui.calendar-clock" aria-hidden="true" />
+          <span i18n="@@auth.login.highlightAvailability">Disponibilidad en tiempo real</span>
+        </li>
+        <li class="highlight">
+          <tui-icon icon="@tui.volleyball" aria-hidden="true" />
+          <span i18n="@@auth.login.highlightSpaces">Espacios deportivos y de estudio</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="signin">
+    <div class="panel__inner">
+      <div class="topbar">
+        <img
+          class="topbar__logo"
+          src="images/UnivGo_logo.png"
+          alt="UnivGo"
+          width="1743"
+          height="568"
+        />
+        <div class="topbar__actions">
+          <app-language-selector />
+          <app-theme-toggle />
+        </div>
+      </div>
+
+      <header class="panel__header">
+        <h2 id="signin" tuiTitle i18n="@@auth.login.title">Inicia sesión</h2>
+        <p class="panel__subtitle" i18n="@@auth.login.subtitle">
+          Usa las credenciales de tu universidad para continuar.
+        </p>
+      </header>
+
+      <form class="form" tuiForm="l">
+        <tui-textfield>
+          <label tuiLabel for="login-identifier" i18n="@@auth.login.identifierLabel"
+            >Correo institucional o documento</label
+          >
+          <input id="login-identifier" tuiInput autocomplete="username" name="identifier" />
+          <tui-icon icon="@tui.user" />
+        </tui-textfield>
+
+        <tui-textfield>
+          <label tuiLabel for="login-password" i18n="@@auth.login.passwordLabel">Contraseña</label>
+          <input
+            id="login-password"
+            tuiInput
+            type="password"
+            autocomplete="current-password"
+            name="password"
+          />
+          <tui-icon tuiPassword />
+        </tui-textfield>
+
+        <div class="form__row">
+          <label class="remember">
+            <input type="checkbox" tuiCheckbox name="remember" />
+            <span i18n="@@auth.login.rememberMe">No cerrar sesión</span>
+          </label>
+
+          <a tuiLink href="#" i18n="@@auth.login.forgotPassword">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button
+          tuiButton
+          type="button"
+          size="l"
+          appearance="primary"
+          iconEnd="@tui.log-in"
+          i18n="@@auth.login.submit"
+        >
+          Iniciar sesión
+        </button>
+
+        <p class="separator">
+          <span i18n="@@auth.login.alternativeSeparator">o</span>
+        </p>
+
+        <button
+          tuiButton
+          type="button"
+          size="l"
+          appearance="outline"
+          iconStart="@tui.id-card"
+          i18n="@@auth.login.submitWithCard"
+        >
+          Entrar con el carné universitario
+        </button>
+      </form>
+
+      <footer class="panel__footer">
+        <ul class="services">
+          <li>
+            <a
+              tuiIconButton
+              appearance="flat"
+              size="s"
+              iconStart="@tui.circle-help"
+              href="#"
+              i18n-aria-label="@@auth.login.helpLabel"
+              aria-label="Centro de ayuda"
+            ></a>
+          </li>
+          <li>
+            <a
+              tuiIconButton
+              appearance="flat"
+              size="s"
+              iconStart="@tui.shield-check"
+              href="#"
+              i18n-aria-label="@@auth.login.privacyLabel"
+              aria-label="Política de privacidad"
+            ></a>
+          </li>
+        </ul>
+
+        <p class="legal">
+          <span>© {{ currentYear }} {{ organizationName }}</span>
+          <span i18n="@@auth.login.legal">
+            Todos los derechos reservados. Acceso exclusivo para la comunidad universitaria.
+          </span>
+        </p>
+      </footer>
+    </div>
+  </section>
+</div>

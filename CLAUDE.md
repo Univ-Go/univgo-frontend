@@ -190,11 +190,45 @@ tema a una rama concreta del DOM existe la directiva `tuiTheme`.
 
 No hay que construir nada de esto a mano: usar lo que trae la librería.
 
-### Paleta de marca
+### Paleta de marca — Academic Kinetic
 
-Decidida y reutilizable: escala 50→950 con primario `#2544eb`. Vive en
-`src/app/core/theme/_univgo-theme.scss`, traducida a las variables de acento y de acción de Taiga
-para los temas claro y oscuro. Es el punto único que hay que tocar para retematizar.
+Todo el sistema visual vive en `src/app/core/theme/_univgo-theme.scss`: es el punto único que hay que
+tocar para retematizar. Contiene tres escalas 50→950, la tipografía, los radios, las alturas y las
+pocas variables de producto que Taiga no cubre.
+
+- **Marca (carmesí).** Primario `#7f0013` sobre `--tui-background-accent-1`; `#8e101c` hover,
+  `#560009` pressed. En oscuro se invierte a `#ffb3af` con texto `#410005`.
+- **Acento secundario (teal).** `#004441` en `--tui-background-accent-2` y `#00504c` en
+  `--tui-status-positive`. Carga "disponible / confirmado / progreso" para que un éxito nunca se
+  confunda con la marca ni con un error.
+- **Neutros cálidos.** Superficie base `#f8f9fa`, elevaciones en blanco, texto `#191c1d` /`#59413f`
+  /`#7a5f5d`. Llevan una traza del tono de marca para que los grises acompañen al rojo.
+- **Error naranja rojizo** (`#cc3300`) a propósito: un rojo puro sería indistinguible del acento.
+- **Sombras tintadas** con el rojo de marca en claro; negras en oscuro, donde el tinte no se ve.
+
+Los radios reescriben la escalera de Taiga a `xs 4 / s 8 / m 12 / l 16 / xl 24`, de modo que
+"botón = `--tui-radius-s`" y "card = `--tui-radius-l`" son literales. `--tui-height-m` sube a 48px:
+múltiplo de la unidad base de 8 y por encima del objetivo táctil mínimo.
+
+Las variables propias van prefijadas `--univgo-`, sólo para lo que Taiga no publica: escala de
+espaciado (`--univgo-space-*`), ancho máximo y gutter de layout, el tracking de titulares y
+`--univgo-border-control`.
+
+**Bordes: dos conceptos, no uno.** `--tui-border-normal` (0.18) y `--tui-border-hover` (0.32) son
+hairlines decorativos —separadores, divisiones de card— y se quedan por debajo del 3:1, igual que los
+valores por defecto de Taiga. Cuando el borde **es** la afordancia del control (el contorno de un
+input, el límite de un slot seleccionable) se usa `--univgo-border-control`: 4.26:1 sobre la página y
+4.49:1 sobre una card en claro, 4.27:1 en oscuro. Cumple WCAG 1.4.11 en ambas superficies y en ambos
+temas. No subir los hairlines globales para esto: ensucia todos los separadores por un problema que
+sólo tienen los controles.
+
+**Tipografía: Teachers** (OFL), variable 400–800, auto-hospedada en `public/fonts` con subsets latin
+y latin-ext (~39 kB). No se usa el CDN de Google: la ruta crítica queda sin conexiones a terceros.
+Como el `url()` apunta a `public/`, `angular.json` declara `externalDependencies: ["fonts/*"]` para
+que esbuild no intente resolverlo en tiempo de build; el fichero se sirve desde `<base>` y funciona
+igual bajo `/es/` y `/en/`. Taiga publica la escala tipográfica como variables pero no estiliza los
+encabezados semánticos: `styles.scss` mapea `h1..h6` a `--tui-typography-heading-*`, con `clamp()` en
+h1–h3 para que un nombre largo de facultad no rompa en móvil.
 
 ---
 
@@ -754,8 +788,9 @@ Cómo quedó montada la librería, que es lo que no conviene volver a deducir:
   reales: hoy el margen es headroom para construirlas, no una medida de nada.
 
 Lo que **no** cambió: arquitectura y capas, `AppError` con su mapeo y sus mensajes, `Logger`,
-`APP_CONFIG`, `PageMetadataStrategy`, la configuración de i18n, los valores de la paleta de marca,
-la configuración de pnpm y las reglas de calidad.
+`APP_CONFIG`, `PageMetadataStrategy`, la configuración de i18n, la configuración de pnpm y las reglas
+de calidad. La paleta sí cambió después: el azul del bootstrap dio paso a la identidad carmesí
+descrita en §5.
 
 Las cadenas de i18n se podaron con las vistas: quedan las 19 de `error.*`, que describen
 situaciones y no vistas. Las de `home.*`, `notFound.*`, `navigation.*`, `layout.*` y `footer.*` se

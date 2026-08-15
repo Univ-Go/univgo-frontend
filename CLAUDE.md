@@ -113,6 +113,16 @@ Paquetes: `@taiga-ui/core`, `@taiga-ui/cdk`, `@taiga-ui/kit`, `@taiga-ui/layout`
 `@taiga-ui/styles`, `@taiga-ui/i18n`. Todos **Apache-2.0** — sin licencia de pago, sin banner, sin
 restricción para instituciones educativas.
 
+### Basarse siempre en la documentación oficial
+
+**Toda decisión sobre el uso de la librería se apoya en <https://taiga-ui.dev>, no en memoria ni en
+analogías con otras librerías.** Antes de usar un componente, una directiva, un token de inyección o
+un mecanismo de tematización: consultar cómo lo documenta Taiga y seguirlo.
+
+Esto vale también para los estilos: se hace lo que recomienda la documentación, no lo que sería el
+equivalente en PrimeNG, Angular Material o Tailwind. Si una API no aparece documentada, verificarla
+contra los tipos de `node_modules/@taiga-ui/*` antes de usarla; no dar por hecha una firma.
+
 ---
 
 ## 4. Sistema de componentes — tres niveles
@@ -143,32 +153,48 @@ bordes, radios, sombras, tipografías, tamaños de fuente, breakpoints, z-index,
 Antes de crear un token nuevo: (1) buscar si ya existe uno equivalente, (2) reutilizarlo, (3) crear
 uno nuevo sólo si es realmente necesario. No duplicar valores equivalentes en distintos archivos.
 
-### Implementación en este proyecto
+### Sin Tailwind. El sistema de estilos es el de Taiga UI
 
-- **Tokens que no son color** (tipografía, radios, sombra, tamaños de layout, z-index) viven en el
-  bloque `@theme` de `src/styles.css`. Esto se conserva sin cambios.
-- **La paleta de marca** ya está decidida y es reutilizable tal cual (escala 50→950, primario
-  `#2544eb`). Está en el historial, en `src/app/core/theme/univgo-theme.preset.ts` del commit
-  `19eff2a`.
+**Tailwind sale del proyecto.** Nada de clases utilitarias. Los estilos se escriben en **SCSS**
+siguiendo el mecanismo que documenta Taiga UI, que es el único sistema de diseño del proyecto. Esto
+evita mantener dos fuentes de verdad y elimina la clase de bug donde una utilidad y un componente
+resuelven a colores distintos.
 
-### ⚠️ Decisión abierta: puente de color entre Taiga UI y Tailwind
+Los cuatro mecanismos oficiales, en orden de preferencia:
 
-Con PrimeNG el color se definía una sola vez y `tailwindcss-primeui` lo reexponía como utilidades de
-Tailwind, así que componentes y clases utilitarias no podían divergir. **Taiga UI tematiza con sus
-propias variables `--tui-*` y no existe ese puente.** Hay que reconstruir la garantía antes de
-escribir vistas, o el sistema de tokens se parte en dos.
+1. **Variables CSS globales** de los temas claro y oscuro. Es la vía principal para el color: se
+   sobrescriben las variables de la paleta de Taiga con los valores de marca. Referencia de nombres:
+   la `palette.less` de la librería y <https://taiga-ui.dev/colors>.
+2. **Mixins de LESS/SCSS de la librería** para construir apariencias nuevas, en lugar de replicar
+   estilos a mano.
+3. **Tokens de configuración e inyección de señales**, incluido `TUI_DARK_MODE` para el modo oscuro.
+4. **Sobrescritura de clases de estilo** sobre elementos o componentes, local o globalmente. Es el
+   último recurso, no el primero.
 
-La regla que debe seguir cumpliéndose es: **una única fuente de verdad para el color**. Opciones a
-evaluar en la primera sesión de migración:
+### Reglas
 
-1. Definir la paleta en `@theme` de Tailwind y mapear las `--tui-*` a esas variables.
-2. Definir la paleta como `--tui-*` y reexponerla en `@theme` mediante `@theme inline`.
+- **No inventar un sistema paralelo.** Antes de crear una variable propia, comprobar si Taiga ya
+  define el token: color, tipografía (<https://taiga-ui.dev/typography>), espaciado, radios y sombras
+  vienen cubiertos. Sólo se crean variables propias para conceptos que Taiga no tenga (por ejemplo,
+  anchos de layout específicos del producto), y viven en un único fichero.
+- **Nada de valores visuales quemados en los componentes.** Ni colores, ni tamaños, ni espaciados,
+  ni radios, ni sombras, ni z-index. Si puede pertenecer al sistema de diseño, es una variable.
+- **El color de marca se define una sola vez.** Retematizar para otra institución debe seguir siendo
+  cambiar ese punto único, nada más. Es lo que sostiene la preparación para multitenancy.
 
-La opción 2 imita lo que hacía `tailwindcss-primeui` y probablemente encaje mejor, porque deja a
-Taiga como dueño del token y a Tailwind como consumidor. **Decidir explícitamente y anotarlo aquí.**
+### Modo oscuro
 
-- **Modo oscuro:** `[data-theme="dark"]` en el elemento raíz, con la variante `dark` de Tailwind ya
-  configurada en `src/styles.css`. Falta enlazarlo al mecanismo de tema de Taiga. No existe toggle.
+`TUI_DARK_MODE` es un `WritableSignal<boolean>` inyectable, con método `reset()`. Se inicializa solo
+desde `localStorage` o desde `prefers-color-scheme`, y persiste los cambios manuales. Para aplicar un
+tema a una rama concreta del DOM existe la directiva `tuiTheme`.
+
+No hay que construir nada de esto a mano: usar lo que trae la librería.
+
+### Paleta de marca
+
+Decidida y reutilizable: escala 50→950 con primario `#2544eb`. Está en el historial, en
+`src/app/core/theme/univgo-theme.preset.ts` del commit `19eff2a`. Los valores sirven; el formato hay
+que traducirlo a variables de Taiga.
 
 ---
 
@@ -349,26 +375,32 @@ accesibilidad, responsive, duplicación, código muerto, nombres y separación d
 ### Auditorías de calidad
 
 La calidad debe ser suficiente para superar **SonarCloud** y **Lighthouse**. Revisar y corregir
-cuando corresponda: code smells, bugs detectables estáticamente, vulnerabilidades, duplicación,
-complejidad excesiva, mantenibilidad, cobertura, accesibilidad, rendimiento y SEO.
+cuando corresponda: code smells, bugs detectables estáticamente, duplicación, complejidad excesiva,
+mantenibilidad, cobertura, accesibilidad, rendimiento y SEO.
+
+Sonar seguirá marcando vulnerabilidades por su cuenta. No es obligatorio perseguirlas mientras la
+seguridad esté fuera de foco, pero tampoco se silencian: se anotan y se dejan para la revisión de
+seguridad posterior.
 
 **No introducir cambios para satisfacer una métrica de forma artificial.** Las métricas son
 consecuencia de una implementación correcta.
 
 ### Testing
 
-Las pruebas son **parte de la implementación**, no una actividad opcional posterior. Toda
-funcionalidad nueva incorpora el nivel de pruebas adecuado:
+**Alcance actual: sólo tests unitarios.** Lógica de negocio, casos de uso, servicios, utilidades y
+mapeos. Es lo único exigible para dar una funcionalidad por terminada.
 
-- **unit tests** para lógica de negocio, casos de uso, servicios y utilidades;
-- **pruebas de componente** para comportamientos e interacciones importantes de UI;
-- **pruebas de integración** cuando haya interacción relevante entre capas o adaptadores;
-- **end-to-end** para flujos críticos, especialmente la gestión de reservas.
+**Fuera de foco por ahora** (no implementar salvo petición explícita): end-to-end, pruebas de
+integración entre capas y pruebas de componente sistemáticas. Se retomarán cuando el flujo de
+reservas esté estable; el candidato natural para e2e es ese flujo.
+
+Los tests que **ya existen** se conservan y deben seguir pasando, incluidos los de componente
+(`app-header.spec.ts`) y el de integración de metadatos (`page-metadata.strategy.spec.ts`). Están
+escritos, pasan y cuestan poco: borrarlos sería perder trabajo, no reducir alcance.
 
 Los tests validan **comportamiento y resultados**, no detalles internos que puedan cambiar sin
 afectar el comportamiento esperado. **No crear tests artificiales sólo para subir cobertura.** Una
-funcionalidad no está terminada si introduce regresiones o deja sin cubrir escenarios importantes
-que puedan probarse razonablemente.
+funcionalidad no está terminada si introduce regresiones.
 
 ### Accesibilidad
 
@@ -382,18 +414,23 @@ semántico y no depender exclusivamente del color para transmitir información.
 Los componentes de Taiga UI deben configurarse correctamente para conservar su accesibilidad: usar
 una librería accesible no elimina la responsabilidad de implementarla bien.
 
-### Seguridad
+### Seguridad — fuera de foco, salvo tres invariantes
 
-El frontend **nunca** asume que una validación en el cliente basta para garantizar una regla de
-negocio o autorización: las validaciones críticas y permisos los garantiza el backend.
+La revisión sistemática de seguridad (modelado de amenazas, auditoría de dependencias, sanitización
+de entradas, política de almacenamiento) **queda fuera del foco actual**. Se retomará antes de
+exponer la aplicación a usuarios reales.
 
-No: exponer secretos, credenciales o API keys privadas; almacenar información sensible de forma
-insegura; confiar en datos del cliente como fuente de autoridad; insertar contenido no confiable sin
-sanitización; deshabilitar mecanismos de seguridad para resolver problemas de implementación;
-exponer información técnica innecesaria en errores, logs o respuestas visibles.
+Lo que sí sigue vigente, porque ya está implementado y hay tests que lo sostienen. Romperlo es una
+regresión, no una despriorización:
 
-Las entradas de usuario, APIs y fuentes externas se tratan como **datos no confiables**. Las
-dependencias se mantienen actualizadas y las vulnerabilidades relevantes se evalúan y corrigen.
+1. **No exponer secretos ni API keys privadas** en el frontend.
+2. **`AppError` no lleva `cause`.** Ningún payload crudo del servidor puede renderizarse por
+   accidente.
+3. **El interceptor registra `request.url` sin query string.** Las cadenas de consulta pueden llevar
+   tokens o datos personales.
+
+Y una premisa que no cuesta nada mantener: el frontend nunca asume que una validación en el cliente
+garantiza una regla de negocio o una autorización. Eso lo garantiza el backend.
 
 ### Observabilidad y diagnóstico
 
@@ -548,6 +585,7 @@ Antes de dar una tarea por terminada:
 - ¿La solución es más compleja de lo necesario?
 - ¿Los nombres son claros?
 - ¿Es mantenible?
+- ¿La lógica nueva tiene tests unitarios?
 - ¿Los cambios están validados?
 - ¿Funciona en desktop **y** mobile?
 - ¿Traté mobile como prioridad y no como adaptación posterior?
@@ -569,8 +607,8 @@ omitir la validación de los subagentes y sin exponer razonamientos internos:
 > **[UI & Component Agent]**: 1-2 oraciones sobre qué componente de Taiga UI se usa, o justificación
 > técnica de uno nuevo y su nivel.
 >
-> **[Design System Agent]**: 1-2 oraciones sobre tokens y/o clases de Tailwind usados, confirmando
-> que no se introducen valores hardcoded innecesarios.
+> **[Design System Agent]**: 1-2 oraciones sobre las variables y mixins de Taiga usados, confirmando
+> que no se introducen valores visuales hardcoded.
 >
 > **[I18n Agent]**: 1-2 oraciones sobre las keys necesarias, confirmando que no hay textos hardcoded.
 >
@@ -595,8 +633,8 @@ Contexto que no se deduce del código y conviene no volver a descubrir.
 
 ### Stack
 
-Angular 22.1.x · Taiga UI 5.19.0 · Tailwind CSS 4.3.3 · TypeScript 6.0 · Vitest 4 (jsdom) ·
-ESLint 9 + angular-eslint 22.
+Angular 22.1.x · Taiga UI 5.19.0 · SCSS · TypeScript 6.0 · Vitest 4 (jsdom) ·
+ESLint 9 + angular-eslint 22. **Sin Tailwind.**
 
 Compatibilidad verificada: `@taiga-ui/core` 5.19.0 declara `@angular/core >=19.0.0`, así que
 Angular 22 entra sin forzar peers.
@@ -652,25 +690,37 @@ No reintroducir PrimeNG sin resolver primero la licencia.
 
 ### Estado de la migración a Taiga UI
 
-El commit `19eff2a` es el último con PrimeNG funcionando y sirve de referencia para lo que hay que
-replicar. Pendiente al arrancar la migración:
+> ⚠️ **Las vistas actuales son desechables.** `home-page`, `not-found-page`, `app-header` y
+> `app-footer` se crearon como prueba mínima durante el bootstrap. **Se van a rehacer desde cero**
+> con la estructura y los colores reales. No inviertas esfuerzo en portarlas, adaptarlas ni
+> conservar su maquetación: bórralas y parte de la estructura real. Lo que sí se conserva es el
+> marcado semántico como criterio (landmarks, jerarquía de encabezados, skip link, `aria-label`),
+> no el HTML concreto.
 
-1. Desinstalar `primeng`, `@primeuix/themes`, `primeicons`, `tailwindcss-primeui`; instalar los
-   paquetes de Taiga.
-2. Resolver la **decisión abierta del puente de color** (ver §5). Es el punto de diseño más
-   importante y conviene cerrarlo antes de escribir vistas.
-3. Reimplementar por dentro `NotificationService` contra las alertas de Taiga, conservando su API.
-4. Sustituir `core/i18n/primeng-translation.ts` por la configuración de idioma de `@taiga-ui/i18n`.
-5. Reescribir `app-header` (Menubar), `app-footer`, `home-page` (Card) y `not-found-page` (Button)
-   con equivalentes de Taiga. Conservar el marcado semántico, el skip link y los `aria-label`.
-6. Revisar el stub de `matchMedia` en `src/test-setup.ts`: existe por los breakpoints de PrimeNG.
+El commit `19eff2a` es el último estado con PrimeNG funcionando, por si hace falta consultar cómo
+estaba resuelto algo. Pendiente:
+
+1. Desinstalar `primeng`, `@primeuix/themes`, `primeicons`, `tailwindcss-primeui`, `tailwindcss`,
+   `@tailwindcss/postcss` y `postcss`. Borrar `.postcssrc.json`. Instalar los paquetes de Taiga.
+2. Rehacer `src/styles.css` como SCSS con el mecanismo de tematización de Taiga (§5): sobrescritura
+   de variables de paleta para claro y oscuro, partiendo de los valores de marca.
+3. Enlazar el modo oscuro con `TUI_DARK_MODE` en lugar de `[data-theme="dark"]`.
+4. Reimplementar por dentro `NotificationService` contra las alertas de Taiga, conservando su API.
+5. Sustituir `core/i18n/primeng-translation.ts` por la configuración de idioma de `@taiga-ui/i18n`.
+6. Construir las vistas reales desde cero.
+7. Revisar el stub de `matchMedia` en `src/test-setup.ts`: existe por los breakpoints de PrimeNG.
    Puede seguir haciendo falta para Taiga, o sobrar. Comprobar antes de borrarlo.
-7. Recalibrar el budget del bundle con la nueva línea base. La de PrimeNG era ~691 kB en crudo /
+8. Recalibrar el budget del bundle con la nueva línea base. La de PrimeNG era ~691 kB en crudo /
    ~159 kB transferidos, con budget 750 kB warning / 900 kB error. **Medir y ajustar, no heredar.**
 
 Lo que **no** cambia y no hay que rehacer: arquitectura y capas, `AppError` con su mapeo y sus
-mensajes, `Logger`, `APP_CONFIG`, `PageMetadataStrategy`, el catálogo completo de 40 cadenas es/en,
-la paleta de marca, los tokens que no son color, la configuración de pnpm y las reglas de calidad.
+mensajes, `Logger`, `APP_CONFIG`, `PageMetadataStrategy`, la configuración de i18n y sus 40 cadenas
+es/en, los valores de la paleta de marca, la configuración de pnpm y las reglas de calidad.
+
+Las cadenas de i18n merecen una nota: las de `error.*` describen situaciones, no vistas, así que
+siguen sirviendo enteras. Las de `home.*` y `notFound.*` se revisarán cuando existan las vistas
+reales — sus keys pueden cambiar, pero el criterio de redacción (lenguaje natural, accionable, sin
+tecnicismos) se mantiene.
 
 ### Testing
 

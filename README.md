@@ -44,7 +44,7 @@ If a build ever fails because of this, add **that one package** to `onlyBuiltDep
 | `pnpm start`         | Dev server, source locale (`es`)                                                    |
 | `pnpm start:en`      | Dev server, English translation — use it to catch layout breaks from longer strings |
 | `pnpm build`         | Production build, emits `dist/univgo-frontend/browser/{es,en}`                      |
-| `pnpm test`          | Unit and component tests (Vitest + jsdom)                                           |
+| `pnpm test`          | Unit tests (Vitest + jsdom)                                                         |
 | `pnpm test:coverage` | Same, writing `coverage/univgo-frontend/lcov.info`                                  |
 | `pnpm lint`          | ESLint, including Angular template accessibility rules                              |
 | `pnpm format`        | Prettier                                                                            |
@@ -61,7 +61,7 @@ src/app/
     errors/      Error vocabulary, HTTP mapping, user-facing wording
     http/        Interceptors
     logging/     Logger port + console adapter
-    notifications/  Toast feedback, the single entry point for transient messages
+    notifications/  The single entry point for transient user messages
     seo/         Route-driven document metadata
     theme/       Theme configuration and brand palette
   layout/        Level 1: the application shell (header, footer, main layout)
@@ -77,6 +77,9 @@ src/app/
 Only `presentation/` exists under the current features, because neither of them has business rules
 yet. Add the inner layers when a feature actually gains them — not in advance.
 
+The views that currently live there (`home`, `not-found`, and the header/footer shell) are throwaway
+bootstrap placeholders and will be rebuilt from scratch with the real structure. Don't port them.
+
 ### Component levels
 
 1. **Global** (`layout/`, `shared/`) — used across features, no feature-specific logic.
@@ -88,17 +91,24 @@ equivalent, and say why in the component.
 
 ## Design tokens
 
-Non-colour tokens (font stack, radii, shadow, layout sizing, z-index) live in the `@theme` block of
-`src/styles.css`. Reach for an existing token before adding a new one, and avoid arbitrary values
-where a token exists.
+**There is no Tailwind.** Styles are written in SCSS using Taiga UI's own theming mechanisms, which
+are the single design system — keeping two of them is how a utility class and a component end up
+resolving to different colours.
 
-Colour must have **one** source of truth, so that components and Tailwind utility classes can never
-resolve to different values — that property is what makes retheming for another institution a
-configuration change. Taiga UI themes through its own `--tui-*` variables; see `CLAUDE.md` §5 for the
-open decision on how that palette and Tailwind's are bridged.
+In order of preference: override the **global CSS variables** for the light and dark themes (the
+main route for colour), use the library's **LESS/SCSS mixins** to build new appearances, reach for
+**configuration tokens and injectable signals** such as `TUI_DARK_MODE`, and only as a last resort
+**override style classes** locally or globally.
 
-Dark mode is driven by `[data-theme="dark"]` on the root element, matched by the Tailwind `dark`
-variant. No toggle ships yet.
+Check whether Taiga already defines a token before inventing one — colour, typography, spacing, radii
+and shadows are all covered. See <https://taiga-ui.dev/colors> and <https://taiga-ui.dev/typography>.
+Project-specific variables are for concepts Taiga does not cover, and live in one file.
+
+Colour must have **one** source of truth: retheming for another institution has to stay a
+single-point change, which is what keeps the multitenancy groundwork meaningful.
+
+Dark mode uses `TUI_DARK_MODE`, an injectable `WritableSignal<boolean>` that initialises from
+`localStorage` or `prefers-color-scheme` and persists manual changes. No toggle ships yet.
 
 ## Internationalisation
 
@@ -121,7 +131,7 @@ not survive translation. Keep the institution name in its own element instead.
 
 Technical failures never reach the interface. `httpErrorInterceptor` converts every failed request
 into an `AppError` carrying only a code and an optional support reference, logs the technical detail
-through the `Logger` port, and shows a translated toast. Callers that render a failure themselves
+through the `Logger` port, and shows a translated alert. Callers that render a failure themselves
 opt out per request:
 
 ```ts
@@ -152,8 +162,17 @@ the colour-bridge decision, which should be settled before building views.
 ## Quality gates
 
 - `pnpm lint` — includes `@angular-eslint` template accessibility rules.
-- `pnpm test` — behaviour-level tests; keep them off implementation details.
-- `pnpm build` — enforces the bundle budget (750 kB warning / 900 kB error on the initial
-  bundle; the current baseline is ~691 kB raw, ~159 kB transferred).
+- `pnpm test` — **unit tests only** for now. End-to-end, cross-layer integration and systematic
+  component tests are deliberately out of scope until the booking flow settles. Existing component
+  and integration specs are kept and must keep passing. Test behaviour, not implementation details.
+- `pnpm build` — enforces the bundle budget (750 kB warning / 900 kB error on the initial bundle).
+  The baseline behind those numbers was measured on PrimeNG; re-measure and recalibrate after the
+  Taiga UI migration.
+
+Security review (threat modelling, dependency auditing, input sanitisation) is out of scope for now
+and will be picked up before the application is exposed to real users. Three invariants stay in
+force regardless, because they are already implemented and covered by tests: no private keys in the
+frontend, `AppError` carries no `cause`, and the interceptor logs URLs without their query string.
+
 - `sonar-project.properties` is ready for SonarCloud; fill in `sonar.projectKey` and
   `sonar.organization` before the first analysis.

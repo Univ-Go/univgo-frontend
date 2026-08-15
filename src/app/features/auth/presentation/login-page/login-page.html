@@ -94,12 +94,14 @@
           <a tuiLink href="#" i18n="@@auth.login.forgotPassword">¿Olvidaste tu contraseña?</a>
         </div>
 
+        <!-- TEMPORARY: walks to the home view so the flow can be clicked through. -->
         <button
           tuiButton
           type="button"
           size="l"
           appearance="primary"
           iconEnd="@tui.log-in"
+          routerLink="/inicio"
           i18n="@@auth.login.submit"
         >
           Iniciar sesión
@@ -115,6 +117,7 @@
           size="l"
           appearance="outline"
           iconStart="@tui.id-card"
+          routerLink="/inicio"
           i18n="@@auth.login.submitWithCard"
         >
           Entrar con el carné universitario

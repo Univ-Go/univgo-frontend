@@ -1,12 +1,12 @@
 <header class="header">
-  <a class="logo" routerLink="/">
+  <a class="logo" routerLink="/inicio">
     <img src="images/UnivGo_logo.png" alt="UnivGo" width="1743" height="568" />
   </a>
 
   <nav class="nav" i18n-aria-label="@@navigation.mainLabel" aria-label="Navegación principal">
     <a
       tuiLink
-      routerLink="/"
+      routerLink="/inicio"
       routerLinkActive="nav__item--active"
       [routerLinkActiveOptions]="{ exact: true }"
       class="nav__item"
@@ -67,7 +67,14 @@
       Tu perfil
     </button>
 
-    <button tuiOption type="button" iconStart="@tui.log-out" i18n="@@navigation.signOut">
+    <!-- TEMPORARY: walks back to sign-in. Real sign-out clears the session first. -->
+    <button
+      tuiOption
+      type="button"
+      iconStart="@tui.log-out"
+      routerLink="/login"
+      i18n="@@navigation.signOut"
+    >
       Cerrar sesión
     </button>
   </tui-data-list>

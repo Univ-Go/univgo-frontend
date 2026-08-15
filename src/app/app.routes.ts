@@ -4,8 +4,16 @@ import type { Routes } from '@angular/router';
  * Every route declares `title` and `data.description`, which `PageMetadataStrategy` turns into
  * document metadata, so that no page can ship without a title. Sign-in sits outside the shell:
  * a navigation bar is meaningless before there is a session.
+ *
+ * TEMPORARY: the entry point redirects to sign-in and the mock buttons walk between the two views,
+ * so the flow can be clicked through. Real guards replace this once authentication exists.
  */
 export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login',
+  },
   {
     path: 'login',
     loadComponent: () =>
@@ -20,8 +28,7 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
       {
-        path: '',
-        pathMatch: 'full',
+        path: 'inicio',
         loadComponent: () =>
           import('./features/home/presentation/home-page/home-page').then((m) => m.HomePage),
         title: $localize`:@@home.pageTitle:Inicio`,

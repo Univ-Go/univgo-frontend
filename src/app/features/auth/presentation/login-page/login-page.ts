@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TuiButton, TuiCheckbox, TuiIcon, TuiInput, TuiLink, TuiTitle } from '@taiga-ui/core';
 import { TuiBadge, TuiPassword } from '@taiga-ui/kit';
 import { TuiForm } from '@taiga-ui/layout';
@@ -24,6 +25,7 @@ import { ThemeToggle } from '../../../../shared/theme-toggle/theme-toggle';
     TuiPassword,
     TuiTitle,
     LanguageSelector,
+    RouterLink,
     ThemeToggle,
   ],
   templateUrl: './login-page.html',

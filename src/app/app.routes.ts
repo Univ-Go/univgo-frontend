@@ -36,6 +36,17 @@ export const routes: Routes = [
           description: $localize`:@@home.pageDescription:Consulta tu próxima reserva y los espacios destacados del campus.`,
         },
       },
+      {
+        path: 'reservas',
+        loadComponent: () =>
+          import('./features/my-reservations/presentation/my-reservations-page/my-reservations-page').then(
+            (m) => m.MyReservationsPage,
+          ),
+        title: $localize`:@@reservations.pageTitle:Mis reservas`,
+        data: {
+          description: $localize`:@@reservations.pageDescription:Consulta, filtra y gestiona las reservas que has hecho en el campus.`,
+        },
+      },
     ],
   },
 ];

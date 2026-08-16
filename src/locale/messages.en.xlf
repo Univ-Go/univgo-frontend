@@ -263,8 +263,8 @@
         <target>Home</target>
       </trans-unit>
       <trans-unit id="navigation.reservations" datatype="html">
-        <source>Reservas</source>
-        <target>Bookings</target>
+        <source>Mis Reservas</source>
+        <target>My bookings</target>
       </trans-unit>
       <trans-unit id="navigation.notifications" datatype="html">
         <source>Notificaciones</source>
@@ -289,6 +289,78 @@
       <trans-unit id="navigation.signOut" datatype="html">
         <source>Cerrar sesión</source>
         <target>Sign out</target>
+      </trans-unit>
+      <trans-unit id="reservations.pageTitle" datatype="html">
+        <source>Mis reservas</source>
+        <target>My bookings</target>
+      </trans-unit>
+      <trans-unit id="reservations.pageDescription" datatype="html">
+        <source>Consulta, filtra y gestiona las reservas que has hecho en el campus.</source>
+        <target>Check, filter and manage the bookings you've made on campus.</target>
+      </trans-unit>
+      <trans-unit id="reservations.title" datatype="html">
+        <source>Mis reservas</source>
+        <target>My bookings</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.legend" datatype="html">
+        <source>Estado</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.upcoming" datatype="html">
+        <source>Próximas</source>
+        <target>Upcoming</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.ongoing" datatype="html">
+        <source>Actuales</source>
+        <target>Ongoing</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.past" datatype="html">
+        <source>Pasadas</source>
+        <target>Past</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.legend" datatype="html">
+        <source>Tipo de espacio</source>
+        <target>Space type</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.sports" datatype="html">
+        <source>Deportes</source>
+        <target>Sports</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.study" datatype="html">
+        <source>Estudio</source>
+        <target>Study</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.lab" datatype="html">
+        <source>Laboratorios</source>
+        <target>Labs</target>
+      </trans-unit>
+      <trans-unit id="reservations.card.status.upcoming" datatype="html">
+        <source> Próxima </source>
+        <target> Upcoming </target>
+      </trans-unit>
+      <trans-unit id="reservations.card.status.ongoing" datatype="html">
+        <source> En curso </source>
+        <target> Ongoing </target>
+      </trans-unit>
+      <trans-unit id="reservations.card.status.past" datatype="html">
+        <source> Pasada </source>
+        <target> Past </target>
+      </trans-unit>
+      <trans-unit id="reservations.card.cancel" datatype="html">
+        <source> Cancelar </source>
+        <target> Cancel </target>
+      </trans-unit>
+      <trans-unit id="reservations.card.viewQr" datatype="html">
+        <source> Ver QR </source>
+        <target> View QR </target>
+      </trans-unit>
+      <trans-unit id="reservations.empty.title" datatype="html">
+        <source>No hay reservas con estos filtros</source>
+        <target>No bookings match these filters</target>
+      </trans-unit>
+      <trans-unit id="reservations.empty.description" datatype="html">
+        <source> Prueba a cambiar los filtros para ver otras reservas. </source>
+        <target> Try changing the filters to see other bookings. </target>
       </trans-unit>
     </body>
   </file>

@@ -13,8 +13,8 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
  * which is what put a dark frame and rounded corners around our content. The bar is plain semantic
  * markup instead, and every control inside it is still a Taiga component.
  *
- * Only routes that exist are links: "Reservas" is a button until its view exists, because a
- * `routerLink` to a missing route fails the whole navigation.
+ * Only routes that exist are links: a `routerLink` to a missing route fails the whole navigation,
+ * so a nav item stays a plain button until its view ships.
  */
 @Component({
   selector: 'app-header',

@@ -1,0 +1,141 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-s);
+}
+
+.filters__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+  min-inline-size: 12rem;
+  margin: 0;
+  padding: var(--univgo-space-m);
+  border: none;
+
+  legend {
+    padding: 0;
+    padding-block-end: var(--univgo-space-xs);
+    color: var(--tui-text-secondary);
+    font: var(--tui-typography-ui-s);
+  }
+
+  label[tuiBlock] {
+    display: flex;
+    align-items: center;
+    gap: var(--univgo-space-xs);
+    inline-size: auto;
+  }
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+}
+
+// Same layout as `.spaces` on the home view: a grid that stretches every item so cards line up
+// whatever the length of a name.
+.reservations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--univgo-space-l);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reservations__item {
+  display: flex;
+}
+
+.reservation-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  inline-size: 100%;
+}
+
+.reservation-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.reservation-card__icon {
+  display: grid;
+  place-items: center;
+  inline-size: var(--tui-height-m);
+  block-size: var(--tui-height-m);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-neutral-1);
+}
+
+.reservation-card__name {
+  margin: 0;
+  margin-inline-end: auto;
+  font: var(--tui-typography-ui-l);
+}
+
+.reservation-card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-xl);
+  margin: 0;
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+}
+
+.reservation-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-s);
+}
+
+.reservation-card__detail {
+  margin-block-start: auto;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  padding: var(--univgo-space-3xl) var(--univgo-space-l);
+  border: 1px dashed var(--tui-border-normal);
+  border-radius: var(--tui-radius-l);
+  color: var(--tui-text-secondary);
+  text-align: center;
+
+  tui-icon {
+    font-size: 2rem;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--tui-text-primary);
+    font: var(--tui-typography-ui-l);
+  }
+
+  p {
+    margin: 0;
+    font: var(--tui-typography-body-s);
+  }
+}

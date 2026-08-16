@@ -13,9 +13,15 @@
       i18n="@@navigation.home"
       >Inicio</a
     >
-    <button tuiLink type="button" class="nav__item" i18n="@@navigation.reservations">
-      Reservas
-    </button>
+    <a
+      tuiLink
+      routerLink="/reservas"
+      routerLinkActive="nav__item--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="nav__item"
+      i18n="@@navigation.reservations"
+      >Mis Reservas</a
+    >
   </nav>
 
   <div class="actions">

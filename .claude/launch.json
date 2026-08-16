@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "univgo-dev",
+      "url": "http://localhost:4200",
+      "port": 4200
+    }
+  ]
+}

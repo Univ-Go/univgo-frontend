@@ -39,15 +39,28 @@
   flex-direction: column;
 }
 
-// Same layout as `.spaces` on the home view: a grid that stretches every item so cards line up
-// whatever the length of a name.
+// Mobile-first: one column by default, stepping up to fixed column counts as the viewport grows.
+// Explicit `repeat(n, 1fr)` (not `auto-fit`) so the grid always reads as a deliberate 2×3 layout
+// on desktop instead of however many cards happen to fit.
 .reservations {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--univgo-space-l);
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .reservations {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .reservations {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .reservations__item {
@@ -59,6 +72,38 @@
   flex-direction: column;
   gap: var(--univgo-space-m);
   inline-size: 100%;
+  transition:
+    box-shadow var(--tui-duration),
+    transform var(--tui-duration);
+
+  // The whole card signals "this leads somewhere" on hover/focus, the same lift `.space` uses on
+  // the home view — without it the only clickable-looking thing was a plain text link.
+  &:hover,
+  &:focus-within {
+    box-shadow:
+      inset 0 0 0 1px var(--tui-border-hover),
+      var(--tui-shadow-medium-hover);
+    transform: translateY(-2px);
+  }
+}
+
+// Provisional space photo: same brand-plate placeholder as `.space__media` on the home view, kept
+// to a single mechanism instead of a second one-off for this card.
+.reservation-card__media {
+  display: flex;
+  align-items: flex-end;
+  padding: var(--univgo-space-s);
+  border-radius: var(--tui-radius-m);
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
+    var(--univgo-brand-surface);
+  aspect-ratio: 16 / 9;
+}
+
+.reservation-card__mark {
+  color: var(--univgo-on-brand-surface);
+  font-size: 2rem;
+  opacity: 0.9;
 }
 
 .reservation-card__header {
@@ -66,15 +111,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--univgo-space-m);
-}
-
-.reservation-card__icon {
-  display: grid;
-  place-items: center;
-  inline-size: var(--tui-height-m);
-  block-size: var(--tui-height-m);
-  border-radius: var(--tui-radius-m);
-  background: var(--tui-background-neutral-1);
 }
 
 .reservation-card__name {
@@ -103,14 +139,32 @@
   font: var(--tui-typography-ui-s);
 }
 
+// Two related actions read better as one balanced bar than as two loose buttons on the left, and
+// it doubles as a wider, easier touch target on mobile.
 .reservation-card__actions {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--univgo-space-s);
+
+  > [tuiButton] {
+    flex: 1;
+  }
 }
 
+// A plain-coloured link is not enough of an affordance on its own (WCAG 1.4.1: colour cannot be
+// the only cue) — brand crimson and body text are both dark enough to read alike in light theme.
+// A pill background gives it a second, colour-independent cue (shape); the underline Taiga already
+// shows on hover/focus is left untouched.
 .reservation-card__detail {
   margin-block-start: auto;
+  align-self: flex-start;
+  padding: var(--univgo-space-xs) var(--univgo-space-m);
+  border-radius: var(--tui-radius-s);
+  background: var(--tui-background-neutral-1);
+  transition: background var(--tui-duration);
+
+  &:hover {
+    background: var(--tui-background-neutral-1-hover);
+  }
 }
 
 .empty-state {

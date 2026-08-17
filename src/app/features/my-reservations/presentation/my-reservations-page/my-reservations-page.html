@@ -26,11 +26,23 @@
     i18n="@@reservations.filters.category.legend"
     >Tipo de espacio</button
   >
+
+  <button
+    tuiButton
+    type="button"
+    appearance="outline"
+    size="m"
+    iconEnd="@tui.chevron-down"
+    class="filters__trigger"
+    [tuiDropdown]="datePanel"
+    [(tuiDropdownOpen)]="dateFilterOpen"
+    i18n="@@reservations.filters.date.legend"
+    >Fecha</button
+  >
 </section>
 
 <ng-template #statusPanel>
   <fieldset class="filters__panel">
-    <legend i18n="@@reservations.filters.status.legend">Estado</legend>
 
     <label tuiBlock>
       <input
@@ -66,8 +78,6 @@
 
 <ng-template #categoryPanel>
   <fieldset class="filters__panel">
-    <legend i18n="@@reservations.filters.category.legend">Tipo de espacio</legend>
-
     <label tuiBlock>
       <input
         type="checkbox"
@@ -100,17 +110,41 @@
   </fieldset>
 </ng-template>
 
+<ng-template #datePanel>
+  <fieldset class="filters__panel filters__panel--date">
+
+    <tui-calendar-range [value]="selectedRange()" (valueChange)="setSelectedRange($event)" />
+
+    @if (selectedRange()) {
+      <button
+        tuiLink
+        type="button"
+        (click)="setSelectedRange(null)"
+        i18n="@@reservations.filters.date.clear"
+      >
+        Quitar filtro
+      </button>
+    }
+  </fieldset>
+</ng-template>
+
 <section class="results">
   @if (pagedReservations().length > 0) {
     <ul class="reservations">
       @for (reservation of pagedReservations(); track reservation.id) {
         <li class="reservations__item">
           <article tuiCardLarge tuiSurface tuiAppearance="outline" class="reservation-card">
-            <header class="reservation-card__header">
-              <span class="reservation-card__icon" aria-hidden="true">
-                <tui-icon [icon]="reservation.icon" />
-              </span>
+            <!-- Provisional media slot: fills with the brand plate until real space photos exist,
+                 same placeholder used for "Espacios destacados" on the home view. -->
+            <div class="reservation-card__media">
+              <tui-icon
+                class="reservation-card__mark"
+                [icon]="reservation.icon"
+                aria-hidden="true"
+              />
+            </div>
 
+            <header class="reservation-card__header">
               <h3 class="reservation-card__name">{{ reservation.spaceName }}</h3>
 
               @switch (reservation.status) {
@@ -119,6 +153,7 @@
                     tuiBadge
                     appearance="positive"
                     size="m"
+                    iconStart="@tui.circle-check"
                     i18n="@@reservations.card.status.upcoming"
                   >
                     Próxima
@@ -129,6 +164,7 @@
                     tuiBadge
                     appearance="warning"
                     size="m"
+                    iconStart="@tui.loader-circle"
                     i18n="@@reservations.card.status.ongoing"
                   >
                     En curso
@@ -139,6 +175,7 @@
                     tuiBadge
                     appearance="neutral"
                     size="m"
+                    iconStart="@tui.history"
                     i18n="@@reservations.card.status.past"
                   >
                     Pasada
@@ -150,7 +187,11 @@
             <dl class="reservation-card__facts">
               <div class="fact">
                 <dt i18n="@@home.factDate">Fecha</dt>
-                <dd><tui-icon icon="@tui.calendar" aria-hidden="true" />{{ reservation.date }}</dd>
+                <dd>
+                  <tui-icon icon="@tui.calendar" aria-hidden="true" />{{
+                    reservation.date | date: 'd MMM'
+                  }}
+                </dd>
               </div>
               <div class="fact">
                 <dt i18n="@@home.factTime">Horario</dt>
@@ -165,7 +206,7 @@
                 tuiButton
                 type="button"
                 size="m"
-                appearance="outline"
+                appearance="flat"
                 iconStart="@tui.ban"
                 i18n="@@reservations.card.cancel"
               >
@@ -175,7 +216,7 @@
                 tuiButton
                 type="button"
                 size="m"
-                appearance="outline"
+                appearance="primary"
                 iconStart="@tui.qr-code"
                 i18n="@@reservations.card.viewQr"
               >

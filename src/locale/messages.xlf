@@ -346,7 +346,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">156,157</context>
+          <context context-type="linenumber">201,202</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.factDate" datatype="html">
@@ -357,7 +357,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">152,153</context>
+          <context context-type="linenumber">193,195</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.viewDetails" datatype="html">
@@ -368,7 +368,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">195,197</context>
+          <context context-type="linenumber">240,242</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.featuredSpaces" datatype="html">
@@ -428,109 +428,127 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">33,37</context>
+          <context context-type="linenumber">46,50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.category.legend" datatype="html">
         <source>Tipo de espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">27,31</context>
+          <context context-type="linenumber">27,32</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">69,73</context>
+          <context context-type="linenumber">82,86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.date.legend" datatype="html">
+        <source>Fecha</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
+          <context context-type="linenumber">40,44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
+          <context context-type="linenumber">118,120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.status.upcoming" datatype="html">
         <source>Próximas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">42,46</context>
+          <context context-type="linenumber">55,59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.status.ongoing" datatype="html">
         <source>Actuales</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">52,56</context>
+          <context context-type="linenumber">65,69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.status.past" datatype="html">
         <source>Pasadas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">62,65</context>
+          <context context-type="linenumber">75,78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.category.sports" datatype="html">
         <source>Deportes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">78,82</context>
+          <context context-type="linenumber">91,95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.category.study" datatype="html">
         <source>Estudio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">88,92</context>
+          <context context-type="linenumber">101,105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.category.lab" datatype="html">
         <source>Laboratorios</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">98,101</context>
+          <context context-type="linenumber">111,114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.date.clear" datatype="html">
+        <source> Quitar filtro </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
+          <context context-type="linenumber">129,133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.status.upcoming" datatype="html">
         <source> Próxima </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">124,126</context>
+          <context context-type="linenumber">163,165</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.status.ongoing" datatype="html">
         <source> En curso </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">134,136</context>
+          <context context-type="linenumber">174,176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.status.past" datatype="html">
         <source> Pasada </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">144,145</context>
+          <context context-type="linenumber">185,186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.cancel" datatype="html">
         <source> Cancelar </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">172,173</context>
+          <context context-type="linenumber">217,218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.viewQr" datatype="html">
         <source> Ver QR </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">182,183</context>
+          <context context-type="linenumber">227,228</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.empty.title" datatype="html">
         <source>No hay reservas con estos filtros</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">204,205</context>
+          <context context-type="linenumber">249,250</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.empty.description" datatype="html">
         <source> Prueba a cambiar los filtros para ver otras reservas. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">206,211</context>
+          <context context-type="linenumber">251,256</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footer.rights" datatype="html">

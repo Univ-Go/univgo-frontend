@@ -334,6 +334,14 @@
         <source>Laboratorios</source>
         <target>Labs</target>
       </trans-unit>
+      <trans-unit id="reservations.filters.date.legend" datatype="html">
+        <source>Fecha</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.date.clear" datatype="html">
+        <source> Quitar filtro </source>
+        <target> Clear filter </target>
+      </trans-unit>
       <trans-unit id="reservations.card.status.upcoming" datatype="html">
         <source> Próxima </source>
         <target> Upcoming </target>

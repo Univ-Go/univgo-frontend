@@ -1,0 +1,35 @@
+@switch (status()) {
+  @case ('upcoming') {
+    <span
+      tuiBadge
+      appearance="positive"
+      [size]="size()"
+      iconStart="@tui.circle-check"
+      i18n="@@reservations.card.status.upcoming"
+    >
+      Próxima
+    </span>
+  }
+  @case ('ongoing') {
+    <span
+      tuiBadge
+      appearance="warning"
+      [size]="size()"
+      iconStart="@tui.loader-circle"
+      i18n="@@reservations.card.status.ongoing"
+    >
+      En curso
+    </span>
+  }
+  @case ('past') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.history"
+      i18n="@@reservations.card.status.past"
+    >
+      Pasada
+    </span>
+  }
+}

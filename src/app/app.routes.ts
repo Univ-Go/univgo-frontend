@@ -47,6 +47,17 @@ export const routes: Routes = [
           description: $localize`:@@reservations.pageDescription:Consulta, filtra y gestiona las reservas que has hecho en el campus.`,
         },
       },
+      {
+        path: 'reservations/:id',
+        loadComponent: () =>
+          import(
+            './features/my-reservations/presentation/reservation-detail-page/reservation-detail-page'
+          ).then((m) => m.ReservationDetailPage),
+        title: $localize`:@@reservations.detail.pageTitle:Detalle de la reserva`,
+        data: {
+          description: $localize`:@@reservations.detail.pageDescription:Consulta el pase, el horario, la ubicación y las normas de tu reserva.`,
+        },
+      },
     ],
   },
 ];

@@ -1,0 +1,230 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+.back-link {
+  align-self: flex-start;
+}
+
+// Title sits above the photo, not inside it, so the page reads name → status → visual → detail,
+// the same order a person scans a booking confirmation in.
+.detail__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--univgo-space-m);
+}
+
+.detail__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.detail__name {
+  margin: 0;
+}
+
+// Same brand-plate placeholder as the reservation card and the home view's featured spaces, kept
+// to a single mechanism instead of a one-off for the hero.
+.detail__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tui-radius-l);
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
+    var(--univgo-brand-surface);
+  aspect-ratio: 21 / 9;
+}
+
+.detail__mark {
+  color: var(--univgo-on-brand-surface);
+  font-size: 3rem;
+  opacity: 0.9;
+}
+
+// Mobile-first: photo, pass, details and rules stack in reading order. From desktop up, the grid
+// becomes two matched columns: the photo sits above the rules on the wide left, the pass sits
+// above the details on the narrow right — the pass and the details card end up the same width
+// because they share that one column.
+.detail__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-l);
+}
+
+@media (min-width: 64rem) {
+  .detail__content {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+
+  .detail__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .pass-card {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  // Both share row 2, so stretching them (the container default is `start`, for the photo/pass
+  // row above) makes each match the taller of the two instead of hugging its own content.
+  .rules-card,
+  .facts-card {
+    grid-row: 2;
+    align-self: stretch;
+  }
+
+  .rules-card {
+    grid-column: 1;
+  }
+
+  .facts-card {
+    grid-column: 2;
+  }
+}
+
+.pass-card,
+.facts-card,
+.rules-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+
+  h2 {
+    margin: 0;
+  }
+
+  // Taiga's `tuiCardLarge` gives its last child `margin-block-start: auto`, meant to pin a
+  // trailing action to the bottom of the card. Our stretched rules card has no such action —
+  // its list should start right after the title, not float in the middle — so that gets undone.
+  > :last-child {
+    margin-block-start: 0;
+  }
+}
+
+.pass-card {
+  align-items: center;
+  text-align: center;
+}
+
+// Visual mock for the scannable pass: a dashed plate is the same "this is a placeholder, not a
+// generated code" cue the media placeholders already use, just square instead of a photo frame.
+.pass-card__code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  inline-size: 10rem;
+  aspect-ratio: 1;
+  border: 1px dashed var(--tui-border-normal);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-neutral-1);
+
+  tui-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--tui-text-secondary);
+    font-size: 3.5rem;
+  }
+}
+
+.pass-card__id {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+
+  code {
+    padding: var(--univgo-space-xs) var(--univgo-space-s);
+    border-radius: var(--tui-radius-s);
+    background: var(--tui-background-neutral-1);
+    color: var(--tui-text-primary);
+    font-family: monospace;
+  }
+}
+
+// One column throughout: the card shares its column with the pass card, which stays narrow at
+// every breakpoint, so there is never room for the facts to sit side by side.
+.facts-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  margin: 0;
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+}
+
+// `flex: 1` plus `space-between` only does something once `.rules-card` is stretched taller than
+// its content (matching the details card next to it): the rules then spread across the extra
+// height instead of leaving it as one gap at the bottom.
+.rules-card__list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--univgo-space-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--univgo-space-s);
+    font: var(--tui-typography-body-s);
+  }
+
+  tui-icon {
+    flex-shrink: 0;
+    margin-block-start: 0.15em;
+    color: var(--tui-text-secondary);
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  padding: var(--univgo-space-3xl) var(--univgo-space-l);
+  border: 1px dashed var(--tui-border-normal);
+  border-radius: var(--tui-radius-l);
+  color: var(--tui-text-secondary);
+  text-align: center;
+
+  tui-icon {
+    font-size: 2rem;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--tui-text-primary);
+    font: var(--tui-typography-ui-l);
+  }
+
+  p {
+    margin: 0;
+    font: var(--tui-typography-body-s);
+  }
+}

@@ -1,19 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon, TuiLink } from '@taiga-ui/core';
-import { TuiBadge } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-import type { Reservation, SpaceCategory } from '../../domain/reservation';
-
-/**
- * Which icon stands for a category is presentation, not domain, so the map lives here instead of
- * travelling with the reservation itself.
- */
-const CATEGORY_ICONS: Readonly<Record<SpaceCategory, string>> = {
-  sports: '@tui.volleyball',
-  study: '@tui.book-open',
-  lab: '@tui.flask-conical',
-};
+import type { Reservation } from '../../domain/reservation';
+import { categoryIcon } from '../category-icon';
+import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
 
 /**
  * Feature-level card: every view that lists reservations renders the same summary, so the status
@@ -28,8 +20,9 @@ const CATEGORY_ICONS: Readonly<Record<SpaceCategory, string>> = {
   selector: 'app-reservation-card',
   imports: [
     DatePipe,
+    ReservationStatusBadge,
+    RouterLink,
     TuiAppearance,
-    TuiBadge,
     TuiButton,
     TuiCardLarge,
     TuiIcon,
@@ -43,5 +36,5 @@ const CATEGORY_ICONS: Readonly<Record<SpaceCategory, string>> = {
 export class ReservationCard {
   public readonly reservation = input.required<Reservation>();
 
-  protected readonly icon = computed(() => CATEGORY_ICONS[this.reservation().category]);
+  protected readonly icon = computed(() => categoryIcon(this.reservation().category));
 }

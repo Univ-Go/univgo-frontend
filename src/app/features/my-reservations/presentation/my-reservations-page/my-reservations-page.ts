@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
 import { TuiButton, TuiCheckbox, TuiDropdown, TuiIcon, TuiLink } from '@taiga-ui/core';
 import { TuiBlock, TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
-import type { Reservation, ReservationStatus, SpaceCategory } from '../../domain/reservation';
+import type { ReservationStatus, SpaceCategory } from '../../domain/reservation';
+import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
 import { ReservationCard } from '../reservation-card/reservation-card';
 
 const RESERVATIONS_PER_PAGE = 6;
@@ -24,11 +25,12 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
 }
 
 /**
- * Visual mock: layout and component inventory are final, the data is not. The sample reservations
- * below are the feature's only hardcoded source — they move to a use case once the booking API
- * exists. Filtering and pagination run as real client-side logic over that sample; it is not a
- * simulation of a backend. The view owns filtering, paging and the empty state; rendering one
- * reservation belongs to `ReservationCard`.
+ * Visual mock: layout and component inventory are final, the data is not. `MOCK_RESERVATIONS` is
+ * the feature's only hardcoded source, shared with the detail view so both read the same
+ * reservation by id — it moves to a use case behind a domain port once the booking API exists.
+ * Filtering and pagination run as real client-side logic over that sample; it is not a simulation
+ * of a backend. The view owns filtering, paging and the empty state; rendering one reservation
+ * belongs to `ReservationCard`.
  *
  * `FormsModule` is only here for `[ngModel]` on the status/category checkboxes: `TuiCheckbox`
  * disables itself whenever it has no `NgControl` attached, so a plain `[checked]`/`(change)` pair
@@ -58,56 +60,7 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyReservationsPage {
-  protected readonly reservations: readonly Reservation[] = [
-    {
-      id: 'court-a-oct24',
-      spaceName: 'Cancha de Básquetbol A',
-      date: new Date(2026, 9, 24),
-      time: '14:00 – 16:00',
-      status: 'upcoming',
-      category: 'sports',
-    },
-    {
-      id: 'study-room-3-mar18',
-      spaceName: 'Sala de Estudio Grupal 3',
-      date: new Date(2026, 2, 18),
-      time: '09:00 – 11:00',
-      status: 'past',
-      category: 'study',
-    },
-    {
-      id: 'lab-chemistry-2-aug16',
-      spaceName: 'Laboratorio de Química 2',
-      date: new Date(2026, 7, 16),
-      time: '15:00 – 17:00',
-      status: 'ongoing',
-      category: 'lab',
-    },
-    {
-      id: 'court-tennis-b-feb2',
-      spaceName: 'Cancha de Tenis B',
-      date: new Date(2026, 1, 2),
-      time: '08:00 – 09:00',
-      status: 'past',
-      category: 'sports',
-    },
-    {
-      id: 'reading-room-sept30',
-      spaceName: 'Sala de Lectura Silenciosa',
-      date: new Date(2026, 8, 30),
-      time: '10:00 – 12:00',
-      status: 'upcoming',
-      category: 'study',
-    },
-    {
-      id: 'lab-physics-aug16',
-      spaceName: 'Laboratorio de Física',
-      date: new Date(2026, 7, 16),
-      time: '11:00 – 13:00',
-      status: 'ongoing',
-      category: 'lab',
-    },
-  ];
+  protected readonly reservations = MOCK_RESERVATIONS;
 
   protected readonly selectedStatuses = signal<ReadonlySet<ReservationStatus>>(
     new Set(ALL_STATUSES),

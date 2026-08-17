@@ -1,6 +1,11 @@
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { type ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { TitleStrategy, provideRouter, withInMemoryScrolling } from '@angular/router';
+import {
+  TitleStrategy,
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 import { provideTaiga, tuiCheckboxOptionsProvider } from '@taiga-ui/core';
 import { APP_CONFIG } from './core/config/app-config';
 import { defaultAppConfig } from './core/config/default-app-config';
@@ -16,6 +21,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
+      // Binds route params directly to component inputs (e.g. the detail view's `id`), so a view
+      // does not need to inject `ActivatedRoute` just to read one param.
+      withComponentInputBinding(),
     ),
     provideHttpClient(withFetch(), withInterceptors([httpErrorInterceptor])),
     // Supplies the event plugins the library's own templates rely on and mirrors `TUI_DARK_MODE`

@@ -370,6 +370,82 @@
         <source> Prueba a cambiar los filtros para ver otras reservas. </source>
         <target> Try changing the filters to see other bookings. </target>
       </trans-unit>
+      <trans-unit id="reservations.detail.pageTitle" datatype="html">
+        <source>Detalle de la reserva</source>
+        <target>Booking details</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.pageDescription" datatype="html">
+        <source>Consulta el pase, el horario, la ubicación y las normas de tu reserva.</source>
+        <target>Check your pass, schedule, location and the rules for your booking.</target>
+      </trans-unit>
+      <trans-unit id="common.back" datatype="html">
+        <source>Volver</source>
+        <target>Back</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.pass.title" datatype="html">
+        <source>Pase de reserva</source>
+        <target>Booking pass</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.pass.idLabel" datatype="html">
+        <source>Código</source>
+        <target>Code</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.facts.title" datatype="html">
+        <source>Detalles de la reserva</source>
+        <target>Booking details</target>
+      </trans-unit>
+      <trans-unit id="reservation.factLocation" datatype="html">
+        <source>Ubicación</source>
+        <target>Location</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.rules.title" datatype="html">
+        <source>Normas del espacio</source>
+        <target>Space rules</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.notFound.title" datatype="html">
+        <source>Reserva no encontrada</source>
+        <target>Booking not found</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.notFound.description" datatype="html">
+        <source> Puede que el enlace sea incorrecto o que la reserva ya no exista. </source>
+        <target> The link may be wrong, or the booking may no longer exist. </target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.sports.gear" datatype="html">
+        <source>Usa calzado deportivo adecuado para la superficie de la cancha.</source>
+        <target>Wear sports shoes suited to the court surface.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.sports.capacity" datatype="html">
+        <source>Máximo 10 personas por reserva.</source>
+        <target>Maximum 10 people per booking.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.sports.late" datatype="html">
+        <source>Si llegas con más de 10 minutos de retraso, la reserva se libera.</source>
+        <target>If you arrive more than 10 minutes late, the booking is released.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.study.volume" datatype="html">
+        <source>Mantén un volumen bajo para no interrumpir a otros grupos.</source>
+        <target>Keep your voice down so you don't disturb other groups.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.study.food" datatype="html">
+        <source>No se permite comida ni bebida dentro de la sala.</source>
+        <target>Food and drinks are not allowed inside the room.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.study.tidy" datatype="html">
+        <source>Deja el mobiliario en su posición original al terminar.</source>
+        <target>Leave the furniture in its original position when you finish.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.lab.protection" datatype="html">
+        <source>Usa bata y gafas de protección durante toda la sesión.</source>
+        <target>Wear a lab coat and safety glasses for the whole session.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.lab.supervision" datatype="html">
+        <source>No manipules equipos sin la supervisión indicada.</source>
+        <target>Do not operate equipment without the required supervision.</target>
+      </trans-unit>
+      <trans-unit id="reservations.rules.lab.incident" datatype="html">
+        <source>Reporta cualquier incidente al encargado del laboratorio de inmediato.</source>
+        <target>Report any incident to the lab supervisor immediately.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

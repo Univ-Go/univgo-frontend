@@ -8,41 +8,7 @@
   <header class="card__header">
     <h3 class="card__name">{{ reservation().spaceName }}</h3>
 
-    @switch (reservation().status) {
-      @case ('upcoming') {
-        <span
-          tuiBadge
-          appearance="positive"
-          size="m"
-          iconStart="@tui.circle-check"
-          i18n="@@reservations.card.status.upcoming"
-        >
-          Próxima
-        </span>
-      }
-      @case ('ongoing') {
-        <span
-          tuiBadge
-          appearance="warning"
-          size="m"
-          iconStart="@tui.loader-circle"
-          i18n="@@reservations.card.status.ongoing"
-        >
-          En curso
-        </span>
-      }
-      @case ('past') {
-        <span
-          tuiBadge
-          appearance="neutral"
-          size="m"
-          iconStart="@tui.history"
-          i18n="@@reservations.card.status.past"
-        >
-          Pasada
-        </span>
-      }
-    }
+    <app-reservation-status-badge [status]="reservation().status" />
   </header>
 
   <dl class="card__facts">
@@ -81,10 +47,12 @@
     </button>
   </div>
 
-  <!-- Placeholder target: the reservation detail view is a separate feature, not built yet. The
-       link communicates that the card leads somewhere without wiring a route that doesn't exist —
-       same pattern as "Ver detalles" on the home view. -->
-  <a tuiLink href="#" iconEnd="@tui.arrow-right" class="card__detail" i18n="@@common.viewDetails"
+  <a
+    tuiLink
+    [routerLink]="['/reservations', reservation().id]"
+    iconEnd="@tui.arrow-right"
+    class="card__detail"
+    i18n="@@common.viewDetails"
     >Ver detalles</a
   >
 </article>

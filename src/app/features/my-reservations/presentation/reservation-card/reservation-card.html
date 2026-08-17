@@ -1,0 +1,58 @@
+<article tuiCardLarge tuiSurface tuiAppearance="outline" class="card">
+  <!-- Provisional media slot: fills with the brand plate until real space photos exist,
+       same placeholder used for "Espacios destacados" on the home view. -->
+  <div class="card__media">
+    <tui-icon class="card__mark" [icon]="icon()" aria-hidden="true" />
+  </div>
+
+  <header class="card__header">
+    <h3 class="card__name">{{ reservation().spaceName }}</h3>
+
+    <app-reservation-status-badge [status]="reservation().status" />
+  </header>
+
+  <dl class="card__facts">
+    <div class="fact">
+      <dt i18n="@@reservation.factDate">Fecha</dt>
+      <dd>
+        <tui-icon icon="@tui.calendar" aria-hidden="true" />{{ reservation().date | date: 'd MMM' }}
+      </dd>
+    </div>
+    <div class="fact">
+      <dt i18n="@@reservation.factTime">Horario</dt>
+      <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ reservation().time }}</dd>
+    </div>
+  </dl>
+
+  <div class="card__actions">
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline-destructive"
+      iconStart="@tui.ban"
+      i18n="@@reservations.card.cancel"
+    >
+      Cancelar
+    </button>
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="accent"
+      iconStart="@tui.qr-code"
+      i18n="@@reservations.card.viewQr"
+    >
+      Ver QR
+    </button>
+  </div>
+
+  <a
+    tuiLink
+    [routerLink]="['/reservations', reservation().id]"
+    iconEnd="@tui.arrow-right"
+    class="card__detail"
+    i18n="@@common.viewDetails"
+    >Ver detalles</a
+  >
+</article>

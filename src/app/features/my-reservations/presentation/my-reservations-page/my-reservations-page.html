@@ -1,0 +1,156 @@
+<h1 i18n="@@reservations.title">Mis reservas</h1>
+
+<section class="filters">
+  <!-- Teal marks a filter that is narrowing the list: it is the palette's "in effect" colour, and
+       the check icon repeats the state without relying on colour (WCAG 1.4.1). -->
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    [appearance]="statusFilterActive() ? 'accent' : 'outline'"
+    [iconStart]="statusFilterActive() ? '@tui.check' : null"
+    iconEnd="@tui.chevron-down"
+    class="filters__trigger"
+    [tuiDropdown]="statusPanel"
+    [(tuiDropdownOpen)]="statusFilterOpen"
+    i18n="@@reservations.filters.status.legend"
+    >Estado</button
+  >
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    [appearance]="categoryFilterActive() ? 'accent' : 'outline'"
+    [iconStart]="categoryFilterActive() ? '@tui.check' : null"
+    iconEnd="@tui.chevron-down"
+    class="filters__trigger"
+    [tuiDropdown]="categoryPanel"
+    [(tuiDropdownOpen)]="categoryFilterOpen"
+    i18n="@@reservations.filters.category.legend"
+    >Tipo de espacio</button
+  >
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    [appearance]="dateFilterActive() ? 'accent' : 'outline'"
+    [iconStart]="dateFilterActive() ? '@tui.check' : null"
+    iconEnd="@tui.chevron-down"
+    class="filters__trigger"
+    [tuiDropdown]="datePanel"
+    [(tuiDropdownOpen)]="dateFilterOpen"
+    i18n="@@reservations.filters.date.legend"
+    >Fecha</button
+  >
+</section>
+
+<ng-template #statusPanel>
+  <fieldset class="filters__panel">
+
+    <label tuiBlock>
+      <input
+        type="checkbox"
+        tuiCheckbox
+        [ngModel]="selectedStatuses().has('upcoming')"
+        (ngModelChange)="toggleStatus('upcoming', $event)"
+      />
+      <span i18n="@@reservations.filters.status.upcoming">Próximas</span>
+    </label>
+
+    <label tuiBlock>
+      <input
+        type="checkbox"
+        tuiCheckbox
+        [ngModel]="selectedStatuses().has('ongoing')"
+        (ngModelChange)="toggleStatus('ongoing', $event)"
+      />
+      <span i18n="@@reservations.filters.status.ongoing">Actuales</span>
+    </label>
+
+    <label tuiBlock>
+      <input
+        type="checkbox"
+        tuiCheckbox
+        [ngModel]="selectedStatuses().has('past')"
+        (ngModelChange)="toggleStatus('past', $event)"
+      />
+      <span i18n="@@reservations.filters.status.past">Pasadas</span>
+    </label>
+  </fieldset>
+</ng-template>
+
+<ng-template #categoryPanel>
+  <fieldset class="filters__panel">
+    <label tuiBlock>
+      <input
+        type="checkbox"
+        tuiCheckbox
+        [ngModel]="selectedCategories().has('sports')"
+        (ngModelChange)="toggleCategory('sports', $event)"
+      />
+      <span i18n="@@reservations.filters.category.sports">Deportes</span>
+    </label>
+
+    <label tuiBlock>
+      <input
+        type="checkbox"
+        tuiCheckbox
+        [ngModel]="selectedCategories().has('study')"
+        (ngModelChange)="toggleCategory('study', $event)"
+      />
+      <span i18n="@@reservations.filters.category.study">Estudio</span>
+    </label>
+
+    <label tuiBlock>
+      <input
+        type="checkbox"
+        tuiCheckbox
+        [ngModel]="selectedCategories().has('lab')"
+        (ngModelChange)="toggleCategory('lab', $event)"
+      />
+      <span i18n="@@reservations.filters.category.lab">Laboratorios</span>
+    </label>
+  </fieldset>
+</ng-template>
+
+<ng-template #datePanel>
+  <fieldset class="filters__panel filters__panel--date">
+
+    <tui-calendar-range [value]="selectedRange()" (valueChange)="setSelectedRange($event)" />
+
+    @if (selectedRange()) {
+      <button
+        tuiLink
+        type="button"
+        (click)="setSelectedRange(null)"
+        i18n="@@reservations.filters.date.clear"
+      >
+        Quitar filtro
+      </button>
+    }
+  </fieldset>
+</ng-template>
+
+<section class="results">
+  @if (pagedReservations().length > 0) {
+    <ul class="reservations">
+      @for (reservation of pagedReservations(); track reservation.id) {
+        <li class="reservations__item">
+          <app-reservation-card [reservation]="reservation" />
+        </li>
+      }
+    </ul>
+  } @else {
+    <div class="empty-state">
+      <tui-icon icon="@tui.filter-x" aria-hidden="true" />
+      <h2 i18n="@@reservations.empty.title">No hay reservas con estos filtros</h2>
+      <p i18n="@@reservations.empty.description">
+        Prueba a cambiar los filtros para ver otras reservas.
+      </p>
+    </div>
+  }
+</section>
+
+<tui-pagination [length]="pageCount()" [(index)]="pageIndex" />

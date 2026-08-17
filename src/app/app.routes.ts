@@ -28,12 +28,34 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
       {
-        path: 'inicio',
+        path: 'home',
         loadComponent: () =>
           import('./features/home/presentation/home-page/home-page').then((m) => m.HomePage),
         title: $localize`:@@home.pageTitle:Inicio`,
         data: {
           description: $localize`:@@home.pageDescription:Consulta tu próxima reserva y los espacios destacados del campus.`,
+        },
+      },
+      {
+        path: 'reservations',
+        loadComponent: () =>
+          import('./features/my-reservations/presentation/my-reservations-page/my-reservations-page').then(
+            (m) => m.MyReservationsPage,
+          ),
+        title: $localize`:@@reservations.pageTitle:Mis reservas`,
+        data: {
+          description: $localize`:@@reservations.pageDescription:Consulta, filtra y gestiona las reservas que has hecho en el campus.`,
+        },
+      },
+      {
+        path: 'reservations/:id',
+        loadComponent: () =>
+          import(
+            './features/my-reservations/presentation/reservation-detail-page/reservation-detail-page'
+          ).then((m) => m.ReservationDetailPage),
+        title: $localize`:@@reservations.detail.pageTitle:Detalle de la reserva`,
+        data: {
+          description: $localize`:@@reservations.detail.pageDescription:Consulta el pase, el horario, la ubicación y las normas de tu reserva.`,
         },
       },
     ],

@@ -1,0 +1,283 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+// The back button is the action and the trail is the orientation, so they share one row: same
+// affordance, two levels of commitment.
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.page-nav__trail {
+  display: none;
+}
+
+.page-nav__current {
+  color: var(--tui-text-primary);
+}
+
+@media (min-width: 48rem) {
+  .page-nav__trail {
+    display: block;
+  }
+}
+
+// Title sits above the photo, not inside it, so the page reads name → status → visual → detail,
+// the same order a person scans a booking confirmation in.
+.detail__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--univgo-space-m);
+}
+
+.detail__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.detail__name {
+  margin: 0;
+}
+
+// Same brand-plate placeholder as the reservation card and the home view's featured spaces, kept
+// to a single mechanism instead of a one-off for the hero.
+.detail__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tui-radius-l);
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
+    var(--univgo-brand-surface);
+  aspect-ratio: 21 / 9;
+}
+
+.detail__mark {
+  color: var(--univgo-on-brand-surface);
+  font-size: 3rem;
+  opacity: 0.9;
+}
+
+// Mobile-first: photo, pass, details and rules stack in reading order. From desktop up, the grid
+// becomes two matched columns: the photo sits above the rules on the wide left, the pass sits
+// above the details on the narrow right — the pass and the details card end up the same width
+// because they share that one column.
+.detail__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-l);
+}
+
+@media (min-width: 64rem) {
+  .detail__content {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+
+  .detail__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .pass-card {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  // Row 1 is one block: photo and pass always end on the same line, whichever of the two is
+  // taller. The aspect ratio still sets the photo's contribution to the row height, so it acts as
+  // a floor rather than a fixed height, and `tuiCardLarge`'s `margin-block-start: auto` spends
+  // whatever room the pass card gains the way the library intends — the code settles at the
+  // bottom edge.
+  .detail__media,
+  .pass-card {
+    align-self: stretch;
+  }
+
+  // Row 2 hugs instead: with no trailing action to pin, that same auto margin would push the list
+  // and the facts to the bottom of a stretched card and reopen the gap under each title.
+  .rules-card,
+  .facts-card {
+    grid-row: 2;
+  }
+
+  .rules-card {
+    grid-column: 1;
+  }
+
+  .facts-card {
+    grid-column: 2;
+  }
+}
+
+// `tuiCardLarge` already lays its content out as a column and owns the vertical rhythm between
+// title and body, so only the title's own scale is ours to set: `styles.scss` maps `h2` to the
+// page-level 32–40px heading, which at card level dwarfs the content it labels. The smallest
+// heading step keeps the outline intact and reads as a hierarchy — 20px against 16px of body.
+.pass-card,
+.facts-card,
+.rules-card {
+  h2 {
+    font: var(--tui-typography-heading-h6);
+  }
+}
+
+// `tuiCardLarge` sets `text-align: start` on the card itself and outranks a plain `.pass-card`
+// rule, so the centring goes on the children, which the library never targets.
+.pass-card {
+  h2,
+  .pass-card__hint {
+    text-align: center;
+  }
+}
+
+// Visual mock for the scannable pass: a dashed plate is the same "this is a placeholder, not a
+// generated code" cue the media placeholders already use, just square instead of a photo frame.
+// Shared by the card and the dialog, which differ only in how big the plate gets.
+.pass-code {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  aspect-ratio: 1;
+  border: 1px dashed var(--tui-border-normal);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-neutral-1);
+
+  tui-icon {
+    color: var(--tui-text-secondary);
+    font-size: 3.5rem;
+  }
+
+  .pass-code__zoom {
+    position: absolute;
+    inset-block-start: var(--univgo-space-s);
+    inset-inline-end: var(--univgo-space-s);
+    color: var(--tui-text-tertiary);
+    font-size: 1rem;
+  }
+}
+
+// The plate is a button here, so the native chrome goes and the affordances come from the border
+// and the corner icon. Focus is covered by the global `:focus-visible` rule in `styles.scss`.
+.pass-card__code {
+  inline-size: 10rem;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+
+  &:hover {
+    border-color: var(--tui-border-hover);
+
+    .pass-code__zoom {
+      color: var(--tui-text-primary);
+    }
+  }
+}
+
+.pass-card__hint,
+.qr-dialog__hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+// The card's `text-align: center` does not reach a flex row, so the code centres itself on the
+// main axis. Monospace because this string gets read out loud and typed by hand at a desk.
+.pass-card__id,
+.qr-dialog__id {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+
+  code {
+    padding: var(--univgo-space-xs) var(--univgo-space-s);
+    border-radius: var(--tui-radius-s);
+    background: var(--tui-background-neutral-1);
+    color: var(--tui-text-primary);
+    font-family: monospace;
+  }
+}
+
+// Presentation view: the plate takes the room the dialog gives it so the code is readable at
+// arm's length, and the same fallback line travels with it.
+.qr-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  text-align: center;
+}
+
+.qr-dialog__code {
+  inline-size: min(100%, 18rem);
+
+  tui-icon {
+    font-size: 6rem;
+  }
+}
+
+// One column throughout: the card shares its column with the pass card, which stays narrow at
+// every breakpoint, so there is never room for the facts to sit side by side.
+.facts-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  margin: 0;
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+}
+
+// `tuiList` owns the markers, the indent and the vertical rhythm; the only thing left to decide is
+// the marker colour, which the directive reads from this variable.
+.rules-card__list {
+  --tui-list-marker: var(--tui-background-accent-1);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  padding: var(--univgo-space-3xl) var(--univgo-space-l);
+  border: 1px dashed var(--tui-border-normal);
+  border-radius: var(--tui-radius-l);
+  color: var(--tui-text-secondary);
+  text-align: center;
+
+  tui-icon {
+    font-size: 2rem;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--tui-text-primary);
+    font: var(--tui-typography-ui-l);
+  }
+
+  p {
+    margin: 0;
+    font: var(--tui-typography-body-s);
+  }
+}

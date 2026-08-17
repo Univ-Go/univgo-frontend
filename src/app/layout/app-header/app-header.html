@@ -1,21 +1,27 @@
 <header class="header">
-  <a class="logo" routerLink="/inicio">
+  <a class="logo" routerLink="/home">
     <img src="images/UnivGo_logo.png" alt="UnivGo" width="1743" height="568" />
   </a>
 
   <nav class="nav" i18n-aria-label="@@navigation.mainLabel" aria-label="Navegación principal">
     <a
       tuiLink
-      routerLink="/inicio"
+      routerLink="/home"
       routerLinkActive="nav__item--active"
       [routerLinkActiveOptions]="{ exact: true }"
       class="nav__item"
       i18n="@@navigation.home"
       >Inicio</a
     >
-    <button tuiLink type="button" class="nav__item" i18n="@@navigation.reservations">
-      Reservas
-    </button>
+    <a
+      tuiLink
+      routerLink="/reservations"
+      routerLinkActive="nav__item--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="nav__item"
+      i18n="@@navigation.reservations"
+      >Mis Reservas</a
+    >
   </nav>
 
   <div class="actions">

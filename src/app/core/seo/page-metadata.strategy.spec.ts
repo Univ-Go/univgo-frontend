@@ -15,12 +15,12 @@ describe('PageMetadataStrategy', () => {
       providers: [
         provideRouter([
           {
-            path: 'espacios',
+            path: 'spaces',
             component: BlankPage,
             title: 'Espacios',
             data: { description: 'Listado de espacios reservables.' },
           },
-          { path: 'sin-titulo', component: BlankPage },
+          { path: 'untitled', component: BlankPage },
         ]),
         { provide: TitleStrategy, useClass: PageMetadataStrategy },
         {
@@ -37,14 +37,14 @@ describe('PageMetadataStrategy', () => {
 
   it('qualifies the page title with the institution', async () => {
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/espacios');
+    await harness.navigateByUrl('/spaces');
 
     expect(TestBed.inject(Title).getTitle()).toBe('Espacios · Universidad de Prueba');
   });
 
   it('publishes the route description as page metadata', async () => {
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/espacios');
+    await harness.navigateByUrl('/spaces');
 
     const meta = TestBed.inject(Meta);
     expect(meta.getTag('name="description"')?.content).toBe('Listado de espacios reservables.');
@@ -55,7 +55,7 @@ describe('PageMetadataStrategy', () => {
 
   it('still produces a title when a route declares none', async () => {
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/sin-titulo');
+    await harness.navigateByUrl('/untitled');
 
     expect(TestBed.inject(Title).getTitle()).toBe('Universidad de Prueba');
   });

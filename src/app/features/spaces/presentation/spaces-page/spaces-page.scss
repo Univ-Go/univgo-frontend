@@ -1,0 +1,92 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+.intro__lead {
+  margin: 0;
+  max-inline-size: 44rem;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-l);
+}
+
+.filters {
+  gap: var(--univgo-space-m);
+}
+
+// One column on a phone so every control keeps a full-width touch target, folding into pairs and
+// then into a single row as there is width for it.
+.filters__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-m);
+}
+
+.filters__hint {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-negative);
+  font: var(--tui-typography-ui-s);
+
+  // A live region has to stay in the accessibility tree to announce anything, so it is never
+  // removed from the DOM — it simply takes no room while it has nothing to say.
+  &:empty {
+    display: none;
+  }
+}
+
+.filters__clear {
+  align-self: flex-start;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.results__count {
+  font: var(--tui-typography-heading-h5);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: var(--univgo-card-grid-columns);
+  gap: var(--univgo-space-l);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grid__item {
+  display: flex;
+}
+
+.shelves {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+@media (min-width: 48rem) {
+  .filters__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  // Type and date carry the request, the two time fields are one control split in two, so the row
+  // gives the first pair the room and keeps the pair of times narrow and together.
+  .filters__grid {
+    grid-template-columns: 1.4fr 1.4fr 1fr 1fr;
+  }
+}

@@ -1,0 +1,31 @@
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { TuiAppearance, TuiButton, TuiIcon } from '@taiga-ui/core';
+import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import type { ListedSpace } from '../../domain/space';
+import { spaceCategoryIcon } from '../space-category';
+import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availability-badge';
+
+/**
+ * Level 2: the catalogue renders the same summary in the browse shelves and in the results grid, so
+ * the card is one component used at one size in both — a second, smaller variant would be a second
+ * card design to keep in step with this one.
+ *
+ * The action carries no handler yet: choosing a space leads into the booking flow, which is its own
+ * view, and an output nobody listens to would be dead code today.
+ */
+@Component({
+  selector: 'app-space-card',
+  imports: [SpaceAvailabilityBadge, TuiAppearance, TuiButton, TuiCardLarge, TuiIcon, TuiSurface],
+  templateUrl: './space-card.html',
+  styleUrl: './space-card.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class SpaceCard {
+  public readonly listed = input.required<ListedSpace>();
+
+  protected readonly icon = computed(() => spaceCategoryIcon(this.listed().space.category));
+
+  protected readonly bookable = computed(() => this.listed().availability.kind === 'free');
+
+  protected readonly closed = computed(() => this.listed().availability.kind === 'maintenance');
+}

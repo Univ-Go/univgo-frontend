@@ -1,0 +1,53 @@
+<header class="shelf__header">
+  <h2 class="shelf__title">
+    {{ name() }}
+    <span class="shelf__count">({{ total() }})</span>
+  </h2>
+
+  <div class="shelf__tools">
+    @if (scrollable()) {
+      <button
+        tuiIconButton
+        type="button"
+        appearance="outline"
+        size="s"
+        iconStart="@tui.chevron-left"
+        class="shelf__arrow"
+        [disabled]="atStart()"
+        (click)="page(-1)"
+        i18n-aria-label="@@spaces.shelf.previous"
+        aria-label="Espacios anteriores"
+      ></button>
+      <button
+        tuiIconButton
+        type="button"
+        appearance="outline"
+        size="s"
+        iconStart="@tui.chevron-right"
+        class="shelf__arrow"
+        [disabled]="atEnd()"
+        (click)="page(1)"
+        i18n-aria-label="@@spaces.shelf.next"
+        aria-label="Espacios siguientes"
+      ></button>
+    }
+
+    <a
+      tuiLink
+      routerLink="/spaces"
+      [queryParams]="{ category: category() }"
+      iconEnd="@tui.arrow-right"
+      [attr.aria-label]="viewAllLabel()"
+      i18n="@@spaces.shelf.viewAll"
+      >Ver todos</a
+    >
+  </div>
+</header>
+
+<ul #track class="shelf__track" (scroll)="measure()">
+  @for (listed of spaces(); track listed.space.id) {
+    <li class="shelf__item">
+      <app-space-card [listed]="listed" />
+    </li>
+  }
+</ul>

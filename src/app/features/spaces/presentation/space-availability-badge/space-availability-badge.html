@@ -1,0 +1,46 @@
+@switch (availability().kind) {
+  @case ('free') {
+    <span
+      tuiBadge
+      appearance="positive"
+      [size]="size()"
+      iconStart="@tui.circle-check"
+      i18n="@@spaces.availability.free"
+    >
+      Disponible
+    </span>
+  }
+  @case ('later') {
+    <span
+      tuiBadge
+      appearance="warning"
+      [size]="size()"
+      iconStart="@tui.clock"
+      i18n="@@spaces.availability.later"
+    >
+      Libre desde {{ nextTime() }}
+    </span>
+  }
+  @case ('unavailable') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.calendar-x"
+      i18n="@@spaces.availability.unavailable"
+    >
+      Sin horarios
+    </span>
+  }
+  @case ('maintenance') {
+    <span
+      tuiBadge
+      appearance="negative"
+      [size]="size()"
+      iconStart="@tui.triangle-alert"
+      i18n="@@spaces.availability.maintenance"
+    >
+      En mantenimiento
+    </span>
+  }
+}

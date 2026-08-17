@@ -390,9 +390,17 @@
         <source>QR de Ingreso</source>
         <target>Entry QR</target>
       </trans-unit>
-      <trans-unit id="reservations.detail.pass.idLabel" datatype="html">
-        <source>Código</source>
-        <target>Code</target>
+      <trans-unit id="reservations.detail.pass.enlarge" datatype="html">
+        <source>Ampliar el código QR</source>
+        <target>Enlarge the QR code</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.pass.fallback" datatype="html">
+        <source>Si no puedes escanear, muestra este código</source>
+        <target>If you cannot scan it, show this code</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.pass.dialogTitle" datatype="html">
+        <source>Código QR de tu reserva</source>
+        <target>Your booking QR code</target>
       </trans-unit>
       <trans-unit id="reservations.detail.facts.title" datatype="html">
         <source>Detalles de la reserva</source>

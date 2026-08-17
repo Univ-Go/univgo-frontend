@@ -86,13 +86,18 @@
     grid-row: 1;
   }
 
-  // The pass matches the photo's height, and `tuiCardLarge`'s `margin-block-start: auto` on the
-  // last child spends the extra room the way the library intends: the code line settles against
-  // the bottom edge. The photo itself stays on the container's `start`, since stretching it would
-  // override the height its aspect ratio computes.
   .pass-card {
     grid-column: 2;
     grid-row: 1;
+  }
+
+  // Row 1 is one block: photo and pass always end on the same line, whichever of the two is
+  // taller. The aspect ratio still sets the photo's contribution to the row height, so it acts as
+  // a floor rather than a fixed height, and `tuiCardLarge`'s `margin-block-start: auto` spends
+  // whatever room the pass card gains the way the library intends — the code settles at the
+  // bottom edge.
+  .detail__media,
+  .pass-card {
     align-self: stretch;
   }
 
@@ -124,41 +129,75 @@
   }
 }
 
+// `tuiCardLarge` sets `text-align: start` on the card itself and outranks a plain `.pass-card`
+// rule, so the centring goes on the children, which the library never targets.
 .pass-card {
-  text-align: center;
+  h2,
+  .pass-card__hint {
+    text-align: center;
+  }
 }
 
 // Visual mock for the scannable pass: a dashed plate is the same "this is a placeholder, not a
 // generated code" cue the media placeholders already use, just square instead of a photo frame.
-.pass-card__code {
+// Shared by the card and the dialog, which differ only in how big the plate gets.
+.pass-code {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   align-self: center;
-  inline-size: 10rem;
   aspect-ratio: 1;
   border: 1px dashed var(--tui-border-normal);
   border-radius: var(--tui-radius-m);
   background: var(--tui-background-neutral-1);
 
   tui-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: var(--tui-text-secondary);
     font-size: 3.5rem;
   }
+
+  .pass-code__zoom {
+    position: absolute;
+    inset-block-start: var(--univgo-space-s);
+    inset-inline-end: var(--univgo-space-s);
+    color: var(--tui-text-tertiary);
+    font-size: 1rem;
+  }
 }
 
-// The card's `text-align: center` does not reach a flex row, so the label and the code centre
-// themselves on the main axis.
-.pass-card__id {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--univgo-space-s);
+// The plate is a button here, so the native chrome goes and the affordances come from the border
+// and the corner icon. Focus is covered by the global `:focus-visible` rule in `styles.scss`.
+.pass-card__code {
+  inline-size: 10rem;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+
+  &:hover {
+    border-color: var(--tui-border-hover);
+
+    .pass-code__zoom {
+      color: var(--tui-text-primary);
+    }
+  }
+}
+
+.pass-card__hint,
+.qr-dialog__hint {
   margin: 0;
   color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+// The card's `text-align: center` does not reach a flex row, so the code centres itself on the
+// main axis. Monospace because this string gets read out loud and typed by hand at a desk.
+.pass-card__id,
+.qr-dialog__id {
+  display: flex;
+  justify-content: center;
+  margin: 0;
   font: var(--tui-typography-ui-s);
 
   code {
@@ -167,6 +206,24 @@
     background: var(--tui-background-neutral-1);
     color: var(--tui-text-primary);
     font-family: monospace;
+  }
+}
+
+// Presentation view: the plate takes the room the dialog gives it so the code is readable at
+// arm's length, and the same fallback line travels with it.
+.qr-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  text-align: center;
+}
+
+.qr-dialog__code {
+  inline-size: min(100%, 18rem);
+
+  tui-icon {
+    font-size: 6rem;
   }
 }
 

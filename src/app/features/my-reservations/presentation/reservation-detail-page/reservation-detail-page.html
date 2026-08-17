@@ -54,15 +54,43 @@
     >
       <h2 id="pass-title" i18n="@@reservations.detail.pass.title">QR de Ingreso</h2>
 
-      <div class="pass-card__code">
+      <!-- A real `button`, not a click handler on the plate: keyboard, focus ring and role come
+           with the element. The corner icon is what tells a person the code opens larger. -->
+      <button
+        type="button"
+        class="pass-code pass-card__code"
+        (click)="qrOpen.set(true)"
+        i18n-aria-label="@@reservations.detail.pass.enlarge"
+        aria-label="Ampliar el código QR"
+      >
         <tui-icon icon="@tui.qr-code" aria-hidden="true"></tui-icon>
-      </div>
+        <tui-icon class="pass-code__zoom" icon="@tui.maximize-2" aria-hidden="true"></tui-icon>
+      </button>
+
+      <!-- The fallback code stays on screen instead of hiding behind a disclosure: it is needed
+           precisely when the scan just failed, and it is the only readable form of the pass. -->
+      <p class="pass-card__hint" i18n="@@reservations.detail.pass.fallback">
+        Si no puedes escanear, muestra este código
+      </p>
 
       <p class="pass-card__id">
-        <span i18n="@@reservations.detail.pass.idLabel">Código</span>
         <code>{{ reservation.id }}</code>
       </p>
     </section>
+
+    <ng-template [(tuiDialog)]="qrOpen" [tuiDialogOptions]="qrDialogOptions">
+      <div class="qr-dialog">
+        <div class="pass-code qr-dialog__code">
+          <tui-icon icon="@tui.qr-code" aria-hidden="true"></tui-icon>
+        </div>
+
+        <p class="qr-dialog__hint" i18n="@@reservations.detail.pass.fallback">
+          Si no puedes escanear, muestra este código
+        </p>
+
+        <p class="qr-dialog__id"><code>{{ reservation.id }}</code></p>
+      </div>
+    </ng-template>
 
     <section
       tuiCardLarge

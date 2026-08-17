@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TuiItem } from '@taiga-ui/cdk';
-import { TuiAppearance, TuiButton, TuiIcon, TuiLink } from '@taiga-ui/core';
+import { TuiAppearance, TuiButton, TuiDialog, TuiIcon, TuiLink } from '@taiga-ui/core';
+import type { TuiDialogOptions } from '@taiga-ui/core';
 import { TuiBreadcrumbs } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
 import { categoryIcon } from '../category-icon';
@@ -27,6 +28,7 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
     TuiBreadcrumbs,
     TuiButton,
     TuiCardLarge,
+    TuiDialog,
     TuiIcon,
     TuiItem,
     TuiLink,
@@ -49,4 +51,15 @@ export class ReservationDetailPage {
 
     return reservation ? categoryIcon(reservation.category) : null;
   });
+
+  protected readonly qrOpen = signal(false);
+
+  /**
+   * A screen held out at a reception desk is read at arm's length, so the pass gets the largest
+   * dialog size. The directive writes `false` back into `qrOpen` when the dialog closes.
+   */
+  protected readonly qrDialogOptions: Partial<TuiDialogOptions<void>> = {
+    size: 'l',
+    label: $localize`:@@reservations.detail.pass.dialogTitle:Código QR de tu reserva`,
+  };
 }

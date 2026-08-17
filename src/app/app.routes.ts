@@ -37,6 +37,17 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'spaces',
+        loadComponent: () =>
+          import('./features/spaces/presentation/spaces-page/spaces-page').then(
+            (m) => m.SpacesPage,
+          ),
+        title: $localize`:@@spaces.pageTitle:Espacios`,
+        data: {
+          description: $localize`:@@spaces.pageDescription:Consulta los espacios deportivos, salas de estudio y laboratorios del campus, y reserva el que necesites.`,
+        },
+      },
+      {
         path: 'reservations',
         loadComponent: () =>
           import('./features/my-reservations/presentation/my-reservations-page/my-reservations-page').then(
@@ -50,9 +61,9 @@ export const routes: Routes = [
       {
         path: 'reservations/:id',
         loadComponent: () =>
-          import(
-            './features/my-reservations/presentation/reservation-detail-page/reservation-detail-page'
-          ).then((m) => m.ReservationDetailPage),
+          import('./features/my-reservations/presentation/reservation-detail-page/reservation-detail-page').then(
+            (m) => m.ReservationDetailPage,
+          ),
         title: $localize`:@@reservations.detail.pageTitle:Detalle de la reserva`,
         data: {
           description: $localize`:@@reservations.detail.pageDescription:Consulta el pase, el horario, la ubicación y las normas de tu reserva.`,

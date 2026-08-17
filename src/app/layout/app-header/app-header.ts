@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TUI_BREAKPOINT, TuiButton, TuiDataList, TuiDropdown, TuiLink } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgedContent, TuiBadgeNotification } from '@taiga-ui/kit';
@@ -47,6 +48,17 @@ export class AppHeader {
    * accessibility tree.
    */
   protected readonly compact = computed(() => this.breakpoint() === 'mobile');
+
+  /**
+   * The catalogue carries its filter in the query string, so `exact` alone would drop the highlight
+   * the moment a category is picked: the shorthand also demands an exact query-string match.
+   */
+  protected readonly spacesLinkOptions: IsActiveMatchOptions = {
+    paths: 'exact',
+    queryParams: 'ignored',
+    fragment: 'ignored',
+    matrixParams: 'ignored',
+  };
 
   protected readonly menuOpen = signal(false);
 

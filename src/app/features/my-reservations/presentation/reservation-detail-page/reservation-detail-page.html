@@ -88,7 +88,9 @@
           Si no puedes escanear, muestra este código
         </p>
 
-        <p class="qr-dialog__id"><code>{{ reservation.id }}</code></p>
+        <p class="qr-dialog__id">
+          <code>{{ reservation.id }}</code>
+        </p>
       </div>
     </ng-template>
 
@@ -139,11 +141,11 @@
     </section>
   </div>
 } @else {
-  <div class="empty-state">
-    <tui-icon icon="@tui.search-x" aria-hidden="true"></tui-icon>
-    <h2 i18n="@@reservations.detail.notFound.title">Reserva no encontrada</h2>
-    <p i18n="@@reservations.detail.notFound.description">
-      Puede que el enlace sea incorrecto o que la reserva ya no exista.
-    </p>
-  </div>
+  <app-empty-state
+    icon="@tui.search-x"
+    i18n-heading="@@reservations.detail.notFound.title"
+    heading="Reserva no encontrada"
+    i18n-description="@@reservations.detail.notFound.description"
+    description="Puede que el enlace sea incorrecto o que la reserva ya no exista."
+  />
 }

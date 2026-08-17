@@ -1,6 +1,6 @@
-export type ReservationStatus = 'upcoming' | 'ongoing' | 'past';
+import type { SpaceCategory } from '../../spaces/domain/space';
 
-export type SpaceCategory = 'sports' | 'study' | 'lab';
+export type ReservationStatus = 'upcoming' | 'ongoing' | 'past';
 
 export interface Reservation {
   readonly id: string;

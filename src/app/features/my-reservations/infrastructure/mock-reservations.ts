@@ -1,4 +1,5 @@
-import type { Reservation, SpaceCategory } from '../domain/reservation';
+import type { SpaceCategory } from '../../spaces/domain/space';
+import type { Reservation } from '../domain/reservation';
 
 /**
  * Static instructions per space category — this is UI copy, not per-reservation data, so it goes

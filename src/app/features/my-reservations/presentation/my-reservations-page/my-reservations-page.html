@@ -14,8 +14,9 @@
     [tuiDropdown]="statusPanel"
     [(tuiDropdownOpen)]="statusFilterOpen"
     i18n="@@reservations.filters.status.legend"
-    >Estado</button
   >
+    Estado
+  </button>
 
   <button
     tuiButton
@@ -28,8 +29,9 @@
     [tuiDropdown]="categoryPanel"
     [(tuiDropdownOpen)]="categoryFilterOpen"
     i18n="@@reservations.filters.category.legend"
-    >Tipo de espacio</button
   >
+    Tipo de espacio
+  </button>
 
   <button
     tuiButton
@@ -42,13 +44,13 @@
     [tuiDropdown]="datePanel"
     [(tuiDropdownOpen)]="dateFilterOpen"
     i18n="@@reservations.filters.date.legend"
-    >Fecha</button
   >
+    Fecha
+  </button>
 </section>
 
 <ng-template #statusPanel>
   <fieldset class="filters__panel">
-
     <label tuiBlock>
       <input
         type="checkbox"
@@ -117,7 +119,6 @@
 
 <ng-template #datePanel>
   <fieldset class="filters__panel filters__panel--date">
-
     <tui-calendar-range [value]="selectedRange()" (valueChange)="setSelectedRange($event)" />
 
     @if (selectedRange()) {
@@ -143,13 +144,13 @@
       }
     </ul>
   } @else {
-    <div class="empty-state">
-      <tui-icon icon="@tui.filter-x" aria-hidden="true" />
-      <h2 i18n="@@reservations.empty.title">No hay reservas con estos filtros</h2>
-      <p i18n="@@reservations.empty.description">
-        Prueba a cambiar los filtros para ver otras reservas.
-      </p>
-    </div>
+    <app-empty-state
+      icon="@tui.filter-x"
+      i18n-heading="@@reservations.empty.title"
+      heading="No hay reservas con estos filtros"
+      i18n-description="@@reservations.empty.description"
+      description="Prueba a cambiar los filtros para ver otras reservas."
+    />
   }
 </section>
 

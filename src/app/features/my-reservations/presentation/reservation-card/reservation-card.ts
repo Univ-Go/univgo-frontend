@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { RouterLink } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon, TuiLink } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import type { Reservation } from '../../domain/reservation';
-import { categoryIcon } from '../category-icon';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
 
 /**
@@ -36,5 +36,5 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
 export class ReservationCard {
   public readonly reservation = input.required<Reservation>();
 
-  protected readonly icon = computed(() => categoryIcon(this.reservation().category));
+  protected readonly icon = computed(() => spaceCategoryIcon(this.reservation().category));
 }

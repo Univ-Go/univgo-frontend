@@ -1,0 +1,90 @@
+<article tuiCardLarge tuiSurface tuiAppearance="outline" class="card">
+  <!-- Provisional media slot: fills with the brand plate until real space photos exist,
+       same placeholder used for "Espacios destacados" on the home view. -->
+  <div class="card__media">
+    <tui-icon class="card__mark" [icon]="icon()" aria-hidden="true" />
+  </div>
+
+  <header class="card__header">
+    <h3 class="card__name">{{ reservation().spaceName }}</h3>
+
+    @switch (reservation().status) {
+      @case ('upcoming') {
+        <span
+          tuiBadge
+          appearance="positive"
+          size="m"
+          iconStart="@tui.circle-check"
+          i18n="@@reservations.card.status.upcoming"
+        >
+          Próxima
+        </span>
+      }
+      @case ('ongoing') {
+        <span
+          tuiBadge
+          appearance="warning"
+          size="m"
+          iconStart="@tui.loader-circle"
+          i18n="@@reservations.card.status.ongoing"
+        >
+          En curso
+        </span>
+      }
+      @case ('past') {
+        <span
+          tuiBadge
+          appearance="neutral"
+          size="m"
+          iconStart="@tui.history"
+          i18n="@@reservations.card.status.past"
+        >
+          Pasada
+        </span>
+      }
+    }
+  </header>
+
+  <dl class="card__facts">
+    <div class="fact">
+      <dt i18n="@@reservation.factDate">Fecha</dt>
+      <dd>
+        <tui-icon icon="@tui.calendar" aria-hidden="true" />{{ reservation().date | date: 'd MMM' }}
+      </dd>
+    </div>
+    <div class="fact">
+      <dt i18n="@@reservation.factTime">Horario</dt>
+      <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ reservation().time }}</dd>
+    </div>
+  </dl>
+
+  <div class="card__actions">
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline-destructive"
+      iconStart="@tui.ban"
+      i18n="@@reservations.card.cancel"
+    >
+      Cancelar
+    </button>
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="accent"
+      iconStart="@tui.qr-code"
+      i18n="@@reservations.card.viewQr"
+    >
+      Ver QR
+    </button>
+  </div>
+
+  <!-- Placeholder target: the reservation detail view is a separate feature, not built yet. The
+       link communicates that the card leads somewhere without wiring a route that doesn't exist —
+       same pattern as "Ver detalles" on the home view. -->
+  <a tuiLink href="#" iconEnd="@tui.arrow-right" class="card__detail" i18n="@@common.viewDetails"
+    >Ver detalles</a
+  >
+</article>

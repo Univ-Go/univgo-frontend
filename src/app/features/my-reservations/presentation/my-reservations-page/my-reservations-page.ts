@@ -1,26 +1,15 @@
-import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
-import { TuiAppearance, TuiButton, TuiCheckbox, TuiDropdown, TuiIcon, TuiLink } from '@taiga-ui/core';
-import { TuiBadge, TuiBlock, TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
-import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-
-type ReservationStatus = 'upcoming' | 'ongoing' | 'past';
-type SpaceCategory = 'sports' | 'study' | 'lab';
-
-/** Shape of the sample data below. Real models will live in the feature's domain layer. */
-interface Reservation {
-  readonly id: string;
-  readonly spaceName: string;
-  readonly date: Date;
-  readonly time: string;
-  readonly status: ReservationStatus;
-  readonly category: SpaceCategory;
-  readonly icon: string;
-}
+import { TuiButton, TuiCheckbox, TuiDropdown, TuiIcon, TuiLink } from '@taiga-ui/core';
+import { TuiBlock, TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
+import type { Reservation, ReservationStatus, SpaceCategory } from '../../domain/reservation';
+import { ReservationCard } from '../reservation-card/reservation-card';
 
 const RESERVATIONS_PER_PAGE = 6;
+
+const ALL_STATUSES: readonly ReservationStatus[] = ['upcoming', 'ongoing', 'past'];
+const ALL_CATEGORIES: readonly SpaceCategory[] = ['sports', 'study', 'lab'];
 
 function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet<T> {
   const next = new Set(set);
@@ -35,10 +24,11 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
 }
 
 /**
- * Visual mock: layout and component inventory are final, the data is not. The two sample
- * reservations below are the feature's only hardcoded source — they move to a use case once the
- * booking API exists. Filtering and pagination run as real client-side logic over that sample; it
- * is not a simulation of a backend.
+ * Visual mock: layout and component inventory are final, the data is not. The sample reservations
+ * below are the feature's only hardcoded source — they move to a use case once the booking API
+ * exists. Filtering and pagination run as real client-side logic over that sample; it is not a
+ * simulation of a backend. The view owns filtering, paging and the empty state; rendering one
+ * reservation belongs to `ReservationCard`.
  *
  * `FormsModule` is only here for `[ngModel]` on the status/category checkboxes: `TuiCheckbox`
  * disables itself whenever it has no `NgControl` attached, so a plain `[checked]`/`(change)` pair
@@ -52,20 +42,16 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
 @Component({
   selector: 'app-my-reservations-page',
   imports: [
-    DatePipe,
     FormsModule,
-    TuiAppearance,
-    TuiBadge,
+    ReservationCard,
     TuiBlock,
     TuiButton,
     TuiCalendarRange,
-    TuiCardLarge,
     TuiCheckbox,
     TuiDropdown,
     TuiIcon,
     TuiLink,
     TuiPagination,
-    TuiSurface,
   ],
   templateUrl: './my-reservations-page.html',
   styleUrl: './my-reservations-page.scss',
@@ -80,7 +66,6 @@ export class MyReservationsPage {
       time: '14:00 – 16:00',
       status: 'upcoming',
       category: 'sports',
-      icon: '@tui.volleyball',
     },
     {
       id: 'study-room-3-mar18',
@@ -89,7 +74,6 @@ export class MyReservationsPage {
       time: '09:00 – 11:00',
       status: 'past',
       category: 'study',
-      icon: '@tui.book-open',
     },
     {
       id: 'lab-chemistry-2-aug16',
@@ -98,7 +82,6 @@ export class MyReservationsPage {
       time: '15:00 – 17:00',
       status: 'ongoing',
       category: 'lab',
-      icon: '@tui.flask-conical',
     },
     {
       id: 'court-tennis-b-feb2',
@@ -107,7 +90,6 @@ export class MyReservationsPage {
       time: '08:00 – 09:00',
       status: 'past',
       category: 'sports',
-      icon: '@tui.volleyball',
     },
     {
       id: 'reading-room-sept30',
@@ -116,7 +98,6 @@ export class MyReservationsPage {
       time: '10:00 – 12:00',
       status: 'upcoming',
       category: 'study',
-      icon: '@tui.book-open',
     },
     {
       id: 'lab-physics-aug16',
@@ -125,16 +106,15 @@ export class MyReservationsPage {
       time: '11:00 – 13:00',
       status: 'ongoing',
       category: 'lab',
-      icon: '@tui.flask-conical',
     },
   ];
 
   protected readonly selectedStatuses = signal<ReadonlySet<ReservationStatus>>(
-    new Set<ReservationStatus>(['upcoming', 'ongoing', 'past']),
+    new Set(ALL_STATUSES),
   );
 
   protected readonly selectedCategories = signal<ReadonlySet<SpaceCategory>>(
-    new Set<SpaceCategory>(['sports', 'study', 'lab']),
+    new Set(ALL_CATEGORIES),
   );
 
   protected readonly pageIndex = signal(0);
@@ -144,6 +124,21 @@ export class MyReservationsPage {
   protected readonly statusFilterOpen = signal(false);
   protected readonly categoryFilterOpen = signal(false);
   protected readonly dateFilterOpen = signal(false);
+
+  /**
+   * A closed dropdown gives no hint of what is applied, so the trigger carries the state itself.
+   * "Narrowing anything down" is the condition, which for the checkbox filters means any option
+   * left out — including all of them, where the list legitimately comes back empty.
+   */
+  protected readonly statusFilterActive = computed(
+    () => this.selectedStatuses().size < ALL_STATUSES.length,
+  );
+
+  protected readonly categoryFilterActive = computed(
+    () => this.selectedCategories().size < ALL_CATEGORIES.length,
+  );
+
+  protected readonly dateFilterActive = computed(() => this.selectedRange() !== null);
 
   protected readonly filteredReservations = computed(() => {
     const range = this.selectedRange();

@@ -1,11 +1,14 @@
 <h1 i18n="@@reservations.title">Mis reservas</h1>
 
 <section class="filters">
+  <!-- Teal marks a filter that is narrowing the list: it is the palette's "in effect" colour, and
+       the check icon repeats the state without relying on colour (WCAG 1.4.1). -->
   <button
     tuiButton
     type="button"
-    appearance="outline"
     size="m"
+    [appearance]="statusFilterActive() ? 'accent' : 'outline'"
+    [iconStart]="statusFilterActive() ? '@tui.check' : null"
     iconEnd="@tui.chevron-down"
     class="filters__trigger"
     [tuiDropdown]="statusPanel"
@@ -17,8 +20,9 @@
   <button
     tuiButton
     type="button"
-    appearance="outline"
     size="m"
+    [appearance]="categoryFilterActive() ? 'accent' : 'outline'"
+    [iconStart]="categoryFilterActive() ? '@tui.check' : null"
     iconEnd="@tui.chevron-down"
     class="filters__trigger"
     [tuiDropdown]="categoryPanel"
@@ -30,8 +34,9 @@
   <button
     tuiButton
     type="button"
-    appearance="outline"
     size="m"
+    [appearance]="dateFilterActive() ? 'accent' : 'outline'"
+    [iconStart]="dateFilterActive() ? '@tui.check' : null"
     iconEnd="@tui.chevron-down"
     class="filters__trigger"
     [tuiDropdown]="datePanel"
@@ -133,109 +138,7 @@
     <ul class="reservations">
       @for (reservation of pagedReservations(); track reservation.id) {
         <li class="reservations__item">
-          <article tuiCardLarge tuiSurface tuiAppearance="outline" class="reservation-card">
-            <!-- Provisional media slot: fills with the brand plate until real space photos exist,
-                 same placeholder used for "Espacios destacados" on the home view. -->
-            <div class="reservation-card__media">
-              <tui-icon
-                class="reservation-card__mark"
-                [icon]="reservation.icon"
-                aria-hidden="true"
-              />
-            </div>
-
-            <header class="reservation-card__header">
-              <h3 class="reservation-card__name">{{ reservation.spaceName }}</h3>
-
-              @switch (reservation.status) {
-                @case ('upcoming') {
-                  <span
-                    tuiBadge
-                    appearance="positive"
-                    size="m"
-                    iconStart="@tui.circle-check"
-                    i18n="@@reservations.card.status.upcoming"
-                  >
-                    Próxima
-                  </span>
-                }
-                @case ('ongoing') {
-                  <span
-                    tuiBadge
-                    appearance="warning"
-                    size="m"
-                    iconStart="@tui.loader-circle"
-                    i18n="@@reservations.card.status.ongoing"
-                  >
-                    En curso
-                  </span>
-                }
-                @case ('past') {
-                  <span
-                    tuiBadge
-                    appearance="neutral"
-                    size="m"
-                    iconStart="@tui.history"
-                    i18n="@@reservations.card.status.past"
-                  >
-                    Pasada
-                  </span>
-                }
-              }
-            </header>
-
-            <dl class="reservation-card__facts">
-              <div class="fact">
-                <dt i18n="@@home.factDate">Fecha</dt>
-                <dd>
-                  <tui-icon icon="@tui.calendar" aria-hidden="true" />{{
-                    reservation.date | date: 'd MMM'
-                  }}
-                </dd>
-              </div>
-              <div class="fact">
-                <dt i18n="@@home.factTime">Horario</dt>
-                <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ reservation.time }}</dd>
-              </div>
-            </dl>
-
-            <div class="reservation-card__actions">
-              <!-- Cancel and QR viewing have no handler yet: each is its own future use case
-                   (cancel-reservation, view-qr) once there is an API to call. -->
-              <button
-                tuiButton
-                type="button"
-                size="m"
-                appearance="flat"
-                iconStart="@tui.ban"
-                i18n="@@reservations.card.cancel"
-              >
-                Cancelar
-              </button>
-              <button
-                tuiButton
-                type="button"
-                size="m"
-                appearance="primary"
-                iconStart="@tui.qr-code"
-                i18n="@@reservations.card.viewQr"
-              >
-                Ver QR
-              </button>
-            </div>
-
-            <!-- Placeholder target: the reservation detail view is a separate feature, not built
-                 yet. The link communicates that the card leads somewhere without wiring a route
-                 that doesn't exist — same pattern as "Ver detalles" on the home view. -->
-            <a
-              tuiLink
-              href="#"
-              iconEnd="@tui.arrow-right"
-              class="reservation-card__detail"
-              i18n="@@home.viewDetails"
-              >Ver detalles</a
-            >
-          </article>
+          <app-reservation-card [reservation]="reservation" />
         </li>
       }
     </ul>

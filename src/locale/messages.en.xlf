@@ -194,15 +194,15 @@
         <source>Confirmada</source>
         <target>Confirmed</target>
       </trans-unit>
-      <trans-unit id="home.factTime" datatype="html">
+      <trans-unit id="reservation.factTime" datatype="html">
         <source>Horario</source>
         <target>Time</target>
       </trans-unit>
-      <trans-unit id="home.factDate" datatype="html">
+      <trans-unit id="reservation.factDate" datatype="html">
         <source>Fecha</source>
         <target>Date</target>
       </trans-unit>
-      <trans-unit id="home.viewDetails" datatype="html">
+      <trans-unit id="common.viewDetails" datatype="html">
         <source>Ver detalles</source>
         <target>View details</target>
       </trans-unit>

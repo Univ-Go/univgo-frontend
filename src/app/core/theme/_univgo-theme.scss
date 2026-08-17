@@ -83,6 +83,10 @@ $dark-outline-variant: #534341;
 $danger-light: #cc3300;
 $danger-light-strong: #a32900;
 $danger-dark: #ff8a65;
+// Ink for text sitting *on* the error colour, for surfaces filled with it (Taiga only publishes
+// the error colour itself). White clears AA over $danger-light (5.2:1) but fails badly over the
+// pale $danger-dark (2.3:1), so dark mode needs its own ink: 7.1:1 over $danger-dark.
+$on-danger-dark: #3d0f00;
 
 // Dark enough to clear 4.5:1 as text on the light surfaces, unlike a pure amber.
 $warning-light: #9a5b00;
@@ -167,6 +171,7 @@ $shadow-tint: 65, 0, 5;
   --univgo-status-positive-fixed: #{$teal-600};
   --univgo-status-negative-fixed: #{$danger-light};
   --univgo-on-status-fixed: #{$neutral-0};
+  --univgo-text-on-negative: #{$neutral-0};
 
   --tui-shadow-small: 0 0.125rem 0.625rem rgba(#{$shadow-tint}, 0.1);
   --tui-shadow-small-hover: 0 0.5rem 1.5rem rgba(#{$shadow-tint}, 0.14);
@@ -240,6 +245,7 @@ $shadow-tint: 65, 0, 5;
   --univgo-status-positive-fixed: #{$teal-600};
   --univgo-status-negative-fixed: #{$danger-light};
   --univgo-on-status-fixed: #{$neutral-0};
+  --univgo-text-on-negative: #{$on-danger-dark};
   --univgo-logo-plate: #{$neutral-25};
 
   --tui-shadow-small: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.4);

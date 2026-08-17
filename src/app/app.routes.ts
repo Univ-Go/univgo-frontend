@@ -28,7 +28,7 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
       {
-        path: 'inicio',
+        path: 'home',
         loadComponent: () =>
           import('./features/home/presentation/home-page/home-page').then((m) => m.HomePage),
         title: $localize`:@@home.pageTitle:Inicio`,
@@ -37,7 +37,7 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'reservas',
+        path: 'reservations',
         loadComponent: () =>
           import('./features/my-reservations/presentation/my-reservations-page/my-reservations-page').then(
             (m) => m.MyReservationsPage,

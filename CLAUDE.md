@@ -338,6 +338,11 @@ Cuando una situación requiera **acción explícita del usuario para continuar o
 
 - Identificadores: variables, funciones, clases, componentes, tipos, interfaces, constantes,
   propiedades, tokens de inyección, selectores y nombres de fichero y de carpeta.
+- **Rutas y URLs**: los `path` de la configuración de rutas, los `routerLink`, los parámetros de
+  ruta y de query, y los fragmentos. `/home` y `/reservations`, nunca `/inicio` ni `/reservas`.
+  La URL es parte del contrato técnico de la aplicación, no contenido traducible: traducir rutas
+  exigiría un mapa de rutas por locale que hoy no aporta nada y multiplicaría los enlaces rotos.
+  Lo que el usuario lee de una ruta —el título de la página— ya viaja por i18n.
 - Comentarios y JSDoc.
 - Mensajes de commit y nombres de rama.
 - Mensajes de log, errores técnicos, descripciones de tests (`describe`/`it`) y textos de

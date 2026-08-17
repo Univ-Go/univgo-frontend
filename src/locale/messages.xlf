@@ -50,6 +50,10 @@
           <context context-type="sourcefile">src/app/app.routes.ts</context>
           <context context-type="linenumber">56</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
+          <context context-type="linenumber">24,27</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.pageDescription" datatype="html">
         <source>Consulta el pase, el horario, la ubicación y las normas de tu reserva.</source>
@@ -364,7 +368,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">57,58</context>
+          <context context-type="linenumber">82,83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservation.factDate" datatype="html">
@@ -379,7 +383,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">49,51</context>
+          <context context-type="linenumber">74,76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.viewDetails" datatype="html">
@@ -504,6 +508,10 @@
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
           <context context-type="linenumber">1,4</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.status.legend" datatype="html">
         <source>Estado</source>
@@ -610,53 +618,60 @@
           <context context-type="linenumber">10,13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="reservations.detail.pass.title" datatype="html">
-        <source>Pase de reserva</source>
+      <trans-unit id="navigation.breadcrumbLabel" datatype="html">
+        <source>Ruta de navegación</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">26,29</context>
+          <context context-type="linenumber">19,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.detail.pass.title" datatype="html">
+        <source>QR de Ingreso</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
+          <context context-type="linenumber">51,54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.pass.idLabel" datatype="html">
         <source>Código</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">33,34</context>
+          <context context-type="linenumber">58,59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.facts.title" datatype="html">
         <source>Detalles de la reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">45,48</context>
+          <context context-type="linenumber">70,73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservation.factLocation" datatype="html">
         <source>Ubicación</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">61,62</context>
+          <context context-type="linenumber">86,87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.rules.title" datatype="html">
         <source>Normas del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">74,77</context>
+          <context context-type="linenumber">99,101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.notFound.title" datatype="html">
         <source>Reserva no encontrada</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">85,86</context>
+          <context context-type="linenumber">111,112</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.notFound.description" datatype="html">
         <source> Puede que el enlace sea incorrecto o que la reserva ya no exista. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">87,91</context>
+          <context context-type="linenumber">113,117</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.status.upcoming" datatype="html">

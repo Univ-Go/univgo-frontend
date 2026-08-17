@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TuiAppearance, TuiButton, TuiIcon } from '@taiga-ui/core';
-import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { TuiItem } from '@taiga-ui/cdk';
+import { TuiAppearance, TuiButton, TuiIcon, TuiLink } from '@taiga-ui/core';
+import { TuiBreadcrumbs } from '@taiga-ui/kit';
+import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
 import { categoryIcon } from '../category-icon';
 import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
@@ -22,9 +24,13 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
     ReservationStatusBadge,
     RouterLink,
     TuiAppearance,
+    TuiBreadcrumbs,
     TuiButton,
     TuiCardLarge,
     TuiIcon,
+    TuiItem,
+    TuiLink,
+    TuiList,
     TuiSurface,
   ],
   templateUrl: './reservation-detail-page.html',

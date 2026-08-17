@@ -1,14 +1,35 @@
-<a
-  tuiButton
-  type="button"
-  appearance="outline"
-  size="m"
-  iconStart="@tui.arrow-left"
-  routerLink="/reservations"
-  class="back-link"
-  i18n="@@common.back"
-  >Volver</a
->
+<div class="page-nav">
+  <a
+    tuiButton
+    type="button"
+    appearance="flat"
+    size="m"
+    iconStart="@tui.arrow-left"
+    routerLink="/reservations"
+    i18n="@@common.back"
+    >Volver</a
+  >
+
+  <!-- `tui-breadcrumbs` renders a plain flex container, so the landmark and its accessible name are
+       ours to provide. It also sets `white-space: nowrap`: on a phone the trail would overflow the
+       layout gutter, and the back button already carries the same parent, so it starts at tablet. -->
+  <nav
+    class="page-nav__trail"
+    i18n-aria-label="@@navigation.breadcrumbLabel"
+    aria-label="Ruta de navegación"
+  >
+    <tui-breadcrumbs>
+      <a *tuiItem tuiLink routerLink="/reservations" i18n="@@reservations.title">Mis reservas</a>
+      <span
+        *tuiItem
+        class="page-nav__current"
+        aria-current="page"
+        i18n="@@reservations.detail.pageTitle"
+        >Detalle de la reserva</span
+      >
+    </tui-breadcrumbs>
+  </nav>
+</div>
 
 @if (reservation(); as reservation) {
   <header class="detail__header">
@@ -56,9 +77,8 @@
         <div class="fact">
           <dt i18n="@@reservation.factDate">Fecha</dt>
           <dd>
-            <tui-icon icon="@tui.calendar" aria-hidden="true"></tui-icon>{{
-              reservation.date | date: 'd MMMM y'
-            }}
+            <tui-icon icon="@tui.calendar" aria-hidden="true"></tui-icon
+            >{{ reservation.date | date: 'd MMMM y' }}
           </dd>
         </div>
         <div class="fact">
@@ -67,7 +87,9 @@
         </div>
         <div class="fact">
           <dt i18n="@@reservation.factLocation">Ubicación</dt>
-          <dd><tui-icon icon="@tui.map-pin" aria-hidden="true"></tui-icon>{{ reservation.location }}</dd>
+          <dd>
+            <tui-icon icon="@tui.map-pin" aria-hidden="true"></tui-icon>{{ reservation.location }}
+          </dd>
         </div>
       </dl>
     </section>
@@ -75,15 +97,15 @@
     <section
       tuiCardLarge
       tuiSurface
-      tuiAppearance="outline"
+      tuiAppearance="outline-grayscale"
       class="rules-card"
       aria-labelledby="rules-title"
     >
       <h2 id="rules-title" i18n="@@reservations.detail.rules.title">Normas del espacio</h2>
 
-      <ul class="rules-card__list">
+      <ul tuiList="m" class="rules-card__list">
         @for (rule of reservation.rules; track rule) {
-          <li><tui-icon icon="@tui.list-checks" aria-hidden="true"></tui-icon>{{ rule }}</li>
+          <li>{{ rule }}</li>
         }
       </ul>
     </section>

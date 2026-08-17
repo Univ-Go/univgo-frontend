@@ -258,6 +258,10 @@
         <source>Navegación principal</source>
         <target>Main navigation</target>
       </trans-unit>
+      <trans-unit id="navigation.breadcrumbLabel" datatype="html">
+        <source>Ruta de navegación</source>
+        <target>Breadcrumb</target>
+      </trans-unit>
       <trans-unit id="navigation.home" datatype="html">
         <source>Inicio</source>
         <target>Home</target>
@@ -383,8 +387,8 @@
         <target>Back</target>
       </trans-unit>
       <trans-unit id="reservations.detail.pass.title" datatype="html">
-        <source>Pase de reserva</source>
-        <target>Booking pass</target>
+        <source>QR de Ingreso</source>
+        <target>Entry QR</target>
       </trans-unit>
       <trans-unit id="reservations.detail.pass.idLabel" datatype="html">
         <source>Código</source>

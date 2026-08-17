@@ -4,8 +4,26 @@
   gap: var(--univgo-space-2xl);
 }
 
-.back-link {
-  align-self: flex-start;
+// The back button is the action and the trail is the orientation, so they share one row: same
+// affordance, two levels of commitment.
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.page-nav__trail {
+  display: none;
+}
+
+.page-nav__current {
+  color: var(--tui-text-primary);
+}
+
+@media (min-width: 48rem) {
+  .page-nav__trail {
+    display: block;
+  }
 }
 
 // Title sits above the photo, not inside it, so the page reads name → status → visual → detail,
@@ -13,7 +31,7 @@
 .detail__header {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--univgo-space-m);
 }
@@ -68,17 +86,21 @@
     grid-row: 1;
   }
 
+  // The pass matches the photo's height, and `tuiCardLarge`'s `margin-block-start: auto` on the
+  // last child spends the extra room the way the library intends: the code line settles against
+  // the bottom edge. The photo itself stays on the container's `start`, since stretching it would
+  // override the height its aspect ratio computes.
   .pass-card {
     grid-column: 2;
     grid-row: 1;
+    align-self: stretch;
   }
 
-  // Both share row 2, so stretching them (the container default is `start`, for the photo/pass
-  // row above) makes each match the taller of the two instead of hugging its own content.
+  // Row 2 hugs instead: with no trailing action to pin, that same auto margin would push the list
+  // and the facts to the bottom of a stretched card and reopen the gap under each title.
   .rules-card,
   .facts-card {
     grid-row: 2;
-    align-self: stretch;
   }
 
   .rules-card {
@@ -90,27 +112,19 @@
   }
 }
 
+// `tuiCardLarge` already lays its content out as a column and owns the vertical rhythm between
+// title and body, so only the title's own scale is ours to set: `styles.scss` maps `h2` to the
+// page-level 32–40px heading, which at card level dwarfs the content it labels. The smallest
+// heading step keeps the outline intact and reads as a hierarchy — 20px against 16px of body.
 .pass-card,
 .facts-card,
 .rules-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-l);
-
   h2 {
-    margin: 0;
-  }
-
-  // Taiga's `tuiCardLarge` gives its last child `margin-block-start: auto`, meant to pin a
-  // trailing action to the bottom of the card. Our stretched rules card has no such action —
-  // its list should start right after the title, not float in the middle — so that gets undone.
-  > :last-child {
-    margin-block-start: 0;
+    font: var(--tui-typography-heading-h6);
   }
 }
 
 .pass-card {
-  align-items: center;
   text-align: center;
 }
 
@@ -136,9 +150,12 @@
   }
 }
 
+// The card's `text-align: center` does not reach a flex row, so the label and the code centre
+// themselves on the main axis.
 .pass-card__id {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--univgo-space-s);
   margin: 0;
   color: var(--tui-text-secondary);
@@ -175,31 +192,10 @@
   font: var(--tui-typography-ui-s);
 }
 
-// `flex: 1` plus `space-between` only does something once `.rules-card` is stretched taller than
-// its content (matching the details card next to it): the rules then spread across the extra
-// height instead of leaving it as one gap at the bottom.
+// `tuiList` owns the markers, the indent and the vertical rhythm; the only thing left to decide is
+// the marker colour, which the directive reads from this variable.
 .rules-card__list {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--univgo-space-m);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--univgo-space-s);
-    font: var(--tui-typography-body-s);
-  }
-
-  tui-icon {
-    flex-shrink: 0;
-    margin-block-start: 0.15em;
-    color: var(--tui-text-secondary);
-  }
+  --tui-list-marker: var(--tui-background-accent-1);
 }
 
 .empty-state {

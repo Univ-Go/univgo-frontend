@@ -3,7 +3,8 @@
   "configurations": [
     {
       "name": "univgo-dev",
-      "url": "http://localhost:4200",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["start"],
       "port": 4200
     }
   ]

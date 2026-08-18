@@ -69,6 +69,20 @@ export const routes: Routes = [
           description: $localize`:@@reservations.detail.pageDescription:Consulta el pase, el horario, la ubicación y las normas de tu reserva.`,
         },
       },
+      // Last, and inside the shell: an unknown URL leaves the user with the navigation bar rather
+      // than on a blank page. Without this entry the router aborts the navigation and renders
+      // nothing at all.
+      {
+        path: '**',
+        loadComponent: () =>
+          import('./features/not-found/presentation/not-found-page/not-found-page').then(
+            (m) => m.NotFoundPage,
+          ),
+        title: $localize`:@@notFound.pageTitle:Página no encontrada`,
+        data: {
+          description: $localize`:@@notFound.pageDescription:La página que buscas no existe o ha cambiado de dirección. Vuelve al inicio o consulta tus reservas.`,
+        },
+      },
     ],
   },
 ];

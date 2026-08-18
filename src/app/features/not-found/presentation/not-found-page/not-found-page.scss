@@ -1,0 +1,108 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-2xl);
+  padding-block: var(--univgo-space-2xl);
+  text-align: center;
+}
+
+// Flat brand surface rather than the media placeholder's sheen: this plate is the subject of the
+// page, not a stand-in for a photograph that has not arrived yet.
+.plate {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  padding: var(--univgo-space-xl) var(--univgo-space-3xl);
+  border-radius: var(--tui-radius-l);
+  background: var(--univgo-brand-surface);
+  color: var(--univgo-on-brand-surface);
+  box-shadow: var(--tui-shadow-medium);
+
+  // The two screws are what read as "bolted to a door" instead of "coloured box". Decorative, so
+  // they are drawn by pseudo-elements and never reach the accessibility tree.
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block-start: var(--univgo-space-m);
+    inline-size: var(--univgo-space-s);
+    block-size: var(--univgo-space-s);
+    border-radius: 50%;
+    background: currentcolor;
+    opacity: 0.32;
+  }
+
+  &::before {
+    inset-inline-start: var(--univgo-space-m);
+  }
+
+  &::after {
+    inset-inline-end: var(--univgo-space-m);
+  }
+}
+
+.plate__label {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  font: var(--tui-typography-ui-xs);
+  letter-spacing: var(--univgo-letter-spacing-wide);
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+// Engraved numerals: tabular figures so the three digits sit on an even rhythm, the way a real
+// room plate is set.
+.plate__number {
+  font: var(--univgo-typography-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--univgo-letter-spacing-tight);
+}
+
+// Takes the full content width so the headline breaks where the viewport says it must, not where
+// the paragraph's measure below it would otherwise squeeze it.
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  inline-size: 100%;
+}
+
+.copy__lead {
+  margin: 0;
+  font: var(--tui-typography-heading-h6);
+}
+
+// The measure lives on the paragraph, not on the block: constraining the whole column would break
+// the headline into pieces long before the line is too long to read.
+.copy__body {
+  max-inline-size: 46ch;
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--univgo-space-m);
+}
+
+// On a phone the two routes out become full-width targets stacked in order of likelihood, and the
+// plate gives back the horizontal padding it does not have room for.
+@media (max-width: 47.99rem) {
+  .plate {
+    inline-size: 100%;
+    padding-inline: var(--univgo-space-xl);
+  }
+
+  .actions {
+    flex-direction: column;
+    align-self: stretch;
+  }
+}

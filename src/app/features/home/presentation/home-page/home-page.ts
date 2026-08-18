@@ -5,6 +5,7 @@ import { TuiAppearance, TuiIcon, TuiLink, TuiTitle } from '@taiga-ui/core';
 import { TuiButton } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { MOCK_SESSION_USER } from '../../../auth/infrastructure/mock-session';
 import { findNextReservation } from '../../../my-reservations/domain/reservation-catalog';
 import { MOCK_RESERVATIONS } from '../../../my-reservations/infrastructure/mock-reservations';
 import { ReservationStatusBadge } from '../../../my-reservations/presentation/reservation-status-badge/reservation-status-badge';
@@ -46,8 +47,7 @@ const FEATURED_SPACES = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
-  /** Mock: the signed-in user arrives from the session once authentication exists. */
-  protected readonly userName = 'Mateo';
+  protected readonly userName = MOCK_SESSION_USER.name;
 
   protected readonly categoryIcon = spaceCategoryIcon;
 

@@ -3,6 +3,7 @@ import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TUI_BREAKPOINT, TuiButton, TuiDataList, TuiDropdown, TuiLink } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgedContent, TuiBadgeNotification } from '@taiga-ui/kit';
+import { MOCK_SESSION_USER } from '../../features/auth/infrastructure/mock-session';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 
@@ -39,8 +40,7 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 export class AppHeader {
   private readonly breakpoint = inject(TUI_BREAKPOINT);
 
-  /** Mock: the signed-in user arrives from the session once authentication exists. */
-  private readonly userName = 'Mateo';
+  private readonly userName = MOCK_SESSION_USER.name;
 
   /**
    * On a phone the utilities collapse into the account menu so the bar keeps one row: brand, nav,

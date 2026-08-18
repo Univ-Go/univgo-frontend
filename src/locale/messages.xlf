@@ -510,88 +510,95 @@
           <context context-type="linenumber">22,24</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.legend" datatype="html">
+      <trans-unit id="reservations.filters.status.label" datatype="html">
         <source> Estado </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">18,23</context>
+          <context context-type="linenumber">19,24</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="reservations.filters.category.legend" datatype="html">
+      <trans-unit id="reservations.filters.category.label" datatype="html">
         <source> Tipo de espacio </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">33,38</context>
+          <context context-type="linenumber">35,40</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="reservations.filters.date.legend" datatype="html">
+      <trans-unit id="reservations.filters.date.label" datatype="html">
         <source> Fecha </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">48,52</context>
+          <context context-type="linenumber">51,55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.status.upcoming" datatype="html">
         <source>Próximas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">61,65</context>
+          <context context-type="linenumber">67,71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.status.ongoing" datatype="html">
         <source>Actuales</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">71,75</context>
+          <context context-type="linenumber">77,81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.status.past" datatype="html">
         <source>Pasadas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">81,84</context>
+          <context context-type="linenumber">87,90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.category.sports" datatype="html">
         <source>Deportes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">95,99</context>
+          <context context-type="linenumber">101,105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.category.study" datatype="html">
         <source>Estudio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">105,109</context>
+          <context context-type="linenumber">111,115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.category.lab" datatype="html">
         <source>Laboratorios</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">115,118</context>
+          <context context-type="linenumber">121,124</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.date.clear" datatype="html">
         <source> Quitar filtro </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">131,135</context>
+          <context context-type="linenumber">137,141</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.results.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 reserva} other {<x id="INTERPOLATION"/> reservas}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
+          <context context-type="linenumber">152,158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.empty.title" datatype="html">
         <source>No hay reservas con estos filtros</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">150,151</context>
+          <context context-type="linenumber">169,170</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.empty.description" datatype="html">
         <source>Prueba a cambiar los filtros para ver otras reservas.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">152,157</context>
+          <context context-type="linenumber">171,175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.cancel" datatype="html">

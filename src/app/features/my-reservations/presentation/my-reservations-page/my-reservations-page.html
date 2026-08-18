@@ -11,9 +11,10 @@
     [iconStart]="statusFilterActive() ? '@tui.check' : null"
     iconEnd="@tui.chevron-down"
     class="filters__trigger"
+    id="status-filter"
     [tuiDropdown]="statusPanel"
     [(tuiDropdownOpen)]="statusFilterOpen"
-    i18n="@@reservations.filters.status.legend"
+    i18n="@@reservations.filters.status.label"
   >
     Estado
   </button>
@@ -26,9 +27,10 @@
     [iconStart]="categoryFilterActive() ? '@tui.check' : null"
     iconEnd="@tui.chevron-down"
     class="filters__trigger"
+    id="category-filter"
     [tuiDropdown]="categoryPanel"
     [(tuiDropdownOpen)]="categoryFilterOpen"
-    i18n="@@reservations.filters.category.legend"
+    i18n="@@reservations.filters.category.label"
   >
     Tipo de espacio
   </button>
@@ -41,16 +43,20 @@
     [iconStart]="dateFilterActive() ? '@tui.check' : null"
     iconEnd="@tui.chevron-down"
     class="filters__trigger"
+    id="date-filter"
     [tuiDropdown]="datePanel"
     [(tuiDropdownOpen)]="dateFilterOpen"
-    i18n="@@reservations.filters.date.legend"
+    i18n="@@reservations.filters.date.label"
   >
     Fecha
   </button>
 </section>
 
 <ng-template #statusPanel>
-  <fieldset class="filters__panel">
+  <!-- A `fieldset` with no name is an anonymous group to a screen reader. The name comes from the
+       trigger that opened the panel rather than from a `legend`: it is the same word, already
+       translated and already on screen, so nothing has to be kept in step with it. -->
+  <fieldset class="filters__panel" aria-labelledby="status-filter">
     <label tuiBlock>
       <input
         type="checkbox"
@@ -84,7 +90,7 @@
 </ng-template>
 
 <ng-template #categoryPanel>
-  <fieldset class="filters__panel">
+  <fieldset class="filters__panel" aria-labelledby="category-filter">
     <label tuiBlock>
       <input
         type="checkbox"
@@ -118,7 +124,7 @@
 </ng-template>
 
 <ng-template #datePanel>
-  <fieldset class="filters__panel filters__panel--date">
+  <fieldset class="filters__panel" aria-labelledby="date-filter">
     <tui-calendar-range [value]="selectedRange()" (valueChange)="setSelectedRange($event)" />
 
     @if (selectedRange()) {
@@ -135,7 +141,20 @@
 </ng-template>
 
 <section class="results">
+  @let found = filteredReservations().length;
+
   @if (pagedReservations().length > 0) {
+    <!-- Also the missing level between the page title and each card's `h3`, so the outline never
+         skips a step. The plural sits in an inline element for the same reason it does in the
+         catalogue: a block one lets the formatter pad it and Angular extracts a second, unnamed
+         ICU unit. -->
+    <h2 class="results__count">
+      <span i18n="@@reservations.results.count">{found, plural,
+        =1 {1 reserva}
+        other {{{found}} reservas}
+      }</span>
+    </h2>
+
     <ul class="reservations">
       @for (reservation of pagedReservations(); track reservation.id) {
         <li class="reservations__item">
@@ -152,6 +171,9 @@
       description="Prueba a cambiar los filtros para ver otras reservas."
     />
   }
-</section>
 
-<tui-pagination [length]="pageCount()" [(index)]="pageIndex" />
+  <!-- Nothing to page through with a single page, and paging an empty result is meaningless. -->
+  @if (pageCount() > 1) {
+    <tui-pagination [length]="pageCount()" [(index)]="pageIndex" />
+  }
+</section>

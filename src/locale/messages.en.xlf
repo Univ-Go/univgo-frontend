@@ -294,7 +294,7 @@
         <source>Mis reservas</source>
         <target>My bookings</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.legend" datatype="html">
+      <trans-unit id="reservations.filters.status.label" datatype="html">
         <source>Estado</source>
         <target>Status</target>
       </trans-unit>
@@ -310,7 +310,7 @@
         <source>Pasadas</source>
         <target>Past</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.category.legend" datatype="html">
+      <trans-unit id="reservations.filters.category.label" datatype="html">
         <source>Tipo de espacio</source>
         <target>Space type</target>
       </trans-unit>
@@ -326,7 +326,7 @@
         <source>Laboratorios</source>
         <target>Labs</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.date.legend" datatype="html">
+      <trans-unit id="reservations.filters.date.label" datatype="html">
         <source>Fecha</source>
         <target>Date</target>
       </trans-unit>
@@ -581,6 +581,10 @@
       <trans-unit id="spaces.empty.description" datatype="html">
         <source>Prueba con otra franja horaria, otro día o revisa todos los tipos de espacio.</source>
         <target>Try another time slot, another day, or look at every space type.</target>
+      </trans-unit>
+      <trans-unit id="reservations.results.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 reserva} other {<x id="INTERPOLATION"/> reservas}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 booking} other {<x id="INTERPOLATION"/> bookings}}</target>
       </trans-unit>
     </body>
   </file>

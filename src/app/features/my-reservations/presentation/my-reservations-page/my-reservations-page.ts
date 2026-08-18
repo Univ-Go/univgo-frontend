@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
+import type { TuiDayRange } from '@taiga-ui/cdk';
 import { TuiButton, TuiCheckbox, TuiDropdown, TuiLink } from '@taiga-ui/core';
 import { TuiBlock, TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import type { SpaceCategory } from '../../../spaces/domain/space';
 import { SPACE_CATEGORIES } from '../../../spaces/domain/space';
 import type { ReservationStatus } from '../../domain/reservation';
+import { RESERVATION_STATUSES } from '../../domain/reservation';
+import { listReservations } from '../../domain/reservation-catalog';
 import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
 import { ReservationCard } from '../reservation-card/reservation-card';
 
 const RESERVATIONS_PER_PAGE = 6;
-
-const ALL_STATUSES: readonly ReservationStatus[] = ['upcoming', 'ongoing', 'past'];
 
 function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet<T> {
   const next = new Set(set);
@@ -30,9 +30,10 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
  * Visual mock: layout and component inventory are final, the data is not. `MOCK_RESERVATIONS` is
  * the feature's only hardcoded source, shared with the detail view so both read the same
  * reservation by id — it moves to a use case behind a domain port once the booking API exists.
- * Filtering and pagination run as real client-side logic over that sample; it is not a simulation
- * of a backend. The view owns filtering, paging and the empty state; rendering one reservation
- * belongs to `ReservationCard`.
+ * Filtering runs as real logic over that sample, in `reservation-catalog.ts` and not here: which
+ * bookings answer a question is a rule, the same way the space catalogue's is. The view owns the
+ * controls, the paging and the empty state; rendering one reservation belongs to
+ * `ReservationCard`.
  *
  * `FormsModule` is only here for `[ngModel]` on the status/category checkboxes: `TuiCheckbox`
  * disables itself whenever it has no `NgControl` attached, so a plain `[checked]`/`(change)` pair
@@ -65,7 +66,7 @@ export class MyReservationsPage {
   protected readonly reservations = MOCK_RESERVATIONS;
 
   protected readonly selectedStatuses = signal<ReadonlySet<ReservationStatus>>(
-    new Set(ALL_STATUSES),
+    new Set(RESERVATION_STATUSES),
   );
 
   protected readonly selectedCategories = signal<ReadonlySet<SpaceCategory>>(
@@ -86,7 +87,7 @@ export class MyReservationsPage {
    * left out — including all of them, where the list legitimately comes back empty.
    */
   protected readonly statusFilterActive = computed(
-    () => this.selectedStatuses().size < ALL_STATUSES.length,
+    () => this.selectedStatuses().size < RESERVATION_STATUSES.length,
   );
 
   protected readonly categoryFilterActive = computed(
@@ -95,19 +96,15 @@ export class MyReservationsPage {
 
   protected readonly dateFilterActive = computed(() => this.selectedRange() !== null);
 
+  /** The calendar speaks in `TuiDay`; the catalogue speaks in dates. This is where that ends. */
   protected readonly filteredReservations = computed(() => {
     const range = this.selectedRange();
 
-    return this.reservations.filter((reservation) => {
-      if (!this.selectedStatuses().has(reservation.status)) {
-        return false;
-      }
-
-      if (!this.selectedCategories().has(reservation.category)) {
-        return false;
-      }
-
-      return !range || range.dayInRange(TuiDay.fromLocalNativeDate(reservation.date));
+    return listReservations(this.reservations, {
+      statuses: this.selectedStatuses(),
+      categories: this.selectedCategories(),
+      from: range?.from.toLocalNativeDate() ?? null,
+      to: range?.to.toLocalNativeDate() ?? null,
     });
   });
 

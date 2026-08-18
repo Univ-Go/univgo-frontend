@@ -2,6 +2,9 @@ import type { SpaceCategory } from '../../spaces/domain/space';
 
 export type ReservationStatus = 'upcoming' | 'ongoing' | 'past';
 
+/** Declaration order is the order a filter offers the statuses in. */
+export const RESERVATION_STATUSES: readonly ReservationStatus[] = ['upcoming', 'ongoing', 'past'];
+
 export interface Reservation {
   readonly id: string;
   readonly spaceName: string;

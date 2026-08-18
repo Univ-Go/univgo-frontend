@@ -5,6 +5,7 @@ import { TuiAppearance, TuiIcon, TuiLink, TuiTitle } from '@taiga-ui/core';
 import { TuiButton } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { findNextReservation } from '../../../my-reservations/domain/reservation-catalog';
 import { MOCK_RESERVATIONS } from '../../../my-reservations/infrastructure/mock-reservations';
 import { ReservationStatusBadge } from '../../../my-reservations/presentation/reservation-status-badge/reservation-status-badge';
 import { listSpaces } from '../../../spaces/domain/space-catalog';
@@ -18,8 +19,8 @@ const FEATURED_SPACES = 3;
  * Visual mock: layout and component inventory are final, the data is not.
  *
  * Home is a composition of the features it links to, not a place with surfaces of its own: the
- * booking comes from `MOCK_RESERVATIONS` and wears `ReservationStatusBadge`, the spaces come from
- * the catalogue ranked by the same domain function the catalogue uses, and each one is a
+ * booking is the one `findNextReservation` picks and wears `ReservationStatusBadge`, the spaces
+ * come from the catalogue ranked by the same domain function the catalogue uses, and each one is a
  * `SpaceCard`. A dashboard that redraws those cards is how a second status badge and a second card
  * width get into the product; there is nothing to keep in step this way.
  */
@@ -45,15 +46,12 @@ const FEATURED_SPACES = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
+  /** Mock: the signed-in user arrives from the session once authentication exists. */
   protected readonly userName = 'Mateo';
 
   protected readonly categoryIcon = spaceCategoryIcon;
 
-  /** The soonest booking still ahead, which is the only one a dashboard has room to show. */
-  protected readonly nextReservation = [...MOCK_RESERVATIONS]
-    .filter((reservation) => reservation.status !== 'past')
-    .sort((one, other) => one.date.getTime() - other.date.getTime())
-    .at(0);
+  protected readonly nextReservation = findNextReservation(MOCK_RESERVATIONS);
 
   /** What the catalogue would put first today: free spaces before busy ones, then by name. */
   protected readonly featuredSpaces = listSpaces(MOCK_SPACES, {

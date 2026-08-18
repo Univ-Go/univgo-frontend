@@ -64,6 +64,29 @@ export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAva
 }
 
 /**
+ * Every minute mark a booking of `durationMinutes` could start at and still fit inside one of the
+ * space's free windows on `date`, spaced `stepMinutes` apart. A window shorter than the requested
+ * duration contributes nothing — the same rule `resolveAvailability` applies: a booking cannot span
+ * two separate windows.
+ */
+export function availableStartMinutes(
+  space: Space,
+  date: Date,
+  durationMinutes: number,
+  stepMinutes: number,
+): readonly number[] {
+  return slotsOn(space, date).flatMap((slot) => {
+    const starts: number[] = [];
+
+    for (let start = slot.from; start + durationMinutes <= slot.to; start += stepMinutes) {
+      starts.push(start);
+    }
+
+    return starts;
+  });
+}
+
+/**
  * Category narrows what is listed at all; a time window narrows it further, because asking for an
  * hour is asking to book then and anything that cannot answer is noise. A date on its own never
  * hides a space — it re-reads availability, so a space with nothing left that day still shows,

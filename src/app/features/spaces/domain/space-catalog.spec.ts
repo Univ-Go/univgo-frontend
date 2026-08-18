@@ -1,5 +1,11 @@
 import type { Space, SpaceCategory, SpaceFilter, SpaceSlot } from './space';
-import { groupByCategory, isFilterActive, listSpaces, resolveAvailability } from './space-catalog';
+import {
+  availableStartMinutes,
+  groupByCategory,
+  isFilterActive,
+  listSpaces,
+  resolveAvailability,
+} from './space-catalog';
 
 const MONDAY = new Date(2026, 7, 17);
 const TUESDAY = new Date(2026, 7, 18);
@@ -130,6 +136,41 @@ describe('listSpaces', () => {
     const listed = listSpaces([court], filter({ date: TUESDAY }));
 
     expect(listed.map((entry) => entry.availability.kind)).toEqual(['unavailable']);
+  });
+});
+
+describe('availableStartMinutes', () => {
+  it('steps through a window at the requested granularity', () => {
+    const oneSlot = space({ freeSlots: [slot(MONDAY, 8, 10)] });
+
+    expect(availableStartMinutes(oneSlot, MONDAY, 60, 30)).toEqual([at(8), at(8, 30), at(9)]);
+  });
+
+  it('drops a window shorter than the requested duration instead of stitching it to the next one', () => {
+    const shortThenLong = space({
+      freeSlots: [
+        { date: MONDAY, from: at(8), to: at(8, 30) },
+        { date: MONDAY, from: at(8, 30), to: at(10) },
+      ],
+    });
+
+    expect(availableStartMinutes(shortThenLong, MONDAY, 60, 30)).toEqual([at(8, 30), at(9)]);
+  });
+
+  it('collects starts across every window of the day, not just the first', () => {
+    expect(availableStartMinutes(space(), MONDAY, 60, 60)).toEqual([
+      at(8),
+      at(9),
+      at(10),
+      at(11),
+      at(15),
+      at(16),
+      at(17),
+    ]);
+  });
+
+  it('reports nothing on a day the space has no free slot', () => {
+    expect(availableStartMinutes(space(), TUESDAY, 60, 30)).toEqual([]);
   });
 });
 

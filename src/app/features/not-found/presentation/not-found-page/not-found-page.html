@@ -1,0 +1,45 @@
+<!-- The status code is drawn as the door plate of a classroom that does not exist: the number is
+     both the joke and the technical answer, so the page needs no illustration to be about spaces. -->
+<div class="plate">
+  <span class="plate__label">
+    <tui-icon icon="@tui.door-closed" aria-hidden="true" />
+    <span i18n="@@notFound.plateLabel">Aula</span>
+  </span>
+
+  <span class="plate__number">404</span>
+</div>
+
+<div class="copy">
+  <h1 i18n="@@notFound.title">¡Aula no encontrada!</h1>
+
+  <p class="copy__lead" i18n="@@notFound.lead">Parece que te has perdido en el campus.</p>
+
+  <p class="copy__body" i18n="@@notFound.description">
+    El espacio que buscas ha sido reservado por un fantasma o simplemente no existe. No te
+    preocupes, te ayudamos a volver a clase.
+  </p>
+</div>
+
+<div class="actions">
+  <a
+    tuiButton
+    routerLink="/home"
+    size="l"
+    appearance="primary"
+    iconStart="@tui.house"
+    i18n="@@notFound.backHome"
+  >
+    Volver al inicio
+  </a>
+
+  <a
+    tuiButton
+    routerLink="/reservations"
+    size="l"
+    appearance="outline"
+    iconStart="@tui.calendar-check"
+    i18n="@@notFound.viewReservations"
+  >
+    Ver mis reservas
+  </a>
+</div>

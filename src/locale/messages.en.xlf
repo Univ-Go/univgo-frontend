@@ -294,7 +294,7 @@
         <source>Mis reservas</source>
         <target>My bookings</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.legend" datatype="html">
+      <trans-unit id="reservations.filters.status.label" datatype="html">
         <source>Estado</source>
         <target>Status</target>
       </trans-unit>
@@ -310,7 +310,7 @@
         <source>Pasadas</source>
         <target>Past</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.category.legend" datatype="html">
+      <trans-unit id="reservations.filters.category.label" datatype="html">
         <source>Tipo de espacio</source>
         <target>Space type</target>
       </trans-unit>
@@ -326,7 +326,7 @@
         <source>Laboratorios</source>
         <target>Labs</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.date.legend" datatype="html">
+      <trans-unit id="reservations.filters.date.label" datatype="html">
         <source>Fecha</source>
         <target>Date</target>
       </trans-unit>
@@ -581,6 +581,42 @@
       <trans-unit id="spaces.empty.description" datatype="html">
         <source>Prueba con otra franja horaria, otro día o revisa todos los tipos de espacio.</source>
         <target>Try another time slot, another day, or look at every space type.</target>
+      </trans-unit>
+      <trans-unit id="reservations.results.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 reserva} other {<x id="INTERPOLATION"/> reservas}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 booking} other {<x id="INTERPOLATION"/> bookings}}</target>
+      </trans-unit>
+      <trans-unit id="notFound.pageTitle" datatype="html">
+        <source>Página no encontrada</source>
+        <target>Page not found</target>
+      </trans-unit>
+      <trans-unit id="notFound.pageDescription" datatype="html">
+        <source>La página que buscas no existe o ha cambiado de dirección. Vuelve al inicio o consulta tus reservas.</source>
+        <target>The page you are looking for does not exist or has moved. Go back home or check your bookings.</target>
+      </trans-unit>
+      <trans-unit id="notFound.plateLabel" datatype="html">
+        <source>Aula</source>
+        <target>Room</target>
+      </trans-unit>
+      <trans-unit id="notFound.title" datatype="html">
+        <source>¡Aula no encontrada!</source>
+        <target>Room not found!</target>
+      </trans-unit>
+      <trans-unit id="notFound.lead" datatype="html">
+        <source>Parece que te has perdido en el campus.</source>
+        <target>Looks like you got lost on campus.</target>
+      </trans-unit>
+      <trans-unit id="notFound.description" datatype="html">
+        <source> El espacio que buscas ha sido reservado por un fantasma o simplemente no existe. No te preocupes, te ayudamos a volver a clase. </source>
+        <target> The space you are after was booked by a ghost, or it simply does not exist. Don't worry, we will get you back to class. </target>
+      </trans-unit>
+      <trans-unit id="notFound.backHome" datatype="html">
+        <source> Volver al inicio </source>
+        <target> Back home </target>
+      </trans-unit>
+      <trans-unit id="notFound.viewReservations" datatype="html">
+        <source> Ver mis reservas </source>
+        <target> View my bookings </target>
       </trans-unit>
     </body>
   </file>

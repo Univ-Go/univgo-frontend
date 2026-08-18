@@ -19,13 +19,6 @@
   padding: var(--univgo-space-m);
   border: none;
 
-  legend {
-    padding: 0;
-    padding-block-end: var(--univgo-space-xs);
-    color: var(--tui-text-secondary);
-    font: var(--tui-typography-ui-s);
-  }
-
   label[tuiBlock] {
     display: flex;
     align-items: center;
@@ -37,6 +30,12 @@
 .results {
   display: flex;
   flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+// The same step the catalogue's result count uses: a card-level heading, not a second page title.
+.results__count {
+  font: var(--tui-typography-heading-h5);
 }
 
 .reservations {

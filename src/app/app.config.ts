@@ -10,6 +10,7 @@ import { provideTaiga, tuiCheckboxOptionsProvider } from '@taiga-ui/core';
 import { APP_CONFIG } from './core/config/app-config';
 import { defaultAppConfig } from './core/config/default-app-config';
 import { httpErrorInterceptor } from './core/http/http-error.interceptor';
+import { provideTaigaDateFormat } from './core/i18n/taiga-date-format';
 import { provideTaigaLanguage } from './core/i18n/taiga-language';
 import { ConsoleLogger, Logger } from './core/logging/logger';
 import { PageMetadataStrategy } from './core/seo/page-metadata.strategy';
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     // onto the document's `tuiTheme` attribute.
     provideTaiga(),
     provideTaigaLanguage(),
+    provideTaigaDateFormat(),
     // "Selected" is teal product-wide, the same colour a filter in effect uses. Taiga's default
     // paints a checked box with the brand crimson, which reads as a primary action rather than as
     // a choice the user made. Configured through the library's options token, not with CSS.

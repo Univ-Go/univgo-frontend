@@ -168,9 +168,20 @@ $shadow-tint: 65, 0, 5;
   --univgo-logo-plate: transparent;
   // Status colours for badges that sit on the fixed brand surface. They cannot follow the theme:
   // the surface underneath never does. White text clears AA on both (8.85:1 and 4.93:1).
-  --univgo-status-positive-fixed: #{$teal-600};
-  --univgo-status-negative-fixed: #{$danger-light};
-  --univgo-on-status-fixed: #{$neutral-0};
+  // Status pills that sit *on* the fixed brand surface. Two constraints at once: the ink has to
+  // clear 4.5:1 against the pill, and the pill has to be distinguishable from the crimson plate
+  // underneath. That rules out the status colours themselves — deep teal on deep crimson is 1.18:1,
+  // legible text on a shape nobody can see. Each pill is the pale end of its own hue with dark ink
+  // of the same hue: 6.5:1 (positive), 7.2:1 (warning), 4.8:1 (negative) and 8.6:1 (neutral)
+  // against the plate. They do not follow the theme because the surface underneath never does.
+  --univgo-status-positive-fixed: #{$teal-200};
+  --univgo-on-status-positive-fixed: #{$teal-900};
+  --univgo-status-warning-fixed: #{$warning-dark};
+  --univgo-on-status-warning-fixed: #{$neutral-900};
+  --univgo-status-negative-fixed: #{$danger-dark};
+  --univgo-on-status-negative-fixed: #{$on-danger-dark};
+  --univgo-status-neutral-fixed: #{$neutral-200};
+  --univgo-on-status-neutral-fixed: #{$neutral-900};
   --univgo-text-on-negative: #{$neutral-0};
 
   --tui-shadow-small: 0 0.125rem 0.625rem rgba(#{$shadow-tint}, 0.1);
@@ -242,9 +253,20 @@ $shadow-tint: 65, 0, 5;
 
   --univgo-brand-surface: #{$brand-800};
   --univgo-on-brand-surface: #{$brand-100};
-  --univgo-status-positive-fixed: #{$teal-600};
-  --univgo-status-negative-fixed: #{$danger-light};
-  --univgo-on-status-fixed: #{$neutral-0};
+  // Status pills that sit *on* the fixed brand surface. Two constraints at once: the ink has to
+  // clear 4.5:1 against the pill, and the pill has to be distinguishable from the crimson plate
+  // underneath. That rules out the status colours themselves — deep teal on deep crimson is 1.18:1,
+  // legible text on a shape nobody can see. Each pill is the pale end of its own hue with dark ink
+  // of the same hue: 6.5:1 (positive), 7.2:1 (warning), 4.8:1 (negative) and 8.6:1 (neutral)
+  // against the plate. They do not follow the theme because the surface underneath never does.
+  --univgo-status-positive-fixed: #{$teal-200};
+  --univgo-on-status-positive-fixed: #{$teal-900};
+  --univgo-status-warning-fixed: #{$warning-dark};
+  --univgo-on-status-warning-fixed: #{$neutral-900};
+  --univgo-status-negative-fixed: #{$danger-dark};
+  --univgo-on-status-negative-fixed: #{$on-danger-dark};
+  --univgo-status-neutral-fixed: #{$neutral-200};
+  --univgo-on-status-neutral-fixed: #{$neutral-900};
   --univgo-text-on-negative: #{$on-danger-dark};
   --univgo-logo-plate: #{$neutral-25};
 
@@ -313,6 +335,11 @@ $shadow-tint: 65, 0, 5;
   --univgo-content-max-width: 80rem;
   --univgo-layout-gutter: 1.25rem;
 
+  // Every grid of cards in the product steps 1 → 2 → 3 columns, so the step lives here instead of
+  // as a copy of the same two media queries in each view. Explicit counts, not `auto-fit`: a card
+  // is the same width on every page, rather than however many happen to fit.
+  --univgo-card-grid-columns: 1fr;
+
   --univgo-letter-spacing-tight: -0.02em;
   --univgo-letter-spacing-wide: 0.01em;
 }
@@ -320,6 +347,13 @@ $shadow-tint: 65, 0, 5;
 @media (min-width: 48rem) {
   :root {
     --univgo-layout-gutter: 3rem;
+    --univgo-card-grid-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --univgo-card-grid-columns: repeat(3, 1fr);
   }
 }
 

@@ -1,0 +1,173 @@
+<header class="intro">
+  <h1 i18n="@@spaces.title">Reservar un espacio</h1>
+  <p class="intro__lead" i18n="@@spaces.lead">
+    Elige dónde y cuándo. Filtra por tipo de espacio, día y franja horaria.
+  </p>
+</header>
+
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="filters"
+  i18n-aria-label="@@spaces.filters.label"
+  aria-label="Filtros del catálogo"
+>
+  <div class="filters__grid">
+    <!-- The textfield owns its own items handlers, so how a category prints belongs on this field
+         rather than on the whole view — a component-wide provider would also reach the date and
+         time fields, which have nothing to do with categories. -->
+    <tui-textfield tuiTextfieldSize="m" [stringify]="categoryName">
+      <label tuiLabel for="space-category" i18n="@@spaces.filters.category">Tipo de espacio</label>
+      <input
+        id="space-category"
+        tuiSelect
+        name="category"
+        [ngModel]="category()"
+        (ngModelChange)="selectCategory($event)"
+      />
+      <tui-data-list *tuiDropdown>
+        <button tuiOption type="button" [value]="null" i18n="@@spaces.filters.anyCategory">
+          Todos los tipos
+        </button>
+        @for (option of categories; track option) {
+          <button tuiOption type="button" [value]="option">{{ categoryName(option) }}</button>
+        }
+      </tui-data-list>
+    </tui-textfield>
+
+    <!-- The picker is content the consumer supplies: `tuiInputDate` looks for a calendar among its
+         auxiliary providers and pushes value, min and max into it. Without one the field is a
+         masked text box that only accepts typing. -->
+    <!-- No cleaner here: availability without a day means nothing, so the filter always has one.
+         A clear button that silently puts today back would be telling the user it emptied. -->
+    <tui-textfield tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
+      <label tuiLabel for="space-date" i18n="@@spaces.filters.date">Fecha</label>
+      <input
+        id="space-date"
+        tuiInputDate
+        name="date"
+        [min]="today"
+        [ngModel]="date()"
+        (ngModelChange)="setDate($event)"
+      />
+      <tui-calendar *tuiDropdown />
+    </tui-textfield>
+
+    <tui-textfield tuiTextfieldSize="m">
+      <label tuiLabel for="space-from" i18n="@@spaces.filters.from">Desde</label>
+      <input
+        id="space-from"
+        tuiInputTime
+        name="from"
+        [ngModel]="from()"
+        (ngModelChange)="from.set($event)"
+      />
+      <tui-data-list *tuiDropdown>
+        @for (option of timeOptions; track option.toString()) {
+          <button tuiOption type="button" [value]="option">{{ option }}</button>
+        }
+      </tui-data-list>
+    </tui-textfield>
+
+    <tui-textfield tuiTextfieldSize="m">
+      <label tuiLabel for="space-to" i18n="@@spaces.filters.to">Hasta</label>
+      <input
+        id="space-to"
+        tuiInputTime
+        name="to"
+        [ngModel]="to()"
+        (ngModelChange)="to.set($event)"
+      />
+      <tui-data-list *tuiDropdown>
+        @for (option of timeOptions; track option.toString()) {
+          <button tuiOption type="button" [value]="option">{{ option }}</button>
+        }
+      </tui-data-list>
+    </tui-textfield>
+  </div>
+
+  <!-- Half a range narrows nothing, so the view says so instead of quietly dropping the value. -->
+  <p class="filters__hint" role="status">
+    @if (endWithoutStart()) {
+      <span i18n="@@spaces.filters.endWithoutStart"
+        >Indica también una hora de inicio para acotar la franja.</span
+      >
+    } @else if (endBeforeStart()) {
+      <span i18n="@@spaces.filters.endBeforeStart"
+        >La hora de fin debe ser posterior a la de inicio.</span
+      >
+    }
+  </p>
+
+  @if (filterActive()) {
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="flat"
+      iconStart="@tui.filter-x"
+      class="filters__clear"
+      (click)="clearFilters()"
+      i18n="@@spaces.filters.clear"
+    >
+      Quitar filtros
+    </button>
+  }
+</section>
+
+@if (filterActive()) {
+  <section class="results" i18n-aria-label="@@spaces.results.label" aria-label="Resultados">
+    @let found = listed().length;
+
+    @if (pagedSpaces().length > 0) {
+      <!-- The plural sits in an inline element on purpose: a block one lets the formatter pad it
+           with whitespace, and Angular then extracts the ICU as a second, auto-numbered unit that
+           nobody can translate against a stable id. -->
+      <h2 class="results__count">
+        <span i18n="@@spaces.results.count">{found, plural,
+          =1 {1 espacio encontrado}
+          other {{{found}} espacios encontrados}
+        }</span>
+      </h2>
+
+      <ul class="grid">
+        @for (entry of pagedSpaces(); track entry.space.id) {
+          <li class="grid__item">
+            <app-space-card [listed]="entry" />
+          </li>
+        }
+      </ul>
+
+      @if (pageCount() > 1) {
+        <tui-pagination [length]="pageCount()" [(index)]="pageIndex" />
+      }
+    } @else {
+      <app-empty-state
+        icon="@tui.calendar-x"
+        i18n-heading="@@spaces.empty.heading"
+        heading="No hay espacios libres con estos filtros"
+        i18n-description="@@spaces.empty.description"
+        description="Prueba con otra franja horaria, otro día o revisa todos los tipos de espacio."
+      >
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          appearance="outline"
+          iconStart="@tui.filter-x"
+          (click)="clearFilters()"
+          i18n="@@spaces.filters.clear"
+        >
+          Quitar filtros
+        </button>
+      </app-empty-state>
+    }
+  </section>
+} @else {
+  <div class="shelves">
+    @for (shelf of shelves(); track shelf.category) {
+      <app-space-shelf [category]="shelf.category" [spaces]="shelf.spaces" [total]="shelf.total" />
+    }
+  </div>
+}

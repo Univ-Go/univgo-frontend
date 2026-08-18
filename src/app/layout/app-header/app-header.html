@@ -15,6 +15,15 @@
     >
     <a
       tuiLink
+      routerLink="/spaces"
+      routerLinkActive="nav__item--active"
+      [routerLinkActiveOptions]="spacesLinkOptions"
+      class="nav__item"
+      i18n="@@navigation.spaces"
+      >Espacios</a
+    >
+    <a
+      tuiLink
       routerLink="/reservations"
       routerLinkActive="nav__item--active"
       [routerLinkActiveOptions]="{ exact: true }"

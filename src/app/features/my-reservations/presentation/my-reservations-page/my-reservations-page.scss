@@ -39,57 +39,15 @@
   flex-direction: column;
 }
 
-// Mobile-first: one column by default, stepping up to fixed column counts as the viewport grows.
-// Explicit `repeat(n, 1fr)` (not `auto-fit`) so the grid always reads as a deliberate 2×3 layout
-// on desktop instead of however many cards happen to fit.
 .reservations {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: var(--univgo-card-grid-columns);
   gap: var(--univgo-space-l);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-@media (min-width: 48rem) {
-  .reservations {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 64rem) {
-  .reservations {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 .reservations__item {
   display: flex;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--univgo-space-s);
-  padding: var(--univgo-space-3xl) var(--univgo-space-l);
-  border: 1px dashed var(--tui-border-normal);
-  border-radius: var(--tui-radius-l);
-  color: var(--tui-text-secondary);
-  text-align: center;
-
-  tui-icon {
-    font-size: 2rem;
-  }
-
-  h2 {
-    margin: 0;
-    color: var(--tui-text-primary);
-    font: var(--tui-typography-ui-l);
-  }
-
-  p {
-    margin: 0;
-    font: var(--tui-typography-body-s);
-  }
 }

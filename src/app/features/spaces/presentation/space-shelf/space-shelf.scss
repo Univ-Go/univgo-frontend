@@ -1,0 +1,80 @@
+:host {
+  // How many cards fit in the rail. The fraction is deliberate: the sliver of the next card is what
+  // tells the user the rail scrolls, and it is the only cue touch users get.
+  --shelf-visible: 1.15;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.shelf__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+// A rail heading sits under the page title, not beside it: the global h2 scale is nearly as large
+// as h1 and three of them would read as three pages.
+.shelf__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--univgo-space-s);
+  margin-inline-end: auto;
+  font: var(--tui-typography-heading-h5);
+}
+
+.shelf__count {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-m);
+}
+
+.shelf__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.shelf__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(100% / var(--shelf-visible) - var(--univgo-space-l));
+  gap: var(--univgo-space-l);
+  margin: 0;
+  // Vertical room for the card's hover lift and shadow: a scroll container clips whatever leaves
+  // its box, and without the padding the raised card would be cut along the rail's edge.
+  padding: var(--univgo-space-s) 0 var(--univgo-space-m);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.shelf__item {
+  display: flex;
+  scroll-snap-align: start;
+}
+
+// Touch scrolls the rail directly, so the arrows are a pointer affordance and only appear where a
+// pointer is the primary input.
+.shelf__arrow {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  :host {
+    --shelf-visible: 2.3;
+  }
+
+  .shelf__arrow {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 64rem) {
+  :host {
+    --shelf-visible: 3.4;
+  }
+}

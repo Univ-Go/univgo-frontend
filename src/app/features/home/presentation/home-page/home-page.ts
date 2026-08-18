@@ -1,30 +1,39 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TuiAppearance, TuiButton, TuiIcon, TuiLink, TuiTitle } from '@taiga-ui/core';
-import { TuiBadge, TuiChip } from '@taiga-ui/kit';
+import { RouterLink } from '@angular/router';
+import { TuiAppearance, TuiIcon, TuiLink, TuiTitle } from '@taiga-ui/core';
+import { TuiButton } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader, TuiSurface } from '@taiga-ui/layout';
+import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { MOCK_RESERVATIONS } from '../../../my-reservations/infrastructure/mock-reservations';
+import { ReservationStatusBadge } from '../../../my-reservations/presentation/reservation-status-badge/reservation-status-badge';
+import { listSpaces } from '../../../spaces/domain/space-catalog';
+import { MOCK_SPACES } from '../../../spaces/infrastructure/mock-spaces';
+import { SpaceCard } from '../../../spaces/presentation/space-card/space-card';
+import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 
-/** Shape of the sample data below. Real models will live in the feature's domain layer. */
-interface FeaturedSpace {
-  readonly id: string;
-  readonly name: string;
-  readonly location: string;
-  readonly icon: string;
-  readonly available: boolean;
-  readonly tags: readonly string[];
-}
+const FEATURED_SPACES = 3;
 
 /**
- * Visual mock: layout and component inventory are final, the data is not. Everything below is
- * sample content so the structure can be judged; it moves to a use case once the API exists.
+ * Visual mock: layout and component inventory are final, the data is not.
+ *
+ * Home is a composition of the features it links to, not a place with surfaces of its own: the
+ * booking comes from `MOCK_RESERVATIONS` and wears `ReservationStatusBadge`, the spaces come from
+ * the catalogue ranked by the same domain function the catalogue uses, and each one is a
+ * `SpaceCard`. A dashboard that redraws those cards is how a second status badge and a second card
+ * width get into the product; there is nothing to keep in step this way.
  */
 @Component({
   selector: 'app-home-page',
   imports: [
+    DatePipe,
+    EmptyState,
+    ReservationStatusBadge,
+    RouterLink,
+    SpaceCard,
     TuiAppearance,
-    TuiBadge,
     TuiButton,
     TuiCardLarge,
-    TuiChip,
     TuiHeader,
     TuiIcon,
     TuiLink,
@@ -38,38 +47,19 @@ interface FeaturedSpace {
 export class HomePage {
   protected readonly userName = 'Mateo';
 
-  protected readonly nextReservation = {
-    name: 'Laboratorio de Innovación',
-    location: 'Edificio C, Nivel 4',
-    time: '14:00 – 16:00',
-    date: '24 oct',
-    icon: '@tui.flask-conical',
-  };
+  protected readonly categoryIcon = spaceCategoryIcon;
 
-  protected readonly featuredSpaces: readonly FeaturedSpace[] = [
-    {
-      id: 'court-a',
-      name: 'Cancha de Básquetbol A',
-      location: 'Complejo Deportivo Central, Zona Norte',
-      icon: '@tui.volleyball',
-      available: true,
-      tags: ['Deportes', 'Luz natural'],
-    },
-    {
-      id: 'makerspace',
-      name: 'MakerSpace Lab',
-      location: 'Edificio de Ingeniería, Piso 2',
-      icon: '@tui.flask-conical',
-      available: false,
-      tags: ['Tecnología', 'Grupal'],
-    },
-    {
-      id: 'court-b',
-      name: 'Cancha de Básquetbol B',
-      location: 'Complejo Deportivo Central, Zona Sur',
-      icon: '@tui.dumbbell',
-      available: true,
-      tags: ['Deportes', 'Cubierto'],
-    },
-  ];
+  /** The soonest booking still ahead, which is the only one a dashboard has room to show. */
+  protected readonly nextReservation = [...MOCK_RESERVATIONS]
+    .filter((reservation) => reservation.status !== 'past')
+    .sort((one, other) => one.date.getTime() - other.date.getTime())
+    .at(0);
+
+  /** What the catalogue would put first today: free spaces before busy ones, then by name. */
+  protected readonly featuredSpaces = listSpaces(MOCK_SPACES, {
+    category: null,
+    date: new Date(),
+    from: null,
+    to: null,
+  }).slice(0, FEATURED_SPACES);
 }

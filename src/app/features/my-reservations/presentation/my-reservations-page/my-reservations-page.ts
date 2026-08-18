@@ -1,16 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
-import { TuiButton, TuiCheckbox, TuiDropdown, TuiIcon, TuiLink } from '@taiga-ui/core';
+import { TuiButton, TuiCheckbox, TuiDropdown, TuiLink } from '@taiga-ui/core';
 import { TuiBlock, TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
-import type { ReservationStatus, SpaceCategory } from '../../domain/reservation';
+import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import type { SpaceCategory } from '../../../spaces/domain/space';
+import { SPACE_CATEGORIES } from '../../../spaces/domain/space';
+import type { ReservationStatus } from '../../domain/reservation';
 import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
 import { ReservationCard } from '../reservation-card/reservation-card';
 
 const RESERVATIONS_PER_PAGE = 6;
 
 const ALL_STATUSES: readonly ReservationStatus[] = ['upcoming', 'ongoing', 'past'];
-const ALL_CATEGORIES: readonly SpaceCategory[] = ['sports', 'study', 'lab'];
 
 function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet<T> {
   const next = new Set(set);
@@ -44,6 +46,7 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
 @Component({
   selector: 'app-my-reservations-page',
   imports: [
+    EmptyState,
     FormsModule,
     ReservationCard,
     TuiBlock,
@@ -51,7 +54,6 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
     TuiCalendarRange,
     TuiCheckbox,
     TuiDropdown,
-    TuiIcon,
     TuiLink,
     TuiPagination,
   ],
@@ -67,7 +69,7 @@ export class MyReservationsPage {
   );
 
   protected readonly selectedCategories = signal<ReadonlySet<SpaceCategory>>(
-    new Set(ALL_CATEGORIES),
+    new Set(SPACE_CATEGORIES),
   );
 
   protected readonly pageIndex = signal(0);
@@ -88,7 +90,7 @@ export class MyReservationsPage {
   );
 
   protected readonly categoryFilterActive = computed(
-    () => this.selectedCategories().size < ALL_CATEGORIES.length,
+    () => this.selectedCategories().size < SPACE_CATEGORIES.length,
   );
 
   protected readonly dateFilterActive = computed(() => this.selectedRange() !== null);

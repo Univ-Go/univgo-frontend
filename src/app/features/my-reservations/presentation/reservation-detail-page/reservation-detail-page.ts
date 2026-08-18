@@ -6,7 +6,8 @@ import { TuiAppearance, TuiButton, TuiDialog, TuiIcon, TuiLink } from '@taiga-ui
 import type { TuiDialogOptions } from '@taiga-ui/core';
 import { TuiBreadcrumbs } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
-import { categoryIcon } from '../category-icon';
+import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
 
@@ -22,6 +23,7 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
   selector: 'app-reservation-detail-page',
   imports: [
     DatePipe,
+    EmptyState,
     ReservationStatusBadge,
     RouterLink,
     TuiAppearance,
@@ -49,7 +51,7 @@ export class ReservationDetailPage {
   protected readonly icon = computed(() => {
     const reservation = this.reservation();
 
-    return reservation ? categoryIcon(reservation.category) : null;
+    return reservation ? spaceCategoryIcon(reservation.category) : null;
   });
 
   protected readonly qrOpen = signal(false);

@@ -40,16 +40,8 @@
   gap: var(--univgo-space-m);
 }
 
-.section__header h2,
-.section__title {
+.section__header h2 {
   margin-inline-end: auto;
-}
-
-.section__title {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--univgo-space-m);
 }
 
 // `tuiCardLarge` stacks its content in a column; this card is a row, and the extra attribute in the
@@ -111,11 +103,11 @@ article.reservation[tuiCardLarge] {
   font: var(--tui-typography-ui-s);
 }
 
-// Uniform rows: the grid stretches every item, and each card is a column that pushes its action to
-// the bottom, so cards line up whatever the length of a name or the number of tags.
+// The card itself is `SpaceCard`, the same one the catalogue lists, so home only owns the track it
+// sits in — and that track is the product-wide one, not a width of its own.
 .spaces {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: var(--univgo-card-grid-columns);
   gap: var(--univgo-space-l);
   margin: 0;
   padding: 0;
@@ -126,110 +118,15 @@ article.reservation[tuiCardLarge] {
   display: flex;
 }
 
-.space {
-  display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-m);
-  inline-size: 100%;
-}
-
 // Taiga's appearances do carry hover states, but only for interactive hosts — an `<article>` never
-// enters them, and turning the card into a link would nest its own button inside another control.
-// So the whole card reacts here, using the library's own elevation and shadow tokens.
-.reservation,
-.space {
+// enters them. So this card reacts here, using the library's own elevation and shadow tokens.
+.reservation {
   transition:
     box-shadow var(--tui-duration),
     transform var(--tui-duration);
 
   &:hover {
+    box-shadow: var(--tui-shadow-medium-hover);
     transform: translateY(-2px);
   }
-}
-
-// The outline appearance draws its edge as an inset ring, so the hover shadow has to carry it along
-// or the card loses its border exactly when it gains emphasis.
-.space:hover {
-  box-shadow:
-    inset 0 0 0 1px var(--tui-border-hover),
-    var(--tui-shadow-medium-hover);
-}
-
-.reservation:hover {
-  box-shadow: var(--tui-shadow-medium-hover);
-}
-
-.space__media {
-  display: flex;
-  position: relative;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: var(--univgo-space-s);
-  border-radius: var(--tui-radius-m);
-  // Stands in for the photograph until real images exist, built from brand tokens so it reads as a
-  // deliberate surface rather than a broken image.
-  background:
-    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
-    var(--univgo-brand-surface);
-  aspect-ratio: 16 / 9;
-}
-
-// The status pill sits on the crimson media, so Taiga's translucent status background leaves it
-// unreadable. It gets a solid fill in the status colour with white text and icon — and since the
-// surface underneath is fixed across themes, these colours are fixed too.
-.space__media [tuiBadge] {
-  color: var(--univgo-on-status-fixed);
-
-  &[data-appearance='positive'] {
-    background: var(--univgo-status-positive-fixed);
-  }
-
-  &[data-appearance='negative'] {
-    background: var(--univgo-status-negative-fixed);
-  }
-
-  // Taiga colours badge icons through the appearance; the pill is one solid colour now.
-  &::before,
-  &::after {
-    color: currentcolor;
-  }
-}
-
-.space__mark {
-  position: absolute;
-  inset-block-end: var(--univgo-space-m);
-  inset-inline-start: var(--univgo-space-m);
-  color: var(--univgo-on-brand-surface);
-  font-size: 2rem;
-  opacity: 0.9;
-}
-
-.space__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-s);
-}
-
-.space__name {
-  margin: 0;
-  font: var(--tui-typography-ui-l);
-}
-
-.space__location {
-  margin: 0;
-  color: var(--tui-text-secondary);
-  font: var(--tui-typography-body-s);
-}
-
-.space__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--univgo-space-s);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.space [tuiButton] {
-  margin-block-start: auto;
 }

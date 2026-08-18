@@ -190,9 +190,13 @@
         <source>Próxima reserva</source>
         <target>Next booking</target>
       </trans-unit>
-      <trans-unit id="home.statusConfirmed" datatype="html">
-        <source>Confirmada</source>
-        <target>Confirmed</target>
+      <trans-unit id="home.noReservation.heading" datatype="html">
+        <source>No tienes reservas próximas</source>
+        <target>You have no upcoming bookings</target>
+      </trans-unit>
+      <trans-unit id="home.noReservation.description" datatype="html">
+        <source>Elige un espacio y resérvalo en menos de un minuto.</source>
+        <target>Pick a space and book it in under a minute.</target>
       </trans-unit>
       <trans-unit id="reservation.factTime" datatype="html">
         <source>Horario</source>
@@ -213,22 +217,6 @@
       <trans-unit id="home.viewAll" datatype="html">
         <source>Ver todos</source>
         <target>View all</target>
-      </trans-unit>
-      <trans-unit id="home.spaceAvailable" datatype="html">
-        <source>Disponible</source>
-        <target>Available</target>
-      </trans-unit>
-      <trans-unit id="home.spaceBusy" datatype="html">
-        <source>Ocupado</source>
-        <target>Busy</target>
-      </trans-unit>
-      <trans-unit id="home.book" datatype="html">
-        <source>Reservar</source>
-        <target>Book</target>
-      </trans-unit>
-      <trans-unit id="home.viewSchedule" datatype="html">
-        <source>Ver horarios</source>
-        <target>View schedule</target>
       </trans-unit>
       <trans-unit id="footer.rights" datatype="html">
         <source>Todos los derechos reservados.</source>
@@ -457,6 +445,142 @@
       <trans-unit id="reservations.rules.lab.incident" datatype="html">
         <source>Reporta cualquier incidente al encargado del laboratorio de inmediato.</source>
         <target>Report any incident to the lab supervisor immediately.</target>
+      </trans-unit>
+      <trans-unit id="navigation.spaces" datatype="html">
+        <source>Espacios</source>
+        <target>Spaces</target>
+      </trans-unit>
+      <trans-unit id="spaces.pageTitle" datatype="html">
+        <source>Espacios</source>
+        <target>Spaces</target>
+      </trans-unit>
+      <trans-unit id="spaces.pageDescription" datatype="html">
+        <source>Consulta los espacios deportivos, salas de estudio y laboratorios del campus, y reserva el que necesites.</source>
+        <target>Browse the campus sports facilities, study rooms and labs, and book the one you need.</target>
+      </trans-unit>
+      <trans-unit id="spaces.title" datatype="html">
+        <source>Reservar un espacio</source>
+        <target>Book a space</target>
+      </trans-unit>
+      <trans-unit id="spaces.lead" datatype="html">
+        <source> Elige dónde y cuándo. Filtra por tipo de espacio, día y franja horaria. </source>
+        <target> Choose where and when. Filter by space type, day and time slot. </target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.label" datatype="html">
+        <source>Filtros del catálogo</source>
+        <target>Catalogue filters</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.category" datatype="html">
+        <source>Tipo de espacio</source>
+        <target>Space type</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.anyCategory" datatype="html">
+        <source> Todos los tipos </source>
+        <target> All types </target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.date" datatype="html">
+        <source>Fecha</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.from" datatype="html">
+        <source>Desde</source>
+        <target>From</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.to" datatype="html">
+        <source>Hasta</source>
+        <target>To</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.endWithoutStart" datatype="html">
+        <source>Indica también una hora de inicio para acotar la franja.</source>
+        <target>Add a start time too, so the slot has a beginning.</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.endBeforeStart" datatype="html">
+        <source>La hora de fin debe ser posterior a la de inicio.</source>
+        <target>The end time has to be later than the start time.</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.clear" datatype="html">
+        <source> Quitar filtros </source>
+        <target> Clear filters </target>
+      </trans-unit>
+      <trans-unit id="spaces.category.sports" datatype="html">
+        <source>Espacios deportivos</source>
+        <target>Sports facilities</target>
+      </trans-unit>
+      <trans-unit id="spaces.category.study" datatype="html">
+        <source>Salas de estudio</source>
+        <target>Study rooms</target>
+      </trans-unit>
+      <trans-unit id="spaces.category.lab" datatype="html">
+        <source>Laboratorios</source>
+        <target>Labs</target>
+      </trans-unit>
+      <trans-unit id="spaces.availability.free" datatype="html">
+        <source> Disponible </source>
+        <target> Available </target>
+      </trans-unit>
+      <trans-unit id="spaces.availability.later" datatype="html">
+        <source> Libre desde <x id="INTERPOLATION" equiv-text="{{ nextTime() }}"/> </source>
+        <target> Free from <x id="INTERPOLATION" equiv-text="{{ nextTime() }}"/> </target>
+      </trans-unit>
+      <trans-unit id="spaces.availability.unavailable" datatype="html">
+        <source> Sin horarios </source>
+        <target> No slots </target>
+      </trans-unit>
+      <trans-unit id="spaces.availability.maintenance" datatype="html">
+        <source> En mantenimiento </source>
+        <target> Under maintenance </target>
+      </trans-unit>
+      <trans-unit id="spaces.card.capacity" datatype="html">
+        <source>Capacidad</source>
+        <target>Capacity</target>
+      </trans-unit>
+      <trans-unit id="spaces.card.capacityValue" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 persona} other {<x id="INTERPOLATION"/> personas}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 person} other {<x id="INTERPOLATION"/> people}}</target>
+      </trans-unit>
+      <trans-unit id="spaces.card.book" datatype="html">
+        <source> Reservar </source>
+        <target> Book </target>
+      </trans-unit>
+      <trans-unit id="spaces.card.unavailable" datatype="html">
+        <source> No disponible </source>
+        <target> Unavailable </target>
+      </trans-unit>
+      <trans-unit id="spaces.card.viewSchedule" datatype="html">
+        <source> Ver horarios </source>
+        <target> View schedule </target>
+      </trans-unit>
+      <trans-unit id="spaces.shelf.viewAll" datatype="html">
+        <source>Ver todos</source>
+        <target>View all</target>
+      </trans-unit>
+      <trans-unit id="spaces.shelf.viewAllLabel" datatype="html">
+        <source>Ver todos: <x id="category" equiv-text="this.name()"/></source>
+        <target>View all: <x id="category" equiv-text="this.name()"/></target>
+      </trans-unit>
+      <trans-unit id="spaces.shelf.previous" datatype="html">
+        <source>Espacios anteriores</source>
+        <target>Previous spaces</target>
+      </trans-unit>
+      <trans-unit id="spaces.shelf.next" datatype="html">
+        <source>Espacios siguientes</source>
+        <target>Next spaces</target>
+      </trans-unit>
+      <trans-unit id="spaces.results.label" datatype="html">
+        <source>Resultados</source>
+        <target>Results</target>
+      </trans-unit>
+      <trans-unit id="spaces.results.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 espacio encontrado} other {<x id="INTERPOLATION"/> espacios encontrados}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 space found} other {<x id="INTERPOLATION"/> spaces found}}</target>
+      </trans-unit>
+      <trans-unit id="spaces.empty.heading" datatype="html">
+        <source>No hay espacios libres con estos filtros</source>
+        <target>No spaces are free with these filters</target>
+      </trans-unit>
+      <trans-unit id="spaces.empty.description" datatype="html">
+        <source>Prueba con otra franja horaria, otro día o revisa todos los tipos de espacio.</source>
+        <target>Try another time slot, another day, or look at every space type.</target>
       </trans-unit>
     </body>
   </file>

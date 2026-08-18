@@ -1,0 +1,171 @@
+<div class="page-nav">
+  <a
+    tuiButton
+    type="button"
+    appearance="flat"
+    size="m"
+    iconStart="@tui.arrow-left"
+    routerLink="/spaces"
+    i18n="@@common.back"
+    >Volver</a
+  >
+
+  <nav
+    class="page-nav__trail"
+    i18n-aria-label="@@navigation.breadcrumbLabel"
+    aria-label="Ruta de navegación"
+  >
+    <tui-breadcrumbs>
+      <a *tuiItem tuiLink routerLink="/spaces" i18n="@@spaces.pageTitle">Espacios</a>
+      <span
+        *tuiItem
+        class="page-nav__current"
+        aria-current="page"
+        i18n="@@spaces.book.breadcrumbCurrent"
+        >Reservar</span
+      >
+    </tui-breadcrumbs>
+  </nav>
+</div>
+
+@if (space(); as space) {
+  <header class="booking__header">
+    <h1 class="booking__name">{{ space.name }}</h1>
+  </header>
+
+  <div class="booking__content">
+    <div class="booking__media">
+      <tui-icon class="booking__mark" [icon]="icon()" aria-hidden="true" />
+    </div>
+
+    <section
+      tuiCardLarge
+      tuiSurface
+      tuiAppearance="floating"
+      class="summary-card"
+      aria-labelledby="summary-title"
+    >
+      <h2 id="summary-title" i18n="@@spaces.book.summary.title">Resumen de tu reserva</h2>
+
+      @if (startTime(); as start) {
+        <dl class="summary-card__facts">
+          <div class="fact">
+            <dt i18n="@@reservation.factLocation">Ubicación</dt>
+            <dd><tui-icon icon="@tui.map-pin" aria-hidden="true" />{{ space.location }}</dd>
+          </div>
+          <div class="fact">
+            <dt i18n="@@spaces.card.capacity">Capacidad</dt>
+            <dd>
+              <tui-icon icon="@tui.users" aria-hidden="true" />
+              <span i18n="@@spaces.card.capacityValue">{space.capacity, plural,
+                =1 {1 persona}
+                other {{{space.capacity}} personas}
+              }</span>
+            </dd>
+          </div>
+          <div class="fact">
+            <dt i18n="@@reservation.factDate">Fecha</dt>
+            <dd>
+              <tui-icon icon="@tui.calendar" aria-hidden="true" />{{
+                date().toLocalNativeDate() | date: 'd MMMM y'
+              }}
+            </dd>
+          </div>
+          <div class="fact">
+            <dt i18n="@@reservation.factTime">Horario</dt>
+            <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ start }} – {{ endTime() }}</dd>
+          </div>
+        </dl>
+      } @else {
+        <p class="summary-card__hint" role="status" i18n="@@spaces.book.summary.hint">
+          Elige una fecha y una hora para ver el resumen.
+        </p>
+      }
+
+      <button
+        tuiButton
+        type="button"
+        size="l"
+        appearance="primary"
+        [disabled]="!startTime()"
+        (click)="confirm()"
+        class="summary-card__confirm"
+        i18n="@@spaces.book.summary.confirm"
+      >
+        Confirmar reserva
+      </button>
+    </section>
+
+    <section
+      tuiCardLarge
+      tuiSurface
+      tuiAppearance="outline"
+      class="datetime-card"
+      aria-labelledby="datetime-title"
+    >
+      <h2 id="datetime-title" i18n="@@spaces.book.datetime.title">Fecha y hora</h2>
+
+      <div class="datetime-card__fields">
+        <tui-textfield tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
+          <label tuiLabel for="booking-date" i18n="@@spaces.filters.date">Fecha</label>
+          <input
+            id="booking-date"
+            tuiInputDate
+            name="date"
+            [min]="today"
+            [ngModel]="date()"
+            (ngModelChange)="setDate($event)"
+          />
+          <tui-calendar *tuiDropdown />
+        </tui-textfield>
+
+        <tui-textfield tuiTextfieldSize="m">
+          <label tuiLabel for="booking-hour" i18n="@@spaces.book.datetime.hourLabel">Hora</label>
+          <input
+            id="booking-hour"
+            tuiInputTime
+            name="hour"
+            [disabled]="!hasAvailability()"
+            [ngModel]="startTime()"
+            (ngModelChange)="startTime.set($event)"
+          />
+          <tui-data-list *tuiDropdown>
+            @for (option of startOptions(); track option.toString()) {
+              <button tuiOption type="button" [value]="option">{{ option }}</button>
+            }
+          </tui-data-list>
+        </tui-textfield>
+      </div>
+
+      @if (!hasAvailability()) {
+        <p class="datetime-card__hint" role="status" i18n="@@spaces.book.datetime.noAvailability">
+          No hay horarios disponibles para esta fecha. Prueba con otro día.
+        </p>
+      }
+    </section>
+
+    <section
+      tuiCardLarge
+      tuiSurface
+      tuiAppearance="outline-grayscale"
+      class="info-card"
+      aria-labelledby="info-title"
+    >
+      <h2 id="info-title" i18n="@@spaces.book.info.title">Información importante</h2>
+
+      <ul tuiList="m" class="info-card__list">
+        @for (rule of rules(); track rule) {
+          <li>{{ rule }}</li>
+        }
+      </ul>
+    </section>
+  </div>
+} @else {
+  <app-empty-state
+    icon="@tui.search-x"
+    i18n-heading="@@spaces.book.notFound.title"
+    heading="Espacio no encontrado"
+    i18n-description="@@spaces.book.notFound.description"
+    description="Puede que el enlace sea incorrecto o que el espacio ya no exista."
+  />
+}

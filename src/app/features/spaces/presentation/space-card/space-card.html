@@ -30,12 +30,10 @@
     </dl>
   </div>
 
-  <!-- TEMPORARY: the booking flow does not exist yet, so the action stays a plain button. It gains
-       its route when the reservation steps ship. -->
   @if (bookable()) {
-    <button
+    <a
       tuiButton
-      type="button"
+      [routerLink]="['/spaces', space.id, 'book']"
       size="m"
       appearance="primary"
       iconEnd="@tui.arrow-right"
@@ -43,7 +41,7 @@
       i18n="@@spaces.card.book"
     >
       Reservar
-    </button>
+    </a>
   } @else if (closed()) {
     <button
       tuiButton

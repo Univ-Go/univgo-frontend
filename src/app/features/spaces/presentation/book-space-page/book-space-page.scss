@@ -1,0 +1,175 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+// The back button is the action and the trail is the orientation, so they share one row: same
+// affordance, two levels of commitment.
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.page-nav__trail {
+  display: none;
+}
+
+.page-nav__current {
+  color: var(--tui-text-primary);
+}
+
+@media (min-width: 48rem) {
+  .page-nav__trail {
+    display: block;
+  }
+}
+
+.booking__header {
+  display: flex;
+}
+
+.booking__name {
+  margin: 0;
+}
+
+// Same brand-plate placeholder as the reservation card and the reservation detail view, kept to a
+// single mechanism instead of a one-off for this hero.
+.booking__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tui-radius-l);
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
+    var(--univgo-brand-surface);
+  aspect-ratio: 21 / 9;
+}
+
+.booking__mark {
+  color: var(--univgo-on-brand-surface);
+  font-size: 3rem;
+  opacity: 0.9;
+}
+
+// Mobile-first: photo, summary, date/time and info stack in reading order. From desktop up, the
+// grid becomes two matched columns: the photo sits above the date/time picker on the wide left,
+// the summary sits above the important-info card on the narrow right — the two cards that share
+// that right column end up the same width.
+.booking__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-l);
+}
+
+@media (min-width: 64rem) {
+  .booking__content {
+    // `minmax(0, …)` caps each track at its `fr` share: without it the implicit `auto` minimum lets
+    // a long fact value (e.g. the location) grow the column past it, which is what pushed the photo
+    // narrower and let the summary card overlap it once a fact list replaced the hint.
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .booking__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .summary-card {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  // Row 1 is one block: photo and summary always end on the same line, whichever of the two is
+  // taller. The aspect ratio still sets the photo's contribution to the row height, so it acts as
+  // a floor rather than a fixed height, and `tuiCardLarge`'s `margin-block-start: auto` spends
+  // whatever room the summary card gains the way the library intends — the confirm button settles
+  // at the bottom edge.
+  .booking__media,
+  .summary-card {
+    align-self: stretch;
+  }
+
+  // Row 2 hugs instead: with no trailing action to pin, that same auto margin would push the
+  // fields and the list to the bottom of a stretched card and reopen the gap under each title.
+  .datetime-card,
+  .info-card {
+    grid-row: 2;
+  }
+
+  .datetime-card {
+    grid-column: 1;
+  }
+
+  .info-card {
+    grid-column: 2;
+  }
+}
+
+// `tuiCardLarge` already lays its content out as a column and owns the vertical rhythm between
+// title and body, so only the title's own scale is ours to set: `styles.scss` maps `h2` to the
+// page-level 32–40px heading, which at card level dwarfs the content it labels.
+.summary-card,
+.datetime-card,
+.info-card {
+  h2 {
+    font: var(--tui-typography-heading-h6);
+  }
+}
+
+.summary-card__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  margin: 0;
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+  overflow-wrap: break-word;
+}
+
+.summary-card__hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+.summary-card__confirm {
+  inline-size: 100%;
+}
+
+.datetime-card__fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-m);
+}
+
+@media (min-width: 30rem) {
+  .datetime-card__fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.datetime-card__hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+// `tuiList` owns the markers, the indent and the vertical rhythm; the only thing left to decide is
+// the marker colour, which the directive reads from this variable.
+.info-card__list {
+  --tui-list-marker: var(--tui-background-accent-1);
+}

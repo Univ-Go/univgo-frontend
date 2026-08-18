@@ -618,6 +618,62 @@
         <source> Ver mis reservas </source>
         <target> View my bookings </target>
       </trans-unit>
+      <trans-unit id="spaces.book.pageTitle" datatype="html">
+        <source>Reservar espacio</source>
+        <target>Book a space</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.pageDescription" datatype="html">
+        <source>Elige la fecha y la hora, confirma tu reserva y consulta la información importante del espacio.</source>
+        <target>Pick the date and time, confirm your booking, and check the important information about the space.</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.confirmedTitle" datatype="html">
+        <source>Reserva confirmada</source>
+        <target>Booking confirmed</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.confirmedDetail" datatype="html">
+        <source>La puedes consultar en Mis reservas.</source>
+        <target>You can check it in My reservations.</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.notFound.title" datatype="html">
+        <source>Espacio no encontrado</source>
+        <target>Space not found</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.notFound.description" datatype="html">
+        <source>Puede que el enlace sea incorrecto o que el espacio ya no exista.</source>
+        <target>The link may be wrong, or the space may no longer exist.</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.breadcrumbCurrent" datatype="html">
+        <source>Reservar</source>
+        <target>Book</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.summary.title" datatype="html">
+        <source>Resumen de tu reserva</source>
+        <target>Your booking summary</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.summary.confirm" datatype="html">
+        <source> Confirmar reserva </source>
+        <target> Confirm booking </target>
+      </trans-unit>
+      <trans-unit id="spaces.book.datetime.title" datatype="html">
+        <source>Fecha y hora</source>
+        <target>Date and time</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.datetime.hourLabel" datatype="html">
+        <source>Hora</source>
+        <target>Time</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.info.title" datatype="html">
+        <source>Información importante</source>
+        <target>Important information</target>
+      </trans-unit>
+      <trans-unit id="spaces.book.summary.hint" datatype="html">
+        <source> Elige una fecha y una hora para ver el resumen. </source>
+        <target> Pick a date and a time to see the summary. </target>
+      </trans-unit>
+      <trans-unit id="spaces.book.datetime.noAvailability" datatype="html">
+        <source> No hay horarios disponibles para esta fecha. Prueba con otro día. </source>
+        <target> No times are available for this date. Try another day. </target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

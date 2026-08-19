@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: block;
 }
@@ -128,15 +130,6 @@
   gap: var(--univgo-space-s);
 }
 
-.topbar__logo {
-  block-size: 2.25rem;
-  inline-size: auto;
-  // The wordmark is crimson ink: on the dark theme it needs a light plate to stay readable.
-  padding: var(--univgo-space-xs) var(--univgo-space-s);
-  border-radius: var(--tui-radius-s);
-  background: var(--univgo-logo-plate);
-}
-
 .panel {
   display: flex;
   justify-content: center;
@@ -240,7 +233,7 @@
   font: var(--tui-typography-body-xs);
 }
 
-@media (min-width: 64rem) {
+@media (min-width: bp.$desktop) {
   .login {
     grid-template-rows: 1fr;
     grid-template-columns: 1.1fr 1fr;

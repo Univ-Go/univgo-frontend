@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -20,7 +22,7 @@
   color: var(--tui-text-primary);
 }
 
-@media (min-width: 48rem) {
+@media (min-width: bp.$tablet) {
   .page-nav__trail {
     display: block;
   }
@@ -46,23 +48,14 @@
   margin: 0;
 }
 
-// Same brand-plate placeholder as the reservation card and the home view's featured spaces, kept
-// to a single mechanism instead of a one-off for the hero.
+// The shared plate, run as a banner rather than as a card's picture frame: wider, rounder, and with
+// the mark centred instead of tucked into a corner.
 .detail__media {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--tui-radius-l);
-  background:
-    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
-    var(--univgo-brand-surface);
-  aspect-ratio: 21 / 9;
-}
-
-.detail__mark {
-  color: var(--univgo-on-brand-surface);
-  font-size: 3rem;
-  opacity: 0.9;
+  --media-plate-ratio: 21 / 9;
+  --media-plate-radius: var(--tui-radius-l);
+  --media-plate-mark-size: 3rem;
+  --media-plate-align: center;
+  --media-plate-justify: center;
 }
 
 // Mobile-first: photo, pass, details and rules stack in reading order. From desktop up, the grid
@@ -75,7 +68,7 @@
   gap: var(--univgo-space-l);
 }
 
-@media (min-width: 64rem) {
+@media (min-width: bp.$desktop) {
   .detail__content {
     grid-template-columns: 2fr 1fr;
     align-items: start;

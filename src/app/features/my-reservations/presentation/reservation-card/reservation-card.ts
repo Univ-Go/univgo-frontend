@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { RouterLink } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon, TuiLink } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import type { Reservation } from '../../domain/reservation';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
@@ -20,6 +21,7 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
   selector: 'app-reservation-card',
   imports: [
     DatePipe,
+    MediaPlate,
     ReservationStatusBadge,
     RouterLink,
     TuiAppearance,

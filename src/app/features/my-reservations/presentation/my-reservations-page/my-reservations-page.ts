@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import type { TuiDayRange } from '@taiga-ui/cdk';
-import { TuiButton, TuiCheckbox, TuiDropdown, TuiLink } from '@taiga-ui/core';
-import { TuiBlock, TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
+import { TuiLink } from '@taiga-ui/core';
+import { TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import type { SpaceCategory } from '../../../spaces/domain/space';
 import { SPACE_CATEGORIES } from '../../../spaces/domain/space';
@@ -10,7 +9,13 @@ import type { ReservationStatus } from '../../domain/reservation';
 import { RESERVATION_STATUSES } from '../../domain/reservation';
 import { listReservations } from '../../domain/reservation-catalog';
 import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
+import { CheckboxFilter } from '../checkbox-filter/checkbox-filter';
+import { FilterDropdown } from '../filter-dropdown/filter-dropdown';
 import { ReservationCard } from '../reservation-card/reservation-card';
+import {
+  RESERVATION_CATEGORY_OPTIONS,
+  RESERVATION_STATUS_OPTIONS,
+} from '../reservation-filters';
 
 const RESERVATIONS_PER_PAGE = 6;
 
@@ -35,26 +40,20 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
  * controls, the paging and the empty state; rendering one reservation belongs to
  * `ReservationCard`.
  *
- * `FormsModule` is only here for `[ngModel]` on the status/category checkboxes: `TuiCheckbox`
- * disables itself whenever it has no `NgControl` attached, so a plain `[checked]`/`(change)` pair
- * renders inert. The date filter is a single `TuiCalendarRange`, driven by a `[value]`/`(valueChange)`
- * model signal, so a user picks a date visually rather than typing one: clicking one day twice (or
- * once, then Escape) commits it as a single-day range, clicking two different days commits a range —
- * one control for both cases, matching `TuiDayRange`'s own `from`/`to` model where a single day is
- * just a range with `from === to`. This is lazy-loaded with the route, so it does not touch the
- * initial bundle.
+ * The date filter is a single `TuiCalendarRange` so a user picks days visually rather than typing
+ * them: clicking one day twice (or once, then Escape) commits it as a single-day range, clicking
+ * two different days commits a range — one control for both cases, matching `TuiDayRange`'s own
+ * model where a single day is a range with `from === to`. This is lazy-loaded with the route, so it
+ * does not touch the initial bundle.
  */
 @Component({
   selector: 'app-my-reservations-page',
   imports: [
+    CheckboxFilter,
     EmptyState,
-    FormsModule,
+    FilterDropdown,
     ReservationCard,
-    TuiBlock,
-    TuiButton,
     TuiCalendarRange,
-    TuiCheckbox,
-    TuiDropdown,
     TuiLink,
     TuiPagination,
   ],
@@ -64,6 +63,13 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
 })
 export class MyReservationsPage {
   protected readonly reservations = MOCK_RESERVATIONS;
+
+  protected readonly statusOptions = RESERVATION_STATUS_OPTIONS;
+  protected readonly categoryOptions = RESERVATION_CATEGORY_OPTIONS;
+
+  protected readonly statusLabel = $localize`:@@reservations.filters.status.label:Estado`;
+  protected readonly categoryLabel = $localize`:@@reservations.filters.category.label:Tipo de espacio`;
+  protected readonly dateLabel = $localize`:@@reservations.filters.date.label:Fecha`;
 
   protected readonly selectedStatuses = signal<ReadonlySet<ReservationStatus>>(
     new Set(RESERVATION_STATUSES),
@@ -77,23 +83,7 @@ export class MyReservationsPage {
 
   protected readonly selectedRange = signal<TuiDayRange | null>(null);
 
-  protected readonly statusFilterOpen = signal(false);
-  protected readonly categoryFilterOpen = signal(false);
-  protected readonly dateFilterOpen = signal(false);
-
-  /**
-   * A closed dropdown gives no hint of what is applied, so the trigger carries the state itself.
-   * "Narrowing anything down" is the condition, which for the checkbox filters means any option
-   * left out — including all of them, where the list legitimately comes back empty.
-   */
-  protected readonly statusFilterActive = computed(
-    () => this.selectedStatuses().size < RESERVATION_STATUSES.length,
-  );
-
-  protected readonly categoryFilterActive = computed(
-    () => this.selectedCategories().size < SPACE_CATEGORIES.length,
-  );
-
+  /** A closed dropdown gives no hint of what is applied, so the trigger carries the state itself. */
   protected readonly dateFilterActive = computed(() => this.selectedRange() !== null);
 
   /** The calendar speaks in `TuiDay`; the catalogue speaks in dates. This is where that ends. */

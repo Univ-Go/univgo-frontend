@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TuiAppearance, TuiButton, TuiIcon } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import type { ListedSpace } from '../../domain/space';
 import { spaceCategoryIcon } from '../space-category';
 import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availability-badge';
@@ -15,7 +16,15 @@ import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availa
  */
 @Component({
   selector: 'app-space-card',
-  imports: [SpaceAvailabilityBadge, TuiAppearance, TuiButton, TuiCardLarge, TuiIcon, TuiSurface],
+  imports: [
+    MediaPlate,
+    SpaceAvailabilityBadge,
+    TuiAppearance,
+    TuiButton,
+    TuiCardLarge,
+    TuiIcon,
+    TuiSurface,
+  ],
   templateUrl: './space-card.html',
   styleUrl: './space-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

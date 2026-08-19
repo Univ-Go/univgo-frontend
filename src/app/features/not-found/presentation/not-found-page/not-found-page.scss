@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -95,7 +97,7 @@
 
 // On a phone the two routes out become full-width targets stacked in order of likelihood, and the
 // plate gives back the horizontal padding it does not have room for.
-@media (max-width: 47.99rem) {
+@media (max-width: bp.$below-tablet) {
   .plate {
     inline-size: 100%;
     padding-inline: var(--univgo-space-xl);

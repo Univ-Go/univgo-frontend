@@ -1,3 +1,5 @@
+@use 'cards';
+
 :host {
   display: flex;
   inline-size: 100%;
@@ -8,47 +10,9 @@
   flex-direction: column;
   gap: var(--univgo-space-m);
   inline-size: 100%;
-  transition:
-    box-shadow var(--tui-duration),
-    transform var(--tui-duration);
 
   // Same lift the reservation card uses, so both card types answer to the pointer identically.
-  // `:focus-within` carries it too: reaching the action by keyboard raises the card the same way.
-  &:hover,
-  &:focus-within {
-    box-shadow:
-      inset 0 0 0 1px var(--tui-border-hover),
-      var(--tui-shadow-medium-hover);
-    transform: translateY(-2px);
-  }
-}
-
-// Provisional space photo: the brand plate shared with the reservation card and the home view,
-// kept to a single mechanism instead of a second one-off per surface.
-.card__media {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  padding: var(--univgo-space-s);
-  border-radius: var(--tui-radius-m);
-  background:
-    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
-    var(--univgo-brand-surface);
-  aspect-ratio: 16 / 9;
-}
-
-.card__mark {
-  color: var(--univgo-on-brand-surface);
-  font-size: 2rem;
-  opacity: 0.9;
-}
-
-// Over the plate rather than under the title: availability is what the eye looks for first when
-// scanning a shelf, and the plate is the largest, calmest area to put it on.
-.card__badge {
-  position: absolute;
-  inset-block-start: var(--univgo-space-s);
-  inset-inline-end: var(--univgo-space-s);
+  @include cards.lift($ring: true);
 }
 
 .card__body {

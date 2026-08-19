@@ -1,13 +1,9 @@
 @let space = listed().space;
 
 <article tuiCardLarge tuiSurface tuiAppearance="outline" class="card">
-  <!-- Provisional media slot: fills with the brand plate until real space photos exist, the same
-       placeholder the reservation card and the home view use. -->
-  <div class="card__media">
-    <tui-icon class="card__mark" [icon]="icon()" aria-hidden="true" />
-
-    <app-space-availability-badge class="card__badge" [availability]="listed().availability" />
-  </div>
+  <app-media-plate [icon]="icon()">
+    <app-space-availability-badge [availability]="listed().availability" />
+  </app-media-plate>
 
   <div class="card__body">
     <h3 class="card__name">{{ space.name }}</h3>

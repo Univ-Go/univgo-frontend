@@ -41,9 +41,7 @@
   </header>
 
   <div class="detail__content">
-    <div class="detail__media">
-      <tui-icon class="detail__mark" [icon]="icon()" aria-hidden="true"></tui-icon>
-    </div>
+    <app-media-plate class="detail__media" [icon]="categoryIcon(reservation.category)" />
 
     <section
       tuiCardLarge

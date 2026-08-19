@@ -1,3 +1,5 @@
+@use 'cards';
+
 :host {
   display: flex;
   inline-size: 100%;
@@ -8,38 +10,10 @@
   flex-direction: column;
   gap: var(--univgo-space-m);
   inline-size: 100%;
-  transition:
-    box-shadow var(--tui-duration),
-    transform var(--tui-duration);
 
-  // The whole card signals "this leads somewhere" on hover/focus, the same lift `.space` uses on
-  // the home view — without it the only clickable-looking thing was a plain text link.
-  &:hover,
-  &:focus-within {
-    box-shadow:
-      inset 0 0 0 1px var(--tui-border-hover),
-      var(--tui-shadow-medium-hover);
-    transform: translateY(-2px);
-  }
-}
-
-// Provisional space photo: same brand-plate placeholder as `.space__media` on the home view, kept
-// to a single mechanism instead of a second one-off for this card.
-.card__media {
-  display: flex;
-  align-items: flex-end;
-  padding: var(--univgo-space-s);
-  border-radius: var(--tui-radius-m);
-  background:
-    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
-    var(--univgo-brand-surface);
-  aspect-ratio: 16 / 9;
-}
-
-.card__mark {
-  color: var(--univgo-on-brand-surface);
-  font-size: 2rem;
-  opacity: 0.9;
+  // The whole card signals "this leads somewhere" on hover/focus — without it the only
+  // clickable-looking thing was a plain text link.
+  @include cards.lift($ring: true);
 }
 
 .card__header {

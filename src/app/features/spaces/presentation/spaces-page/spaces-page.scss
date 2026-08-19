@@ -1,3 +1,6 @@
+@use 'breakpoints' as bp;
+@use 'cards';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -59,12 +62,7 @@
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: var(--univgo-card-grid-columns);
-  gap: var(--univgo-space-l);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include cards.grid;
 }
 
 .grid__item {
@@ -77,13 +75,13 @@
   gap: var(--univgo-space-2xl);
 }
 
-@media (min-width: 48rem) {
+@media (min-width: bp.$tablet) {
   .filters__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 64rem) {
+@media (min-width: bp.$desktop) {
   // Type and date carry the request, the two time fields are one control split in two, so the row
   // gives the first pair the room and keeps the pair of times narrow and together.
   .filters__grid {

@@ -1,0 +1,38 @@
+// Shape shared by every surface that lists cards. Mixins rather than a utility class: the rules
+// land inside each component's own stylesheet, so nothing depends on a global class name and the
+// style encapsulation stays intact.
+@use 'breakpoints' as bp;
+
+/// The product-wide card track: one column on a phone, two from tablet, three from desktop. The
+/// step lives in `--univgo-card-grid-columns`; this is the list boilerplate that went with it.
+@mixin grid {
+  display: grid;
+  grid-template-columns: var(--univgo-card-grid-columns);
+  gap: var(--univgo-space-l);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/// Taiga's appearances carry hover states only for interactive hosts, and a card is an `<article>`.
+/// This is how a card answers the pointer — and the keyboard, since reaching a control inside it
+/// raises it the same way. `$ring` reinforces an existing outline; a floating card has none to
+/// reinforce.
+@mixin lift($ring: false) {
+  transition:
+    box-shadow var(--tui-duration),
+    transform var(--tui-duration);
+
+  &:hover,
+  &:focus-within {
+    @if $ring {
+      box-shadow:
+        inset 0 0 0 1px var(--tui-border-hover),
+        var(--tui-shadow-medium-hover);
+    } @else {
+      box-shadow: var(--tui-shadow-medium-hover);
+    }
+
+    transform: translateY(var(--univgo-lift));
+  }
+}

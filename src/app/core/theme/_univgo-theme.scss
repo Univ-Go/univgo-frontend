@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 // Single source of truth for the brand. Retheming for another institution means changing the
 // scales and the font face below: no component or stylesheet references a colour directly.
 
@@ -346,18 +348,21 @@ $shadow-tint: 65, 0, 5;
   // is the same width on every page, rather than however many happen to fit.
   --univgo-card-grid-columns: 1fr;
 
+  // How far a card rises under the pointer. Small enough to read as a lift rather than a jump.
+  --univgo-lift: -0.125rem;
+
   --univgo-letter-spacing-tight: -0.02em;
   --univgo-letter-spacing-wide: 0.01em;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: bp.$tablet) {
   :root {
     --univgo-layout-gutter: 3rem;
     --univgo-card-grid-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 64rem) {
+@media (min-width: bp.$desktop) {
   :root {
     --univgo-card-grid-columns: repeat(3, 1fr);
   }

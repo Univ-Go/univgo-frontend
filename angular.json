@@ -40,6 +40,9 @@
             "tsConfig": "tsconfig.app.json",
             "polyfills": ["@angular/localize/init"],
             "inlineStyleLanguage": "scss",
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/app/core/theme"]
+            },
             "i18nMissingTranslation": "error",
             "assets": [
               {

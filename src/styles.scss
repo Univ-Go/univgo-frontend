@@ -70,6 +70,15 @@ tui-stepper [tuiStep][tuiCell] [tuiAvatar] {
   align-self: center;
 }
 
+// Taiga's slide keyframe animates from `--tui-from`, and the dropdown defaults it to
+// `translateY(-1rem)` — the menu drops from above its anchor. The tab bar hangs its menu upward
+// from the bottom edge, so it has to rise instead. Scoped by `data-appearance`, which is the hook
+// the library uses for this itself (see `tui-dropdown[data-appearance='dropdown-navigation']`);
+// the rule lives here because the dropdown renders in a portal outside the component's DOM.
+tui-dropdown[data-appearance='tab-bar'] {
+  --tui-from: translateY(1rem);
+}
+
 // Taiga draws focus for its own components; this covers the product's native elements.
 :focus-visible {
   outline: var(--tui-stroke-width) solid var(--tui-border-focus);

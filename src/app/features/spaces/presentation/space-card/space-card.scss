@@ -42,19 +42,19 @@
   overflow-wrap: anywhere;
 }
 
-// Label/value rows rather than the reservation card's centred pair: a location is long enough that
-// centring it under a heading reads as a caption instead of a fact.
+// Label over value rather than side by side: the cards sit in a narrow grid track, where a
+// label column steals the width a location needs and leaves every value cramped. Stacking spends
+// the vertical space the card has to spare and gives each value the full width. The gap between
+// facts is the wider of the two so the pairs read as pairs without a rule between them.
 .card__facts {
   display: grid;
-  gap: var(--univgo-space-xs);
+  gap: var(--univgo-space-m);
   margin: 0;
 }
 
 .fact {
   display: grid;
-  grid-template-columns: 6rem 1fr;
-  align-items: baseline;
-  gap: var(--univgo-space-s);
+  gap: var(--univgo-space-xs);
 }
 
 .fact dt {

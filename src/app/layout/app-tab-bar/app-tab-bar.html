@@ -42,11 +42,15 @@
     <span i18n="@@navigation.reservations">Mis Reservas</span>
   </a>
 
+  <!-- The bar is pinned to the bottom edge, so the menu can only open upward: the direction is
+       fixed rather than measured, and the appearance is what lets the animation follow it. -->
   <button
     type="button"
     class="tab"
     [tuiDropdown]="accountMenu"
     [(tuiDropdownOpen)]="menuOpen"
+    tuiDropdownDirection="top"
+    tuiDropdownAppearance="tab-bar"
     i18n-aria-label="@@navigation.accountMenu"
     aria-label="Tu cuenta"
   >

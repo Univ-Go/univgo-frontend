@@ -2,12 +2,17 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TuiIcon } from '@taiga-ui/core';
 
 /**
- * Level 1: the brand plate that stands in for a space photo until real images exist. Every view
- * that shows a space hero was carrying its own copy of the same gradient, radius and icon size, so
- * the placeholder is one component and the day the photos arrive is one file.
+ * Level 1: the brand plate that stands in for a space photograph until real images exist. The
+ * reservation card, the space card and the reservation detail all showed one, and all three drew it
+ * themselves — same gradient, same ink, three copies to keep in step, and three places to change
+ * the day the photographs arrive.
  *
- * The aspect ratio is a default, not a rule: the host element belongs to the consumer's template,
- * so a view that needs a different frame overrides it there.
+ * The surface that hosts the plate decides its proportions through custom properties rather than
+ * through a variant flag: a card frames a picture, the detail view runs it as a banner, and neither
+ * is a different plate.
+ *
+ * Anything projected into it lands over the plate's far corner, which is where the catalogue puts
+ * the availability pill: it is the first thing the eye looks for when scanning a shelf.
  */
 @Component({
   selector: 'app-media-plate',
@@ -15,23 +20,47 @@ import { TuiIcon } from '@taiga-ui/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host {
+      --media-plate-ratio: 16 / 9;
+      --media-plate-radius: var(--tui-radius-m);
+      --media-plate-mark-size: 2rem;
+      --media-plate-align: flex-end;
+      --media-plate-justify: flex-start;
+
       display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--tui-radius-l);
+      position: relative;
+      justify-content: var(--media-plate-justify);
+      align-items: var(--media-plate-align);
+      padding: var(--univgo-space-s);
+      border-radius: var(--media-plate-radius);
       background:
         radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
         var(--univgo-brand-surface);
-      aspect-ratio: 21 / 9;
+      aspect-ratio: var(--media-plate-ratio);
     }
 
-    tui-icon {
+    .mark {
       color: var(--univgo-on-brand-surface);
-      font-size: 3rem;
+      font-size: var(--media-plate-mark-size);
       opacity: 0.9;
     }
+
+    .overlay {
+      position: absolute;
+      inset-block-start: var(--univgo-space-s);
+      inset-inline-end: var(--univgo-space-s);
+    }
+
+    .overlay:empty {
+      display: none;
+    }
   `,
-  template: `<tui-icon [icon]="icon()" aria-hidden="true" />`,
+  template: `
+    <tui-icon class="mark" [icon]="icon()" aria-hidden="true" />
+
+    <div class="overlay">
+      <ng-content />
+    </div>
+  `,
 })
 export class MediaPlate {
   public readonly icon = input.required<string>();

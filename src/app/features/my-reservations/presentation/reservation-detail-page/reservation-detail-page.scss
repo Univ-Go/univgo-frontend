@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -20,7 +22,7 @@
   color: var(--tui-text-primary);
 }
 
-@media (min-width: 48rem) {
+@media (min-width: bp.$tablet) {
   .page-nav__trail {
     display: block;
   }
@@ -46,6 +48,16 @@
   margin: 0;
 }
 
+// The shared plate, run as a banner rather than as a card's picture frame: wider, rounder, and with
+// the mark centred instead of tucked into a corner.
+.detail__media {
+  --media-plate-ratio: 21 / 9;
+  --media-plate-radius: var(--tui-radius-l);
+  --media-plate-mark-size: 3rem;
+  --media-plate-align: center;
+  --media-plate-justify: center;
+}
+
 // Mobile-first: photo, pass, details and rules stack in reading order. From desktop up, the grid
 // becomes two matched columns: the photo sits above the rules on the wide left, the pass sits
 // above the details on the narrow right — the pass and the details card end up the same width
@@ -56,7 +68,7 @@
   gap: var(--univgo-space-l);
 }
 
-@media (min-width: 64rem) {
+@media (min-width: bp.$desktop) {
   .detail__content {
     grid-template-columns: 2fr 1fr;
     align-items: start;

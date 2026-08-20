@@ -42,6 +42,16 @@
   gap: var(--univgo-space-m);
 }
 
+// The shared plate as a banner rather than a card's picture frame: the space is the page's subject
+// here, not one entry in a shelf.
+.schedule__media {
+  --media-plate-ratio: 21 / 9;
+  --media-plate-radius: var(--tui-radius-l);
+  --media-plate-mark-size: 3rem;
+  --media-plate-align: center;
+  --media-plate-justify: center;
+}
+
 .schedule__tags {
   display: flex;
   flex-wrap: wrap;

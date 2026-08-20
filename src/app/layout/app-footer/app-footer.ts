@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TuiLink } from '@taiga-ui/core';
+import { BrandLogo } from '../../shared/brand-logo/brand-logo';
 import { APP_CONFIG } from '../../core/config/app-config';
 
 /** Level 1: closes every view inside the shell. */
 @Component({
   selector: 'app-footer',
-  imports: [TuiLink],
+  imports: [BrandLogo, TuiLink],
   templateUrl: './app-footer.html',
   styleUrl: './app-footer.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

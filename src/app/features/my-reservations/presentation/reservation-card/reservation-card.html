@@ -1,9 +1,5 @@
 <article tuiCardLarge tuiSurface tuiAppearance="outline" class="card">
-  <!-- Provisional media slot: fills with the brand plate until real space photos exist,
-       same placeholder used for "Espacios destacados" on the home view. -->
-  <div class="card__media">
-    <tui-icon class="card__mark" [icon]="icon()" aria-hidden="true" />
-  </div>
+  <app-media-plate [icon]="icon()" />
 
   <header class="card__header">
     <h3 class="card__name">{{ reservation().spaceName }}</h3>

@@ -1,3 +1,5 @@
+@use 'cards';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -8,23 +10,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--univgo-space-s);
-}
-
-.filters__panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-s);
-  min-inline-size: 12rem;
-  margin: 0;
-  padding: var(--univgo-space-m);
-  border: none;
-
-  label[tuiBlock] {
-    display: flex;
-    align-items: center;
-    gap: var(--univgo-space-xs);
-    inline-size: auto;
-  }
 }
 
 .results {
@@ -39,12 +24,7 @@
 }
 
 .reservations {
-  display: grid;
-  grid-template-columns: var(--univgo-card-grid-columns);
-  gap: var(--univgo-space-l);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include cards.grid;
 }
 
 .reservations__item {

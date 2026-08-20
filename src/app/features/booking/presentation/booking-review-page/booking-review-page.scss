@@ -19,6 +19,16 @@
 
 // Same split as the two views on either side of this one: what the space is on the left, what the
 // user is about to commit to — and the commitment itself — on the right.
+// The shared plate as a banner rather than a card's picture frame: the space is the page's subject
+// here, not one entry in a shelf.
+.review__media {
+  --media-plate-ratio: 21 / 9;
+  --media-plate-radius: var(--tui-radius-l);
+  --media-plate-mark-size: 3rem;
+  --media-plate-align: center;
+  --media-plate-justify: center;
+}
+
 .review__content {
   display: grid;
   grid-template-columns: 1fr;

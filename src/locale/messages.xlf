@@ -269,84 +269,84 @@
         <source>Inicia sesión</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">61,62</context>
+          <context context-type="linenumber">55,56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.subtitle" datatype="html">
         <source> Usa las credenciales de tu universidad para continuar. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">63,65</context>
+          <context context-type="linenumber">57,59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.identifierLabel" datatype="html">
         <source>Correo institucional o documento</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">70,72</context>
+          <context context-type="linenumber">64,66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.passwordLabel" datatype="html">
         <source>Contraseña</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">77,79</context>
+          <context context-type="linenumber">71,73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.rememberMe" datatype="html">
         <source>No cerrar sesión</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">91,94</context>
+          <context context-type="linenumber">85,88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.forgotPassword" datatype="html">
         <source>¿Olvidaste tu contraseña?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">94,97</context>
+          <context context-type="linenumber">88,91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.submit" datatype="html">
         <source> Iniciar sesión </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">107,110</context>
+          <context context-type="linenumber">101,104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.alternativeSeparator" datatype="html">
         <source>o</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">112,115</context>
+          <context context-type="linenumber">106,109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.submitWithCard" datatype="html">
         <source> Entrar con el carné universitario </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">123,125</context>
+          <context context-type="linenumber">117,119</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.helpLabel" datatype="html">
         <source>Centro de ayuda</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">137,139</context>
+          <context context-type="linenumber">131,133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.privacyLabel" datatype="html">
         <source>Política de privacidad</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">148,151</context>
+          <context context-type="linenumber">142,145</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.legal" datatype="html">
         <source> Todos los derechos reservados. Acceso exclusivo para la comunidad universitaria. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">156,158</context>
+          <context context-type="linenumber">150,152</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.unknownSpace.summary" datatype="html">
@@ -481,7 +481,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
-          <context context-type="linenumber">16,18</context>
+          <context context-type="linenumber">12,14</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
@@ -500,7 +500,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">33,34</context>
+          <context context-type="linenumber">29,30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.done.code" datatype="html">
@@ -678,7 +678,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">26,29</context>
+          <context context-type="linenumber">22,25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.facts.title" datatype="html">
@@ -704,7 +704,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
-          <context context-type="linenumber">22,23</context>
+          <context context-type="linenumber">18,19</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
@@ -782,7 +782,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
-          <context context-type="linenumber">56,59</context>
+          <context context-type="linenumber">52,55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.noReservation.heading" datatype="html">
@@ -824,109 +824,67 @@
           <context context-type="linenumber">22,24</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.label" datatype="html">
-        <source> Estado </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">19,24</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.category.label" datatype="html">
-        <source> Tipo de espacio </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">35,40</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.date.label" datatype="html">
-        <source> Fecha </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">51,55</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.status.upcoming" datatype="html">
-        <source>Próximas</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">67,71</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.status.ongoing" datatype="html">
-        <source>Actuales</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">77,81</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.status.past" datatype="html">
-        <source>Pasadas</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">87,90</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.category.sports" datatype="html">
-        <source>Deportes</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">101,105</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.category.study" datatype="html">
-        <source>Estudio</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">111,115</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservations.filters.category.lab" datatype="html">
-        <source>Laboratorios</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">121,124</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="reservations.filters.date.clear" datatype="html">
         <source> Quitar filtro </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">137,141</context>
+          <context context-type="linenumber">28,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.results.count" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 reserva} other {<x id="INTERPOLATION"/> reservas}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">152,158</context>
+          <context context-type="linenumber">43,49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.empty.title" datatype="html">
         <source>No hay reservas con estos filtros</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">169,170</context>
+          <context context-type="linenumber">60,61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.empty.description" datatype="html">
         <source>Prueba a cambiar los filtros para ver otras reservas.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
-          <context context-type="linenumber">171,175</context>
+          <context context-type="linenumber">62,66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.label" datatype="html">
+        <source>Estado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.ts</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.label" datatype="html">
+        <source>Tipo de espacio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.date.label" datatype="html">
+        <source>Fecha</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.ts</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.cancel" datatype="html">
         <source> Cancelar </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
-          <context context-type="linenumber">36,39</context>
+          <context context-type="linenumber">32,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.viewQr" datatype="html">
         <source> Ver QR </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
-          <context context-type="linenumber">46,51</context>
+          <context context-type="linenumber">42,47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.back" datatype="html">
@@ -993,7 +951,49 @@
         <source>Código QR de tu reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.ts</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.upcoming" datatype="html">
+        <source>Próximas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-filters.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.ongoing" datatype="html">
+        <source>Actuales</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-filters.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.status.past" datatype="html">
+        <source>Pasadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-filters.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.sports" datatype="html">
+        <source>Deportes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-filters.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.study" datatype="html">
+        <source>Estudio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-filters.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.filters.category.lab" datatype="html">
+        <source>Laboratorios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-filters.ts</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.card.status.upcoming" datatype="html">
@@ -1091,42 +1091,42 @@
         <source>Capacidad</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">23,25</context>
+          <context context-type="linenumber">19,21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.card.book" datatype="html">
         <source> Reservar </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">64,66</context>
+          <context context-type="linenumber">60,62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.card.unavailable" datatype="html">
         <source> No disponible </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">76,79</context>
+          <context context-type="linenumber">72,75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.card.viewSchedule" datatype="html">
         <source> Ver horarios </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">88,92</context>
+          <context context-type="linenumber">84,88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.card.choose" datatype="html">
         <source>Elegir</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.card.chosen" datatype="html">
         <source>Elegido</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.ts</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.category.sports" datatype="html">

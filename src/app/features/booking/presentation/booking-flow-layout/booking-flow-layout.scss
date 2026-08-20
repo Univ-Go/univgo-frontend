@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -48,7 +50,7 @@
 
 // One row from tablet up: the steps take the middle track and the two `1fr` sides are what keep
 // them centred on the page, whatever the label and the button happen to measure.
-@media (min-width: 48rem) {
+@media (min-width: bp.$tablet) {
   .flow__header {
     grid-template-columns: 1fr auto 1fr;
   }
@@ -79,6 +81,20 @@
 // The room is only reserved while the bar is actually there.
 .flow__content--barred {
   padding-block-end: var(--univgo-space-3xl);
+}
+
+// On a phone the tab bar already owns the bottom edge, so the action bar stacks above it instead
+// of landing on top of the navigation.
+@media (width < bp.$tablet) {
+  tui-action-bar {
+    inset-block-end: calc(
+      var(--univgo-tab-bar-height) + env(safe-area-inset-bottom) + var(--univgo-space-s)
+    );
+  }
+
+  .flow__content--barred {
+    padding-block-end: calc(var(--univgo-space-3xl) + var(--univgo-tab-bar-height));
+  }
 }
 
 .flow__chosen {

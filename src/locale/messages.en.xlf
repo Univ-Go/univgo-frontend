@@ -794,6 +794,14 @@
         <source> Cancelar </source>
         <target> Cancel </target>
       </trans-unit>
+      <trans-unit id="navigation.account" datatype="html">
+        <source>Cuenta</source>
+        <target>Account</target>
+      </trans-unit>
+      <trans-unit id="navigation.newReservation" datatype="html">
+        <source>Nueva reserva</source>
+        <target>New reservation</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AppFooter } from '../app-footer/app-footer';
 import { AppHeader } from '../app-header/app-header';
+import { AppTabBar } from '../app-tab-bar/app-tab-bar';
 
 /**
  * Level 1: the shell every signed-in view renders inside. Sign-in stays outside it on purpose —
@@ -13,9 +14,11 @@ import { AppHeader } from '../app-header/app-header';
  */
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, AppFooter, AppHeader],
+  imports: [RouterOutlet, AppFooter, AppHeader, AppTabBar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
+    @use 'breakpoints' as bp;
+
     :host {
       display: flex;
       flex-direction: column;
@@ -30,6 +33,14 @@ import { AppHeader } from '../app-header/app-header';
       max-inline-size: var(--univgo-content-max-width);
       margin-inline: auto;
       padding: var(--univgo-space-xl) var(--univgo-layout-gutter);
+    }
+
+    // The tab bar floats over the page on a phone, so the shell leaves it room: without this the
+    // footer, and the last thing on every view, end up underneath it.
+    @media (width < bp.$tablet) {
+      app-footer {
+        padding-block-end: calc(var(--univgo-tab-bar-height) + env(safe-area-inset-bottom));
+      }
     }
 
     .skip-link {
@@ -58,6 +69,8 @@ import { AppHeader } from '../app-header/app-header';
     </main>
 
     <app-footer />
+
+    <app-tab-bar />
   `,
 })
 export class MainLayout {}

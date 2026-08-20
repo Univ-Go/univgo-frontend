@@ -77,17 +77,12 @@
   }
 }
 
-.menu__utilities {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--univgo-space-l);
-  padding: var(--univgo-space-s) var(--univgo-space-m);
-  border-block-end: 1px solid var(--tui-border-normal);
-}
-
-@media (max-width: bp.$below-tablet) {
+// A range rather than `max-width: bp.$below-tablet`: that variable lands 0.16px short of the
+// 768px Taiga resolves `compact()` against, and in that sliver the bar would drop the account
+// before the tab bar showed it. The breakpoint itself still comes from the one place that owns it.
+@media (width < bp.$tablet) {
   .header {
+    grid-template-columns: 1fr auto;
     gap: var(--univgo-space-s);
     padding-inline: var(--univgo-space-l);
   }
@@ -96,7 +91,9 @@
     --brand-logo-height: 1.75rem;
   }
 
+  // The destinations live in the tab bar on a phone. Hidden rather than duplicated: two copies of
+  // the same navigation would be two entries in the accessibility tree.
   .nav {
-    gap: var(--univgo-space-l);
+    display: none;
   }
 }

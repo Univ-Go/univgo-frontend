@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { TUI_BREAKPOINT, TuiButton, TuiDataList, TuiDropdown, TuiLink } from '@taiga-ui/core';
+import { TUI_BREAKPOINT, TuiButton, TuiDropdown, TuiLink } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgedContent, TuiBadgeNotification } from '@taiga-ui/kit';
 import { MOCK_SESSION_USER } from '../../features/auth/infrastructure/mock-session';
 import { BrandLogo } from '../../shared/brand-logo/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
+import { AccountMenu } from '../account-menu/account-menu';
 
 /**
  * Level 1: the application bar.
@@ -22,6 +23,7 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 @Component({
   selector: 'app-header',
   imports: [
+    AccountMenu,
     BrandLogo,
     RouterLink,
     RouterLinkActive,
@@ -29,7 +31,6 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
     TuiBadgeNotification,
     TuiBadgedContent,
     TuiButton,
-    TuiDataList,
     TuiDropdown,
     TuiLink,
     LanguageSelector,
@@ -45,9 +46,9 @@ export class AppHeader {
   private readonly userName = MOCK_SESSION_USER.name;
 
   /**
-   * On a phone the utilities collapse into the account menu so the bar keeps one row: brand, nav,
-   * account. Rendering each control in exactly one place keeps them from being duplicated in the
-   * accessibility tree.
+   * On a phone the navigation, the utilities and the account belong to the tab bar, which puts them
+   * within reach of the thumb; the top bar keeps only the brand and the notifications. Rendering
+   * each control in exactly one place keeps them out of the accessibility tree twice.
    */
   protected readonly compact = computed(() => this.breakpoint() === 'mobile');
 

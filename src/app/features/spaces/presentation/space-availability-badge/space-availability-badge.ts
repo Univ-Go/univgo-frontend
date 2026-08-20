@@ -26,7 +26,13 @@ const MILLISECONDS_PER_MINUTE = 60_000;
     // and stops being readable. The pale end of each hue also keeps the pill itself visible against
     // the plate, which the status colours at full strength do not. One pill that reads on any
     // surface, so there is no second variant to pick between.
-    [tuiBadge] {
+    //
+    // The tuiAppearance attribute is in the selector to win a specificity tie, not for show: the
+    // library's badge stylesheet sets the text colour on those same three attributes, and its
+    // styles are injected after ours. Without it the fill was ours and the text was Taiga's, which
+    // in the dark theme meant near-white letters on a pale pill: 1.32:1 on the available state and
+    // 1:1 on the unavailable one, where fill and text were the very same colour.
+    [tuiBadge][tuiAppearance] {
       &[data-appearance='positive'] {
         background: var(--univgo-status-positive-fixed);
         color: var(--univgo-on-status-positive-fixed);

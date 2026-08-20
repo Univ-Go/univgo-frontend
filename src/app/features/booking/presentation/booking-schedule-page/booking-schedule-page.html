@@ -112,9 +112,12 @@
         <span class="shortcut__range">{{ range }}</span>
       </p>
 
+      <!-- `tui-action-bar` reprovisions `secondary-grayscale` for the buttons it contains, which is
+           right for a bar of peers and wrong for the one action it exists to offer. -->
       <button
         tuiButton
         type="button"
+        appearance="primary"
         iconEnd="@tui.arrow-right"
         (click)="continueToReview()"
         i18n="@@booking.continue"

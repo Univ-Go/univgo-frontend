@@ -848,3 +848,48 @@ otras APIs del navegador (`ResizeObserver`, `IntersectionObserver`) que Taiga s�
 
 La experiencia **mobile en un viewport real** no se ha comprobado todavía. No hay vistas que probar:
 toca contemplarla al construirlas, no después.
+
+---
+
+## 22. Flujo de reserva
+
+La definición funcional completa vive en **`docs/booking-flow.md`**: bloques, aforo, check-in,
+estados, casos límite, panel de administrador y lo que queda fuera de alcance. Ese fichero manda
+sobre la implementación — si el código y él no coinciden, el código está mal. Aquí queda sólo lo que
+no debe redescubrirse nunca.
+
+**Modelo.** El estudiante reserva un **bloque fijo de 2 horas**, no una hora de inicio. Un espacio
+admite **N estudiantes por bloque** (aforo); una reserva ocupa una plaza. El uso exclusivo no es un
+caso aparte: es **aforo 1**. Reservar no basta — la reserva se conserva haciendo **check-in**, que
+un administrador registra escaneando el código del estudiante.
+
+**Parámetros** (van a `APP_CONFIG`, nunca quemados en el dominio): bloque `120` min, tolerancia de
+check-in `15` min, uso mínimo garantizado `75` min, `1` reserva por espacio y día, aforo por espacio.
+
+**Las dos fórmulas.** Se reimplementan mal a la segunda; salen las dos de los mismos parámetros:
+
+```
+último instante para reservar = fin del bloque − uso mínimo − tolerancia
+check-in abre   = máx( inicio − tolerancia , creación )
+check-in cierra = mín( máx( inicio , creación ) + tolerancia , fin − uso mínimo )
+```
+
+Un bloque **ya empezado se sigue ofreciendo** mientras cumpla la primera. Eso es una reserva de
+último minuto, y se define por la hora en que se crea — no por lo que le pasara antes a la plaza.
+
+**Invariantes. Romperlos es una regresión, no una simplificación:**
+
+1. **Liberar una plaza es una consecuencia, no una acción.** Las plazas libres son
+   `aforo − reserved − in_progress`. No hay proceso que devuelva cupos ni estado especial en el
+   espacio: una reserva que cambia de estado deja de contar, y eso es todo.
+2. **`expired` y `cancelled` son estados distintos a propósito.** Uno lo decidió el estudiante, el
+   otro le ocurrió, y verlo le explica por qué perdió la plaza. Para el espacio son idénticos.
+3. **Cancelar devuelve la reserva del día; expirar no.** Es lo que premia avisar, y lo que impide
+   retener plazas reservando en bucle sin presentarse.
+4. **El estado se calcula del reloj, no se guarda.** Función pura con el instante actual como
+   parámetro: sin planificador y con tests deterministas. La autoridad es el backend; el frontend
+   deriva de ahí la presentación (cuenta atrás, habilitar el botón, pasar a expirada a su hora).
+
+**No hay confirmación previa, ni lista de espera, ni recordatorios.** Los tres exigen notificar al
+usuario fuera de la aplicación y hoy no hay canal. Están en `docs/booking-flow.md` §12 con el
+motivo, para no volver a proponerlos sin resolver antes esa carencia.

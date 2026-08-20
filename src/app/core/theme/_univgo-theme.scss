@@ -341,6 +341,11 @@ $shadow-tint: 65, 0, 5;
   --univgo-content-max-width: 80rem;
   --univgo-layout-gutter: 1.25rem;
 
+  // The phone's bottom navigation. Three things need this number — the bar itself, the room the
+  // shell leaves under the content, and anything else that floats above the fold — so it is one
+  // value rather than three that drift.
+  --univgo-tab-bar-height: 3.75rem;
+
   // A standalone `tui-icon` defaults to 1.5rem, the size Taiga pairs with `body-m`. Beside the
   // 14px of `ui-s` — every fact list, every detail line in the product — it dwarfs the text and
   // its optical centre stops matching, which reads as a misalignment. This is the size the

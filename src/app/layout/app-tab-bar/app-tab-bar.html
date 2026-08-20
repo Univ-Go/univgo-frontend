@@ -1,0 +1,60 @@
+<nav class="bar" i18n-aria-label="@@navigation.mainLabel" aria-label="Navegación principal">
+  <a
+    class="tab"
+    routerLink="/home"
+    routerLinkActive="tab--active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <tui-icon icon="@tui.house" aria-hidden="true" />
+    <span i18n="@@navigation.home">Inicio</span>
+  </a>
+
+  <a
+    class="tab"
+    routerLink="/spaces"
+    routerLinkActive="tab--active"
+    [routerLinkActiveOptions]="spacesLinkOptions"
+  >
+    <tui-icon icon="@tui.layout-grid" aria-hidden="true" />
+    <span i18n="@@navigation.spaces">Espacios</span>
+  </a>
+
+  <!-- The label rides in `aria-label` rather than on screen: the plus reads as "new" on its own at
+       this size, and a caption under a raised button would push the bar taller than the tabs need. -->
+  <a
+    tuiButton
+    routerLink="/book/space"
+    appearance="primary"
+    size="l"
+    iconStart="@tui.plus"
+    class="fab"
+    i18n-aria-label="@@navigation.newReservation"
+    aria-label="Nueva reserva"
+  ></a>
+
+  <a
+    class="tab"
+    routerLink="/reservations"
+    routerLinkActive="tab--active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <tui-icon icon="@tui.calendar-days" aria-hidden="true" />
+    <span i18n="@@navigation.reservations">Mis Reservas</span>
+  </a>
+
+  <button
+    type="button"
+    class="tab"
+    [tuiDropdown]="accountMenu"
+    [(tuiDropdownOpen)]="menuOpen"
+    i18n-aria-label="@@navigation.accountMenu"
+    aria-label="Tu cuenta"
+  >
+    <tui-icon icon="@tui.circle-user-round" aria-hidden="true" />
+    <span i18n="@@navigation.account">Cuenta</span>
+  </button>
+</nav>
+
+<ng-template #accountMenu>
+  <app-account-menu />
+</ng-template>

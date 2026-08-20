@@ -1,0 +1,64 @@
+# Deployment configuration for Netlify.
+# A single build emits both locales into dist/univgo-frontend/browser/{es,en},
+# so the whole site is one deploy with one publish directory.
+
+[build]
+  command = "pnpm build"
+  publish = "dist/univgo-frontend/browser"
+
+[build.environment]
+  NODE_VERSION = "24.19.0"
+  PNPM_VERSION = "11.22.0"
+
+# The publish root holds no index.html: every entry point is inside a locale
+# directory, and the locale is chosen from the browser's Accept-Language header
+# with Spanish as the fallback.
+[[redirects]]
+  from = "/"
+  to = "/en/"
+  status = 302
+  conditions = {Language = ["en"]}
+
+[[redirects]]
+  from = "/"
+  to = "/es/"
+  status = 302
+
+# SPA fallback, one per locale, so a deep link keeps its own <base href>.
+# Static files win over these rules, so hashed bundles are still served directly.
+[[redirects]]
+  from = "/es/*"
+  to = "/es/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/en/*"
+  to = "/en/index.html"
+  status = 200
+
+# Links that predate the locale prefix (or are typed by hand) land on Spanish.
+[[redirects]]
+  from = "/*"
+  to = "/es/:splat"
+  status = 302
+
+[[headers]]
+  for = "/es/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/en/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Fonts and icons are content-stable and not hashed by the build.
+[[headers]]
+  for = "/*/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -10,13 +10,18 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
-import { TuiAppearance, TuiButton, TuiDataList } from '@taiga-ui/core';
+import { TuiAppearance, TuiButton, TuiDataList, TuiExpand, TuiInput } from '@taiga-ui/core';
 import { TuiInputDate, TuiInputTime, TuiPagination, TuiSelect } from '@taiga-ui/kit';
-import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { TuiCardLarge, TuiSearch, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import type { SpaceCategory, SpaceFilter } from '../../domain/space';
 import { SPACE_CATEGORIES } from '../../domain/space';
-import { groupByCategory, isFilterActive, listSpaces } from '../../domain/space-catalog';
+import {
+  countActiveFilters,
+  groupByCategory,
+  isFilterActive,
+  listSpaces,
+} from '../../domain/space-catalog';
 import { MOCK_SPACES } from '../../infrastructure/mock-spaces';
 import { SpaceCard } from '../space-card/space-card';
 import { spaceCategoryName } from '../space-category';
@@ -83,9 +88,12 @@ function toCategory(value: unknown): SpaceCategory | null {
     TuiButton,
     TuiCardLarge,
     TuiDataList,
+    TuiExpand,
+    TuiInput,
     TuiInputDate,
     TuiInputTime,
     TuiPagination,
+    TuiSearch,
     TuiSelect,
     TuiSurface,
   ],
@@ -106,19 +114,32 @@ export class SpacesPage {
   /** Read once: a page that is open past midnight should not silently change what "today" means. */
   protected readonly today = TuiDay.currentLocal();
 
+  /** Free text is the shape of one session's question, like the day and the times — not an address. */
+  protected readonly query = signal('');
+
   protected readonly date = signal(this.today);
   protected readonly from = signal<TuiTime | null>(null);
-  protected readonly to = signal<TuiTime | null>(null);
 
   protected readonly filter = computed<SpaceFilter>(() => ({
     category: this.category(),
     date: this.date().toLocalNativeDate(),
     from: toMinutes(this.from()),
-    to: toMinutes(this.to()),
+    query: this.query(),
   }));
 
   protected readonly filterActive = computed(() =>
     isFilterActive(this.filter(), this.today.toLocalNativeDate()),
+  );
+
+  /**
+   * Closed by default: four controls that answer a question most visits never ask were the first
+   * thing on the page, and on a phone they filled the screen before a single space did. The search
+   * stays out because looking for a space by name is the common errand, not narrowing by hour.
+   */
+  protected readonly filtersOpen = signal(false);
+
+  protected readonly activeFilters = computed(() =>
+    countActiveFilters(this.filter(), this.today.toLocalNativeDate()),
   );
 
   protected readonly listed = computed(() => listSpaces(MOCK_SPACES, this.filter()));
@@ -147,16 +168,6 @@ export class SpacesPage {
     return this.listed().slice(start, start + SPACES_PER_PAGE);
   });
 
-  /** An end time on its own narrows nothing, and one that precedes the start is not a window. */
-  protected readonly endWithoutStart = computed(() => this.from() === null && this.to() !== null);
-
-  protected readonly endBeforeStart = computed(() => {
-    const from = this.from();
-    const to = this.to();
-
-    return from !== null && to !== null && to.valueOf() <= from.valueOf();
-  });
-
   protected selectCategory(category: SpaceCategory | null): void {
     void this.router.navigate([], {
       relativeTo: this.route,
@@ -170,9 +181,9 @@ export class SpacesPage {
   }
 
   protected clearFilters(): void {
+    this.query.set('');
     this.date.set(this.today);
     this.from.set(null);
-    this.to.set(null);
     this.selectCategory(null);
   }
 }

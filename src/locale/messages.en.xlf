@@ -463,8 +463,8 @@
         <target>Book a space</target>
       </trans-unit>
       <trans-unit id="spaces.lead" datatype="html">
-        <source> Elige dónde y cuándo. Filtra por tipo de espacio, día y franja horaria. </source>
-        <target> Choose where and when. Filter by space type, day and time slot. </target>
+        <source> Busca un espacio por su nombre, o filtra por tipo, día y franja horaria. </source>
+        <target> Search a space by name, or filter by type, day and time range. </target>
       </trans-unit>
       <trans-unit id="spaces.filters.label" datatype="html">
         <source>Filtros del catálogo</source>
@@ -483,20 +483,8 @@
         <target>Date</target>
       </trans-unit>
       <trans-unit id="spaces.filters.from" datatype="html">
-        <source>Desde</source>
-        <target>From</target>
-      </trans-unit>
-      <trans-unit id="spaces.filters.to" datatype="html">
-        <source>Hasta</source>
-        <target>To</target>
-      </trans-unit>
-      <trans-unit id="spaces.filters.endWithoutStart" datatype="html">
-        <source>Indica también una hora de inicio para acotar la franja.</source>
-        <target>Add a start time too, so the slot has a beginning.</target>
-      </trans-unit>
-      <trans-unit id="spaces.filters.endBeforeStart" datatype="html">
-        <source>La hora de fin debe ser posterior a la de inicio.</source>
-        <target>The end time has to be later than the start time.</target>
+        <source>Disponible a las</source>
+        <target>Available at</target>
       </trans-unit>
       <trans-unit id="spaces.filters.clear" datatype="html">
         <source> Quitar filtros </source>
@@ -801,6 +789,14 @@
       <trans-unit id="navigation.newReservation" datatype="html">
         <source>Nueva reserva</source>
         <target>New reservation</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.query" datatype="html">
+        <source>Buscar por nombre o ubicación</source>
+        <target>Search by name or location</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.toggle" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {Filtros} other {Filtros (<x id="INTERPOLATION"/>)}}</source>
+        <target>{VAR_PLURAL, plural, =0 {Filters} other {Filters (<x id="INTERPOLATION"/>)}}</target>
       </trans-unit>
     </body>
   </file>

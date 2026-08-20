@@ -7,7 +7,7 @@ import type {
   SpaceSlot,
   SpaceStartOption,
 } from './space';
-import { SPACE_CATEGORIES } from './space';
+import { BOOKING_DURATION_MINUTES, SPACE_CATEGORIES } from './space';
 
 /** Availability decides the reading order: what can be booked now comes before what cannot. */
 const AVAILABILITY_RANK: Readonly<Record<SpaceAvailability['kind'], number>> = {
@@ -32,10 +32,10 @@ function slotsOn(space: Space, date: Date): readonly SpaceSlot[] {
 }
 
 /**
- * A slot answers the request only when it covers the whole window: a booking cannot span two
- * separate free windows. Without a start time the request is "some time that day", which the
- * earliest slot answers. A `to` that is not after `from` is not a window, so it is ignored and the
- * request degrades to "free at `from`" — the view reports that back instead of silently widening it.
+ * A slot answers the request only when one window holds a whole booking from the requested start:
+ * a booking cannot span two separate free windows, and a space with twenty minutes left is not
+ * "free at ten". Without a start time the request is "some time that day", which the earliest slot
+ * answers.
  */
 export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAvailability {
   if (space.underMaintenance) {
@@ -54,8 +54,9 @@ export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAva
   }
 
   const start = filter.from;
-  const end = filter.to !== null && filter.to > start ? filter.to : start + 1;
-  const match = slots.find((slot) => slot.from <= start && slot.to >= end);
+  const match = slots.find(
+    (slot) => slot.from <= start && slot.to >= start + BOOKING_DURATION_MINUTES,
+  );
 
   if (match) {
     return { kind: 'free', slot: match };
@@ -101,6 +102,35 @@ export function listStartOptions(
 }
 
 /**
+ * Searching for "basquetbol" has to find "Cancha de Básquetbol A": on a Spanish catalogue an accent
+ * is a spelling detail, not a different word, and nobody reaches for the accent key to search.
+ */
+function fold(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLocaleLowerCase();
+}
+
+/**
+ * A space is looked for by the two things a person can name: what it is called and where it is.
+ * Every term has to match one of them, so "cancha norte" narrows rather than widens — typing more
+ * is how a person expects to search less.
+ */
+function matchesQuery(space: Space, query: string | null): boolean {
+  if (!query?.trim()) {
+    return true;
+  }
+
+  const haystack = fold(`${space.name} ${space.location}`);
+
+  return fold(query)
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((term) => haystack.includes(term));
+}
+
+/**
  * Category narrows what is listed at all; a time window narrows it further, because asking for an
  * hour is asking to book then and anything that cannot answer is noise. A date on its own never
  * hides a space — it re-reads availability, so a space with nothing left that day still shows,
@@ -109,6 +139,7 @@ export function listStartOptions(
 export function listSpaces(spaces: readonly Space[], filter: SpaceFilter): readonly ListedSpace[] {
   return spaces
     .filter((space) => filter.category === null || space.category === filter.category)
+    .filter((space) => matchesQuery(space, filter.query))
     .map((space) => ({ space, availability: resolveAvailability(space, filter) }))
     .filter((listed) => filter.from === null || listed.availability.kind === 'free')
     .sort(
@@ -130,6 +161,24 @@ export function groupByCategory(listed: readonly ListedSpace[]): readonly SpaceG
  * when nobody has asked for anything, which is what tells the view to browse by category instead of
  * listing results.
  */
+/**
+ * How many narrowings are on, ignoring the typed query — that one has its own field on screen and
+ * says so by itself. Behind a collapsed panel the count is the only thing telling a person the
+ * catalogue is answering a narrower question than they think.
+ */
+export function countActiveFilters(filter: SpaceFilter, today: Date): number {
+  return (
+    Number(filter.category !== null) +
+    Number(filter.from !== null) +
+    Number(!isSameDay(filter.date, today))
+  );
+}
+
 export function isFilterActive(filter: SpaceFilter, today: Date): boolean {
-  return filter.category !== null || filter.from !== null || !isSameDay(filter.date, today);
+  return (
+    filter.category !== null ||
+    filter.from !== null ||
+    Boolean(filter.query?.trim()) ||
+    !isSameDay(filter.date, today)
+  );
 }

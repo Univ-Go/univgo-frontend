@@ -1,11 +1,17 @@
 <header class="intro">
   <h1 i18n="@@spaces.title">Reservar un espacio</h1>
   <p class="intro__lead" i18n="@@spaces.lead">
-    Elige dónde y cuándo. Filtra por tipo de espacio, día y franja horaria.
+    Busca un espacio por su nombre, o filtra por tipo, día y franja horaria.
   </p>
 </header>
 
-<section
+<!-- `search[tuiSearch]` is the library's own filter-bar layout: it lays the form out in rows, sizes
+     every control inside it consistently, and lets the first field span while the rest stay narrow.
+     `tui-search-filters` is deliberately left out — it collapses extra filters into a dropdown with
+     a reset that calls `control.reset()`, and our fields are bound one-way from signals, so that
+     reset would blank a field on screen while the catalogue kept filtering by it. -->
+<search
+  tuiSearch
   tuiCardLarge
   tuiSurface
   tuiAppearance="outline"
@@ -13,108 +19,125 @@
   i18n-aria-label="@@spaces.filters.label"
   aria-label="Filtros del catálogo"
 >
-  <div class="filters__grid">
-    <!-- The textfield owns its own items handlers, so how a category prints belongs on this field
-         rather than on the whole view — a component-wide provider would also reach the date and
-         time fields, which have nothing to do with categories. -->
-    <tui-textfield tuiTextfieldSize="m" [stringify]="categoryName">
-      <label tuiLabel for="space-category" i18n="@@spaces.filters.category">Tipo de espacio</label>
-      <input
-        id="space-category"
-        tuiSelect
-        name="category"
-        [ngModel]="category()"
-        (ngModelChange)="selectCategory($event)"
-      />
-      <tui-data-list *tuiDropdown>
-        <button tuiOption type="button" [value]="null" i18n="@@spaces.filters.anyCategory">
-          Todos los tipos
-        </button>
-        @for (option of categories; track option) {
-          <button tuiOption type="button" [value]="option">{{ categoryName(option) }}</button>
-        }
-      </tui-data-list>
-    </tui-textfield>
+  <!-- Nothing to submit: the catalogue answers as the fields change. The handler is what keeps
+       Enter from reloading the page. -->
+  <form (submit)="$event.preventDefault()">
+    <fieldset>
+      <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
+        <label tuiLabel for="space-query" i18n="@@spaces.filters.query"
+          >Buscar por nombre o ubicación</label
+        >
+        <input
+          id="space-query"
+          tuiInput
+          name="query"
+          autocomplete="off"
+          [ngModel]="query()"
+          (ngModelChange)="query.set($event ?? '')"
+        />
+      </tui-textfield>
 
-    <!-- The picker is content the consumer supplies: `tuiInputDate` looks for a calendar among its
-         auxiliary providers and pushes value, min and max into it. Without one the field is a
-         masked text box that only accepts typing. -->
-    <!-- No cleaner here: availability without a day means nothing, so the filter always has one.
-         A clear button that silently puts today back would be telling the user it emptied. -->
-    <tui-textfield tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
-      <label tuiLabel for="space-date" i18n="@@spaces.filters.date">Fecha</label>
-      <input
-        id="space-date"
-        tuiInputDate
-        name="date"
-        [min]="today"
-        [ngModel]="date()"
-        (ngModelChange)="setDate($event)"
-      />
-      <tui-calendar *tuiDropdown />
-    </tui-textfield>
-
-    <tui-textfield tuiTextfieldSize="m">
-      <label tuiLabel for="space-from" i18n="@@spaces.filters.from">Desde</label>
-      <input
-        id="space-from"
-        tuiInputTime
-        name="from"
-        [ngModel]="from()"
-        (ngModelChange)="from.set($event)"
-      />
-      <tui-data-list *tuiDropdown>
-        @for (option of timeOptions; track option.toString()) {
-          <button tuiOption type="button" [value]="option">{{ option }}</button>
-        }
-      </tui-data-list>
-    </tui-textfield>
-
-    <tui-textfield tuiTextfieldSize="m">
-      <label tuiLabel for="space-to" i18n="@@spaces.filters.to">Hasta</label>
-      <input
-        id="space-to"
-        tuiInputTime
-        name="to"
-        [ngModel]="to()"
-        (ngModelChange)="to.set($event)"
-      />
-      <tui-data-list *tuiDropdown>
-        @for (option of timeOptions; track option.toString()) {
-          <button tuiOption type="button" [value]="option">{{ option }}</button>
-        }
-      </tui-data-list>
-    </tui-textfield>
-  </div>
-
-  <!-- Half a range narrows nothing, so the view says so instead of quietly dropping the value. -->
-  <p class="filters__hint" role="status">
-    @if (endWithoutStart()) {
-      <span i18n="@@spaces.filters.endWithoutStart"
-        >Indica también una hora de inicio para acotar la franja.</span
+      <!-- The count rides in the label rather than in a badge beside it: behind a closed panel it
+           is the only thing saying the catalogue is answering a narrower question than the search
+           box shows, and a number in the name survives translation without a second element. -->
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        [appearance]="filtersOpen() ? 'secondary' : 'outline'"
+        iconStart="@tui.sliders-horizontal"
+        [attr.aria-expanded]="filtersOpen()"
+        aria-controls="space-filters"
+        (click)="filtersOpen.set(!filtersOpen())"
       >
-    } @else if (endBeforeStart()) {
-      <span i18n="@@spaces.filters.endBeforeStart"
-        >La hora de fin debe ser posterior a la de inicio.</span
-      >
-    }
-  </p>
+        <span i18n="@@spaces.filters.toggle">{activeFilters(), plural,
+          =0 {Filtros}
+          other {Filtros ({{activeFilters()}})}
+        }</span>
+      </button>
+    </fieldset>
 
-  @if (filterActive()) {
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      appearance="flat"
-      iconStart="@tui.filter-x"
-      class="filters__clear"
-      (click)="clearFilters()"
-      i18n="@@spaces.filters.clear"
+    <tui-expand
+      class="filters__panel"
+      [class.filters__panel--open]="filtersOpen()"
+      [expanded]="filtersOpen()"
     >
-      Quitar filtros
-    </button>
-  }
-</section>
+      <fieldset id="space-filters" class="filters__row">
+        <!-- The textfield owns its own items handlers, so how a category prints belongs on this field
+           rather than on the whole view — a component-wide provider would also reach the date and
+           time fields, which have nothing to do with categories. -->
+        <tui-textfield tuiTextfieldSize="m" [stringify]="categoryName">
+          <label tuiLabel for="space-category" i18n="@@spaces.filters.category"
+            >Tipo de espacio</label
+          >
+          <input
+            id="space-category"
+            tuiSelect
+            name="category"
+            [ngModel]="category()"
+            (ngModelChange)="selectCategory($event)"
+          />
+          <tui-data-list *tuiDropdown>
+            <button tuiOption type="button" [value]="null" i18n="@@spaces.filters.anyCategory">
+              Todos los tipos
+            </button>
+            @for (option of categories; track option) {
+              <button tuiOption type="button" [value]="option">{{ categoryName(option) }}</button>
+            }
+          </tui-data-list>
+        </tui-textfield>
+
+        <!-- The picker is content the consumer supplies: `tuiInputDate` looks for a calendar among its
+           auxiliary providers and pushes value, min and max into it. Without one the field is a
+           masked text box that only accepts typing. -->
+        <!-- No cleaner here: availability without a day means nothing, so the filter always has one.
+           A clear button that silently puts today back would be telling the user it emptied. -->
+        <tui-textfield tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
+          <label tuiLabel for="space-date" i18n="@@spaces.filters.date">Fecha</label>
+          <input
+            id="space-date"
+            tuiInputDate
+            name="date"
+            [min]="today"
+            [ngModel]="date()"
+            (ngModelChange)="setDate($event)"
+          />
+          <tui-calendar *tuiDropdown />
+        </tui-textfield>
+
+        <tui-textfield tuiTextfieldSize="m">
+          <label tuiLabel for="space-from" i18n="@@spaces.filters.from">Disponible a las</label>
+          <input
+            id="space-from"
+            tuiInputTime
+            name="from"
+            [ngModel]="from()"
+            (ngModelChange)="from.set($event)"
+          />
+          <tui-data-list *tuiDropdown>
+            @for (option of timeOptions; track option.toString()) {
+              <button tuiOption type="button" [value]="option">{{ option }}</button>
+            }
+          </tui-data-list>
+        </tui-textfield>
+
+        @if (filterActive()) {
+          <button
+            tuiButton
+            type="button"
+            size="m"
+            appearance="flat"
+            iconStart="@tui.filter-x"
+            (click)="clearFilters()"
+            i18n="@@spaces.filters.clear"
+          >
+            Quitar filtros
+          </button>
+        }
+      </fieldset>
+    </tui-expand>
+  </form>
+</search>
 
 @if (filterActive()) {
   <section class="results" i18n-aria-label="@@spaces.results.label" aria-label="Resultados">

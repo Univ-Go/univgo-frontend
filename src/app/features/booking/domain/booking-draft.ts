@@ -1,7 +1,5 @@
 import type { Space } from '../../spaces/domain/space';
-
-/** A booking is one campus slot, not a custom span the user negotiates by hand. */
-export const BOOKING_DURATION_MINUTES = 60;
+import { BOOKING_DURATION_MINUTES } from '../../spaces/domain/space';
 
 /** Whole hours: the grid a person picks from reads as "10:00", never as "10:30 – 11:30". */
 export const BOOKING_START_STEP_MINUTES = 60;

@@ -1,5 +1,6 @@
 import type { Space, SpaceCategory, SpaceFilter, SpaceSlot } from './space';
 import {
+  countActiveFilters,
   groupByCategory,
   isFilterActive,
   listSpaces,
@@ -32,7 +33,7 @@ function space(overrides: Partial<Space> = {}): Space {
 }
 
 function filter(overrides: Partial<SpaceFilter> = {}): SpaceFilter {
-  return { category: null, date: MONDAY, from: null, to: null, ...overrides };
+  return { category: null, date: MONDAY, from: null, query: null, ...overrides };
 }
 
 describe('resolveAvailability', () => {
@@ -55,14 +56,14 @@ describe('resolveAvailability', () => {
     });
   });
 
-  it('reports free when one slot covers the whole requested window', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(9), to: at(11) }));
+  it('reports free when one slot holds a whole booking from the requested start', () => {
+    const availability = resolveAvailability(space(), filter({ from: at(9) }));
 
     expect(availability).toEqual({ kind: 'free', slot: slot(MONDAY, 8, 12) });
   });
 
-  it('reports the next slot when the requested window spills past the end of a slot', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(11), to: at(13) }));
+  it('reports the next slot when a booking from the requested start would spill past the end', () => {
+    const availability = resolveAvailability(space(), filter({ from: at(11, 30) }));
 
     expect(availability).toEqual({ kind: 'later', slot: slot(MONDAY, 15, 18) });
   });
@@ -70,25 +71,17 @@ describe('resolveAvailability', () => {
   it('does not stitch two consecutive slots into one bookable window', () => {
     const consecutive = space({ freeSlots: [slot(MONDAY, 8, 10), slot(MONDAY, 10, 12)] });
 
-    expect(resolveAvailability(consecutive, filter({ from: at(9), to: at(11) })).kind).toBe(
-      'later',
-    );
+    expect(resolveAvailability(consecutive, filter({ from: at(9, 30) })).kind).toBe('later');
   });
 
   it('falls back to the earliest slot when nothing starts after the requested time', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(20), to: at(21) }));
+    const availability = resolveAvailability(space(), filter({ from: at(20) }));
 
     expect(availability).toEqual({ kind: 'later', slot: slot(MONDAY, 8, 12) });
   });
 
-  it('ignores an end time that is not after the start time', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(9), to: at(8) }));
-
-    expect(availability).toEqual({ kind: 'free', slot: slot(MONDAY, 8, 12) });
-  });
-
   it('treats a slot ending exactly at the requested start as not covering it', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(12), to: null }));
+    const availability = resolveAvailability(space(), filter({ from: at(12) }));
 
     expect(availability).toEqual({ kind: 'later', slot: slot(MONDAY, 15, 18) });
   });
@@ -126,8 +119,8 @@ describe('listSpaces', () => {
     ]);
   });
 
-  it('drops spaces that cannot answer a requested time window', () => {
-    const listed = listSpaces([court, closed], filter({ from: at(9), to: at(10) }));
+  it('drops spaces that cannot answer a requested start time', () => {
+    const listed = listSpaces([court, closed], filter({ from: at(9) }));
 
     expect(listed.map((entry) => entry.space.id)).toEqual(['court']);
   });
@@ -194,6 +187,36 @@ describe('listStartOptions', () => {
   });
 });
 
+describe('listSpaces, searching', () => {
+  const court = space({ id: 'court', name: 'Cancha de Básquetbol A', location: 'Zona Norte' });
+  const room = space({ id: 'room', name: 'Sala de Estudio 3', location: 'Biblioteca Central' });
+
+  function found(query: string): readonly string[] {
+    return listSpaces([court, room], filter({ query })).map((listed) => listed.space.id);
+  }
+
+  it('ignores accents, because nobody reaches for the accent key to search', () => {
+    expect(found('basquetbol')).toEqual(['court']);
+  });
+
+  it('ignores case', () => {
+    expect(found('SALA')).toEqual(['room']);
+  });
+
+  it('searches where a space is, not only what it is called', () => {
+    expect(found('biblioteca')).toEqual(['room']);
+  });
+
+  it('narrows with every term instead of widening', () => {
+    expect(found('cancha norte')).toEqual(['court']);
+    expect(found('cancha biblioteca')).toEqual([]);
+  });
+
+  it('lists everything for blank input, so spaces alone are not a filter', () => {
+    expect(found('   ')).toEqual(['court', 'room']);
+  });
+});
+
 describe('groupByCategory', () => {
   it('groups in declaration order and leaves out empty categories', () => {
     const listed = listSpaces(
@@ -205,6 +228,24 @@ describe('groupByCategory', () => {
       'sports',
       'study',
     ]);
+  });
+});
+
+describe('countActiveFilters', () => {
+  it('counts nothing on the resting state', () => {
+    expect(countActiveFilters(filter(), MONDAY)).toBe(0);
+  });
+
+  it('counts each narrowing once', () => {
+    expect(countActiveFilters(filter({ category: 'lab' }), MONDAY)).toBe(1);
+    expect(countActiveFilters(filter({ category: 'lab', from: at(9) }), MONDAY)).toBe(2);
+    expect(
+      countActiveFilters(filter({ category: 'lab', from: at(9), date: TUESDAY }), MONDAY),
+    ).toBe(3);
+  });
+
+  it('leaves the typed query out: the search field is on screen saying so itself', () => {
+    expect(countActiveFilters(filter({ query: 'cancha' }), MONDAY)).toBe(0);
   });
 });
 
@@ -220,5 +261,10 @@ describe('isFilterActive', () => {
   it('treats a category or a start time as a request', () => {
     expect(isFilterActive(filter({ category: 'lab' }), MONDAY)).toBe(true);
     expect(isFilterActive(filter({ from: at(9) }), MONDAY)).toBe(true);
+  });
+
+  it('treats typed text as a request, and blanks as nothing typed', () => {
+    expect(isFilterActive(filter({ query: 'cancha' }), MONDAY)).toBe(true);
+    expect(isFilterActive(filter({ query: '   ' }), MONDAY)).toBe(false);
   });
 });

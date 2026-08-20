@@ -1,6 +1,12 @@
 @let space = listed().space;
 
-<article tuiCardLarge tuiSurface tuiAppearance="outline" class="card">
+<article
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="card"
+  [class.card--chosen]="chosen()"
+>
   <!-- Provisional media slot: fills with the brand plate until real space photos exist, the same
        placeholder the reservation card and the home view use. -->
   <div class="card__media">
@@ -30,10 +36,25 @@
     </dl>
   </div>
 
-  @if (bookable()) {
+  @if (bookable() && choosing) {
+    <!-- `aria-pressed` rather than a second label: the button keeps one accessible name and
+         announces whether this card is the one currently picked. -->
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      class="card__action"
+      [appearance]="chosen() ? 'primary' : 'outline'"
+      [iconStart]="chosen() ? '@tui.check' : ''"
+      [attr.aria-pressed]="chosen()"
+      (click)="choose()"
+    >
+      {{ chosen() ? chosenLabel : chooseLabel }}
+    </button>
+  } @else if (bookable()) {
     <a
       tuiButton
-      [routerLink]="['/spaces', space.id, 'book']"
+      [routerLink]="['/book', space.id, 'when']"
       size="m"
       appearance="primary"
       iconEnd="@tui.arrow-right"

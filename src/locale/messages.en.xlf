@@ -618,61 +618,181 @@
         <source> Ver mis reservas </source>
         <target> View my bookings </target>
       </trans-unit>
-      <trans-unit id="spaces.book.pageTitle" datatype="html">
-        <source>Reservar espacio</source>
-        <target>Book a space</target>
+      <trans-unit id="booking.space.pageTitle" datatype="html">
+        <source>Elige un espacio</source>
+        <target>Pick a space</target>
       </trans-unit>
-      <trans-unit id="spaces.book.pageDescription" datatype="html">
-        <source>Elige la fecha y la hora, confirma tu reserva y consulta la información importante del espacio.</source>
-        <target>Pick the date and time, confirm your booking, and check the important information about the space.</target>
+      <trans-unit id="booking.space.pageDescription" datatype="html">
+        <source>Busca el espacio que necesitas y elígelo para continuar con tu reserva.</source>
+        <target>Find the space you need and pick it to continue with your booking.</target>
       </trans-unit>
-      <trans-unit id="spaces.book.confirmedTitle" datatype="html">
-        <source>Reserva confirmada</source>
-        <target>Booking confirmed</target>
+      <trans-unit id="booking.done.pageTitle" datatype="html">
+        <source>Reserva creada</source>
+        <target>Booking created</target>
       </trans-unit>
-      <trans-unit id="spaces.book.confirmedDetail" datatype="html">
-        <source>La puedes consultar en Mis reservas.</source>
-        <target>You can check it in My reservations.</target>
+      <trans-unit id="booking.done.pageDescription" datatype="html">
+        <source>Tu reserva se creó correctamente. Consulta el código y el horario, o revisa todas tus reservas.</source>
+        <target>Your booking was created. Check its code and time, or review all your reservations.</target>
       </trans-unit>
-      <trans-unit id="spaces.book.notFound.title" datatype="html">
-        <source>Espacio no encontrado</source>
-        <target>Space not found</target>
+      <trans-unit id="booking.schedule.pageTitle" datatype="html">
+        <source>Elige fecha y hora</source>
+        <target>Pick a date and time</target>
       </trans-unit>
-      <trans-unit id="spaces.book.notFound.description" datatype="html">
-        <source>Puede que el enlace sea incorrecto o que el espacio ya no exista.</source>
-        <target>The link may be wrong, or the space may no longer exist.</target>
+      <trans-unit id="booking.schedule.pageDescription" datatype="html">
+        <source>Elige el día y la hora de tu reserva, y consulta la información importante del espacio.</source>
+        <target>Pick the day and time of your booking, and check the important information about the space.</target>
       </trans-unit>
-      <trans-unit id="spaces.book.breadcrumbCurrent" datatype="html">
-        <source>Reservar</source>
-        <target>Book</target>
+      <trans-unit id="booking.review.pageTitle" datatype="html">
+        <source>Confirma tu reserva</source>
+        <target>Confirm your booking</target>
       </trans-unit>
-      <trans-unit id="spaces.book.summary.title" datatype="html">
-        <source>Resumen de tu reserva</source>
-        <target>Your booking summary</target>
+      <trans-unit id="booking.review.pageDescription" datatype="html">
+        <source>Revisa el espacio, la fecha y la hora antes de crear tu reserva.</source>
+        <target>Review the space, the date and the time before creating your booking.</target>
       </trans-unit>
-      <trans-unit id="spaces.book.summary.confirm" datatype="html">
-        <source> Confirmar reserva </source>
-        <target> Confirm booking </target>
+      <trans-unit id="booking.unknownSpace.summary" datatype="html">
+        <source>No encontramos ese espacio</source>
+        <target>We couldn't find that space</target>
       </trans-unit>
-      <trans-unit id="spaces.book.datetime.title" datatype="html">
+      <trans-unit id="booking.unknownSpace.detail" datatype="html">
+        <source>Puede que el enlace sea antiguo. Elige un espacio del catálogo para continuar.</source>
+        <target>The link may be out of date. Pick a space from the catalogue to continue.</target>
+      </trans-unit>
+      <trans-unit id="booking.done.title" datatype="html">
+        <source>¡Reserva creada!</source>
+        <target>Booking created!</target>
+      </trans-unit>
+      <trans-unit id="booking.done.lead" datatype="html">
+        <source> Ya está guardada en Mis reservas, donde puedes consultarla o cancelarla. </source>
+        <target> It is saved in My reservations, where you can check it or cancel it. </target>
+      </trans-unit>
+      <trans-unit id="booking.done.code" datatype="html">
+        <source>Código</source>
+        <target>Code</target>
+      </trans-unit>
+      <trans-unit id="booking.done.viewReservations" datatype="html">
+        <source>Ver mis reservas</source>
+        <target>View my reservations</target>
+      </trans-unit>
+      <trans-unit id="booking.done.backHome" datatype="html">
+        <source>Volver al inicio</source>
+        <target>Back to home</target>
+      </trans-unit>
+      <trans-unit id="booking.steps.label" datatype="html">
+        <source>Pasos de la reserva</source>
+        <target>Booking steps</target>
+      </trans-unit>
+      <trans-unit id="booking.step.space" datatype="html">
+        <source> Espacio </source>
+        <target> Space </target>
+      </trans-unit>
+      <trans-unit id="booking.step.schedule" datatype="html">
+        <source> Fecha y hora </source>
+        <target> Date and time </target>
+      </trans-unit>
+      <trans-unit id="booking.step.review" datatype="html">
+        <source> Confirmar </source>
+        <target> Confirm </target>
+      </trans-unit>
+      <trans-unit id="booking.space.chosen" datatype="html">
+        <source>Espacio elegido</source>
+        <target>Space chosen</target>
+      </trans-unit>
+      <trans-unit id="booking.continue" datatype="html">
+        <source> Continuar </source>
+        <target> Continue </target>
+      </trans-unit>
+      <trans-unit id="booking.review.title" datatype="html">
+        <source>Revisa y confirma</source>
+        <target>Review and confirm</target>
+      </trans-unit>
+      <trans-unit id="booking.review.lead" datatype="html">
+        <source> Comprueba que todo esté correcto. Podrás cancelar la reserva desde Mis reservas. </source>
+        <target> Check that everything is right. You can cancel the booking from My reservations. </target>
+      </trans-unit>
+      <trans-unit id="booking.review.summaryTitle" datatype="html">
+        <source>Resumen de la reserva</source>
+        <target>Booking summary</target>
+      </trans-unit>
+      <trans-unit id="booking.review.spaceHeading" datatype="html">
+        <source>Espacio</source>
+        <target>Space</target>
+      </trans-unit>
+      <trans-unit id="booking.review.change" datatype="html">
+        <source>Cambiar</source>
+        <target>Change</target>
+      </trans-unit>
+      <trans-unit id="booking.review.scheduleHeading" datatype="html">
         <source>Fecha y hora</source>
         <target>Date and time</target>
       </trans-unit>
-      <trans-unit id="spaces.book.datetime.hourLabel" datatype="html">
-        <source>Hora</source>
-        <target>Time</target>
+      <trans-unit id="booking.review.create" datatype="html">
+        <source> Crear reserva </source>
+        <target> Create booking </target>
       </trans-unit>
-      <trans-unit id="spaces.book.info.title" datatype="html">
+      <trans-unit id="booking.info.title" datatype="html">
         <source>Información importante</source>
         <target>Important information</target>
       </trans-unit>
-      <trans-unit id="spaces.book.summary.hint" datatype="html">
-        <source> Elige una fecha y una hora para ver el resumen. </source>
-        <target> Pick a date and a time to see the summary. </target>
+      <trans-unit id="booking.review.changeSpaceLabel" datatype="html">
+        <source>Cambiar el espacio</source>
+        <target>Change the space</target>
       </trans-unit>
-      <trans-unit id="spaces.book.datetime.noAvailability" datatype="html">
-        <source> No hay horarios disponibles para esta fecha. Prueba con otro día. </source>
-        <target> No times are available for this date. Try another day. </target>
+      <trans-unit id="booking.review.changeScheduleLabel" datatype="html">
+        <source>Cambiar la fecha y la hora</source>
+        <target>Change the date and time</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.hint" datatype="html">
+        <source> Elige un día y una hora para continuar. </source>
+        <target> Pick a day and a time to continue. </target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.startLegend" datatype="html">
+        <source>Hora de inicio</source>
+        <target>Start time</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.blockLength" datatype="html">
+        <source>Bloques de 1 hora</source>
+        <target>1-hour blocks</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.until" datatype="html">
+        <source>hasta <x id="INTERPOLATION" equiv-text="{{ hour.end }}"/></source>
+        <target>until <x id="INTERPOLATION" equiv-text="{{ hour.end }}"/></target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.taken" datatype="html">
+        <source>ocupado</source>
+        <target>taken</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.noHours" datatype="html">
+        <source> Este espacio no abre este día. Prueba con otra fecha. </source>
+        <target> This space is not open on this day. Try another date. </target>
+      </trans-unit>
+      <trans-unit id="spaces.card.choose" datatype="html">
+        <source>Elegir</source>
+        <target>Pick</target>
+      </trans-unit>
+      <trans-unit id="spaces.card.chosen" datatype="html">
+        <source>Elegido</source>
+        <target>Picked</target>
+      </trans-unit>
+      <trans-unit id="booking.leave.title" datatype="html">
+        <source>¿Salir sin crear la reserva?</source>
+        <target>Leave without creating the booking?</target>
+      </trans-unit>
+      <trans-unit id="booking.leave.content" datatype="html">
+        <source>Se perderá el espacio y el horario que elegiste.</source>
+        <target>The space and time you picked will be lost.</target>
+      </trans-unit>
+      <trans-unit id="booking.leave.confirm" datatype="html">
+        <source>Salir</source>
+        <target>Leave</target>
+      </trans-unit>
+      <trans-unit id="booking.leave.stay" datatype="html">
+        <source>Seguir aquí</source>
+        <target>Stay here</target>
+      </trans-unit>
+      <trans-unit id="booking.cancel" datatype="html">
+        <source> Cancelar </source>
+        <target> Cancel </target>
       </trans-unit>
     </body>
   </file>

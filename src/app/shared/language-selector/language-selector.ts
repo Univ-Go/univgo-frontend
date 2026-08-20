@@ -4,7 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { TuiSegmented } from '@taiga-ui/kit';
 import { filter, map } from 'rxjs';
-import { APP_LOCALES } from '../../core/i18n/locales';
+import { APP_LOCALES, localePath, resolveLocale } from '../../core/i18n/locales';
 
 /**
  * Level 1: reachable from every view, like the theme switch.
@@ -52,8 +52,7 @@ export class LanguageSelector {
     { initialValue: this.router.url },
   );
 
-  private readonly current =
-    APP_LOCALES.find((locale) => this.baseHref === `/${locale.code}/`)?.code ?? APP_LOCALES[0].code;
+  private readonly current = resolveLocale(this.baseHref).code;
 
   protected readonly activeIndex = Math.max(
     APP_LOCALES.findIndex((locale) => locale.code === this.current),
@@ -64,7 +63,7 @@ export class LanguageSelector {
     APP_LOCALES.map((locale) => ({
       ...locale,
       active: locale.code === this.current,
-      href: `/${locale.code}${this.route()}`,
+      href: localePath(locale.code, this.route()),
     })),
   );
 }

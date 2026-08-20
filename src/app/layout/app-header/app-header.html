@@ -48,49 +48,29 @@
       ></button>
     </tui-badged-content>
 
+    <!-- On a phone the utilities and the account live in the tab bar, within reach of the thumb;
+         rendering each control in exactly one place keeps it out of the accessibility tree twice. -->
     @if (!compact()) {
       <app-language-selector />
       <app-theme-toggle />
-    }
 
-    <button
-      tuiAvatar
-      type="button"
-      size="m"
-      appearance="primary"
-      class="profile"
-      i18n-aria-label="@@navigation.accountMenu"
-      aria-label="Tu cuenta"
-      [tuiDropdown]="accountMenu"
-      [(tuiDropdownOpen)]="menuOpen"
-    >
-      {{ initials }}
-    </button>
+      <button
+        tuiAvatar
+        type="button"
+        size="m"
+        appearance="primary"
+        class="profile"
+        i18n-aria-label="@@navigation.accountMenu"
+        aria-label="Tu cuenta"
+        [tuiDropdown]="accountMenu"
+        [(tuiDropdownOpen)]="menuOpen"
+      >
+        {{ initials }}
+      </button>
+    }
   </div>
 </header>
 
 <ng-template #accountMenu>
-  <tui-data-list>
-    @if (compact()) {
-      <div class="menu__utilities">
-        <app-language-selector />
-        <app-theme-toggle />
-      </div>
-    }
-
-    <button tuiOption type="button" iconStart="@tui.user" i18n="@@navigation.profile">
-      Tu perfil
-    </button>
-
-    <!-- TEMPORARY: walks back to sign-in. Real sign-out clears the session first. -->
-    <button
-      tuiOption
-      type="button"
-      iconStart="@tui.log-out"
-      routerLink="/login"
-      i18n="@@navigation.signOut"
-    >
-      Cerrar sesión
-    </button>
-  </tui-data-list>
+  <app-account-menu />
 </ng-template>

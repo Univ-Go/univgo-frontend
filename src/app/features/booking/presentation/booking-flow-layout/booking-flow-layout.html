@@ -69,7 +69,7 @@
      mark into a commitment, so a person can keep looking without losing the choice. Entering the
      flow straight from `/spaces` skips both — the space is already decided. -->
 @if (pendingSpace(); as space) {
-  <tui-action-bar role="status" [attr.tuiTheme]="darkMode() ? 'dark' : 'light'">
+  <tui-action-bar appActionBarTheme role="status">
     <p class="flow__chosen">
       <span class="flow__chosen-label" i18n="@@booking.space.chosen">Espacio elegido</span>
       <span class="flow__chosen-name">{{ space.name }}</span>

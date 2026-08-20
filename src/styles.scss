@@ -1,4 +1,5 @@
 @use './app/core/theme/univgo-theme';
+@use 'breakpoints' as bp;
 
 // Padding counts inside the declared size. Without this, any `inline-size: 100%` with padding
 // overflows its parent, which is how a horizontal scrollbar appears on a phone.
@@ -68,6 +69,21 @@ h6 {
 // own three attributes.
 tui-stepper [tuiStep][tuiCell] [tuiAvatar] {
   align-self: center;
+}
+
+// A floating action bar and the phone's tab bar share the bottom edge, so the bar stacks above the
+// navigation rather than landing on it. Global because the tab bar is: every bar in the product
+// answers to the same edge, wherever the view that raised it lives.
+//
+// The attribute is not decoration: Taiga sets the edge on `:host`, which outranks a bare element
+// selector, so the rule needs one more thing to match on. The directive every bar of ours already
+// carries is that thing.
+@media (width < bp.$tablet) {
+  tui-action-bar[appActionBarTheme] {
+    inset-block-end: calc(
+      var(--univgo-tab-bar-height) + env(safe-area-inset-bottom) + var(--univgo-space-s)
+    );
+  }
 }
 
 // Taiga's slide keyframe animates from `--tui-from`, and the dropdown defaults it to

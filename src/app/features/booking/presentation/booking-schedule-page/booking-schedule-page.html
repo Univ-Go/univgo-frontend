@@ -78,6 +78,7 @@
         class="booking-card__continue"
         [disabled]="!range()"
         (click)="continueToReview()"
+        (appOnScreen)="continueOnScreen.set($event)"
         i18n="@@booking.continue"
       >
         Continuar
@@ -100,4 +101,26 @@
       </ul>
     </section>
   </div>
+
+  <!-- The card's own button is the canonical one; on a phone it sits several screens below the
+       slot the person just picked. This is that same action brought back within reach, and it
+       withdraws the moment the button itself is on screen, so the two are never both in view. -->
+  @if (shortcut(); as range) {
+    <tui-action-bar appActionBarTheme>
+      <p class="shortcut">
+        <span class="shortcut__date">{{ draft.date() | date: 'EEEE d MMMM' }}</span>
+        <span class="shortcut__range">{{ range }}</span>
+      </p>
+
+      <button
+        tuiButton
+        type="button"
+        iconEnd="@tui.arrow-right"
+        (click)="continueToReview()"
+        i18n="@@booking.continue"
+      >
+        Continuar
+      </button>
+    </tui-action-bar>
+  }
 }

@@ -347,6 +347,11 @@ $shadow-tint: 65, 0, 5;
   // value rather than three that drift.
   --univgo-tab-bar-height: 3.75rem;
 
+  // Room a view leaves at its foot while a floating action bar hangs over it. On a phone the bar
+  // stacks above the tab bar, so the room has to clear both. Every view that can raise a bar reads
+  // this instead of rebuilding the same sum.
+  --univgo-action-bar-room: calc(var(--univgo-space-3xl) + var(--univgo-tab-bar-height));
+
   // A standalone `tui-icon` defaults to 1.5rem, the size Taiga pairs with `body-m`. Beside the
   // 14px of `ui-s` — every fact list, every detail line in the product — it dwarfs the text and
   // its optical centre stops matching, which reads as a misalignment. This is the size the
@@ -369,6 +374,9 @@ $shadow-tint: 65, 0, 5;
   :root {
     --univgo-layout-gutter: 3rem;
     --univgo-card-grid-columns: repeat(2, 1fr);
+
+    // No tab bar from here up: the bar sits on the page's own bottom edge.
+    --univgo-action-bar-room: var(--univgo-space-3xl);
   }
 }
 

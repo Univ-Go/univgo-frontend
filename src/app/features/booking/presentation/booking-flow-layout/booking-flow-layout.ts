@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import type { Data } from '@angular/router';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { TUI_DARK_MODE, TuiButton, TuiIcon } from '@taiga-ui/core';
+import { TuiButton, TuiIcon } from '@taiga-ui/core';
 import { TuiActionBar, TuiStepper } from '@taiga-ui/kit';
 import { filter, map, startWith } from 'rxjs';
+import { ActionBarTheme } from '../../../../shared/action-bar-theme/action-bar-theme';
 import { BookingDraftStore } from '../../application/booking-draft.store';
 
 const SPACE_STEP = 0;
@@ -30,7 +31,15 @@ const SPACE_STEP_LINK = ['/book', 'space'];
  */
 @Component({
   selector: 'app-booking-flow-layout',
-  imports: [RouterLink, RouterOutlet, TuiActionBar, TuiButton, TuiIcon, TuiStepper],
+  imports: [
+    ActionBarTheme,
+    RouterLink,
+    RouterOutlet,
+    TuiActionBar,
+    TuiButton,
+    TuiIcon,
+    TuiStepper,
+  ],
   templateUrl: './booking-flow-layout.html',
   styleUrl: './booking-flow-layout.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,15 +49,6 @@ export class BookingFlowLayout {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly draft = inject(BookingDraftStore);
-
-  /**
-   * `tui-action-bar` hardcodes `tuiTheme="dark"` on its host, which is right for a bar that floats
-   * over arbitrary content but reads as a stray dark slab in the middle of a light page — and its
-   * secondary text loses contrast there. Rebinding the attribute puts the bar back on the app's
-   * theme; a binding is used rather than a static attribute because it is applied after the
-   * component's own host attributes.
-   */
-  protected readonly darkMode = inject(TUI_DARK_MODE);
 
   /**
    * `startWith` covers the very first render, and `NavigationEnd` every step after it. The child's

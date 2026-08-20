@@ -29,7 +29,14 @@
 // gap stayed under the search bar with nothing below it, which is what pushed the card's content
 // off its vertical centre. The negative margin cancels exactly that gap while the panel is shut.
 .filters__panel:not(.filters__panel--open) {
-  margin-block-start: -0.75rem;
+  margin-block-start: calc(var(--univgo-space-m) * -1);
+}
+
+// `search[tuiSearch]` gives its fieldsets `gap: inherit`, counting on the form being their parent.
+// The expand panel sits in between, so the chain resolves to `normal` and the fields ended up
+// flush against each other. The row states its own spacing, from the product's scale.
+.filters__row {
+  gap: var(--univgo-space-m);
 }
 
 // The rule between the two time fields only means something while they share a row. Once the
@@ -41,21 +48,6 @@
 @media (min-width: bp.$tablet) {
   .filters hr {
     display: block;
-  }
-}
-
-.filters__hint {
-  display: flex;
-  align-items: center;
-  gap: var(--univgo-space-xs);
-  margin: 0;
-  color: var(--tui-text-negative);
-  font: var(--tui-typography-ui-s);
-
-  // A live region has to stay in the accessibility tree to announce anything, so it is never
-  // removed from the DOM — it simply takes no room while it has nothing to say.
-  &:empty {
-    display: none;
   }
 }
 

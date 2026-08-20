@@ -4,6 +4,9 @@
   // How many cards fit in the rail. The fraction is deliberate: the sliver of the next card is what
   // tells the user the rail scrolls, and it is the only cue touch users get.
   --shelf-visible: 1.15;
+  // Wide enough to read as a fade rather than a blur on the card's edge, narrow enough to leave
+  // the sliver recognisable as a card.
+  --shelf-fade: 2.5rem;
 
   display: flex;
   flex-direction: column;
@@ -38,7 +41,21 @@
   gap: var(--univgo-space-m);
 }
 
+// The rail deliberately shows a fraction of the next card; the mask is what keeps that fraction
+// from reading as a card that was cut off. Both edges are one gradient with two variable stops, so
+// the fade appears on the side there is actually more content on — a rail scrolled to its end
+// fades only on the left.
 .shelf__track {
+  --shelf-fade-start: 0rem;
+  --shelf-fade-end: 0rem;
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--shelf-fade-start),
+    #000 calc(100% - var(--shelf-fade-end)),
+    transparent 100%
+  );
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: calc(100% / var(--shelf-visible) - var(--univgo-space-l));
@@ -52,6 +69,14 @@
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
+}
+
+.shelf__track--fade-start {
+  --shelf-fade-start: var(--shelf-fade);
+}
+
+.shelf__track--fade-end {
+  --shelf-fade-end: var(--shelf-fade);
 }
 
 .shelf__item {

@@ -46,7 +46,13 @@
   </div>
 </header>
 
-<ul #track class="shelf__track" (scroll)="measure()">
+<ul
+  #track
+  class="shelf__track"
+  [class.shelf__track--fade-start]="!atStart()"
+  [class.shelf__track--fade-end]="!atEnd()"
+  (scroll)="measure()"
+>
   @for (listed of spaces(); track listed.space.id) {
     <li class="shelf__item">
       <app-space-card [listed]="listed" />

@@ -60,6 +60,16 @@ h6 {
   font: var(--tui-typography-heading-h6);
 }
 
+// `TuiStep` mounts `TuiCell` at size `m`, and Taiga pins that cell's avatar with
+// `align-self: flex-start` — right for a two-line cell, where the avatar lines up with the title,
+// and wrong for a step, whose label is one line: the number floats above its own text. The rule
+// lives here and not in the flow's stylesheet because the avatar belongs to `TuiStep`'s template,
+// which component styles cannot reach. The element in the selector is what outranks the library's
+// own three attributes.
+tui-stepper [tuiStep][tuiCell] [tuiAvatar] {
+  align-self: center;
+}
+
 // Taiga draws focus for its own components; this covers the product's native elements.
 :focus-visible {
   outline: var(--tui-stroke-width) solid var(--tui-border-focus);

@@ -101,6 +101,10 @@ article.reservation[tuiCardLarge] {
   gap: var(--univgo-space-xs);
   margin: 0;
   font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    font-size: var(--univgo-icon-inline);
+  }
 }
 
 // The card itself is `SpaceCard`, the same one the catalogue lists, so home only owns the track it

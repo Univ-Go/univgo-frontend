@@ -228,6 +228,10 @@
   gap: var(--univgo-space-xs);
   margin: 0;
   font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    font-size: var(--univgo-icon-inline);
+  }
 }
 
 // `tuiList` owns the markers, the indent and the vertical rhythm; the only thing left to decide is

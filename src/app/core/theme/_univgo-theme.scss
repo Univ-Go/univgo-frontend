@@ -341,6 +341,12 @@ $shadow-tint: 65, 0, 5;
   --univgo-content-max-width: 80rem;
   --univgo-layout-gutter: 1.25rem;
 
+  // A standalone `tui-icon` defaults to 1.5rem, the size Taiga pairs with `body-m`. Beside the
+  // 14px of `ui-s` — every fact list, every detail line in the product — it dwarfs the text and
+  // its optical centre stops matching, which reads as a misalignment. This is the size the
+  // library itself gives icons in its small controls.
+  --univgo-icon-inline: 1rem;
+
   // Every grid of cards in the product steps 1 → 2 → 3 columns, so the step lives here instead of
   // as a copy of the same two media queries in each view. Explicit counts, not `auto-fit`: a card
   // is the same width on every page, rather than however many happen to fit.

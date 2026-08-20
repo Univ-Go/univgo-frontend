@@ -32,6 +32,22 @@
   margin-block-start: calc(var(--univgo-space-m) * -1);
 }
 
+// Taiga wraps the search fieldset and gives every field an 11.25rem floor, so on a phone the
+// button drops to a line of its own — and a "Filtros" button that has left the field it belongs to
+// reads as a second, unrelated control. The row holds instead: the field gives up its floor and
+// absorbs the shrinking, and the button keeps its label intact.
+.filters__search {
+  flex-wrap: nowrap;
+
+  tui-textfield {
+    min-inline-size: 0;
+  }
+
+  [tuiButton] {
+    flex: none;
+  }
+}
+
 // `search[tuiSearch]` gives its fieldsets `gap: inherit`, counting on the form being their parent.
 // The expand panel sits in between, so the chain resolves to `normal` and the fields ended up
 // flush against each other. The row states its own spacing, from the product's scale.

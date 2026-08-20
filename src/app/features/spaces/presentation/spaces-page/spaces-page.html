@@ -22,7 +22,7 @@
   <!-- Nothing to submit: the catalogue answers as the fields change. The handler is what keeps
        Enter from reloading the page. -->
   <form (submit)="$event.preventDefault()">
-    <fieldset>
+    <fieldset class="filters__search">
       <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
         <label tuiLabel for="space-query" i18n="@@spaces.filters.query"
           >Buscar por nombre o ubicación</label

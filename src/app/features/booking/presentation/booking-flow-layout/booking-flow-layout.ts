@@ -31,15 +31,7 @@ const SPACE_STEP_LINK = ['/book', 'space'];
  */
 @Component({
   selector: 'app-booking-flow-layout',
-  imports: [
-    ActionBarTheme,
-    RouterLink,
-    RouterOutlet,
-    TuiActionBar,
-    TuiButton,
-    TuiIcon,
-    TuiStepper,
-  ],
+  imports: [ActionBarTheme, RouterLink, RouterOutlet, TuiActionBar, TuiButton, TuiIcon, TuiStepper],
   templateUrl: './booking-flow-layout.html',
   styleUrl: './booking-flow-layout.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

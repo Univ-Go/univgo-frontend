@@ -46,25 +46,6 @@
   margin: 0;
 }
 
-// Same brand-plate placeholder as the reservation card and the home view's featured spaces, kept
-// to a single mechanism instead of a one-off for the hero.
-.detail__media {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--tui-radius-l);
-  background:
-    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
-    var(--univgo-brand-surface);
-  aspect-ratio: 21 / 9;
-}
-
-.detail__mark {
-  color: var(--univgo-on-brand-surface);
-  font-size: 3rem;
-  opacity: 0.9;
-}
-
 // Mobile-first: photo, pass, details and rules stack in reading order. From desktop up, the grid
 // becomes two matched columns: the photo sits above the rules on the wide left, the pass sits
 // above the details on the narrow right — the pass and the details card end up the same width

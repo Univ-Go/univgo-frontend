@@ -50,11 +50,7 @@ export class ReservationDetailPage {
     MOCK_RESERVATIONS.find((candidate) => candidate.id === this.id()),
   );
 
-  protected readonly icon = computed(() => {
-    const reservation = this.reservation();
-
-    return reservation ? spaceCategoryIcon(reservation.category) : '';
-  });
+  protected readonly categoryIcon = spaceCategoryIcon;
 
   protected readonly qrOpen = signal(false);
 

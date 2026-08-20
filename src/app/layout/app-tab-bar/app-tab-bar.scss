@@ -1,13 +1,15 @@
+@use 'breakpoints' as bp;
+
 // The bar belongs to the phone only: from tablet up the top bar already carries the navigation, and
 // two copies of it would be two things to keep in step.
 :host {
   display: none;
 }
 
-// The condition is written the way Taiga computes `compact()` — mobile is a width strictly under
-// 768px — so the stylesheet and the signal flip on the very same pixel. A rem boundary lands
-// 0.16px earlier, and in that sliver the bar would hide the account before the tab bar shows it.
-@media (width < 768px) {
+// A range rather than `max-width: bp.$below-tablet`: that variable lands 0.16px short of the 768px
+// Taiga resolves `compact()` against, and the tab bar has to appear on the very pixel the bar drops
+// the navigation.
+@media (width < bp.$tablet) {
   :host {
     display: block;
     position: fixed;

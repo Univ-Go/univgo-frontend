@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { BookingDraftStore } from '../../../booking/application/booking-draft.store';
 import type { ListedSpace } from '../../domain/space';
 import { spaceCategoryIcon } from '../space-category';
@@ -21,6 +22,7 @@ import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availa
 @Component({
   selector: 'app-space-card',
   imports: [
+    MediaPlate,
     RouterLink,
     SpaceAvailabilityBadge,
     TuiAppearance,

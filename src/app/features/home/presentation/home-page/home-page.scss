@@ -1,3 +1,5 @@
+@use 'cards';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -110,27 +112,14 @@ article.reservation[tuiCardLarge] {
 // The card itself is `SpaceCard`, the same one the catalogue lists, so home only owns the track it
 // sits in — and that track is the product-wide one, not a width of its own.
 .spaces {
-  display: grid;
-  grid-template-columns: var(--univgo-card-grid-columns);
-  gap: var(--univgo-space-l);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include cards.grid;
 }
 
 .spaces__item {
   display: flex;
 }
 
-// Taiga's appearances do carry hover states, but only for interactive hosts — an `<article>` never
-// enters them. So this card reacts here, using the library's own elevation and shadow tokens.
+// No ring: this one is a floating card, so there is no outline for the lift to reinforce.
 .reservation {
-  transition:
-    box-shadow var(--tui-duration),
-    transform var(--tui-duration);
-
-  &:hover {
-    box-shadow: var(--tui-shadow-medium-hover);
-    transform: translateY(-2px);
-  }
+  @include cards.lift;
 }

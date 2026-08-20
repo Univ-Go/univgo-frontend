@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: block;
   position: sticky;
@@ -29,15 +31,6 @@
   display: flex;
   justify-self: start;
   align-items: center;
-}
-
-.logo img {
-  display: block;
-  block-size: 2.25rem;
-  inline-size: auto;
-  padding: var(--univgo-space-xs) var(--univgo-space-s);
-  border-radius: var(--tui-radius-s);
-  background: var(--univgo-logo-plate);
 }
 
 .nav {
@@ -84,18 +77,18 @@
   }
 }
 
-// The condition is written the way Taiga computes `compact()` — mobile is a width strictly under
-// 768px — so the stylesheet and the signal flip on the very same pixel. A rem boundary lands
-// 0.16px earlier, and in that sliver the bar would hide the account before the tab bar shows it.
-@media (width < 768px) {
+// A range rather than `max-width: bp.$below-tablet`: that variable lands 0.16px short of the
+// 768px Taiga resolves `compact()` against, and in that sliver the bar would drop the account
+// before the tab bar showed it. The breakpoint itself still comes from the one place that owns it.
+@media (width < bp.$tablet) {
   .header {
     grid-template-columns: 1fr auto;
     gap: var(--univgo-space-s);
     padding-inline: var(--univgo-space-l);
   }
 
-  .logo img {
-    block-size: 1.75rem;
+  .logo app-brand-logo {
+    --brand-logo-height: 1.75rem;
   }
 
   // The destinations live in the tab bar on a phone. Hidden rather than duplicated: two copies of

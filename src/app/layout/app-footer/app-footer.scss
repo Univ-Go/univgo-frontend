@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 .footer {
   border-block-start: 1px solid var(--tui-border-normal);
   background: var(--tui-background-elevation-1);
@@ -18,11 +20,6 @@
 
 .footer__logo {
   justify-self: start;
-  block-size: 2.25rem;
-  inline-size: auto;
-  padding: var(--univgo-space-xs) var(--univgo-space-s);
-  border-radius: var(--tui-radius-s);
-  background: var(--univgo-logo-plate);
 }
 
 .footer__legal {
@@ -46,7 +43,7 @@
 
 // One centred column on a phone: logo, links, then the legal line. This block stays last on
 // purpose — it resets the `justify-self` above, and with equal specificity source order decides.
-@media (max-width: 47.99rem) {
+@media (max-width: bp.$below-tablet) {
   .footer__inner {
     grid-template-columns: 1fr;
     justify-items: center;

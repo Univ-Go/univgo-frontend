@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 // Single source of truth for the brand. Retheming for another institution means changing the
 // scales and the font face below: no component or stylesheet references a colour directly.
 
@@ -163,8 +165,8 @@ $shadow-tint: 65, 0, 5;
   // pale pink in dark mode, which is right for a button and wrong for a full brand panel.
   --univgo-brand-surface: #{$brand-800};
   --univgo-on-brand-surface: #{$neutral-0};
-  // The logo is crimson and teal ink with no light variant, so on dark surfaces it sits on a plate
-  // instead of being recoloured — retinting a logo is not ours to do.
+  // The logo carries its own light wordmark, so it needs no plate on any surface: the variable
+  // stays as the single place to reintroduce one if the artwork ever changes.
   --univgo-logo-plate: transparent;
   // Status colours for badges that sit on the fixed brand surface. They cannot follow the theme:
   // the surface underneath never does. White text clears AA on both (8.85:1 and 4.93:1).
@@ -268,7 +270,6 @@ $shadow-tint: 65, 0, 5;
   --univgo-status-neutral-fixed: #{$neutral-200};
   --univgo-on-status-neutral-fixed: #{$neutral-900};
   --univgo-text-on-negative: #{$on-danger-dark};
-  --univgo-logo-plate: #{$neutral-25};
 
   --tui-shadow-small: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.4);
   --tui-shadow-small-hover: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.48);
@@ -357,18 +358,21 @@ $shadow-tint: 65, 0, 5;
   // is the same width on every page, rather than however many happen to fit.
   --univgo-card-grid-columns: 1fr;
 
+  // How far a card rises under the pointer. Small enough to read as a lift rather than a jump.
+  --univgo-lift: -0.125rem;
+
   --univgo-letter-spacing-tight: -0.02em;
   --univgo-letter-spacing-wide: 0.01em;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: bp.$tablet) {
   :root {
     --univgo-layout-gutter: 3rem;
     --univgo-card-grid-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 64rem) {
+@media (min-width: bp.$desktop) {
   :root {
     --univgo-card-grid-columns: repeat(3, 1fr);
   }

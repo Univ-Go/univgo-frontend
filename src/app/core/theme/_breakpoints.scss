@@ -1,0 +1,13 @@
+// The two widths the product changes shape at, in one place instead of literal in every stylesheet.
+// A custom property cannot be used inside a media query, so these are Sass variables and reach the
+// components through `@use`, not through the cascade.
+//
+// They mirror Taiga's own steps (768px and 1024px), which is what `TUI_BREAKPOINT` resolves
+// `mobile` / `tablet` / `desktop` against: a layout that folded at a different width than the one
+// the library reports would put the CSS and the components on different pages.
+$tablet: 48rem;
+$desktop: 64rem;
+
+// For the mobile-only blocks. Derived rather than written as 47.99rem, so moving `$tablet` moves
+// both sides of the boundary at once and no gap can open between them.
+$below-tablet: $tablet - 0.01rem;

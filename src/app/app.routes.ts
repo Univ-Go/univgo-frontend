@@ -48,17 +48,6 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'spaces/:id/book',
-        loadComponent: () =>
-          import('./features/spaces/presentation/book-space-page/book-space-page').then(
-            (m) => m.BookSpacePage,
-          ),
-        title: $localize`:@@spaces.book.pageTitle:Reservar espacio`,
-        data: {
-          description: $localize`:@@spaces.book.pageDescription:Elige la fecha y la hora, confirma tu reserva y consulta la información importante del espacio.`,
-        },
-      },
-      {
         path: 'reservations',
         loadComponent: () =>
           import('./features/my-reservations/presentation/my-reservations-page/my-reservations-page').then(

@@ -1,9 +1,9 @@
 import type { Space, SpaceCategory, SpaceFilter, SpaceSlot } from './space';
 import {
-  availableStartMinutes,
   groupByCategory,
   isFilterActive,
   listSpaces,
+  listStartOptions,
   resolveAvailability,
 } from './space-catalog';
 
@@ -139,11 +139,17 @@ describe('listSpaces', () => {
   });
 });
 
-describe('availableStartMinutes', () => {
+describe('listStartOptions', () => {
+  function starts(space: Space, date: Date, step: number): readonly number[] {
+    return listStartOptions(space, date, 60, step)
+      .filter((option) => option.available)
+      .map((option) => option.minutes);
+  }
+
   it('steps through a window at the requested granularity', () => {
     const oneSlot = space({ freeSlots: [slot(MONDAY, 8, 10)] });
 
-    expect(availableStartMinutes(oneSlot, MONDAY, 60, 30)).toEqual([at(8), at(8, 30), at(9)]);
+    expect(starts(oneSlot, MONDAY, 30)).toEqual([at(8), at(8, 30), at(9)]);
   });
 
   it('drops a window shorter than the requested duration instead of stitching it to the next one', () => {
@@ -154,11 +160,11 @@ describe('availableStartMinutes', () => {
       ],
     });
 
-    expect(availableStartMinutes(shortThenLong, MONDAY, 60, 30)).toEqual([at(8, 30), at(9)]);
+    expect(starts(shortThenLong, MONDAY, 30)).toEqual([at(8, 30), at(9)]);
   });
 
   it('collects starts across every window of the day, not just the first', () => {
-    expect(availableStartMinutes(space(), MONDAY, 60, 60)).toEqual([
+    expect(starts(space(), MONDAY, 60)).toEqual([
       at(8),
       at(9),
       at(10),
@@ -169,8 +175,22 @@ describe('availableStartMinutes', () => {
     ]);
   });
 
+  it('keeps the hours between two windows in the grid, marked as taken', () => {
+    const options = listStartOptions(space(), MONDAY, 60, 60);
+
+    expect(options.filter((option) => !option.available).map((option) => option.minutes)).toEqual([
+      at(12),
+      at(13),
+      at(14),
+    ]);
+  });
+
   it('reports nothing on a day the space has no free slot', () => {
-    expect(availableStartMinutes(space(), TUESDAY, 60, 30)).toEqual([]);
+    expect(listStartOptions(space(), TUESDAY, 60, 30)).toEqual([]);
+  });
+
+  it('reports nothing for a space under maintenance, whatever its slots say', () => {
+    expect(listStartOptions(space({ underMaintenance: true }), MONDAY, 60, 60)).toEqual([]);
   });
 });
 

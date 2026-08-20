@@ -5,6 +5,7 @@ import type {
   SpaceFilter,
   SpaceGroup,
   SpaceSlot,
+  SpaceStartOption,
 } from './space';
 import { SPACE_CATEGORIES } from './space';
 
@@ -64,26 +65,39 @@ export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAva
 }
 
 /**
- * Every minute mark a booking of `durationMinutes` could start at and still fit inside one of the
- * space's free windows on `date`, spaced `stepMinutes` apart. A window shorter than the requested
- * duration contributes nothing — the same rule `resolveAvailability` applies: a booking cannot span
- * two separate windows.
+ * The day's booking grid: every minute mark a booking of `durationMinutes` could start at, spaced
+ * `stepMinutes` apart, from the first free window of the day to the last, each flagged with whether
+ * the space is free for the whole booking from there. A window shorter than the requested duration
+ * offers nothing, and a booking cannot span two separate windows — the same rule
+ * `resolveAvailability` applies.
+ *
+ * A space under maintenance has no grid at all: the slots on record describe when it would open,
+ * not when it can be booked.
  */
-export function availableStartMinutes(
+export function listStartOptions(
   space: Space,
   date: Date,
   durationMinutes: number,
   stepMinutes: number,
-): readonly number[] {
-  return slotsOn(space, date).flatMap((slot) => {
-    const starts: number[] = [];
+): readonly SpaceStartOption[] {
+  const slots = slotsOn(space, date);
+  const opening = slots[0]?.from;
+  const closing = slots.at(-1)?.to;
 
-    for (let start = slot.from; start + durationMinutes <= slot.to; start += stepMinutes) {
-      starts.push(start);
-    }
+  if (space.underMaintenance || opening === undefined || closing === undefined) {
+    return [];
+  }
 
-    return starts;
-  });
+  const options: SpaceStartOption[] = [];
+
+  for (let start = opening; start + durationMinutes <= closing; start += stepMinutes) {
+    options.push({
+      minutes: start,
+      available: slots.some((slot) => slot.from <= start && slot.to >= start + durationMinutes),
+    });
+  }
+
+  return options;
 }
 
 /**

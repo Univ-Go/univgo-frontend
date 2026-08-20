@@ -1,0 +1,118 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+}
+
+.review__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+.review__lead {
+  margin: 0;
+  max-inline-size: 44rem;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-l);
+}
+
+// Same split as the two views on either side of this one: what the space is on the left, what the
+// user is about to commit to — and the commitment itself — on the right.
+.review__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-l);
+}
+
+@media (min-width: 64rem) {
+  .review__content {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .review__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .info-card {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  // The action column is at least as tall as the information beside it: `align-self` overrides the
+  // grid's `start` so the card fills both rows. `tuiCardLarge` gives its last child
+  // `margin-block-start: auto`, so the extra room lands between the summary and the button — the
+  // facts stay at the top and the commitment settles at the bottom edge, level with the rules card.
+  .summary-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: stretch;
+  }
+}
+
+.summary-card,
+.info-card {
+  h2 {
+    font: var(--tui-typography-heading-h6);
+  }
+}
+
+// One reviewable piece of the booking: its own heading, its own way back to the step that owns it.
+.summary-card__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  padding-block-end: var(--univgo-space-m);
+  border-block-end: 1px solid var(--tui-border-normal);
+
+  &:last-of-type {
+    padding-block-end: 0;
+    border-block-end: 0;
+  }
+}
+
+.summary-card__block-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--univgo-space-s);
+
+  h3 {
+    color: var(--tui-text-tertiary);
+    font: var(--tui-typography-ui-xs);
+  }
+}
+
+.summary-card__value {
+  margin: 0;
+  font: var(--tui-typography-ui-l);
+}
+
+// `EEEE d MMMM` starts lowercase in Spanish; the sentence it heads does not. Only the date gets
+// this — a space name is already capitalised the way its owner writes it.
+.summary-card__value--date {
+  text-transform: capitalize;
+}
+
+.summary-card__detail {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    font-size: var(--univgo-icon-inline);
+  }
+}
+
+.summary-card__create {
+  inline-size: 100%;
+}
+
+.info-card__list {
+  --tui-list-marker: var(--tui-background-accent-1);
+}

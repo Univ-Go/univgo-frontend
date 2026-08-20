@@ -1,0 +1,103 @@
+<!-- The guard guarantees a space before this view is created, so there is no not-found branch to
+     render: an unknown id never reaches step two. -->
+@if (draft.space(); as space) {
+  <header class="schedule__header">
+    <h1 class="schedule__name">{{ space.name }}</h1>
+    <p class="schedule__location">
+      <tui-icon icon="@tui.map-pin" aria-hidden="true" />{{ space.location }}
+    </p>
+  </header>
+
+  <div class="schedule__content">
+    <div class="schedule__about">
+      <app-media-plate class="schedule__media" [icon]="icon()" />
+
+      <!-- `tuiChip` draws its icon through the icons directive, not as a child element: a nested
+           `tui-icon` would sit on top of the label instead of beside it. -->
+      <ul class="schedule__tags">
+        <li>
+          <span tuiChip appearance="outline" size="m" iconStart="@tui.users">
+            <span i18n="@@spaces.card.capacityValue">{space.capacity, plural,
+              =1 {1 persona}
+              other {{{space.capacity}} personas}
+            }</span>
+          </span>
+        </li>
+        <li>
+          <span tuiChip appearance="outline" size="m" [iconStart]="icon()">
+            {{ categoryName(space.category) }}
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <section
+      tuiCardLarge
+      tuiSurface
+      tuiAppearance="floating"
+      class="booking-card"
+      aria-labelledby="booking-title"
+    >
+      <h2 id="booking-title" i18n="@@reservations.detail.facts.title">Detalles de la reserva</h2>
+
+      <app-booking-slot-picker
+        [space]="space"
+        [date]="draft.date()"
+        [startMinutes]="draft.startMinutes()"
+        (dateSelected)="draft.setDate($event)"
+        (startSelected)="draft.setStartMinutes($event)"
+      />
+
+      <!-- A live region: the picker is a grid of blocks, so the confirmation that a choice landed
+           has to be announced, not only drawn. -->
+      <div class="booking-card__summary" role="status">
+        @if (range(); as range) {
+          <dl class="booking-card__facts">
+            <div class="fact fact--date">
+              <dt i18n="@@reservation.factDate">Fecha</dt>
+              <dd>{{ draft.date() | date: 'EEEE d MMMM' }}</dd>
+            </div>
+            <div class="fact">
+              <dt i18n="@@reservation.factTime">Horario</dt>
+              <dd>{{ range }}</dd>
+            </div>
+          </dl>
+        } @else {
+          <p class="booking-card__hint" i18n="@@booking.schedule.hint">
+            Elige un día y una hora para continuar.
+          </p>
+        }
+      </div>
+
+      <button
+        tuiButton
+        type="button"
+        size="l"
+        appearance="primary"
+        iconEnd="@tui.arrow-right"
+        class="booking-card__continue"
+        [disabled]="!range()"
+        (click)="continueToReview()"
+        i18n="@@booking.continue"
+      >
+        Continuar
+      </button>
+    </section>
+
+    <section
+      tuiCardLarge
+      tuiSurface
+      tuiAppearance="outline-grayscale"
+      class="info-card"
+      aria-labelledby="info-title"
+    >
+      <h2 id="info-title" i18n="@@booking.info.title">Información importante</h2>
+
+      <ul tuiList="m" class="info-card__list">
+        @for (rule of rules(); track rule) {
+          <li>{{ rule }}</li>
+        }
+      </ul>
+    </section>
+  </div>
+}

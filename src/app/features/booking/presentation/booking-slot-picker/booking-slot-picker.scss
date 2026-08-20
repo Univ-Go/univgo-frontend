@@ -1,0 +1,86 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+}
+
+// A fieldset brings the grouping semantics the radios need; its default frame is not part of that,
+// and `min-inline-size: 0` is what stops it from refusing to shrink inside a grid column.
+.picker__group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.picker__legend {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--univgo-space-s);
+  inline-size: 100%;
+  margin-block-end: var(--univgo-space-m);
+  padding: 0;
+  font: var(--tui-typography-ui-m);
+}
+
+.picker__month {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+  text-transform: capitalize;
+}
+
+.picker__note {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+// The strip scrolls rather than wraps, so a week always reads as a week. `scroll-snap` makes the
+// flick land on a day instead of between two.
+.picker__days {
+  display: flex;
+  gap: var(--univgo-space-s);
+  overflow-x: auto;
+  padding-block-end: var(--univgo-space-xs);
+  scroll-snap-type: x proximity;
+}
+
+// `tuiBlock` lays its content out as a row; a day reads as weekday over number, and the descendant
+// selector is what outranks the library's own zero-specificity base rule.
+.picker__days .day {
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 0;
+  min-inline-size: 3.5rem;
+  scroll-snap-align: start;
+  text-align: center;
+}
+
+.day__weekday {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+  text-transform: capitalize;
+}
+
+.day__number {
+  font: var(--tui-typography-ui-l);
+}
+
+// Blocks size themselves: the grid asks for as many columns of at least this width as fit, so the
+// same markup gives two columns on a phone and three or four beside a card on a desktop.
+.picker__hours {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: var(--univgo-space-s);
+}
+
+.picker__hours .hour {
+  justify-content: center;
+  text-align: center;
+}
+
+.picker__empty {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}

@@ -1,0 +1,63 @@
+<fieldset class="picker__group">
+  <legend class="picker__legend">
+    <span i18n="@@reservation.factDate">Fecha</span>
+    <span class="picker__month">{{ date() | date: 'MMMM y' }}</span>
+  </legend>
+
+  <!-- The strip scrolls instead of wrapping: a fixed row of days keeps "which week am I looking
+       at" readable on a phone, and every day stays a full touch target. -->
+  <div class="picker__days">
+    @for (day of days(); track day.time) {
+      <label tuiBlock="s" class="day">
+        <input
+          tuiBlock
+          type="radio"
+          name="booking-day"
+          [value]="day.time"
+          [disabled]="!day.available"
+          [ngModel]="selectedDay()"
+          (ngModelChange)="pickDay($event)"
+        />
+        <span class="day__weekday">{{ day.date | date: 'EEE' }}</span>
+        <span class="day__number">{{ day.date | date: 'd' }}</span>
+      </label>
+    }
+  </div>
+</fieldset>
+
+<fieldset class="picker__group">
+  <legend class="picker__legend">
+    <span i18n="@@booking.schedule.startLegend">Hora de inicio</span>
+    <span class="picker__note" i18n="@@booking.schedule.blockLength">Bloques de 1 hora</span>
+  </legend>
+
+  @if (hours().length > 0) {
+    <div class="picker__hours">
+      @for (hour of hours(); track hour.minutes) {
+        <label tuiBlock="m" class="hour">
+          <input
+            tuiBlock
+            type="radio"
+            name="booking-hour"
+            [value]="hour.minutes"
+            [disabled]="!hour.available"
+            [ngModel]="startMinutes()"
+            (ngModelChange)="startSelected.emit($event)"
+          />
+          <span tuiTitle>
+            {{ hour.label }}
+            @if (hour.available) {
+              <span tuiSubtitle i18n="@@booking.schedule.until">hasta {{ hour.end }}</span>
+            } @else {
+              <span tuiSubtitle i18n="@@booking.schedule.taken">ocupado</span>
+            }
+          </span>
+        </label>
+      }
+    </div>
+  } @else {
+    <p class="picker__empty" i18n="@@booking.schedule.noHours">
+      Este espacio no abre este día. Prueba con otra fecha.
+    </p>
+  }
+</fieldset>

@@ -1,0 +1,109 @@
+// A single narrow column, centred: this screen has one message and two ways out, so there is
+// nothing to scan sideways for, on a phone or on a desktop.
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-xl);
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  margin-inline: auto;
+  padding-block: var(--univgo-space-xl);
+  text-align: center;
+}
+
+.done__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+.done__lead {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+.done-card {
+  inline-size: 100%;
+  text-align: start;
+}
+
+.done-card__name {
+  padding-block-end: var(--univgo-space-m);
+  border-block-end: 1px solid var(--tui-border-normal);
+  font: var(--tui-typography-heading-h6);
+}
+
+.done-card__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  margin: 0;
+}
+
+// The label names the row for a screen reader; the icon and the value are what a sighted person
+// reads, so the term is taken out of the visual flow rather than duplicated beside the icon.
+.fact dt {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.fact dd {
+  display: flex;
+  align-items: start;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  font: var(--tui-typography-ui-m);
+}
+
+// `EEEE d MMMM` starts lowercase in Spanish; a location is written the way its owner writes it.
+.fact--date dd {
+  text-transform: capitalize;
+}
+
+.fact dd tui-icon {
+  flex: 0 0 auto;
+  color: var(--tui-text-tertiary);
+  font-size: var(--univgo-icon-inline);
+}
+
+.fact__detail {
+  display: block;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+  text-transform: none;
+}
+
+// Monospace and set apart, because this string gets read out loud and typed by hand — the same
+// treatment the reservation pass gives its identifier.
+.done-card__code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  padding: var(--univgo-space-s);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-neutral-1);
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+
+  code {
+    color: var(--tui-text-primary);
+    font-family: monospace;
+    font-size: 1rem;
+    letter-spacing: var(--univgo-letter-spacing-wide);
+  }
+}
+
+.done__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+  inline-size: 100%;
+}

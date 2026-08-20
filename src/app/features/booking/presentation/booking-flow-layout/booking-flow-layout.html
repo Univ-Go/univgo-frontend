@@ -1,0 +1,88 @@
+@if (inFlow()) {
+  <header class="flow__header">
+    <!-- A label, not a heading: every step already owns the page's `h1`, and step one shares its
+         view — and its title — with the catalogue at `/spaces`. -->
+    <p class="flow__label">
+      <tui-icon icon="@tui.calendar-plus" aria-hidden="true" />
+      <span i18n="@@home.newReservation"> Nueva reserva </span>
+    </p>
+
+    <!-- `tui-stepper` renders a plain scroll container, so the landmark and its accessible name are
+         ours to provide, the same way the breadcrumb trails do it. -->
+    <nav
+      class="flow__steps"
+      i18n-aria-label="@@booking.steps.label"
+      aria-label="Pasos de la reserva"
+    >
+      <tui-stepper [activeItemIndex]="activeStep()">
+        <button
+          tuiStep
+          [stepState]="stepState(0)"
+          (click)="goToSpaceStep()"
+          i18n="@@booking.step.space"
+        >
+          Espacio
+        </button>
+
+        <button
+          tuiStep
+          [disabled]="!scheduleLink()"
+          [stepState]="stepState(1)"
+          (click)="goTo(scheduleLink())"
+          i18n="@@booking.step.schedule"
+        >
+          Fecha y hora
+        </button>
+
+        <button
+          tuiStep
+          [disabled]="!reviewLink()"
+          [stepState]="stepState(2)"
+          (click)="goTo(reviewLink())"
+          i18n="@@booking.step.review"
+        >
+          Confirmar
+        </button>
+      </tui-stepper>
+    </nav>
+
+    <button
+      tuiButton
+      type="button"
+      appearance="flat"
+      size="s"
+      iconStart="@tui.x"
+      class="flow__cancel"
+      (click)="cancel()"
+      i18n="@@booking.cancel"
+    >
+      Cancelar
+    </button>
+  </header>
+}
+
+<div class="flow__content" [class.flow__content--barred]="pendingSpace()">
+  <router-outlet />
+</div>
+
+<!-- The catalogue is a browsing view: choosing there marks a card and this bar is what turns that
+     mark into a commitment, so a person can keep looking without losing the choice. Entering the
+     flow straight from `/spaces` skips both — the space is already decided. -->
+@if (pendingSpace(); as space) {
+  <tui-action-bar role="status" [attr.tuiTheme]="darkMode() ? 'dark' : 'light'">
+    <p class="flow__chosen">
+      <span class="flow__chosen-label" i18n="@@booking.space.chosen">Espacio elegido</span>
+      <span class="flow__chosen-name">{{ space.name }}</span>
+    </p>
+
+    <a
+      tuiButton
+      [routerLink]="['/book', space.id, 'when']"
+      appearance="primary"
+      iconEnd="@tui.arrow-right"
+      i18n="@@booking.continue"
+    >
+      Continuar
+    </a>
+  </tui-action-bar>
+}

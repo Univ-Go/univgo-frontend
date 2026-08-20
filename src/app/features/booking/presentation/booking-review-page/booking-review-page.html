@@ -1,0 +1,93 @@
+<!-- The guard guarantees a complete draft before this view is created, so there is no incomplete
+     branch to render. -->
+@if (booking(); as booking) {
+  <header class="review__header">
+    <h1 i18n="@@booking.review.title">Revisa y confirma</h1>
+    <p class="review__lead" i18n="@@booking.review.lead">
+      Comprueba que todo esté correcto. Podrás cancelar la reserva desde Mis reservas.
+    </p>
+  </header>
+
+  <div class="review__content">
+    <app-media-plate class="review__media" [icon]="icon()" />
+
+    <section
+      tuiCardLarge
+      tuiSurface
+      tuiAppearance="floating"
+      class="summary-card"
+      aria-labelledby="summary-title"
+    >
+      <h2 id="summary-title" i18n="@@booking.review.summaryTitle">Resumen de la reserva</h2>
+
+      <div class="summary-card__block">
+        <div class="summary-card__block-header">
+          <h3 i18n="@@booking.review.spaceHeading">Espacio</h3>
+          <a
+            tuiLink
+            routerLink="/book/space"
+            iconStart="@tui.pencil"
+            [attr.aria-label]="changeSpaceLabel"
+            i18n="@@booking.review.change"
+            >Cambiar</a
+          >
+        </div>
+
+        <p class="summary-card__value">{{ booking.space.name }}</p>
+        <p class="summary-card__detail">
+          <tui-icon icon="@tui.map-pin" aria-hidden="true" />{{ booking.space.location }}
+        </p>
+      </div>
+
+      <div class="summary-card__block">
+        <div class="summary-card__block-header">
+          <h3 i18n="@@booking.review.scheduleHeading">Fecha y hora</h3>
+          <a
+            tuiLink
+            [routerLink]="scheduleLink()"
+            iconStart="@tui.pencil"
+            [attr.aria-label]="changeScheduleLabel"
+            i18n="@@booking.review.change"
+            >Cambiar</a
+          >
+        </div>
+
+        <p class="summary-card__value summary-card__value--date">
+          {{ booking.date | date: 'EEEE d MMMM' }}
+        </p>
+        <p class="summary-card__detail">
+          <tui-icon icon="@tui.clock" aria-hidden="true" />{{ range() }}
+        </p>
+      </div>
+
+      <button
+        tuiButton
+        type="button"
+        size="l"
+        appearance="primary"
+        iconStart="@tui.calendar-check"
+        class="summary-card__create"
+        (click)="create()"
+        i18n="@@booking.review.create"
+      >
+        Crear reserva
+      </button>
+    </section>
+
+    <section
+      tuiCardLarge
+      tuiSurface
+      tuiAppearance="outline-grayscale"
+      class="info-card"
+      aria-labelledby="info-title"
+    >
+      <h2 id="info-title" i18n="@@booking.info.title">Información importante</h2>
+
+      <ul tuiList="m" class="info-card__list">
+        @for (rule of rules(); track rule) {
+          <li>{{ rule }}</li>
+        }
+      </ul>
+    </section>
+  </div>
+}

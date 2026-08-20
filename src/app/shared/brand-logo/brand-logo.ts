@@ -31,6 +31,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     }
   `,
   // The name of the product is not translated, so the alternative text is the mark itself.
-  template: `<img src="images/UnivGo_logo.png" alt="UnivGo" width="1743" height="568" />`,
+  template: `<img src="images/UnivGo_logo.png" alt="UnivGo" width="1867" height="564" />`,
 })
 export class BrandLogo {}

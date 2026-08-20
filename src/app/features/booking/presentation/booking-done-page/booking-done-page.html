@@ -1,0 +1,64 @@
+@if (booking(); as booking) {
+  <!-- Decorative: the heading right below already says what happened, so the mark is hidden from
+       assistive technology rather than given a second, redundant name. -->
+  <div tuiAvatar="@tui.check" size="xxl" appearance="positive" aria-hidden="true"></div>
+
+  <header class="done__header">
+    <h1 i18n="@@booking.done.title">¡Reserva creada!</h1>
+    <p class="done__lead" i18n="@@booking.done.lead">
+      Ya está guardada en Mis reservas, donde puedes consultarla o cancelarla.
+    </p>
+  </header>
+
+  <section
+    tuiCardLarge
+    tuiSurface
+    tuiAppearance="outline"
+    class="done-card"
+    aria-labelledby="done-space"
+  >
+    <h2 id="done-space" class="done-card__name">{{ booking.space.name }}</h2>
+
+    <dl class="done-card__facts">
+      <div class="fact fact--date">
+        <dt i18n="@@reservation.factDate">Fecha</dt>
+        <dd>
+          <tui-icon icon="@tui.calendar" aria-hidden="true" />
+          <span>
+            {{ booking.date | date: 'EEEE d MMMM' }}
+            <span class="fact__detail">{{ range() }}</span>
+          </span>
+        </dd>
+      </div>
+      <div class="fact">
+        <dt i18n="@@reservation.factLocation">Ubicación</dt>
+        <dd>
+          <tui-icon icon="@tui.map-pin" aria-hidden="true" />
+          <span>{{ booking.space.location }}</span>
+        </dd>
+      </div>
+    </dl>
+
+    <!-- The same fallback the reservation pass shows: it is the readable form of the booking, and
+         it is what a person is asked for at the door. -->
+    <p class="done-card__code">
+      <span i18n="@@booking.done.code">Código</span>
+      <code>{{ code() }}</code>
+    </p>
+  </section>
+
+  <div class="done__actions">
+    <a
+      tuiButton
+      routerLink="/reservations"
+      size="l"
+      appearance="primary"
+      iconStart="@tui.calendar-days"
+      i18n="@@booking.done.viewReservations"
+      >Ver mis reservas</a
+    >
+    <a tuiButton routerLink="/home" size="l" appearance="outline" i18n="@@booking.done.backHome"
+      >Volver al inicio</a
+    >
+  </div>
+}

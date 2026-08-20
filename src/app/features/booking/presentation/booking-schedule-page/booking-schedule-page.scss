@@ -1,0 +1,150 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+}
+
+.schedule__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.schedule__name {
+  margin: 0;
+}
+
+.schedule__location {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    font-size: var(--univgo-icon-inline);
+  }
+}
+
+// Mobile-first reading order: what the space is, then the choice to make, then the rules that
+// apply to it. From desktop up the same three blocks split into an information column and an
+// action column — the split the reservation detail view already uses.
+.schedule__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-l);
+}
+
+.schedule__about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+}
+
+// The shared plate as a banner rather than a card's picture frame: the space is the page's subject
+// here, not one entry in a shelf.
+.schedule__media {
+  --media-plate-ratio: 21 / 9;
+  --media-plate-radius: var(--tui-radius-l);
+  --media-plate-mark-size: 3rem;
+  --media-plate-align: center;
+  --media-plate-justify: center;
+}
+
+.schedule__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 64rem) {
+  .schedule__content {
+    // `minmax(0, …)` caps each track at its share: without it a long location or rule grows the
+    // column past its `fr` and pushes the picker card narrower than its own grid needs.
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .schedule__about {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .info-card {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  // The action column runs the height of both: the picker is the tallest thing on the page and
+  // splitting it across a row boundary would put the confirm button below the fold on its own.
+  .booking-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+// `tuiCardLarge` owns the vertical rhythm between title and body; only the title's own scale is
+// ours to set, since `styles.scss` maps `h2` to the page-level heading, which dwarfs card content.
+.booking-card,
+.info-card {
+  h2 {
+    font: var(--tui-typography-heading-h6);
+  }
+}
+
+// The recap of what has been chosen so far, set apart from the picker it summarises.
+.booking-card__summary {
+  padding: var(--univgo-space-m);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-neutral-1);
+}
+
+.booking-card__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+  margin: 0;
+}
+
+.fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--univgo-space-s);
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  margin: 0;
+  font: var(--tui-typography-ui-m);
+  text-align: end;
+}
+
+// `EEEE d MMMM` starts lowercase in Spanish; this row heads a summary, so it reads as a sentence.
+.fact--date dd {
+  text-transform: capitalize;
+}
+
+.booking-card__hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+.booking-card__continue {
+  inline-size: 100%;
+}
+
+// `tuiList` owns the markers, the indent and the vertical rhythm; only the marker colour is left
+// to decide, and the directive reads it from this variable.
+.info-card__list {
+  --tui-list-marker: var(--tui-background-accent-1);
+}

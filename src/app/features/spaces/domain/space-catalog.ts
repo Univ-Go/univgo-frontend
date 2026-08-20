@@ -5,6 +5,7 @@ import type {
   SpaceFilter,
   SpaceGroup,
   SpaceSlot,
+  SpaceStartOption,
 } from './space';
 import { SPACE_CATEGORIES } from './space';
 
@@ -61,6 +62,42 @@ export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAva
   }
 
   return { kind: 'later', slot: slots.find((slot) => slot.from > start) ?? earliest };
+}
+
+/**
+ * The day's booking grid: every minute mark a booking of `durationMinutes` could start at, spaced
+ * `stepMinutes` apart, from the first free window of the day to the last, each flagged with whether
+ * the space is free for the whole booking from there. A window shorter than the requested duration
+ * offers nothing, and a booking cannot span two separate windows — the same rule
+ * `resolveAvailability` applies.
+ *
+ * A space under maintenance has no grid at all: the slots on record describe when it would open,
+ * not when it can be booked.
+ */
+export function listStartOptions(
+  space: Space,
+  date: Date,
+  durationMinutes: number,
+  stepMinutes: number,
+): readonly SpaceStartOption[] {
+  const slots = slotsOn(space, date);
+  const opening = slots[0]?.from;
+  const closing = slots.at(-1)?.to;
+
+  if (space.underMaintenance || opening === undefined || closing === undefined) {
+    return [];
+  }
+
+  const options: SpaceStartOption[] = [];
+
+  for (let start = opening; start + durationMinutes <= closing; start += stepMinutes) {
+    options.push({
+      minutes: start,
+      available: slots.some((slot) => slot.from <= start && slot.to >= start + durationMinutes),
+    });
+  }
+
+  return options;
 }
 
 /**

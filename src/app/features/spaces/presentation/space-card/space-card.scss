@@ -15,6 +15,20 @@
   @include cards.lift($ring: true);
 }
 
+// The chosen card in the booking flow: a ring in the brand colour, over whatever the lift is doing,
+// so scrolling back up the catalogue makes the current choice obvious. The button inside says so
+// too — the ring is not carrying the meaning on its own.
+.card--chosen {
+  box-shadow: inset 0 0 0 2px var(--tui-background-accent-1);
+
+  &:hover,
+  &:focus-within {
+    box-shadow:
+      inset 0 0 0 2px var(--tui-background-accent-1),
+      var(--tui-shadow-medium-hover);
+  }
+}
+
 .card__body {
   display: flex;
   flex-direction: column;
@@ -58,6 +72,7 @@
   tui-icon {
     flex: none;
     color: var(--tui-text-tertiary);
+    font-size: var(--univgo-icon-inline);
   }
 }
 

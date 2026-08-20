@@ -1,6 +1,12 @@
 @let space = listed().space;
 
-<article tuiCardLarge tuiSurface tuiAppearance="outline" class="card">
+<article
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="card"
+  [class.card--chosen]="chosen()"
+>
   <app-media-plate [icon]="icon()">
     <app-space-availability-badge [availability]="listed().availability" />
   </app-media-plate>
@@ -26,12 +32,25 @@
     </dl>
   </div>
 
-  <!-- TEMPORARY: the booking flow does not exist yet, so the action stays a plain button. It gains
-       its route when the reservation steps ship. -->
-  @if (bookable()) {
+  @if (bookable() && choosing) {
+    <!-- `aria-pressed` rather than a second label: the button keeps one accessible name and
+         announces whether this card is the one currently picked. -->
     <button
       tuiButton
       type="button"
+      size="m"
+      class="card__action"
+      [appearance]="chosen() ? 'primary' : 'outline'"
+      [iconStart]="chosen() ? '@tui.check' : ''"
+      [attr.aria-pressed]="chosen()"
+      (click)="choose()"
+    >
+      {{ chosen() ? chosenLabel : chooseLabel }}
+    </button>
+  } @else if (bookable()) {
+    <a
+      tuiButton
+      [routerLink]="['/book', space.id, 'when']"
       size="m"
       appearance="primary"
       iconEnd="@tui.arrow-right"
@@ -39,7 +58,7 @@
       i18n="@@spaces.card.book"
     >
       Reservar
-    </button>
+    </a>
   } @else if (closed()) {
     <button
       tuiButton

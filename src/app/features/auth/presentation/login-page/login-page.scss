@@ -114,6 +114,10 @@
   align-items: center;
   gap: var(--univgo-space-s);
   font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    font-size: var(--univgo-icon-inline);
+  }
 }
 
 .topbar {

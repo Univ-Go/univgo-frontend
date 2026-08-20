@@ -48,6 +48,11 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'book',
+        loadChildren: () =>
+          import('./features/booking/booking.routes').then((m) => m.BOOKING_ROUTES),
+      },
+      {
         path: 'reservations',
         loadComponent: () =>
           import('./features/my-reservations/presentation/my-reservations-page/my-reservations-page').then(

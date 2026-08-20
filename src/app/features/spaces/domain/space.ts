@@ -50,6 +50,17 @@ export interface SpaceFilter {
   readonly to: number | null;
 }
 
+/**
+ * A minute mark a booking could start at on a given day, and whether the space is actually free
+ * for the whole booking from there. Unavailable marks travel with the available ones on purpose:
+ * a grid that silently drops the busy hours reads as "the space closes at 10", which is a
+ * different — and wrong — piece of information.
+ */
+export interface SpaceStartOption {
+  readonly minutes: number;
+  readonly available: boolean;
+}
+
 export interface ListedSpace {
   readonly space: Space;
   readonly availability: SpaceAvailability;

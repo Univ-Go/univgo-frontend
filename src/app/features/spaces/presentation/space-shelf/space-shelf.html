@@ -32,9 +32,11 @@
       ></button>
     }
 
+    <!-- Relative, not `/spaces`: the catalogue is also step one of the booking flow at
+         `/book/space`, and an absolute link would drop the user out of the flow to filter. -->
     <a
       tuiLink
-      routerLink="/spaces"
+      routerLink="."
       [queryParams]="{ category: category() }"
       iconEnd="@tui.arrow-right"
       [attr.aria-label]="viewAllLabel()"

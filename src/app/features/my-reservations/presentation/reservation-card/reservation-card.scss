@@ -53,6 +53,10 @@
   gap: var(--univgo-space-xs);
   margin: 0;
   font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    font-size: var(--univgo-icon-inline);
+  }
 }
 
 // Two related actions read better as one balanced bar than as two loose buttons on the left, and

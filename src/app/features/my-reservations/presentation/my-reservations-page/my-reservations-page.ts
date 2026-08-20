@@ -12,10 +12,7 @@ import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
 import { CheckboxFilter } from '../checkbox-filter/checkbox-filter';
 import { FilterDropdown } from '../filter-dropdown/filter-dropdown';
 import { ReservationCard } from '../reservation-card/reservation-card';
-import {
-  RESERVATION_CATEGORY_OPTIONS,
-  RESERVATION_STATUS_OPTIONS,
-} from '../reservation-filters';
+import { RESERVATION_CATEGORY_OPTIONS, RESERVATION_STATUS_OPTIONS } from '../reservation-filters';
 
 const RESERVATIONS_PER_PAGE = 6;
 

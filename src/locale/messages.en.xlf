@@ -806,6 +806,10 @@
         <source>Buscar por nombre o ubicación</source>
         <target>Search by name or location</target>
       </trans-unit>
+      <trans-unit id="spaces.filters.toggle" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {Filtros} other {Filtros (<x id="INTERPOLATION"/>)}}</source>
+        <target>{VAR_PLURAL, plural, =0 {Filters} other {Filters (<x id="INTERPOLATION"/>)}}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,5 +1,6 @@
 import type { Space, SpaceCategory, SpaceFilter, SpaceSlot } from './space';
 import {
+  countActiveFilters,
   groupByCategory,
   isFilterActive,
   listSpaces,
@@ -235,6 +236,24 @@ describe('groupByCategory', () => {
       'sports',
       'study',
     ]);
+  });
+});
+
+describe('countActiveFilters', () => {
+  it('counts nothing on the resting state', () => {
+    expect(countActiveFilters(filter(), MONDAY)).toBe(0);
+  });
+
+  it('counts each narrowing once', () => {
+    expect(countActiveFilters(filter({ category: 'lab' }), MONDAY)).toBe(1);
+    expect(countActiveFilters(filter({ category: 'lab', from: at(9) }), MONDAY)).toBe(2);
+    expect(
+      countActiveFilters(filter({ category: 'lab', from: at(9), date: TUESDAY }), MONDAY),
+    ).toBe(3);
+  });
+
+  it('leaves the typed query out: the search field is on screen saying so itself', () => {
+    expect(countActiveFilters(filter({ query: 'cancha' }), MONDAY)).toBe(0);
   });
 });
 

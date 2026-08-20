@@ -10,13 +10,18 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
-import { TuiAppearance, TuiButton, TuiDataList, TuiInput } from '@taiga-ui/core';
+import { TuiAppearance, TuiButton, TuiDataList, TuiExpand, TuiInput } from '@taiga-ui/core';
 import { TuiInputDate, TuiInputTime, TuiPagination, TuiSelect } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSearch, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import type { SpaceCategory, SpaceFilter } from '../../domain/space';
 import { SPACE_CATEGORIES } from '../../domain/space';
-import { groupByCategory, isFilterActive, listSpaces } from '../../domain/space-catalog';
+import {
+  countActiveFilters,
+  groupByCategory,
+  isFilterActive,
+  listSpaces,
+} from '../../domain/space-catalog';
 import { MOCK_SPACES } from '../../infrastructure/mock-spaces';
 import { SpaceCard } from '../space-card/space-card';
 import { spaceCategoryName } from '../space-category';
@@ -83,6 +88,7 @@ function toCategory(value: unknown): SpaceCategory | null {
     TuiButton,
     TuiCardLarge,
     TuiDataList,
+    TuiExpand,
     TuiInput,
     TuiInputDate,
     TuiInputTime,
@@ -125,6 +131,17 @@ export class SpacesPage {
 
   protected readonly filterActive = computed(() =>
     isFilterActive(this.filter(), this.today.toLocalNativeDate()),
+  );
+
+  /**
+   * Closed by default: four controls that answer a question most visits never ask were the first
+   * thing on the page, and on a phone they filled the screen before a single space did. The search
+   * stays out because looking for a space by name is the common errand, not narrowing by hour.
+   */
+  protected readonly filtersOpen = signal(false);
+
+  protected readonly activeFilters = computed(() =>
+    countActiveFilters(this.filter(), this.today.toLocalNativeDate()),
   );
 
   protected readonly listed = computed(() => listSpaces(MOCK_SPACES, this.filter()));

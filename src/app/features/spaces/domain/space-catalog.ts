@@ -160,6 +160,19 @@ export function groupByCategory(listed: readonly ListedSpace[]): readonly SpaceG
  * when nobody has asked for anything, which is what tells the view to browse by category instead of
  * listing results.
  */
+/**
+ * How many narrowings are on, ignoring the typed query — that one has its own field on screen and
+ * says so by itself. Behind a collapsed panel the count is the only thing telling a person the
+ * catalogue is answering a narrower question than they think.
+ */
+export function countActiveFilters(filter: SpaceFilter, today: Date): number {
+  return (
+    Number(filter.category !== null) +
+    Number(filter.from !== null) +
+    Number(!isSameDay(filter.date, today))
+  );
+}
+
 export function isFilterActive(filter: SpaceFilter, today: Date): boolean {
   return (
     filter.category !== null ||

@@ -25,6 +25,13 @@
   display: block;
 }
 
+// `search[tuiSearch]` puts a row gap on its form, and a collapsed `tui-expand` is still a row: the
+// gap stayed under the search bar with nothing below it, which is what pushed the card's content
+// off its vertical centre. The negative margin cancels exactly that gap while the panel is shut.
+.filters__panel:not(.filters__panel--open) {
+  margin-block-start: -0.75rem;
+}
+
 // The rule between the two time fields only means something while they share a row. Once the
 // fields stack it is a stray tick of a line, so it goes.
 .filters hr {

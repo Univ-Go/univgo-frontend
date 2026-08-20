@@ -119,13 +119,11 @@ export class SpacesPage {
 
   protected readonly date = signal(this.today);
   protected readonly from = signal<TuiTime | null>(null);
-  protected readonly to = signal<TuiTime | null>(null);
 
   protected readonly filter = computed<SpaceFilter>(() => ({
     category: this.category(),
     date: this.date().toLocalNativeDate(),
     from: toMinutes(this.from()),
-    to: toMinutes(this.to()),
     query: this.query(),
   }));
 
@@ -170,16 +168,6 @@ export class SpacesPage {
     return this.listed().slice(start, start + SPACES_PER_PAGE);
   });
 
-  /** An end time on its own narrows nothing, and one that precedes the start is not a window. */
-  protected readonly endWithoutStart = computed(() => this.from() === null && this.to() !== null);
-
-  protected readonly endBeforeStart = computed(() => {
-    const from = this.from();
-    const to = this.to();
-
-    return from !== null && to !== null && to.valueOf() <= from.valueOf();
-  });
-
   protected selectCategory(category: SpaceCategory | null): void {
     void this.router.navigate([], {
       relativeTo: this.route,
@@ -196,7 +184,6 @@ export class SpacesPage {
     this.query.set('');
     this.date.set(this.today);
     this.from.set(null);
-    this.to.set(null);
     this.selectCategory(null);
   }
 }

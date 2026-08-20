@@ -7,7 +7,7 @@ import type {
   SpaceSlot,
   SpaceStartOption,
 } from './space';
-import { SPACE_CATEGORIES } from './space';
+import { BOOKING_DURATION_MINUTES, SPACE_CATEGORIES } from './space';
 
 /** Availability decides the reading order: what can be booked now comes before what cannot. */
 const AVAILABILITY_RANK: Readonly<Record<SpaceAvailability['kind'], number>> = {
@@ -32,10 +32,10 @@ function slotsOn(space: Space, date: Date): readonly SpaceSlot[] {
 }
 
 /**
- * A slot answers the request only when it covers the whole window: a booking cannot span two
- * separate free windows. Without a start time the request is "some time that day", which the
- * earliest slot answers. A `to` that is not after `from` is not a window, so it is ignored and the
- * request degrades to "free at `from`" — the view reports that back instead of silently widening it.
+ * A slot answers the request only when one window holds a whole booking from the requested start:
+ * a booking cannot span two separate free windows, and a space with twenty minutes left is not
+ * "free at ten". Without a start time the request is "some time that day", which the earliest slot
+ * answers.
  */
 export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAvailability {
   if (space.underMaintenance) {
@@ -54,8 +54,9 @@ export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAva
   }
 
   const start = filter.from;
-  const end = filter.to !== null && filter.to > start ? filter.to : start + 1;
-  const match = slots.find((slot) => slot.from <= start && slot.to >= end);
+  const match = slots.find(
+    (slot) => slot.from <= start && slot.to >= start + BOOKING_DURATION_MINUTES,
+  );
 
   if (match) {
     return { kind: 'free', slot: match };

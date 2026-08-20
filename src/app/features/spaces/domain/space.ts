@@ -8,6 +8,13 @@ export type SpaceCategory = 'sports' | 'study' | 'lab';
 export const SPACE_CATEGORIES: readonly SpaceCategory[] = ['sports', 'study', 'lab'];
 
 /**
+ * Every booking is one campus slot of this length. It lives with the space and not with the booking
+ * feature because the catalogue needs it too: "free at ten" means "free long enough to be booked at
+ * ten", and a space with twenty minutes left is not an answer to that question.
+ */
+export const BOOKING_DURATION_MINUTES = 60;
+
+/**
  * A window in which a space can be booked. `from` and `to` are minutes from midnight of `date`,
  * not clock strings: comparing a request against a window is arithmetic, and a string would force
  * every caller to parse before it could answer.
@@ -40,14 +47,13 @@ export type SpaceAvailability =
 
 /**
  * The request the catalogue answers. `date` is always set — the catalogue is about availability, and
- * availability without a day means nothing. `to` is only meaningful alongside `from`: half a range
- * is not a question the catalogue can answer, and the view keeps the pair from being split.
+ * availability without a day means nothing. `from` is a start time, not a range: how long a booking
+ * lasts is a rule of the product, not something a person searching should have to state.
  */
 export interface SpaceFilter {
   readonly category: SpaceCategory | null;
   readonly date: Date;
   readonly from: number | null;
-  readonly to: number | null;
   /** Free text the user typed; matched against what identifies a space to a person. */
   readonly query: string | null;
 }

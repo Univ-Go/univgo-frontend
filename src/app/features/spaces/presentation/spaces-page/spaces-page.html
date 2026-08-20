@@ -62,7 +62,7 @@
       [class.filters__panel--open]="filtersOpen()"
       [expanded]="filtersOpen()"
     >
-      <fieldset id="space-filters">
+      <fieldset id="space-filters" class="filters__row">
         <!-- The textfield owns its own items handlers, so how a category prints belongs on this field
            rather than on the whole view — a component-wide provider would also reach the date and
            time fields, which have nothing to do with categories. -->
@@ -105,34 +105,14 @@
           <tui-calendar *tuiDropdown />
         </tui-textfield>
 
-        <!-- The two times are one control split in two, so a rule separates them from the fields that
-           narrow by something else. -->
-        <hr />
-
         <tui-textfield tuiTextfieldSize="m">
-          <label tuiLabel for="space-from" i18n="@@spaces.filters.from">Desde</label>
+          <label tuiLabel for="space-from" i18n="@@spaces.filters.from">Disponible a las</label>
           <input
             id="space-from"
             tuiInputTime
             name="from"
             [ngModel]="from()"
             (ngModelChange)="from.set($event)"
-          />
-          <tui-data-list *tuiDropdown>
-            @for (option of timeOptions; track option.toString()) {
-              <button tuiOption type="button" [value]="option">{{ option }}</button>
-            }
-          </tui-data-list>
-        </tui-textfield>
-
-        <tui-textfield tuiTextfieldSize="m">
-          <label tuiLabel for="space-to" i18n="@@spaces.filters.to">Hasta</label>
-          <input
-            id="space-to"
-            tuiInputTime
-            name="to"
-            [ngModel]="to()"
-            (ngModelChange)="to.set($event)"
           />
           <tui-data-list *tuiDropdown>
             @for (option of timeOptions; track option.toString()) {
@@ -156,19 +136,6 @@
         }
       </fieldset>
     </tui-expand>
-
-    <!-- Half a range narrows nothing, so the view says so instead of quietly dropping the value. -->
-    <p class="filters__hint" role="status">
-      @if (endWithoutStart()) {
-        <span i18n="@@spaces.filters.endWithoutStart"
-          >Indica también una hora de inicio para acotar la franja.</span
-        >
-      } @else if (endBeforeStart()) {
-        <span i18n="@@spaces.filters.endBeforeStart"
-          >La hora de fin debe ser posterior a la de inicio.</span
-        >
-      }
-    </p>
   </form>
 </search>
 

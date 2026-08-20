@@ -1280,88 +1280,67 @@
         <source>Tipo de espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">67,70</context>
+          <context context-type="linenumber">71,74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.filters.anyCategory" datatype="html">
         <source> Todos los tipos </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">78,80</context>
+          <context context-type="linenumber">82,84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.filters.date" datatype="html">
         <source>Fecha</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">92,94</context>
+          <context context-type="linenumber">96,98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.filters.from" datatype="html">
-        <source>Desde</source>
+        <source>Disponible a las</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
           <context context-type="linenumber">109,111</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="spaces.filters.to" datatype="html">
-        <source>Hasta</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">125,127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.filters.clear" datatype="html">
         <source> Quitar filtros </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">150,152</context>
+          <context context-type="linenumber">134,136</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">214,216</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="spaces.filters.endWithoutStart" datatype="html">
-        <source>Indica también una hora de inicio para acotar la franja.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">160,162</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="spaces.filters.endBeforeStart" datatype="html">
-        <source>La hora de fin debe ser posterior a la de inicio.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">164,169</context>
+          <context context-type="linenumber">185,187</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.results.label" datatype="html">
         <source>Resultados</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">172,173</context>
+          <context context-type="linenumber">143,144</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.results.count" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 espacio encontrado} other {<x id="INTERPOLATION"/> espacios encontrados}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">180,184</context>
+          <context context-type="linenumber">151,155</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.empty.heading" datatype="html">
         <source>No hay espacios libres con estos filtros</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">201,202</context>
+          <context context-type="linenumber">172,173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.empty.description" datatype="html">
         <source>Prueba con otra franja horaria, otro día o revisa todos los tipos de espacio.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">203,206</context>
+          <context context-type="linenumber">174,177</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.profile" datatype="html">

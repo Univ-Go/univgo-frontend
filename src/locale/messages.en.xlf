@@ -483,20 +483,8 @@
         <target>Date</target>
       </trans-unit>
       <trans-unit id="spaces.filters.from" datatype="html">
-        <source>Desde</source>
-        <target>From</target>
-      </trans-unit>
-      <trans-unit id="spaces.filters.to" datatype="html">
-        <source>Hasta</source>
-        <target>To</target>
-      </trans-unit>
-      <trans-unit id="spaces.filters.endWithoutStart" datatype="html">
-        <source>Indica también una hora de inicio para acotar la franja.</source>
-        <target>Add a start time too, so the slot has a beginning.</target>
-      </trans-unit>
-      <trans-unit id="spaces.filters.endBeforeStart" datatype="html">
-        <source>La hora de fin debe ser posterior a la de inicio.</source>
-        <target>The end time has to be later than the start time.</target>
+        <source>Disponible a las</source>
+        <target>Available at</target>
       </trans-unit>
       <trans-unit id="spaces.filters.clear" datatype="html">
         <source> Quitar filtros </source>

@@ -33,7 +33,7 @@ function space(overrides: Partial<Space> = {}): Space {
 }
 
 function filter(overrides: Partial<SpaceFilter> = {}): SpaceFilter {
-  return { category: null, date: MONDAY, from: null, to: null, query: null, ...overrides };
+  return { category: null, date: MONDAY, from: null, query: null, ...overrides };
 }
 
 describe('resolveAvailability', () => {
@@ -56,14 +56,14 @@ describe('resolveAvailability', () => {
     });
   });
 
-  it('reports free when one slot covers the whole requested window', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(9), to: at(11) }));
+  it('reports free when one slot holds a whole booking from the requested start', () => {
+    const availability = resolveAvailability(space(), filter({ from: at(9) }));
 
     expect(availability).toEqual({ kind: 'free', slot: slot(MONDAY, 8, 12) });
   });
 
-  it('reports the next slot when the requested window spills past the end of a slot', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(11), to: at(13) }));
+  it('reports the next slot when a booking from the requested start would spill past the end', () => {
+    const availability = resolveAvailability(space(), filter({ from: at(11, 30) }));
 
     expect(availability).toEqual({ kind: 'later', slot: slot(MONDAY, 15, 18) });
   });
@@ -71,25 +71,17 @@ describe('resolveAvailability', () => {
   it('does not stitch two consecutive slots into one bookable window', () => {
     const consecutive = space({ freeSlots: [slot(MONDAY, 8, 10), slot(MONDAY, 10, 12)] });
 
-    expect(resolveAvailability(consecutive, filter({ from: at(9), to: at(11) })).kind).toBe(
-      'later',
-    );
+    expect(resolveAvailability(consecutive, filter({ from: at(9, 30) })).kind).toBe('later');
   });
 
   it('falls back to the earliest slot when nothing starts after the requested time', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(20), to: at(21) }));
+    const availability = resolveAvailability(space(), filter({ from: at(20) }));
 
     expect(availability).toEqual({ kind: 'later', slot: slot(MONDAY, 8, 12) });
   });
 
-  it('ignores an end time that is not after the start time', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(9), to: at(8) }));
-
-    expect(availability).toEqual({ kind: 'free', slot: slot(MONDAY, 8, 12) });
-  });
-
   it('treats a slot ending exactly at the requested start as not covering it', () => {
-    const availability = resolveAvailability(space(), filter({ from: at(12), to: null }));
+    const availability = resolveAvailability(space(), filter({ from: at(12) }));
 
     expect(availability).toEqual({ kind: 'later', slot: slot(MONDAY, 15, 18) });
   });
@@ -127,8 +119,8 @@ describe('listSpaces', () => {
     ]);
   });
 
-  it('drops spaces that cannot answer a requested time window', () => {
-    const listed = listSpaces([court, closed], filter({ from: at(9), to: at(10) }));
+  it('drops spaces that cannot answer a requested start time', () => {
+    const listed = listSpaces([court, closed], filter({ from: at(9) }));
 
     expect(listed.map((entry) => entry.space.id)).toEqual(['court']);
   });

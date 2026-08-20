@@ -1,5 +1,6 @@
 import type { Space } from '../../spaces/domain/space';
-import { BOOKING_DURATION_MINUTES, scheduleBooking } from './booking-draft';
+import { BOOKING_DURATION_MINUTES } from '../../spaces/domain/space';
+import { scheduleBooking } from './booking-draft';
 
 const MONDAY = new Date(2026, 7, 17);
 

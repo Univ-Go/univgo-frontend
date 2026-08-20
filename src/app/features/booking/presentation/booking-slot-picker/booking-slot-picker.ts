@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { TuiTitle } from '@taiga-ui/core';
 import { TuiBlock } from '@taiga-ui/kit';
 import type { Space } from '../../../spaces/domain/space';
+import { BOOKING_DURATION_MINUTES } from '../../../spaces/domain/space';
 import { listStartOptions } from '../../../spaces/domain/space-catalog';
-import { BOOKING_DURATION_MINUTES, BOOKING_START_STEP_MINUTES } from '../../domain/booking-draft';
+import { BOOKING_START_STEP_MINUTES } from '../../domain/booking-draft';
 import { formatBookingTime } from '../booking-time';
 
 /** A booking window a person can plan around without the picker turning into a calendar. */

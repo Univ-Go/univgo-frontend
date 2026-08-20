@@ -62,3 +62,10 @@
   for = "/*/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Images are content-stable but not hashed, and a re-export keeps the same file
+# name, so they get a week rather than the year the build-time assets get.
+[[headers]]
+  for = "/*/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

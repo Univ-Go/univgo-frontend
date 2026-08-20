@@ -4,12 +4,48 @@
   <head>
     <meta charset="utf-8" />
     <!-- Replaced per route by PageMetadataStrategy; kept here so the document is valid before boot. -->
-    <title>UnivGo</title>
+    <title>UnivGo · Reserva los espacios de tu universidad</title>
+    <meta
+      name="description"
+      content="Canchas, salas de estudio y laboratorios con disponibilidad en tiempo real. Elige tu horario y reserva en segundos desde el móvil."
+    />
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#7f0013" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#191c1d" />
+
+    <!--
+      Link previews are built by scrapers that never run JavaScript, so what PageMetadataStrategy
+      writes at runtime reaches the browser tab and rendering crawlers, but not WhatsApp, Slack or
+      LinkedIn. These static tags are what those clients actually read, which is why they describe
+      the product rather than any one route: every shareable URL today lands behind sign-in anyway.
+
+      They are Spanish-only on purpose. Angular's i18n does not translate index.html, so both locale
+      builds copy this same file; Spanish is the source locale and the language of the cover image.
+      Localising the card means rewriting this block per locale after the build.
+    -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="UnivGo" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:title" content="UnivGo · Reserva los espacios de tu universidad" />
+    <meta
+      property="og:description"
+      content="Canchas, salas de estudio y laboratorios con disponibilidad en tiempo real. Elige tu horario y reserva en segundos desde el móvil."
+    />
+    <meta property="og:url" content="https://univgo.netlify.app/es/" />
+    <!-- Absolute, and pointing straight at the Spanish build: the publish root only redirects. -->
+    <meta property="og:image" content="https://univgo.netlify.app/es/images/og-cover.png" />
+    <meta property="og:image:type" content="image/png" />
+    <!-- Declared so the first scrape renders the card with the image instead of without it. -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Tarjeta de reserva de UnivGo mostrando un espacio disponible con su horario y su fecha."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <!-- Relative to <base>, which the i18n build rewrites per locale. -->
     <link rel="preload" href="fonts/teachers-latin.woff2" as="font" type="font/woff2" crossorigin />

@@ -79,9 +79,21 @@
   --shelf-fade-end: var(--shelf-fade);
 }
 
+// Snapping to the centre rather than to the rail's edge: an edge-aligned card comes to rest under
+// the fade that marks "there is more this way" and reads as cut off, which is the one thing the
+// fade exists to prevent. The two ends are the exception — a centred first or last card would
+// leave the rail unable to scroll fully home, so they still land flush.
 .shelf__item {
   display: flex;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
+
+  &:first-child {
+    scroll-snap-align: start;
+  }
+
+  &:last-child {
+    scroll-snap-align: end;
+  }
 }
 
 // Touch scrolls the rail directly, so the arrows are a pointer affordance and only appear where a

@@ -101,6 +101,35 @@ export function listStartOptions(
 }
 
 /**
+ * Searching for "basquetbol" has to find "Cancha de Básquetbol A": on a Spanish catalogue an accent
+ * is a spelling detail, not a different word, and nobody reaches for the accent key to search.
+ */
+function fold(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLocaleLowerCase();
+}
+
+/**
+ * A space is looked for by the two things a person can name: what it is called and where it is.
+ * Every term has to match one of them, so "cancha norte" narrows rather than widens — typing more
+ * is how a person expects to search less.
+ */
+function matchesQuery(space: Space, query: string | null): boolean {
+  if (!query?.trim()) {
+    return true;
+  }
+
+  const haystack = fold(`${space.name} ${space.location}`);
+
+  return fold(query)
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((term) => haystack.includes(term));
+}
+
+/**
  * Category narrows what is listed at all; a time window narrows it further, because asking for an
  * hour is asking to book then and anything that cannot answer is noise. A date on its own never
  * hides a space — it re-reads availability, so a space with nothing left that day still shows,
@@ -109,6 +138,7 @@ export function listStartOptions(
 export function listSpaces(spaces: readonly Space[], filter: SpaceFilter): readonly ListedSpace[] {
   return spaces
     .filter((space) => filter.category === null || space.category === filter.category)
+    .filter((space) => matchesQuery(space, filter.query))
     .map((space) => ({ space, availability: resolveAvailability(space, filter) }))
     .filter((listed) => filter.from === null || listed.availability.kind === 'free')
     .sort(
@@ -131,5 +161,10 @@ export function groupByCategory(listed: readonly ListedSpace[]): readonly SpaceG
  * listing results.
  */
 export function isFilterActive(filter: SpaceFilter, today: Date): boolean {
-  return filter.category !== null || filter.from !== null || !isSameDay(filter.date, today);
+  return (
+    filter.category !== null ||
+    filter.from !== null ||
+    Boolean(filter.query?.trim()) ||
+    !isSameDay(filter.date, today)
+  );
 }

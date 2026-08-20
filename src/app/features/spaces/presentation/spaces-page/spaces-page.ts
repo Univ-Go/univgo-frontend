@@ -10,9 +10,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
-import { TuiAppearance, TuiButton, TuiDataList } from '@taiga-ui/core';
+import { TuiAppearance, TuiButton, TuiDataList, TuiInput } from '@taiga-ui/core';
 import { TuiInputDate, TuiInputTime, TuiPagination, TuiSelect } from '@taiga-ui/kit';
-import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { TuiCardLarge, TuiSearch, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import type { SpaceCategory, SpaceFilter } from '../../domain/space';
 import { SPACE_CATEGORIES } from '../../domain/space';
@@ -83,9 +83,11 @@ function toCategory(value: unknown): SpaceCategory | null {
     TuiButton,
     TuiCardLarge,
     TuiDataList,
+    TuiInput,
     TuiInputDate,
     TuiInputTime,
     TuiPagination,
+    TuiSearch,
     TuiSelect,
     TuiSurface,
   ],
@@ -106,6 +108,9 @@ export class SpacesPage {
   /** Read once: a page that is open past midnight should not silently change what "today" means. */
   protected readonly today = TuiDay.currentLocal();
 
+  /** Free text is the shape of one session's question, like the day and the times — not an address. */
+  protected readonly query = signal('');
+
   protected readonly date = signal(this.today);
   protected readonly from = signal<TuiTime | null>(null);
   protected readonly to = signal<TuiTime | null>(null);
@@ -115,6 +120,7 @@ export class SpacesPage {
     date: this.date().toLocalNativeDate(),
     from: toMinutes(this.from()),
     to: toMinutes(this.to()),
+    query: this.query(),
   }));
 
   protected readonly filterActive = computed(() =>
@@ -170,6 +176,7 @@ export class SpacesPage {
   }
 
   protected clearFilters(): void {
+    this.query.set('');
     this.date.set(this.today);
     this.from.set(null);
     this.to.set(null);

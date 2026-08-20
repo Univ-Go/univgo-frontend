@@ -32,7 +32,7 @@ function space(overrides: Partial<Space> = {}): Space {
 }
 
 function filter(overrides: Partial<SpaceFilter> = {}): SpaceFilter {
-  return { category: null, date: MONDAY, from: null, to: null, ...overrides };
+  return { category: null, date: MONDAY, from: null, to: null, query: null, ...overrides };
 }
 
 describe('resolveAvailability', () => {
@@ -194,6 +194,36 @@ describe('listStartOptions', () => {
   });
 });
 
+describe('listSpaces, searching', () => {
+  const court = space({ id: 'court', name: 'Cancha de Básquetbol A', location: 'Zona Norte' });
+  const room = space({ id: 'room', name: 'Sala de Estudio 3', location: 'Biblioteca Central' });
+
+  function found(query: string): readonly string[] {
+    return listSpaces([court, room], filter({ query })).map((listed) => listed.space.id);
+  }
+
+  it('ignores accents, because nobody reaches for the accent key to search', () => {
+    expect(found('basquetbol')).toEqual(['court']);
+  });
+
+  it('ignores case', () => {
+    expect(found('SALA')).toEqual(['room']);
+  });
+
+  it('searches where a space is, not only what it is called', () => {
+    expect(found('biblioteca')).toEqual(['room']);
+  });
+
+  it('narrows with every term instead of widening', () => {
+    expect(found('cancha norte')).toEqual(['court']);
+    expect(found('cancha biblioteca')).toEqual([]);
+  });
+
+  it('lists everything for blank input, so spaces alone are not a filter', () => {
+    expect(found('   ')).toEqual(['court', 'room']);
+  });
+});
+
 describe('groupByCategory', () => {
   it('groups in declaration order and leaves out empty categories', () => {
     const listed = listSpaces(
@@ -220,5 +250,10 @@ describe('isFilterActive', () => {
   it('treats a category or a start time as a request', () => {
     expect(isFilterActive(filter({ category: 'lab' }), MONDAY)).toBe(true);
     expect(isFilterActive(filter({ from: at(9) }), MONDAY)).toBe(true);
+  });
+
+  it('treats typed text as a request, and blanks as nothing typed', () => {
+    expect(isFilterActive(filter({ query: 'cancha' }), MONDAY)).toBe(true);
+    expect(isFilterActive(filter({ query: '   ' }), MONDAY)).toBe(false);
   });
 });

@@ -59,5 +59,6 @@ export class HomePage {
     date: new Date(),
     from: null,
     to: null,
+    query: null,
   }).slice(0, FEATURED_SPACES);
 }

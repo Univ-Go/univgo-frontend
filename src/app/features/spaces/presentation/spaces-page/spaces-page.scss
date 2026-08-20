@@ -20,16 +20,21 @@
   font: var(--tui-typography-body-l);
 }
 
+// `search[tuiSearch]` lays the form out; the card only supplies the surface it sits on.
 .filters {
-  gap: var(--univgo-space-m);
+  display: block;
 }
 
-// One column on a phone so every control keeps a full-width touch target, folding into pairs and
-// then into a single row as there is width for it.
-.filters__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--univgo-space-m);
+// The rule between the two time fields only means something while they share a row. Once the
+// fields stack it is a stray tick of a line, so it goes.
+.filters hr {
+  display: none;
+}
+
+@media (min-width: bp.$tablet) {
+  .filters hr {
+    display: block;
+  }
 }
 
 .filters__hint {
@@ -45,10 +50,6 @@
   &:empty {
     display: none;
   }
-}
-
-.filters__clear {
-  align-self: flex-start;
 }
 
 .results {
@@ -73,18 +74,4 @@
   display: flex;
   flex-direction: column;
   gap: var(--univgo-space-2xl);
-}
-
-@media (min-width: bp.$tablet) {
-  .filters__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: bp.$desktop) {
-  // Type and date carry the request, the two time fields are one control split in two, so the row
-  // gives the first pair the room and keeps the pair of times narrow and together.
-  .filters__grid {
-    grid-template-columns: 1.4fr 1.4fr 1fr 1fr;
-  }
 }

@@ -463,8 +463,8 @@
         <target>Book a space</target>
       </trans-unit>
       <trans-unit id="spaces.lead" datatype="html">
-        <source> Elige dónde y cuándo. Filtra por tipo de espacio, día y franja horaria. </source>
-        <target> Choose where and when. Filter by space type, day and time slot. </target>
+        <source> Busca un espacio por su nombre, o filtra por tipo, día y franja horaria. </source>
+        <target> Search a space by name, or filter by type, day and time range. </target>
       </trans-unit>
       <trans-unit id="spaces.filters.label" datatype="html">
         <source>Filtros del catálogo</source>
@@ -801,6 +801,10 @@
       <trans-unit id="navigation.newReservation" datatype="html">
         <source>Nueva reserva</source>
         <target>New reservation</target>
+      </trans-unit>
+      <trans-unit id="spaces.filters.query" datatype="html">
+        <source>Buscar por nombre o ubicación</source>
+        <target>Search by name or location</target>
       </trans-unit>
     </body>
   </file>

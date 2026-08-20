@@ -48,6 +48,8 @@ export interface SpaceFilter {
   readonly date: Date;
   readonly from: number | null;
   readonly to: number | null;
+  /** Free text the user typed; matched against what identifies a space to a person. */
+  readonly query: string | null;
 }
 
 /**

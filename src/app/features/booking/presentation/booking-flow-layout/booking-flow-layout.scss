@@ -80,21 +80,7 @@
 // `tui-action-bar` floats above the page, so the last row of the catalogue would sit under it.
 // The room is only reserved while the bar is actually there.
 .flow__content--barred {
-  padding-block-end: var(--univgo-space-3xl);
-}
-
-// On a phone the tab bar already owns the bottom edge, so the action bar stacks above it instead
-// of landing on top of the navigation.
-@media (width < bp.$tablet) {
-  tui-action-bar {
-    inset-block-end: calc(
-      var(--univgo-tab-bar-height) + env(safe-area-inset-bottom) + var(--univgo-space-s)
-    );
-  }
-
-  .flow__content--barred {
-    padding-block-end: calc(var(--univgo-space-3xl) + var(--univgo-tab-bar-height));
-  }
+  padding-block-end: var(--univgo-action-bar-room);
 }
 
 .flow__chosen {

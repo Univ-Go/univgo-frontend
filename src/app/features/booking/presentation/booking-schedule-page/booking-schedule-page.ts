@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon } from '@taiga-ui/core';
-import { TuiChip } from '@taiga-ui/kit';
+import { TuiActionBar, TuiChip } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
+import { ActionBarTheme } from '../../../../shared/action-bar-theme/action-bar-theme';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
+import { OnScreen } from '../../../../shared/on-screen/on-screen';
 import {
   spaceCategoryIcon,
   spaceCategoryName,
@@ -26,9 +28,12 @@ import { BookingSlotPicker } from '../booking-slot-picker/booking-slot-picker';
 @Component({
   selector: 'app-booking-schedule-page',
   imports: [
+    ActionBarTheme,
     BookingSlotPicker,
     DatePipe,
     MediaPlate,
+    OnScreen,
+    TuiActionBar,
     TuiAppearance,
     TuiButton,
     TuiCardLarge,
@@ -40,6 +45,7 @@ import { BookingSlotPicker } from '../booking-slot-picker/booking-slot-picker';
   templateUrl: './booking-schedule-page.html',
   styleUrl: './booking-schedule-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[class.schedule--barred]': 'shortcut()' },
 })
 export class BookingSchedulePage {
   private readonly router = inject(Router);
@@ -64,6 +70,15 @@ export class BookingSchedulePage {
 
     return booking ? formatBookingRange(booking.startMinutes, booking.endMinutes) : null;
   });
+
+  /** Starts true so the shortcut can only ever appear once the button has reported for itself. */
+  protected readonly continueOnScreen = signal(true);
+
+  /**
+   * What the floating shortcut shows, or `null` when it should not be there at all: the step is
+   * unanswered, or the button it stands in for is already within reach.
+   */
+  protected readonly shortcut = computed(() => (this.continueOnScreen() ? null : this.range()));
 
   protected continueToReview(): void {
     const booking = this.draft.booking();

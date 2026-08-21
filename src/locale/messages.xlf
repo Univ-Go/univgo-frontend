@@ -20,49 +20,49 @@
         <source>Inicio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.pageDescription" datatype="html">
         <source>Consulta tu próxima reserva y los espacios destacados del campus.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.pageTitle" datatype="html">
         <source>Espacios</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.pageDescription" datatype="html">
         <source>Consulta los espacios deportivos, salas de estudio y laboratorios del campus, y reserva el que necesites.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.pageTitle" datatype="html">
         <source>Mis reservas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.pageDescription" datatype="html">
         <source>Consulta, filtra y gestiona las reservas que has hecho en el campus.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.pageTitle" datatype="html">
         <source>Detalle de la reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">79</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
@@ -73,21 +73,21 @@
         <source>Consulta el pase, el horario, la ubicación y las normas de tu reserva.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFound.pageTitle" datatype="html">
         <source>Página no encontrada</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFound.pageDescription" datatype="html">
         <source>La página que buscas no existe o ha cambiado de dirección. Vuelve al inicio o consulta tus reservas.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.network.summary" datatype="html">
@@ -221,6 +221,277 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/notifications/notification.service.ts</context>
           <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pageTitle" datatype="html">
+        <source>Gestión de aforo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pageDescription" datatype="html">
+        <source>Consulta el aforo del bloque actual, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.inProgress" datatype="html">
+        <source>En sala</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-filters.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.reserved" datatype="html">
+        <source>Pendientes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-filters.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.completed" datatype="html">
+        <source>Finalizadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-filters.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.expired" datatype="html">
+        <source>Expiradas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-filters.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.cancelled" datatype="html">
+        <source>Canceladas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-filters.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.title" datatype="html">
+        <source>Lista de estudiantes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">3,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.universityId" datatype="html">
+        <source>ID universitario</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.checkedInAt" datatype="html">
+        <source>Hora de entrada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">31,33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.notCheckedIn" datatype="html">
+        <source>Sin registrar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">88,90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.student" datatype="html">
+        <source>Estudiante</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.status" datatype="html">
+        <source>Estado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.actions" datatype="html">
+        <source>Acciones</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">72,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.empty.heading" datatype="html">
+        <source>No hay estudiantes con estos filtros</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">119,120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.empty.description" datatype="html">
+        <source>Prueba con otro estado, o borra lo que hayas escrito en el buscador.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">121,125</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {Mostrando <x id="INTERPOLATION"/> de 1 registro} other {Mostrando <x id="INTERPOLATION"/> de <x id="INTERPOLATION_1"/> registros}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
+          <context context-type="linenumber">132,138</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.action.checkIn" datatype="html">
+        <source>Registrar entrada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.label" datatype="html">
+        <source>Estado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.ts</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.inProgress" datatype="html">
+        <source> En sala </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-status-badge/attendee-status-badge.html</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.reserved" datatype="html">
+        <source> Pendiente </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-status-badge/attendee-status-badge.html</context>
+          <context context-type="linenumber">21,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.completed" datatype="html">
+        <source> Finalizada </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-status-badge/attendee-status-badge.html</context>
+          <context context-type="linenumber">32,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.expired" datatype="html">
+        <source> Expiró </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-status-badge/attendee-status-badge.html</context>
+          <context context-type="linenumber">43,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.cancelled" datatype="html">
+        <source> Cancelada </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/attendee-status-badge/attendee-status-badge.html</context>
+          <context context-type="linenumber">54,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.title" datatype="html">
+        <source>Bloque actual</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
+          <context context-type="linenumber">3,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.blockRange" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ block().start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ block().end | date: &apos;shortTime&apos; }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
+          <context context-type="linenumber">10,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
+        <source> Registrar entrada manual </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
+          <context context-type="linenumber">32,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.inRoom.title" datatype="html">
+        <source>En sala</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
+          <context context-type="linenumber">44,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.inRoom.hint" datatype="html">
+        <source>de <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> plazas ocupadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
+          <context context-type="linenumber">47,48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pending.title" datatype="html">
+        <source>Pendientes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
+          <context context-type="linenumber">55,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pending.hint" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {ninguna a punto de expirar} =1 {1 reserva a punto de expirar} other {<x id="INTERPOLATION"/> reservas a punto de expirar}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
+          <context context-type="linenumber">59,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.title" datatype="html">
+        <source>Aforo total</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.ts</context>
+          <context context-type="linenumber">99,100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.lead" datatype="html">
+        <source> Capacidad máxima permitida </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.ts</context>
+          <context context-type="linenumber">101,105</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.occupied" datatype="html">
+        <source>Ocupadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.ts</context>
+          <context context-type="linenumber">107,108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.free" datatype="html">
+        <source> Libres (de <x id="INTERPOLATION" equiv-text="{{ occupancy().capacity }}"/>) </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.ts</context>
+          <context context-type="linenumber">115,117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.rate" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().ratio | percent }}"/> de ocupación </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.ts</context>
+          <context context-type="linenumber">133,135</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaceSwitcher.label" datatype="html">
+        <source>Cambiar de espacio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-switcher/space-switcher.ts</context>
+          <context context-type="linenumber">65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.skipToForm" datatype="html">
@@ -589,7 +860,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-schedule-page/booking-schedule-page.html</context>
-          <context context-type="linenumber">83,85</context>
+          <context context-type="linenumber">84,86</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-schedule-page/booking-schedule-page.html</context>
+          <context context-type="linenumber">125,127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.review.title" datatype="html">
@@ -653,7 +928,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-schedule-page/booking-schedule-page.html</context>
-          <context context-type="linenumber">94,96</context>
+          <context context-type="linenumber">95,97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.review.changeSpaceLabel" datatype="html">
@@ -1231,7 +1506,7 @@
         <source>Ver todos</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-shelf/space-shelf.html</context>
-          <context context-type="linenumber">44,49</context>
+          <context context-type="linenumber">44,50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.shelf.viewAllLabel" datatype="html">
@@ -1357,6 +1632,99 @@
           <context context-type="linenumber">51,53</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="admin.nav.scanner" datatype="html">
+        <source>Escáner</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.nav.capacity" datatype="html">
+        <source>Gestión de aforo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.nav.calendar" datatype="html">
+        <source>Calendario</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.nav.settings" datatype="html">
+        <source>Ajustes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.brandRole" datatype="html">
+        <source>Gestión institucional</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
+          <context context-type="linenumber">137,140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.nav.label" datatype="html">
+        <source>Secciones del panel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
+          <context context-type="linenumber">140,141</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.search.label" datatype="html">
+        <source>Buscar estudiante o ID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+          <context context-type="linenumber">13,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="navigation.notifications" datatype="html">
+        <source>Notificaciones</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+          <context context-type="linenumber">35,37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
+          <context context-type="linenumber">47,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.help" datatype="html">
+        <source>Ayuda</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+          <context context-type="linenumber">47,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="navigation.accountMenu" datatype="html">
+        <source>Tu cuenta</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+          <context context-type="linenumber">59,61</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
+          <context context-type="linenumber">55,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="layout.skipToContent" datatype="html">
+        <source>Saltar al contenido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-layout/admin-layout.ts</context>
+          <context context-type="linenumber">91,95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/main-layout/main-layout.ts</context>
+          <context context-type="linenumber">63,67</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="footer.rights" datatype="html">
         <source>Todos los derechos reservados.</source>
         <context-group purpose="location">
@@ -1440,25 +1808,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">42,46</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="navigation.notifications" datatype="html">
-        <source>Notificaciones</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
-          <context context-type="linenumber">47,49</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="navigation.accountMenu" datatype="html">
-        <source>Tu cuenta</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
-          <context context-type="linenumber">64,65</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">51,53</context>
+          <context context-type="linenumber">42,45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.newReservation" datatype="html">
@@ -1472,14 +1822,7 @@
         <source>Cuenta</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">54,58</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="layout.skipToContent" datatype="html">
-        <source>Saltar al contenido</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/main-layout/main-layout.ts</context>
-          <context context-type="linenumber">63,67</context>
+          <context context-type="linenumber">58,62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="i18n.languageSelector" datatype="html">

@@ -1,0 +1,89 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: block;
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  // Its own compositing layer, for the same reason the application bar has one: without it the
+  // browser re-rasterises the bar a step behind the page and it reads as a one-pixel shiver.
+  will-change: transform;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  padding: var(--univgo-space-s) var(--univgo-layout-gutter);
+  border-block-end: 1px solid var(--tui-border-normal);
+  background: var(--tui-background-elevation-1);
+  // Paints the strip above the bar so nothing shows through the sub-pixel seam a sticky element
+  // leaves against the viewport edge while scrolling.
+  box-shadow: 0 -1rem 0 var(--tui-background-elevation-1);
+}
+
+.bar__logo {
+  display: flex;
+  align-items: center;
+}
+
+// From here up the aside is a column and signs the panel itself. Hidden rather than duplicated:
+// two wordmarks would be two entries in the accessibility tree for one product.
+@media (width >= bp.$desktop) {
+  .bar__logo {
+    display: none;
+  }
+}
+
+// The search takes whatever the actions leave, up to a width past which a one-line field stops
+// being easier to read and just becomes a longer line to cross.
+.bar__search {
+  flex: 1 1 16rem;
+  max-inline-size: 32rem;
+}
+
+.bar__actions {
+  display: flex;
+  justify-self: end;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  margin-inline-start: auto;
+}
+
+// The account is the anchor of the right-hand side: ringed, so it reads as the primary control
+// rather than as one more icon in the row.
+.bar__profile {
+  cursor: pointer;
+  box-shadow:
+    0 0 0 2px var(--tui-background-elevation-1),
+    0 0 0 4px var(--tui-background-accent-1);
+  transition: box-shadow var(--tui-duration);
+
+  &:hover {
+    box-shadow:
+      0 0 0 2px var(--tui-background-elevation-1),
+      0 0 0 4px var(--tui-background-accent-1-hover);
+  }
+}
+
+// On a phone the bar wraps: the mark and the controls share the first line and the search takes the
+// second whole, which is the only way a field stays wide enough to type an id into.
+@media (width < bp.$tablet) {
+  .bar {
+    gap: var(--univgo-space-s);
+    padding-inline: var(--univgo-space-l);
+  }
+
+  // Small enough that the mark and the whole row of controls share one line on a phone: wrapped
+  // onto two, the bar takes a third of the screen before the panel says anything.
+  .bar__logo app-brand-logo {
+    --brand-logo-height: 1.75rem;
+  }
+
+  .bar__search {
+    flex-basis: 100%;
+    max-inline-size: none;
+    order: 1;
+  }
+}

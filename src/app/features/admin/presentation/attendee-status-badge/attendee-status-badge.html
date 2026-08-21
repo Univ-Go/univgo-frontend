@@ -1,0 +1,57 @@
+@switch (status()) {
+  @case ('in_progress') {
+    <span
+      tuiBadge
+      appearance="positive"
+      [size]="size()"
+      iconStart="@tui.circle-check"
+      i18n="@@admin.attendee.status.inProgress"
+    >
+      En sala
+    </span>
+  }
+  @case ('reserved') {
+    <span
+      tuiBadge
+      appearance="warning"
+      [size]="size()"
+      iconStart="@tui.clock"
+      i18n="@@admin.attendee.status.reserved"
+    >
+      Pendiente
+    </span>
+  }
+  @case ('completed') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.history"
+      i18n="@@admin.attendee.status.completed"
+    >
+      Finalizada
+    </span>
+  }
+  @case ('expired') {
+    <span
+      tuiBadge
+      appearance="negative"
+      [size]="size()"
+      iconStart="@tui.circle-x"
+      i18n="@@admin.attendee.status.expired"
+    >
+      Expiró
+    </span>
+  }
+  @case ('cancelled') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.ban"
+      i18n="@@admin.attendee.status.cancelled"
+    >
+      Cancelada
+    </span>
+  }
+}

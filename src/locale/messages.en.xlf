@@ -798,6 +798,186 @@
         <source>{VAR_PLURAL, plural, =0 {Filtros} other {Filtros (<x id="INTERPOLATION"/>)}}</source>
         <target>{VAR_PLURAL, plural, =0 {Filters} other {Filters (<x id="INTERPOLATION"/>)}}</target>
       </trans-unit>
+      <trans-unit id="admin.capacity.pageTitle" datatype="html">
+        <source>Gestión de aforo</source>
+        <target>Capacity management</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pageDescription" datatype="html">
+        <source>Consulta el aforo del bloque actual, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
+        <target>Check the current block's capacity, who has checked in, and which bookings are still waiting to check in.</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.inProgress" datatype="html">
+        <source>En sala</source>
+        <target>In the room</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.reserved" datatype="html">
+        <source>Pendientes</source>
+        <target>Pending</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.completed" datatype="html">
+        <source>Finalizadas</source>
+        <target>Completed</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.expired" datatype="html">
+        <source>Expiradas</source>
+        <target>Expired</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.cancelled" datatype="html">
+        <source>Canceladas</source>
+        <target>Cancelled</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.title" datatype="html">
+        <source>Lista de estudiantes</source>
+        <target>Student list</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.universityId" datatype="html">
+        <source>ID universitario</source>
+        <target>University ID</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.checkedInAt" datatype="html">
+        <source>Hora de entrada</source>
+        <target>Check-in time</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.notCheckedIn" datatype="html">
+        <source>Sin registrar</source>
+        <target>Not checked in</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.student" datatype="html">
+        <source>Estudiante</source>
+        <target>Student</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.status" datatype="html">
+        <source>Estado</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.actions" datatype="html">
+        <source>Acciones</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.empty.heading" datatype="html">
+        <source>No hay estudiantes con estos filtros</source>
+        <target>No students match these filters</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.empty.description" datatype="html">
+        <source>Prueba con otro estado, o borra lo que hayas escrito en el buscador.</source>
+        <target>Try a different status, or clear what you typed in the search box.</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {Mostrando <x id="INTERPOLATION"/> de 1 registro} other {Mostrando <x id="INTERPOLATION"/> de <x id="INTERPOLATION_1"/> registros}}</source>
+        <target>{VAR_PLURAL, plural, =1 {Showing <x id="INTERPOLATION"/> of 1 record} other {Showing <x id="INTERPOLATION"/> of <x id="INTERPOLATION_1"/> records}}</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.action.checkIn" datatype="html">
+        <source>Registrar entrada</source>
+        <target>Check in</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.label" datatype="html">
+        <source>Estado</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.inProgress" datatype="html">
+        <source> En sala </source>
+        <target> In the room </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.reserved" datatype="html">
+        <source> Pendiente </source>
+        <target> Pending </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.completed" datatype="html">
+        <source> Finalizada </source>
+        <target> Completed </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.expired" datatype="html">
+        <source> Expiró </source>
+        <target> Expired </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.cancelled" datatype="html">
+        <source> Cancelada </source>
+        <target> Cancelled </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.title" datatype="html">
+        <source>Bloque actual</source>
+        <target>Current block</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.blockRange" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ block().start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ block().end | date: &apos;shortTime&apos; }}"/></source>
+        <target><x id="INTERPOLATION"/> – <x id="INTERPOLATION_1"/></target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
+        <source> Registrar entrada manual </source>
+        <target> Register manual check-in </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.inRoom.title" datatype="html">
+        <source>En sala</source>
+        <target>In the room</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.inRoom.hint" datatype="html">
+        <source>de <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> plazas ocupadas</source>
+        <target>of <x id="INTERPOLATION"/> seats occupied</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pending.title" datatype="html">
+        <source>Pendientes</source>
+        <target>Pending</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pending.hint" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {ninguna a punto de expirar} =1 {1 reserva a punto de expirar} other {<x id="INTERPOLATION"/> reservas a punto de expirar}}</source>
+        <target>{VAR_PLURAL, plural, =0 {none about to expire} =1 {1 booking about to expire} other {<x id="INTERPOLATION"/> bookings about to expire}}</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.title" datatype="html">
+        <source>Aforo total</source>
+        <target>Total capacity</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.lead" datatype="html">
+        <source> Capacidad máxima permitida </source>
+        <target> Maximum allowed capacity </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.occupied" datatype="html">
+        <source>Ocupadas</source>
+        <target>Occupied</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.free" datatype="html">
+        <source> Libres (de <x id="INTERPOLATION" equiv-text="{{ occupancy().capacity }}"/>) </source>
+        <target> Free (of <x id="INTERPOLATION"/>) </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.rate" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().ratio | percent }}"/> de ocupación </source>
+        <target> <x id="INTERPOLATION"/> occupancy </target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSwitcher.label" datatype="html">
+        <source>Cambiar de espacio</source>
+        <target>Switch space</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.scanner" datatype="html">
+        <source>Escáner</source>
+        <target>Scanner</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.capacity" datatype="html">
+        <source>Gestión de aforo</source>
+        <target>Capacity management</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.calendar" datatype="html">
+        <source>Calendario</source>
+        <target>Calendar</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.settings" datatype="html">
+        <source>Ajustes</source>
+        <target>Settings</target>
+      </trans-unit>
+      <trans-unit id="admin.brandRole" datatype="html">
+        <source>Gestión institucional</source>
+        <target>Institutional management</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.label" datatype="html">
+        <source>Secciones del panel</source>
+        <target>Panel sections</target>
+      </trans-unit>
+      <trans-unit id="admin.search.label" datatype="html">
+        <source>Buscar estudiante o ID</source>
+        <target>Search student or ID</target>
+      </trans-unit>
+      <trans-unit id="admin.help" datatype="html">
+        <source>Ayuda</source>
+        <target>Help</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

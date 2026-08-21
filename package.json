@@ -30,6 +30,7 @@
     "@angular/localize": "^22.1.1",
     "@angular/platform-browser": "^22.1.0",
     "@angular/router": "^22.1.0",
+    "@taiga-ui/addon-table": "5.19.0",
     "@taiga-ui/cdk": "5.19.0",
     "@taiga-ui/core": "5.19.0",
     "@taiga-ui/i18n": "5.19.0",

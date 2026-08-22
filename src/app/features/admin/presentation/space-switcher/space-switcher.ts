@@ -16,47 +16,18 @@ let nextTriggerId = 0;
 @Component({
   selector: 'app-space-switcher',
   imports: [TuiButton, TuiDataList, TuiDropdown],
+  templateUrl: './space-switcher.html',
+  styleUrl: './space-switcher.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `
-    :host {
-      display: inline-flex;
-    }
-  `,
-  template: `
-    <button
-      tuiButton
-      type="button"
-      appearance="outline"
-      size="m"
-      [id]="triggerId"
-      iconStart="@tui.map-pin"
-      iconEnd="@tui.chevron-down"
-      [tuiDropdown]="panel"
-      [(tuiDropdownOpen)]="open"
-      [attr.aria-label]="switcherLabel + ': ' + current()?.spaceName"
-    >
-      {{ current()?.spaceName }}
-    </button>
-
-    <ng-template #panel>
-      <tui-data-list [attr.aria-labelledby]="triggerId">
-        @for (space of spaces(); track space.spaceId) {
-          <button
-            tuiOption
-            type="button"
-            [iconStart]="space.spaceId === selectedId() ? '@tui.check' : null"
-            (click)="select(space.spaceId)"
-          >
-            {{ space.spaceName }}
-          </button>
-        }
-      </tui-data-list>
-    </ng-template>
-  `,
+  host: {
+    '[attr.data-full]': "fullWidth() ? '' : null",
+  },
 })
 export class SpaceSwitcher {
   public readonly spaces = input.required<readonly CapacityBlock[]>();
   public readonly selectedId = input.required<string>();
+  /** Stretches the trigger to its container's width, for hosts where the switcher is the whole row. */
+  public readonly fullWidth = input(false);
 
   public readonly spaceSelected = output<string>();
 

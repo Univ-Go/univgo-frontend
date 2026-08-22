@@ -1,0 +1,30 @@
+<button
+  tuiButton
+  type="button"
+  appearance="outline"
+  size="m"
+  [id]="triggerId"
+  iconStart="@tui.map-pin"
+  iconEnd="@tui.chevron-down"
+  [tuiDropdown]="panel"
+  [(tuiDropdownOpen)]="open"
+  [attr.aria-label]="switcherLabel + ': ' + current()?.spaceName"
+>
+  {{ current()?.spaceName }}
+</button>
+
+<ng-template #panel>
+  <tui-data-list [attr.aria-labelledby]="triggerId">
+    @for (space of spaces(); track space.spaceId) {
+      <button
+        tuiOption
+        type="button"
+        [iconEnd]="space.spaceId === selectedId() ? '@tui.check' : null"
+        [attr.aria-selected]="space.spaceId === selectedId() ? 'true' : null"
+        (click)="select(space.spaceId)"
+      >
+        {{ space.spaceName }}
+      </button>
+    }
+  </tui-data-list>
+</ng-template>

@@ -1,0 +1,7 @@
+<!-- The initials repeat the name beside them, so they are decoration to a screen reader. -->
+<span tuiAvatar size="s" tuiAppearance="neutral" aria-hidden="true">{{ initials() }}</span>
+
+<span class="identity__text">
+  <span class="identity__name">{{ attendee().name }}</span>
+  <span class="identity__faculty">{{ attendee().faculty }}</span>
+</span>

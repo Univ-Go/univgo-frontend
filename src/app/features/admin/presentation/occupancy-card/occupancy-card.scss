@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+.occupancy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  block-size: 100%;
+}
+
+.occupancy__heading {
+  font: var(--tui-typography-heading-h6);
+}
+
+.occupancy__lead {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.counts {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--univgo-space-l);
+  margin: 0;
+}
+
+// The value reads before its label, which is the opposite of the source order a definition list
+// needs: the term has to come first in the markup for the pairing to survive without styles.
+.count {
+  display: flex;
+  flex-direction: column-reverse;
+  min-inline-size: 0;
+}
+
+.count__label {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.count__value {
+  margin: 0;
+  font: var(--tui-typography-heading-h3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--univgo-letter-spacing-tight);
+}
+
+.count--occupied .count__value {
+  color: var(--tui-background-accent-1);
+}
+
+.count--free .count__value {
+  color: var(--tui-text-positive);
+}
+
+.counts__divider {
+  align-self: stretch;
+  inline-size: 1px;
+  background: var(--tui-border-normal);
+}
+
+.occupancy__meter {
+  display: block;
+  inline-size: 100%;
+}
+
+.occupancy__rate {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-xs);
+}

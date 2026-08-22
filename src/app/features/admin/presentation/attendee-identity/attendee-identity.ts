@@ -13,40 +13,9 @@ const INITIALS = 2;
 @Component({
   selector: 'app-attendee-identity',
   imports: [TuiAppearance, TuiAvatar],
+  templateUrl: './attendee-identity.html',
+  styleUrl: './attendee-identity.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `
-    :host {
-      display: flex;
-      align-items: center;
-      gap: var(--univgo-space-m);
-      min-inline-size: 0;
-    }
-
-    .identity__text {
-      display: flex;
-      flex-direction: column;
-      min-inline-size: 0;
-    }
-
-    .identity__name {
-      color: var(--tui-text-primary);
-      font: var(--tui-typography-ui-s);
-    }
-
-    .identity__faculty {
-      color: var(--tui-text-tertiary);
-      font: var(--tui-typography-ui-xs);
-    }
-  `,
-  template: `
-    <!-- The initials repeat the name beside them, so they are decoration to a screen reader. -->
-    <span tuiAvatar size="s" tuiAppearance="neutral" aria-hidden="true">{{ initials() }}</span>
-
-    <span class="identity__text">
-      <span class="identity__name">{{ attendee().name }}</span>
-      <span class="identity__faculty">{{ attendee().faculty }}</span>
-    </span>
-  `,
 })
 export class AttendeeIdentity {
   public readonly attendee = input.required<Attendee>();

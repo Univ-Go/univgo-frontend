@@ -1,0 +1,108 @@
+<section tuiCardLarge tuiSurface tuiAppearance="outline" class="history">
+  <header class="history__header">
+    <h2 class="history__title" i18n="@@admin.closure.history.title">Historial de cierres</h2>
+  </header>
+
+  @if (pagedClosures().length > 0) {
+    @if (compact()) {
+      <ul class="cards">
+        @for (closure of pagedClosures(); track closure.id) {
+          <li class="card">
+            <div class="card__top">
+              <span class="card__date">
+                {{ closure.date | date: 'longDate' }}
+                @if (closure.scope === 'time_block') {
+                  <span class="card__time"
+                    >{{ closure.start | date: 'shortTime' }} –
+                    {{ closure.end | date: 'shortTime' }}</span
+                  >
+                } @else if (closure.scope === 'recurring') {
+                  <span class="card__time">{{ recurrenceSummary(closure) }}</span>
+                } @else {
+                  <span class="card__time" i18n="@@admin.closure.scope.fullDay">Día completo</span>
+                }
+              </span>
+              <app-closure-status-badge [status]="statusOf(closure)" size="s" />
+            </div>
+
+            <dl class="card__facts">
+              <div class="fact">
+                <dt i18n="@@admin.closure.history.column.reason">Motivo</dt>
+                <dd>{{ reasonName(closure.reason) }}</dd>
+              </div>
+              <div class="fact">
+                <dt i18n="@@admin.closure.history.column.authorizedBy">Autorizado por</dt>
+                <dd>{{ closure.authorizedBy }}</dd>
+              </div>
+            </dl>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="history__scroll">
+        <table tuiTable size="m" class="history__table">
+          <thead>
+            <tr>
+              <th tuiTh i18n="@@admin.closure.history.column.dateTime">Fecha / horario</th>
+              <th tuiTh i18n="@@admin.closure.history.column.reason">Motivo</th>
+              <th tuiTh i18n="@@admin.closure.history.column.authorizedBy">Autorizado por</th>
+              <th tuiTh i18n="@@admin.closure.history.column.status">Estado</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (closure of pagedClosures(); track closure.id) {
+              <tr>
+                <td tuiTd class="cell--code">
+                  {{ closure.date | date: 'longDate' }}
+                  <br />
+                  @if (closure.scope === 'time_block') {
+                    <span class="cell--muted"
+                      >{{ closure.start | date: 'shortTime' }} –
+                      {{ closure.end | date: 'shortTime' }}</span
+                    >
+                  } @else if (closure.scope === 'recurring') {
+                    <span class="cell--muted">{{ recurrenceSummary(closure) }}</span>
+                  } @else {
+                    <span class="cell--muted" i18n="@@admin.closure.scope.fullDay"
+                      >Día completo</span
+                    >
+                  }
+                </td>
+                <td tuiTd>{{ reasonName(closure.reason) }}</td>
+                <td tuiTd>{{ closure.authorizedBy }}</td>
+                <td tuiTd>
+                  <app-closure-status-badge [status]="statusOf(closure)" size="s" />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  } @else {
+    <app-empty-state
+      icon="@tui.calendar-x"
+      i18n-heading="@@admin.closure.history.empty.heading"
+      heading="Todavía no hay cierres registrados"
+      i18n-description="@@admin.closure.history.empty.description"
+      description="Los cierres que registres para este espacio aparecerán aquí."
+    />
+  }
+
+  <footer class="history__footer">
+    @let shown = pagedClosures().length;
+    @let total = listed().length;
+
+    <p class="history__count">
+      <span i18n="@@admin.roster.count">{total, plural,
+        =1 {Mostrando {{shown}} de 1 registro}
+        other {Mostrando {{shown}} de {{total}} registros}
+      }</span>
+    </p>
+
+    @if (pageCount() > 1) {
+      <tui-pagination [length]="pageCount()" [(index)]="pageIndex" />
+    }
+  </footer>
+</section>

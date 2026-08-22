@@ -34,7 +34,7 @@ const ITEMS: readonly AsideItem[] = [
   {
     icon: '@tui.settings',
     label: $localize`:@@admin.nav.settings:Ajustes`,
-    link: null,
+    link: '/admin/settings',
   },
 ];
 

@@ -16,63 +16,9 @@ import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 @Component({
   selector: 'app-metric-card',
   imports: [TuiAppearance, TuiAvatar, TuiCardLarge, TuiIcon, TuiSurface],
+  templateUrl: './metric-card.html',
+  styleUrl: './metric-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `
-    :host {
-      display: block;
-    }
-
-    .metric {
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-      gap: var(--univgo-space-s);
-      block-size: 100%;
-    }
-
-    .metric__heading {
-      font: var(--tui-typography-heading-h6);
-    }
-
-    .metric__value {
-      font: var(--tui-typography-heading-h4);
-      font-variant-numeric: tabular-nums;
-      letter-spacing: var(--univgo-letter-spacing-tight);
-    }
-
-    .metric__hint {
-      display: flex;
-      align-items: center;
-      gap: var(--univgo-space-xs);
-      margin: 0;
-      color: var(--tui-text-tertiary);
-      font: var(--tui-typography-ui-xs);
-    }
-
-    .metric__hint tui-icon {
-      font-size: var(--univgo-icon-inline);
-    }
-
-    .metric__hint:empty {
-      display: none;
-    }
-  `,
-  template: `
-    <article tuiCardLarge tuiSurface tuiAppearance="outline" class="metric">
-      <span [tuiAvatar]="icon()" size="m" [tuiAppearance]="tone()" aria-hidden="true"></span>
-
-      <h2 class="metric__heading">{{ heading() }}</h2>
-
-      <p class="metric__value">{{ value() }}</p>
-
-      <p class="metric__hint">
-        @if (hintIcon(); as hint) {
-          <tui-icon [icon]="hint" aria-hidden="true" />
-        }
-        <ng-content />
-      </p>
-    </article>
-  `,
 })
 export class MetricCard {
   public readonly icon = input.required<string>();
@@ -81,4 +27,6 @@ export class MetricCard {
   /** A Taiga appearance, which is what carries "this is good news" without a word for it. */
   public readonly tone = input<string>('neutral');
   public readonly hintIcon = input<string | null>(null);
+  /** 'start' keeps the roster-adjacent metrics left-aligned; 'center' suits a standalone stat tile. */
+  public readonly align = input<'start' | 'center'>('start');
 }

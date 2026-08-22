@@ -1,0 +1,248 @@
+<form tuiCardLarge tuiSurface tuiAppearance="outline" class="form" (ngSubmit)="submit()">
+  <header class="form__header">
+    <span tuiAppearance="negative" class="form__icon" aria-hidden="true">
+      <tui-icon icon="@tui.ban" />
+    </span>
+    <h2 class="form__heading" i18n="@@admin.closure.form.title">Cierre del espacio</h2>
+  </header>
+
+  <app-space-switcher
+    class="form__switcher"
+    [fullWidth]="true"
+    [spaces]="spaces()"
+    [selectedId]="spaceId()"
+    (spaceSelected)="spaceSelected.emit($event)"
+  />
+
+  <tui-textfield tuiTextfieldSize="m">
+    @if (scope() === 'recurring') {
+      <label tuiLabel [for]="formId + '-date'" i18n="@@admin.closure.form.recurring.from"
+        >Comienza el</label
+      >
+    } @else {
+      <label tuiLabel [for]="formId + '-date'" i18n="@@admin.closure.form.date"
+        >Fecha de cierre</label
+      >
+    }
+    <input
+      [id]="formId + '-date'"
+      tuiInputDate
+      name="date"
+      [min]="today"
+      [ngModel]="date()"
+      (ngModelChange)="date.set($event)"
+    />
+    <tui-calendar *tuiDropdown />
+  </tui-textfield>
+
+  <fieldset class="scope">
+    <legend i18n="@@admin.closure.form.scope">Alcance del cierre</legend>
+
+    <label appearance="" tuiBlock class="scope__option">
+      <input
+        type="radio"
+        tuiBlock
+        name="scope"
+        [ngModel]="scope()"
+        (ngModelChange)="setScope($event)"
+        [value]="'full_day'"
+      />
+      <tui-icon icon="@tui.calendar" />
+      <span i18n="@@admin.closure.form.scope.fullDay">Día completo</span>
+    </label>
+
+    <label appearance="" tuiBlock class="scope__option">
+      <input
+        type="radio"
+        tuiBlock
+        name="scope"
+        [ngModel]="scope()"
+        (ngModelChange)="setScope($event)"
+        [value]="'time_block'"
+      />
+      <tui-icon icon="@tui.clock" />
+      <span i18n="@@admin.closure.form.scope.timeBlock">Bloque específico</span>
+    </label>
+
+    <label appearance="" tuiBlock class="scope__option">
+      <input
+        type="radio"
+        tuiBlock
+        name="scope"
+        [ngModel]="scope()"
+        (ngModelChange)="setScope($event)"
+        [value]="'recurring'"
+      />
+      <tui-icon icon="@tui.repeat" />
+      <span i18n="@@admin.closure.form.scope.recurring">Bloque recurrente</span>
+    </label>
+  </fieldset>
+
+  @if (scope() === 'time_block' || scope() === 'recurring') {
+    <div class="time-range">
+      <tui-textfield tuiTextfieldSize="m">
+        <label tuiLabel [for]="formId + '-start'" i18n="@@admin.closure.form.timeFrom">Desde</label>
+        <input
+          [id]="formId + '-start'"
+          tuiInputTime
+          name="startTime"
+          [ngModel]="startTime()"
+          (ngModelChange)="startTime.set($event)"
+        />
+        <tui-data-list *tuiDropdown>
+          @for (option of startTimeOptions; track option.toString()) {
+            <button
+              tuiOption
+              type="button"
+              [value]="option"
+              [attr.aria-selected]="isStartTime(option) ? 'true' : null"
+            >
+              {{ option }}
+            </button>
+          }
+        </tui-data-list>
+      </tui-textfield>
+
+      <tui-textfield tuiTextfieldSize="m">
+        <label tuiLabel [for]="formId + '-end'" i18n="@@admin.closure.form.timeTo">Hasta</label>
+        <input
+          [id]="formId + '-end'"
+          tuiInputTime
+          name="endTime"
+          [ngModel]="endTime()"
+          (ngModelChange)="endTime.set($event)"
+        />
+        <tui-data-list *tuiDropdown>
+          @for (option of endTimeOptions; track option.toString()) {
+            <button
+              tuiOption
+              type="button"
+              [value]="option"
+              [attr.aria-selected]="isEndTime(option) ? 'true' : null"
+            >
+              {{ option }}
+            </button>
+          }
+        </tui-data-list>
+      </tui-textfield>
+    </div>
+  }
+
+  @if (scope() === 'recurring') {
+    <fieldset class="weekdays">
+      <legend i18n="@@admin.closure.form.recurring.weekdays">Se repite los</legend>
+
+      <div class="weekdays__grid">
+        @for (day of weekdayOptions; track day.value) {
+          <label tuiBlock="s" class="weekday">
+            <input
+              tuiBlock
+              type="checkbox"
+              [id]="formId + '-weekday-' + day.value"
+              [name]="'weekday-' + day.value"
+              [attr.aria-label]="day.referenceDate | date: 'EEEE'"
+              [ngModel]="weekdays().includes(day.value)"
+              (ngModelChange)="toggleWeekday(day.value)"
+            />
+            <span class="weekday__label" aria-hidden="true">{{ day.referenceDate | date: 'EEEEE' }}</span>
+          </label>
+        }
+      </div>
+    </fieldset>
+
+    <div class="recurrence-until">
+      <label class="recurrence-until__toggle" [for]="formId + '-indefinite'">
+        <input
+          type="checkbox"
+          tuiSwitch
+          [id]="formId + '-indefinite'"
+          name="indefinite"
+          [ngModel]="indefinite()"
+          (ngModelChange)="indefinite.set($event)"
+        />
+        <span i18n="@@admin.closure.form.recurring.indefinite">Sin fecha de fin</span>
+      </label>
+
+      @if (!indefinite()) {
+        <tui-textfield tuiTextfieldSize="m" class="recurrence-until__date">
+          <label tuiLabel [for]="formId + '-until'" i18n="@@admin.closure.form.recurring.until"
+            >Finaliza el</label
+          >
+          <input
+            [id]="formId + '-until'"
+            tuiInputDate
+            name="until"
+            [min]="date() ?? today"
+            [ngModel]="until()"
+            (ngModelChange)="until.set($event)"
+          />
+          <tui-calendar *tuiDropdown />
+        </tui-textfield>
+      }
+    </div>
+  }
+
+  <tui-textfield tuiTextfieldSize="m" [stringify]="reasonName">
+    <label tuiLabel [for]="formId + '-reason'" i18n="@@admin.closure.form.reason">Motivo</label>
+    <input
+      [id]="formId + '-reason'"
+      tuiSelect
+      name="reason"
+      i18n-placeholder="@@admin.closure.form.reason.placeholder"
+      placeholder="Selecciona un motivo…"
+      [ngModel]="reason()"
+      (ngModelChange)="reason.set($event)"
+    />
+    <tui-data-list *tuiDropdown>
+      @for (option of reasonOptions; track option.value) {
+        <button
+          tuiOption
+          type="button"
+          [value]="option.value"
+          [attr.aria-selected]="option.value === reason() ? 'true' : null"
+        >
+          {{ option.label }}
+        </button>
+      }
+    </tui-data-list>
+  </tui-textfield>
+
+  <tui-textfield tuiTextfieldSize="m">
+    <label tuiLabel [for]="formId + '-details'" i18n="@@admin.closure.form.details">
+      Detalles adicionales (opcional)
+    </label>
+    <textarea
+      [id]="formId + '-details'"
+      tuiTextarea
+      name="details"
+      i18n-placeholder="@@admin.closure.form.details.placeholder"
+      placeholder="Especificaciones sobre el cierre…"
+      [ngModel]="details()"
+      (ngModelChange)="details.set($event)"
+    ></textarea>
+  </tui-textfield>
+
+  <div tuiSurface tuiAppearance="warning" class="notice">
+    <tui-icon icon="@tui.triangle-alert" aria-hidden="true" />
+    <div>
+      <p class="notice__title" i18n="@@admin.closure.form.notice.title">Notificación automática</p>
+      <p class="notice__body" i18n="@@admin.closure.form.notice.body">
+        Al confirmar, se cancelarán todas las reservas activas en este periodo y se notificará de
+        inmediato a los estudiantes afectados vía correo institucional.
+      </p>
+    </div>
+  </div>
+
+  <button
+    tuiButton
+    type="submit"
+    size="l"
+    appearance="negative"
+    class="form__submit"
+    iconEnd="@tui.arrow-right"
+    [disabled]="!formValid()"
+    i18n="@@admin.closure.form.submit"
+  >
+    Cerrar espacio y cancelar reservas
+  </button>
+</form>

@@ -1,0 +1,43 @@
+<header class="intro">
+  <div class="intro__text">
+    <h1 i18n="@@admin.settings.title">Configuración y cancelación de espacio</h1>
+
+    <p class="intro__lead" i18n="@@admin.settings.lead">
+      Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o
+      incidencias.
+    </p>
+  </div>
+</header>
+
+<div class="layout">
+  <app-closure-form
+    [spaceId]="selectedSpaceId()"
+    [spaces]="spaces"
+    (spaceSelected)="selectSpace($event)"
+    (closureCreated)="addClosure($event)"
+  />
+
+  <div class="layout__side">
+    <div class="stats">
+      <app-metric-card
+        icon="@tui.calendar-x"
+        tone="negative"
+        align="center"
+        i18n-heading="@@admin.closure.stats.thisMonth"
+        heading="Cierres este mes"
+        [value]="closuresThisMonthCount()"
+      />
+
+      <app-metric-card
+        icon="@tui.wrench"
+        tone="neutral"
+        align="center"
+        i18n-heading="@@admin.closure.stats.frequentReason"
+        heading="Motivo frecuente"
+        [value]="frequentReasonLabel()"
+      />
+    </div>
+
+    <app-closure-history [closures]="spaceClosures()" />
+  </div>
+</div>

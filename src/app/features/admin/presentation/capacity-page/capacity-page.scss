@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -39,9 +41,26 @@
   background: var(--tui-text-tertiary);
 }
 
-// The product's card track: one tile on a phone, two from tablet, three from desktop.
+// Occupancy is the headline stat; "en sala" and "pendientes" are its own breakdown, not peers of
+// it, so they share a rail instead of competing for the same width. `--univgo-card-grid-columns`
+// (one/two/three even tiles) is the wrong shape here on purpose — this track is 2:1, not N-even.
 .summary {
   display: grid;
-  grid-template-columns: var(--univgo-card-grid-columns);
+  grid-template-columns: 1fr;
   gap: var(--univgo-space-l);
+
+  @media (width >= bp.$tablet) {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+}
+
+.summary__chips {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--univgo-space-l);
+
+  @media (width >= bp.$tablet) {
+    grid-template-columns: 1fr;
+  }
 }

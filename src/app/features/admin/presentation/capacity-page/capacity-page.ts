@@ -1,9 +1,9 @@
-import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { TuiButton } from '@taiga-ui/core';
 import { countExpiringSoon, occupancyOf } from '../../domain/attendance-roster';
-import { MOCK_SPACES } from '../../infrastructure/mock-attendance';
+import { MOCK_SPACE_SCHEDULE, MOCK_SPACES } from '../../infrastructure/mock-attendance';
 import { AttendeeRoster } from '../attendee-roster/attendee-roster';
+import { BlockSwitcher } from '../block-switcher/block-switcher';
 import { MetricCard } from '../metric-card/metric-card';
 import { OccupancyCard } from '../occupancy-card/occupancy-card';
 import { SpaceSwitcher } from '../space-switcher/space-switcher';
@@ -18,13 +18,13 @@ import { SpaceSwitcher } from '../space-switcher/space-switcher';
  * bar, which is part of the shell and not of this view: the URL is the one place both can read
  * without either importing the other. It also makes a filtered roster a link somebody can send.
  *
- * `docs/booking-flow.md` §11 asks the panel for four things. This is the second of them — seeing the
- * current block — and it deliberately stops there: scanning, other blocks and cancelling are their
- * own views.
+ * `docs/booking-flow.md` §11 asks the panel for four things. This covers two of them: seeing a block
+ * and consulting others — the same view, since "the current one" is just the default entry in the
+ * list `BlockSwitcher` already renders. Scanning and cancelling stay their own views.
  */
 @Component({
   selector: 'app-capacity-page',
-  imports: [AttendeeRoster, DatePipe, MetricCard, OccupancyCard, SpaceSwitcher, TuiButton],
+  imports: [AttendeeRoster, BlockSwitcher, MetricCard, OccupancyCard, SpaceSwitcher, TuiButton],
   templateUrl: './capacity-page.html',
   styleUrl: './capacity-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,9 +38,21 @@ export class CapacityPage {
   /** Which of the administrator's spaces this page is showing. Page-local: the shell has no say. */
   protected readonly selectedSpaceId = signal(MOCK_SPACES[0].spaceId);
 
+  /**
+   * Which of that space's blocks this page is showing, as its start instant. Every space shares the
+   * same opening-to-closing grid, so a slot stays selected across a space change instead of bouncing
+   * back to "now" — the administrator asked to see 16:00, not to see whichever space is showing it.
+   */
+  protected readonly selectedBlockStart = signal(MOCK_SPACES[0].start.getTime());
+
+  protected readonly blocksForSpace = computed(() =>
+    MOCK_SPACE_SCHEDULE.filter((block) => block.spaceId === this.selectedSpaceId()),
+  );
+
   protected readonly block = computed(
     () =>
-      this.spaces.find((space) => space.spaceId === this.selectedSpaceId()) ?? this.spaces[0],
+      this.blocksForSpace().find((block) => block.start.getTime() === this.selectedBlockStart()) ??
+      this.blocksForSpace()[0],
   );
 
   protected readonly occupancy = computed(() => occupancyOf(this.block()));
@@ -59,5 +71,9 @@ export class CapacityPage {
 
   protected selectSpace(spaceId: string): void {
     this.selectedSpaceId.set(spaceId);
+  }
+
+  protected selectBlock(start: number): void {
+    this.selectedBlockStart.set(start);
   }
 }

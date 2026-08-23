@@ -895,12 +895,16 @@
         <target> Cancelled </target>
       </trans-unit>
       <trans-unit id="admin.capacity.title" datatype="html">
-        <source>Bloque actual</source>
-        <target>Current block</target>
+        <source>Aforo del bloque</source>
+        <target>Block occupancy</target>
       </trans-unit>
       <trans-unit id="admin.capacity.blockRange" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ block().start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ block().end | date: &apos;shortTime&apos; }}"/></source>
+        <source><x id="INTERPOLATION" equiv-text="{{ current()?.start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ current()?.end | date: &apos;shortTime&apos; }}"/></source>
         <target><x id="INTERPOLATION"/> – <x id="INTERPOLATION_1"/></target>
+      </trans-unit>
+      <trans-unit id="admin.blockSwitcher.label" datatype="html">
+        <source>Cambiar de bloque horario</source>
+        <target>Switch time block</target>
       </trans-unit>
       <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
         <source> Registrar entrada manual </source>

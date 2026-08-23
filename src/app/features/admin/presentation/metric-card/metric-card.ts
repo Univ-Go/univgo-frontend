@@ -29,4 +29,6 @@ export class MetricCard {
   public readonly hintIcon = input<string | null>(null);
   /** 'start' keeps the roster-adjacent metrics left-aligned; 'center' suits a standalone stat tile. */
   public readonly align = input<'start' | 'center'>('start');
+  /** Overrides the icon size `align` would otherwise imply, for a tile that needs more visual weight. */
+  public readonly iconSize = input<'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'>();
 }

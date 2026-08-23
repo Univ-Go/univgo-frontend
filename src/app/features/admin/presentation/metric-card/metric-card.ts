@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { TuiAppearance, TuiIcon } from '@taiga-ui/core';
+import { TuiAppearance } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 
@@ -15,7 +15,7 @@ import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
  */
 @Component({
   selector: 'app-metric-card',
-  imports: [TuiAppearance, TuiAvatar, TuiCardLarge, TuiIcon, TuiSurface],
+  imports: [TuiAppearance, TuiAvatar, TuiCardLarge, TuiSurface],
   templateUrl: './metric-card.html',
   styleUrl: './metric-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

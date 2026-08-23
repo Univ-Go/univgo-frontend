@@ -78,6 +78,10 @@
   block-size: 3.5rem;
   padding: 0;
   transform: translateY(-0.75rem);
+  // Taiga dims every disabled [tuiAppearance] to --tui-disabled-opacity; the admin variant's centre
+  // action is disabled only because its flow does not exist yet, not because it is unavailable the
+  // way a greyed-out control usually means, so it keeps the full brand colour either way.
+  opacity: 1;
   box-shadow:
     0 0 0 0.375rem var(--tui-background-base),
     var(--tui-shadow-small);

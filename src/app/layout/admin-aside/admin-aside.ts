@@ -3,43 +3,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiButton } from '@taiga-ui/core';
 import { APP_CONFIG } from '../../core/config/app-config';
 import { BrandLogo } from '../../shared/brand-logo/brand-logo';
+import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
 
 /**
- * A destination of the panel. `link` is `null` while the view has not shipped: a `routerLink`
- * pointing at a route that does not exist fails the whole navigation, and the item is disabled
- * rather than silently doing nothing when it is pressed.
- */
-interface AsideItem {
-  readonly icon: string;
-  readonly label: string;
-  readonly link: string | null;
-}
-
-const ITEMS: readonly AsideItem[] = [
-  {
-    icon: '@tui.scan-line',
-    label: $localize`:@@admin.nav.scanner:Escáner`,
-    link: null,
-  },
-  {
-    icon: '@tui.users',
-    label: $localize`:@@admin.nav.capacity:Gestión de aforo`,
-    link: '/admin/capacity',
-  },
-  {
-    icon: '@tui.calendar-days',
-    label: $localize`:@@admin.nav.calendar:Calendario`,
-    link: null,
-  },
-  {
-    icon: '@tui.settings',
-    label: $localize`:@@admin.nav.settings:Ajustes`,
-    link: '/admin/settings',
-  },
-];
-
-/**
- * Level 1: the panel's destinations.
+ * Level 1: the panel's destinations, as a column.
  *
  * Not built on `tuiNavigationAside` for the same reason the application bar is not built on
  * `tuiNavigationHeader`: that component is `position: fixed`, paints itself in `--tui-theme-color`
@@ -47,10 +14,13 @@ const ITEMS: readonly AsideItem[] = [
  * and the rounded corners this product already decided against. The landmark is plain semantic
  * markup; every control inside it is still a Taiga component.
  *
- * It is a column beside the content on a desktop and a scrolling row above it on anything narrower,
- * where a fixed sidebar would eat the width the roster needs. The labels stay visible in both: an
- * icon rail would leave every destination without an accessible name unless each one repeated its
- * own label in an attribute.
+ * Tablet and up only: below that, `AppTabBar` renders these same destinations (`ADMIN_NAV_ITEMS`) as
+ * its own admin variant, the fixed bottom bar the student shell already has — at the same breakpoint
+ * that bar already hides itself at, so the two hand off without a gap where neither is visible. A
+ * column and a bottom bar are different enough shapes — pill buttons with visible labels versus an
+ * icon-over-label cell five across a phone's width — that reusing one component's markup for both
+ * fights it more than it saves; sharing the destination data instead is what keeps the two from
+ * drifting apart.
  */
 @Component({
   selector: 'app-admin-aside',
@@ -100,32 +70,11 @@ const ITEMS: readonly AsideItem[] = [
       inline-size: 100%;
     }
 
-    @media (width < bp.$desktop) {
+    // AppTabBar takes over below tablet, the same pixel it hides itself above; the column has
+    // nothing left to do at that width.
+    @media (width < bp.$tablet) {
       :host {
-        flex-direction: row;
-        align-items: center;
-        gap: var(--univgo-space-l);
-        padding: var(--univgo-space-s) var(--univgo-layout-gutter);
-        border-inline-end: none;
-        border-block-end: 1px solid var(--tui-border-normal);
-      }
-
-      // The mark is in the bar at these widths, and one wordmark on screen is enough.
-      .brand {
         display: none;
-      }
-
-      .nav {
-        flex-direction: row;
-        overflow-x: auto;
-        gap: var(--univgo-space-s);
-        // Room for the focus ring, which the scroll container would otherwise clip.
-        padding: var(--univgo-space-xs);
-      }
-
-      .nav__item {
-        inline-size: auto;
-        flex: none;
       }
     }
   `,
@@ -175,5 +124,5 @@ const ITEMS: readonly AsideItem[] = [
 })
 export class AdminAside {
   protected readonly organizationName = inject(APP_CONFIG).organizationName;
-  protected readonly items = ITEMS;
+  protected readonly items = ADMIN_NAV_ITEMS;
 }

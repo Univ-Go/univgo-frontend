@@ -958,6 +958,10 @@
         <source>Gestión de aforo</source>
         <target>Capacity management</target>
       </trans-unit>
+      <trans-unit id="admin.nav.capacityShort" datatype="html">
+        <source>Aforo</source>
+        <target>Capacity</target>
+      </trans-unit>
       <trans-unit id="admin.nav.calendar" datatype="html">
         <source>Calendario</source>
         <target>Calendar</target>
@@ -973,6 +977,10 @@
       <trans-unit id="admin.nav.label" datatype="html">
         <source>Secciones del panel</source>
         <target>Panel sections</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.manualBooking" datatype="html">
+        <source>Reservar por un estudiante</source>
+        <target>Book on a student's behalf</target>
       </trans-unit>
       <trans-unit id="admin.search.label" datatype="html">
         <source>Buscar estudiante o ID</source>

@@ -30,7 +30,7 @@
 
 // From here up the aside is a column and signs the panel itself. Hidden rather than duplicated:
 // two wordmarks would be two entries in the accessibility tree for one product.
-@media (width >= bp.$desktop) {
+@media (width >= bp.$tablet) {
   .bar__logo {
     display: none;
   }

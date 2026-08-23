@@ -1,62 +1,102 @@
 <nav class="bar" i18n-aria-label="@@navigation.mainLabel" aria-label="Navegación principal">
-  <a
-    class="tab"
-    routerLink="/home"
-    routerLinkActive="tab--active"
-    [routerLinkActiveOptions]="{ exact: true }"
-  >
-    <tui-icon icon="@tui.house" aria-hidden="true" />
-    <span i18n="@@navigation.home">Inicio</span>
-  </a>
+  @if (admin()) {
+    @for (item of adminItems; track item.label) {
+      @if (item.link; as link) {
+        <a
+          class="tab"
+          [routerLink]="link"
+          routerLinkActive="tab--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <tui-icon [icon]="item.icon" aria-hidden="true" />
+          <span>{{ item.compactLabel ?? item.label }}</span>
+        </a>
+      } @else {
+        <button type="button" class="tab" disabled>
+          <tui-icon [icon]="item.icon" aria-hidden="true" />
+          <span>{{ item.compactLabel ?? item.label }}</span>
+        </button>
+      }
 
-  <a
-    class="tab"
-    routerLink="/spaces"
-    routerLinkActive="tab--active"
-    [routerLinkActiveOptions]="spacesLinkOptions"
-  >
-    <tui-icon icon="@tui.layout-grid" aria-hidden="true" />
-    <span i18n="@@navigation.spaces">Espacios</span>
-  </a>
+      <!-- Falls between the second and third destination in the markup, which is what puts it in
+           the middle column of the grid below — no explicit placement needed, the same way the
+           student variant's own raised link does not need one either. -->
+      @if ($index === 1) {
+        <!-- Booking on a student's behalf has no flow yet, so the action sits here inert like the
+             panel's other unshipped destinations above. -->
+        <button
+          tuiButton
+          type="button"
+          appearance="primary"
+          size="l"
+          iconStart="@tui.calendar-plus"
+          class="fab"
+          disabled
+          i18n-aria-label="@@admin.nav.manualBooking"
+          aria-label="Reservar por un estudiante"
+        ></button>
+      }
+    }
+  } @else {
+    <a
+      class="tab"
+      routerLink="/home"
+      routerLinkActive="tab--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <tui-icon icon="@tui.house" aria-hidden="true" />
+      <span i18n="@@navigation.home">Inicio</span>
+    </a>
 
-  <!-- The label rides in `aria-label` rather than on screen: the plus reads as "new" on its own at
-       this size, and a caption under a raised button would push the bar taller than the tabs need. -->
-  <a
-    tuiButton
-    routerLink="/book/space"
-    appearance="primary"
-    size="l"
-    iconStart="@tui.plus"
-    class="fab"
-    i18n-aria-label="@@navigation.newReservation"
-    aria-label="Nueva reserva"
-  ></a>
+    <a
+      class="tab"
+      routerLink="/spaces"
+      routerLinkActive="tab--active"
+      [routerLinkActiveOptions]="spacesLinkOptions"
+    >
+      <tui-icon icon="@tui.layout-grid" aria-hidden="true" />
+      <span i18n="@@navigation.spaces">Espacios</span>
+    </a>
 
-  <a
-    class="tab"
-    routerLink="/reservations"
-    routerLinkActive="tab--active"
-    [routerLinkActiveOptions]="{ exact: true }"
-  >
-    <tui-icon icon="@tui.calendar-days" aria-hidden="true" />
-    <span i18n="@@navigation.reservations">Mis Reservas</span>
-  </a>
+    <!-- The label rides in `aria-label` rather than on screen: the plus reads as "new" on its own at
+         this size, and a caption under a raised button would push the bar taller than the tabs need. -->
+    <a
+      tuiButton
+      routerLink="/book/space"
+      appearance="primary"
+      size="l"
+      iconStart="@tui.plus"
+      class="fab"
+      i18n-aria-label="@@navigation.newReservation"
+      aria-label="Nueva reserva"
+    ></a>
 
-  <!-- The bar is pinned to the bottom edge, so the menu can only open upward: the direction is
-       fixed rather than measured, and the appearance is what lets the animation follow it. -->
-  <button
-    type="button"
-    class="tab"
-    [tuiDropdown]="accountMenu"
-    [(tuiDropdownOpen)]="menuOpen"
-    tuiDropdownDirection="top"
-    tuiDropdownAppearance="tab-bar"
-    i18n-aria-label="@@navigation.accountMenu"
-    aria-label="Tu cuenta"
-  >
-    <tui-icon icon="@tui.circle-user-round" aria-hidden="true" />
-    <span i18n="@@navigation.account">Cuenta</span>
-  </button>
+    <a
+      class="tab"
+      routerLink="/reservations"
+      routerLinkActive="tab--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <tui-icon icon="@tui.calendar-days" aria-hidden="true" />
+      <span i18n="@@navigation.reservations">Mis Reservas</span>
+    </a>
+
+    <!-- The bar is pinned to the bottom edge, so the menu can only open upward: the direction is
+         fixed rather than measured, and the appearance is what lets the animation follow it. -->
+    <button
+      type="button"
+      class="tab"
+      [tuiDropdown]="accountMenu"
+      [(tuiDropdownOpen)]="menuOpen"
+      tuiDropdownDirection="top"
+      tuiDropdownAppearance="tab-bar"
+      i18n-aria-label="@@navigation.accountMenu"
+      aria-label="Tu cuenta"
+    >
+      <tui-icon icon="@tui.circle-user-round" aria-hidden="true" />
+      <span i18n="@@navigation.account">Cuenta</span>
+    </button>
+  }
 </nav>
 
 <ng-template #accountMenu>

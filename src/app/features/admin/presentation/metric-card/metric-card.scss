@@ -16,6 +16,14 @@
   block-size: 100%;
 }
 
+// A standalone tile earns its height back: the icon anchors the top, and the content — already
+// centred within itself — grows to fill what is left, instead of one horizontal band floating in
+// the middle of a tall card.
+.metric__body--stacked {
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
 .metric__icon {
   flex-shrink: 0;
 }

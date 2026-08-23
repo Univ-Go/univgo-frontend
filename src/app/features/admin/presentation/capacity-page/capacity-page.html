@@ -1,0 +1,67 @@
+<header class="intro">
+  <div class="intro__text">
+    <h1 i18n="@@admin.capacity.title">Bloque actual</h1>
+
+    <!-- The space keeps its own element: interpolating a name into a sentence ties the sentence's
+         grammar to the name, and that does not survive translation. It is also the control that
+         changes which block the page shows, so it sits right where the name used to sit. -->
+    <p class="intro__lead">
+      <span i18n="@@admin.capacity.blockRange"
+        >{{ block().start | date: 'shortTime' }} – {{ block().end | date: 'shortTime' }}</span
+      >
+      <span class="intro__dot" aria-hidden="true"></span>
+      <app-space-switcher
+        [spaces]="spaces"
+        [selectedId]="selectedSpaceId()"
+        (spaceSelected)="selectSpace($event)"
+      />
+    </p>
+  </div>
+
+  <!-- Letting an administrator wave someone in whose reservation expired is the open question of
+       `docs/booking-flow.md` §11: it needs a decision from the university before it does anything,
+       so the control is here and inert, like every other action in the mocked views. -->
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="primary"
+    iconStart="@tui.user-plus"
+    i18n="@@admin.capacity.manualCheckIn"
+  >
+    Registrar entrada manual
+  </button>
+</header>
+
+<div class="summary">
+  <app-occupancy-card [occupancy]="occupancy()" />
+
+  <app-metric-card
+    icon="@tui.circle-check"
+    tone="positive"
+    i18n-heading="@@admin.capacity.inRoom.title"
+    heading="En sala"
+    [value]="occupancy().inRoom"
+  >
+    <ng-container i18n="@@admin.capacity.inRoom.hint"
+      >de {{ occupancy().occupied }} plazas ocupadas</ng-container
+    >
+  </app-metric-card>
+
+  <app-metric-card
+    icon="@tui.hourglass"
+    tone="warning"
+    i18n-heading="@@admin.capacity.pending.title"
+    heading="Pendientes"
+    [value]="occupancy().pending"
+    [hintIcon]="expiryIcon()"
+  >
+    <ng-container i18n="@@admin.capacity.pending.hint">{expiringSoon(), plural,
+      =0 {ninguna a punto de expirar}
+      =1 {1 reserva a punto de expirar}
+      other {{{expiringSoon()}} reservas a punto de expirar}
+    }</ng-container>
+  </app-metric-card>
+</div>
+
+<app-attendee-roster [attendees]="block().attendees" [query]="query()" />

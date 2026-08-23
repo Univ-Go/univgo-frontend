@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+  min-inline-size: 0;
+}
+
+.identity__text {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.identity__name {
+  color: var(--tui-text-primary);
+  font: var(--tui-typography-ui-s);
+}
+
+.identity__faculty {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}

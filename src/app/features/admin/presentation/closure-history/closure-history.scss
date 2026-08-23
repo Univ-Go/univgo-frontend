@@ -1,0 +1,144 @@
+:host {
+  display: block;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.history__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.history__title {
+  font: var(--tui-typography-heading-h6);
+}
+
+// The card sets its own padding, and the table has to reach both of its edges to look like part of
+// it rather than a panel dropped inside one.
+.history__scroll {
+  overflow-x: auto;
+  margin-inline: calc(-1 * var(--univgo-space-xl));
+  padding-inline: var(--univgo-space-xl);
+}
+
+.history__table {
+  inline-size: 100%;
+  border-collapse: collapse;
+
+  th {
+    border: none;
+    border-block-end: 1px solid var(--tui-border-normal);
+    background: transparent;
+    white-space: nowrap;
+  }
+
+  td {
+    border: none;
+    border-block-end: 1px solid var(--tui-border-normal);
+  }
+
+  tr:last-child td {
+    border-block-end: none;
+  }
+}
+
+.cell--code {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cell--muted {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  padding-block-end: var(--univgo-space-l);
+  border-block-end: 1px solid var(--tui-border-normal);
+}
+
+.card:last-child {
+  padding-block-end: 0;
+  border-block-end: none;
+}
+
+.card__top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--univgo-space-s);
+  inline-size: 100%;
+}
+
+.card__date {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  font: var(--tui-typography-ui-s);
+}
+
+.card__time {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.card__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--univgo-space-m);
+  margin: 0;
+  inline-size: 100%;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+  overflow-wrap: break-word;
+}
+
+.history__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.history__count {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}

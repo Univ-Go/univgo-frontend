@@ -1,8 +1,8 @@
+import type { CheckboxFilterOption } from '../../../shared/checkbox-filter/checkbox-filter';
 import type { SpaceCategory } from '../../spaces/domain/space';
 import { SPACE_CATEGORIES } from '../../spaces/domain/space';
 import type { ReservationStatus } from '../domain/reservation';
 import { RESERVATION_STATUSES } from '../domain/reservation';
-import type { CheckboxFilterOption } from './checkbox-filter/checkbox-filter';
 
 /**
  * How the list's filters read. The wording is plural where a card's badge is singular — "Próximas"

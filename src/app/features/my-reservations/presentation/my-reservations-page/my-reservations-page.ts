@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/c
 import type { TuiDayRange } from '@taiga-ui/cdk';
 import { TuiLink } from '@taiga-ui/core';
 import { TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
+import { CheckboxFilter } from '../../../../shared/checkbox-filter/checkbox-filter';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { FilterDropdown } from '../../../../shared/filter-dropdown/filter-dropdown';
 import type { SpaceCategory } from '../../../spaces/domain/space';
 import { SPACE_CATEGORIES } from '../../../spaces/domain/space';
 import type { ReservationStatus } from '../../domain/reservation';
 import { RESERVATION_STATUSES } from '../../domain/reservation';
 import { listReservations } from '../../domain/reservation-catalog';
 import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
-import { CheckboxFilter } from '../checkbox-filter/checkbox-filter';
-import { FilterDropdown } from '../filter-dropdown/filter-dropdown';
 import { ReservationCard } from '../reservation-card/reservation-card';
 import { RESERVATION_CATEGORY_OPTIONS, RESERVATION_STATUS_OPTIONS } from '../reservation-filters';
 

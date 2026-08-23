@@ -1,0 +1,142 @@
+<section tuiCardLarge tuiSurface tuiAppearance="outline" class="roster">
+  <header class="roster__header">
+    <h2 class="roster__title" i18n="@@admin.roster.title">Lista de estudiantes</h2>
+
+    <app-checkbox-filter
+      [label]="statusLabel"
+      [options]="statusOptions"
+      [selected]="selectedStatuses()"
+      (toggled)="toggleStatus($event.value, $event.checked)"
+    />
+  </header>
+
+  @if (pagedAttendees().length > 0) {
+    @if (compact()) {
+      <!-- A five-column table on a phone is a table nobody can read. The same row, stacked: who the
+           student is, what the desk needs to know about them, and what can be done about it. -->
+      <ul class="cards">
+        @for (attendee of pagedAttendees(); track attendee.id) {
+          <li class="card">
+            <div class="card__top">
+              <app-attendee-identity [attendee]="attendee" />
+              <app-attendee-status-badge [status]="attendee.status" size="s" />
+            </div>
+
+            <dl class="card__facts">
+              <div class="fact">
+                <dt i18n="@@admin.roster.column.universityId">ID universitario</dt>
+                <dd>{{ attendee.universityId }}</dd>
+              </div>
+              <div class="fact">
+                <dt i18n="@@admin.roster.column.checkedInAt">Hora de entrada</dt>
+                <dd>
+                  @if (attendee.checkedInAt; as arrival) {
+                    {{ arrival | date: 'shortTime' }}
+                  } @else {
+                    <span class="cell--pending" i18n="@@admin.roster.notCheckedIn"
+                      >Sin registrar</span
+                    >
+                  }
+                </dd>
+              </div>
+            </dl>
+
+            @if (actionFor(attendee); as action) {
+              <button
+                tuiButton
+                type="button"
+                size="s"
+                [appearance]="action.appearance"
+                [iconStart]="action.icon"
+              >
+                {{ action.label }}
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    } @else {
+      <!-- The table scrolls inside the card rather than widening the page: five columns do not fit a
+           tablet, and a page that scrolls sideways drags the navigation along with it. -->
+      <div class="roster__scroll">
+        <!-- The library's own table, cell by cell rather than through `tuiTbody`'s row generator:
+             that one prints a property per column, and these cells are an avatar, a badge and a
+             button. `tuiTable`, `tuiTh` and `tuiTd` are what carry the table's look either way. -->
+        <table tuiTable size="m" class="roster__table">
+          <thead>
+            <tr>
+              <th tuiTh i18n="@@admin.roster.column.student">Estudiante</th>
+              <th tuiTh i18n="@@admin.roster.column.universityId">ID universitario</th>
+              <th tuiTh i18n="@@admin.roster.column.checkedInAt">Hora de entrada</th>
+              <th tuiTh i18n="@@admin.roster.column.status">Estado</th>
+              <th tuiTh i18n="@@admin.roster.column.actions">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (attendee of pagedAttendees(); track attendee.id) {
+              <tr>
+                <td tuiTd>
+                  <app-attendee-identity [attendee]="attendee" />
+                </td>
+                <td tuiTd class="cell--code">{{ attendee.universityId }}</td>
+                <td tuiTd class="cell--code">
+                  @if (attendee.checkedInAt; as arrival) {
+                    {{ arrival | date: 'shortTime' }}
+                  } @else {
+                    <span class="cell--pending" i18n="@@admin.roster.notCheckedIn"
+                      >Sin registrar</span
+                    >
+                  }
+                </td>
+                <td tuiTd>
+                  <app-attendee-status-badge [status]="attendee.status" size="s" />
+                </td>
+                <td tuiTd>
+                  @if (actionFor(attendee); as action) {
+                    <!-- The name rides in the label: the column header does not reach a screen
+                         reader that jumped straight to the button. -->
+                    <button
+                      tuiIconButton
+                      type="button"
+                      size="s"
+                      [appearance]="action.appearance"
+                      [iconStart]="action.icon"
+                      [attr.aria-label]="action.label + ': ' + attendee.name"
+                    ></button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  } @else {
+    <app-empty-state
+      icon="@tui.users"
+      i18n-heading="@@admin.roster.empty.heading"
+      heading="No hay estudiantes con estos filtros"
+      i18n-description="@@admin.roster.empty.description"
+      description="Prueba con otro estado, o borra lo que hayas escrito en el buscador."
+    />
+  }
+
+  <footer class="roster__footer">
+    @let shown = pagedAttendees().length;
+    @let total = listed().length;
+
+    <!-- The plural sits in an inline element for the reason the catalogue's does: a block one lets
+         the formatter pad it, and Angular then extracts the ICU as a second, unnamed unit. -->
+    <p class="roster__count">
+      <span i18n="@@admin.roster.count">{total, plural,
+        =1 {Mostrando {{shown}} de 1 registro}
+        other {Mostrando {{shown}} de {{total}} registros}
+      }</span>
+    </p>
+
+    @if (pageCount() > 1) {
+      <tui-pagination [length]="pageCount()" [(index)]="pageIndex" />
+    }
+  </footer>
+</section>

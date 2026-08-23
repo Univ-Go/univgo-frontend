@@ -1,0 +1,19 @@
+:host {
+  display: inline-flex;
+}
+
+// The trigger's own content sizes it, so with only a leading pin icon the trailing chevron sits
+// pinned against the space name instead of reading as the button's own trailing affordance. Pushing
+// it to the far edge is what makes it read as "this opens a picker" rather than a second label icon.
+button {
+  min-inline-size: 12rem;
+  justify-content: space-between;
+}
+
+:host([data-full]) {
+  display: flex;
+}
+
+:host([data-full]) button {
+  inline-size: 100%;
+}

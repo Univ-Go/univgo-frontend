@@ -1,0 +1,39 @@
+<article tuiCardLarge tuiSurface tuiAppearance="outline" class="occupancy">
+  <header>
+    <h2 class="occupancy__heading" i18n="@@admin.capacity.occupancy.title">Aforo total</h2>
+    <p class="occupancy__lead" i18n="@@admin.capacity.occupancy.lead">
+      Capacidad máxima permitida
+    </p>
+  </header>
+
+  <dl class="counts">
+    <div class="count count--occupied">
+      <dt class="count__label" i18n="@@admin.capacity.occupancy.occupied">Ocupadas</dt>
+      <dd class="count__value">{{ occupancy().occupied | number: '2.0-0' }}</dd>
+    </div>
+
+    <div class="counts__divider" aria-hidden="true"></div>
+
+    <div class="count count--free">
+      <dt class="count__label" i18n="@@admin.capacity.occupancy.free">
+        Libres (de {{ occupancy().capacity }})
+      </dt>
+      <dd class="count__value">{{ occupancy().free | number: '2.0-0' }}</dd>
+    </div>
+  </dl>
+
+  <!-- The rate below is the same number in words, so the meter itself adds nothing for a screen
+       reader and is hidden from it rather than read out twice. -->
+  <progress
+    tuiProgressBar
+    size="m"
+    class="occupancy__meter"
+    aria-hidden="true"
+    [value]="occupancy().ratio"
+    [max]="1"
+  ></progress>
+
+  <p class="occupancy__rate" i18n="@@admin.capacity.occupancy.rate">
+    {{ occupancy().ratio | percent }} de ocupación
+  </p>
+</article>

@@ -1,0 +1,133 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.form__header {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.form__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tui-height-s);
+  block-size: var(--tui-height-s);
+  border-radius: var(--tui-radius-l);
+  background: var(--tui-background-accent-1);
+  color: var(--tui-text-negative);
+}
+
+.form__heading {
+  font: var(--tui-typography-heading-h6);
+}
+
+.scope {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--univgo-space-m);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.scope legend {
+  grid-column: 1 / -1;
+  margin-block-end: var(--univgo-space-s);
+  padding: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+.scope__option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  text-align: center;
+}
+
+.time-range {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--univgo-space-m);
+}
+
+.weekdays {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.weekdays legend {
+  margin-block-end: var(--univgo-space-s);
+  padding: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+// Fixed 7-column row: a single-letter label stays legible at any width the card reaches, so all
+// seven weekdays read as one row instead of wrapping. Otherwise the same card `BookingSlotPicker`
+// uses for its day strip, minus the day number: a recurring closure names a weekday, not a date.
+.weekdays__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--univgo-space-xs);
+}
+
+.weekday {
+  justify-content: center;
+  min-block-size: var(--tui-height-m);
+  text-align: center;
+}
+
+.weekday__label {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-s);
+  text-transform: capitalize;
+}
+
+.recurrence-until {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.recurrence-until__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+.recurrence-until__date {
+  flex: 1 1 auto;
+  min-inline-size: 12rem;
+}
+
+.notice {
+  display: flex;
+  gap: var(--univgo-space-s);
+  border-radius: var(--tui-radius-m);
+  padding: var(--univgo-space-m);
+}
+
+.notice__title {
+  margin: 0 0 var(--univgo-space-xs);
+  font: var(--tui-typography-ui-s);
+  font-weight: 700;
+}
+
+.notice__body {
+  margin: 0;
+  font: var(--tui-typography-ui-xs);
+}
+
+.form__submit {
+  inline-size: 100%;
+}

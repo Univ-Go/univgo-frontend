@@ -95,6 +95,14 @@ tui-dropdown[data-appearance='tab-bar'] {
   --tui-from: translateY(1rem);
 }
 
+// `TuiOption` has no built-in notion of "the current value of the field this list belongs to" — the
+// space switcher, the closure form's time and reason pickers all mark it by hand with
+// `aria-selected`. Global because every one of them needs the same fill, and redundant with each
+// one's own check icon (WCAG 1.4.1: never color-only) rather than replacing it.
+[tuiOption][aria-selected='true'] {
+  background: var(--tui-background-neutral-1);
+}
+
 // Taiga draws focus for its own components; this covers the product's native elements.
 :focus-visible {
   outline: var(--tui-stroke-width) solid var(--tui-border-focus);

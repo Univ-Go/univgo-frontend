@@ -1,0 +1,70 @@
+<header class="bar">
+  <!-- One wordmark on screen at a time: the aside signs the panel where it is a column, so the bar
+       hides this one from that width up. The stylesheet decides, not a signal — the aside changes
+       shape in CSS, and a second opinion in TypeScript would need the same number written twice. -->
+  <a class="bar__logo" routerLink="/admin/capacity">
+    <app-brand-logo />
+  </a>
+
+  <!-- Nothing to submit: the roster answers as the field changes. The handler is what keeps Enter
+       from reloading the page. -->
+  <form class="bar__search" (submit)="$event.preventDefault()">
+    <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
+      <label tuiLabel for="admin-search" i18n="@@admin.search.label">Buscar estudiante o ID</label>
+      <input
+        id="admin-search"
+        tuiInput
+        name="query"
+        autocomplete="off"
+        [ngModel]="query()"
+        (ngModelChange)="search($event)"
+      />
+    </tui-textfield>
+  </form>
+
+  <div class="bar__actions">
+    <tui-badged-content>
+      <tui-badge-notification tuiSlot="top" size="s" />
+      <button
+        tuiIconButton
+        type="button"
+        appearance="flat"
+        size="s"
+        iconStart="@tui.bell"
+        i18n-aria-label="@@navigation.notifications"
+        aria-label="Notificaciones"
+      ></button>
+    </tui-badged-content>
+
+    <button
+      tuiIconButton
+      type="button"
+      appearance="flat"
+      size="s"
+      iconStart="@tui.circle-help"
+      i18n-aria-label="@@admin.help"
+      aria-label="Ayuda"
+    ></button>
+
+    <app-language-selector />
+    <app-theme-toggle />
+
+    <button
+      tuiAvatar
+      type="button"
+      size="m"
+      appearance="primary"
+      class="bar__profile"
+      i18n-aria-label="@@navigation.accountMenu"
+      aria-label="Tu cuenta"
+      [tuiDropdown]="accountMenu"
+      [(tuiDropdownOpen)]="menuOpen"
+    >
+      {{ initials }}
+    </button>
+  </div>
+</header>
+
+<ng-template #accountMenu>
+  <app-account-menu />
+</ng-template>

@@ -798,6 +798,386 @@
         <source>{VAR_PLURAL, plural, =0 {Filtros} other {Filtros (<x id="INTERPOLATION"/>)}}</source>
         <target>{VAR_PLURAL, plural, =0 {Filters} other {Filters (<x id="INTERPOLATION"/>)}}</target>
       </trans-unit>
+      <trans-unit id="admin.capacity.pageTitle" datatype="html">
+        <source>Gestión de aforo</source>
+        <target>Capacity management</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pageDescription" datatype="html">
+        <source>Consulta el aforo del bloque actual, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
+        <target>Check the current block's capacity, who has checked in, and which bookings are still waiting to check in.</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.inProgress" datatype="html">
+        <source>En sala</source>
+        <target>In the room</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.reserved" datatype="html">
+        <source>Pendientes</source>
+        <target>Pending</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.completed" datatype="html">
+        <source>Finalizadas</source>
+        <target>Completed</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.expired" datatype="html">
+        <source>Expiradas</source>
+        <target>Expired</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.cancelled" datatype="html">
+        <source>Canceladas</source>
+        <target>Cancelled</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.title" datatype="html">
+        <source>Lista de estudiantes</source>
+        <target>Student list</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.universityId" datatype="html">
+        <source>ID universitario</source>
+        <target>University ID</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.checkedInAt" datatype="html">
+        <source>Hora de entrada</source>
+        <target>Check-in time</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.notCheckedIn" datatype="html">
+        <source>Sin registrar</source>
+        <target>Not checked in</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.student" datatype="html">
+        <source>Estudiante</source>
+        <target>Student</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.status" datatype="html">
+        <source>Estado</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.column.actions" datatype="html">
+        <source>Acciones</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.empty.heading" datatype="html">
+        <source>No hay estudiantes con estos filtros</source>
+        <target>No students match these filters</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.empty.description" datatype="html">
+        <source>Prueba con otro estado, o borra lo que hayas escrito en el buscador.</source>
+        <target>Try a different status, or clear what you typed in the search box.</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {Mostrando <x id="INTERPOLATION"/> de 1 registro} other {Mostrando <x id="INTERPOLATION"/> de <x id="INTERPOLATION_1"/> registros}}</source>
+        <target>{VAR_PLURAL, plural, =1 {Showing <x id="INTERPOLATION"/> of 1 record} other {Showing <x id="INTERPOLATION"/> of <x id="INTERPOLATION_1"/> records}}</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.action.checkIn" datatype="html">
+        <source>Registrar entrada</source>
+        <target>Check in</target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.label" datatype="html">
+        <source>Estado</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.inProgress" datatype="html">
+        <source> En sala </source>
+        <target> In the room </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.reserved" datatype="html">
+        <source> Pendiente </source>
+        <target> Pending </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.completed" datatype="html">
+        <source> Finalizada </source>
+        <target> Completed </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.expired" datatype="html">
+        <source> Expiró </source>
+        <target> Expired </target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.cancelled" datatype="html">
+        <source> Cancelada </source>
+        <target> Cancelled </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.title" datatype="html">
+        <source>Bloque actual</source>
+        <target>Current block</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.blockRange" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ block().start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ block().end | date: &apos;shortTime&apos; }}"/></source>
+        <target><x id="INTERPOLATION"/> – <x id="INTERPOLATION_1"/></target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
+        <source> Registrar entrada manual </source>
+        <target> Register manual check-in </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.inRoom.title" datatype="html">
+        <source>En sala</source>
+        <target>In the room</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.inRoom.hint" datatype="html">
+        <source>de <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> plazas ocupadas</source>
+        <target>of <x id="INTERPOLATION"/> seats occupied</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pending.title" datatype="html">
+        <source>Pendientes</source>
+        <target>Pending</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.pending.hint" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {ninguna a punto de expirar} =1 {1 reserva a punto de expirar} other {<x id="INTERPOLATION"/> reservas a punto de expirar}}</source>
+        <target>{VAR_PLURAL, plural, =0 {none about to expire} =1 {1 booking about to expire} other {<x id="INTERPOLATION"/> bookings about to expire}}</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.title" datatype="html">
+        <source>Aforo total</source>
+        <target>Total capacity</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.lead" datatype="html">
+        <source> Capacidad máxima permitida </source>
+        <target> Maximum allowed capacity </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.occupied" datatype="html">
+        <source>Ocupadas</source>
+        <target>Occupied</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.free" datatype="html">
+        <source> Libres (de <x id="INTERPOLATION" equiv-text="{{ occupancy().capacity }}"/>) </source>
+        <target> Free (of <x id="INTERPOLATION"/>) </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.occupancy.rate" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().ratio | percent }}"/> de ocupación </source>
+        <target> <x id="INTERPOLATION"/> occupancy </target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSwitcher.label" datatype="html">
+        <source>Cambiar de espacio</source>
+        <target>Switch space</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.scanner" datatype="html">
+        <source>Escáner</source>
+        <target>Scanner</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.capacity" datatype="html">
+        <source>Gestión de aforo</source>
+        <target>Capacity management</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.calendar" datatype="html">
+        <source>Calendario</source>
+        <target>Calendar</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.settings" datatype="html">
+        <source>Ajustes</source>
+        <target>Settings</target>
+      </trans-unit>
+      <trans-unit id="admin.brandRole" datatype="html">
+        <source>Gestión institucional</source>
+        <target>Institutional management</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.label" datatype="html">
+        <source>Secciones del panel</source>
+        <target>Panel sections</target>
+      </trans-unit>
+      <trans-unit id="admin.search.label" datatype="html">
+        <source>Buscar estudiante o ID</source>
+        <target>Search student or ID</target>
+      </trans-unit>
+      <trans-unit id="admin.help" datatype="html">
+        <source>Ayuda</source>
+        <target>Help</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.pageTitle" datatype="html">
+        <source>Configuración y cancelación de espacio</source>
+        <target>Space configuration and cancellation</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.pageDescription" datatype="html">
+        <source>Registra el cierre de un espacio por mantenimiento o incidencias y consulta el historial de cierres.</source>
+        <target>Register a space closure for maintenance or incidents and check the closure history.</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.title" datatype="html">
+        <source>Cierre del espacio</source>
+        <target>Space closure</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.date" datatype="html">
+        <source>Fecha de cierre</source>
+        <target>Closure date</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.recurring.from" datatype="html">
+        <source>Comienza el</source>
+        <target>Starts on</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.scope" datatype="html">
+        <source>Alcance del cierre</source>
+        <target>Closure scope</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.scope.fullDay" datatype="html">
+        <source>Día completo</source>
+        <target>Full day</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.scope.timeBlock" datatype="html">
+        <source>Bloque específico</source>
+        <target>Specific time block</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.scope.recurring" datatype="html">
+        <source>Bloque recurrente</source>
+        <target>Recurring block</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.timeFrom" datatype="html">
+        <source>Desde</source>
+        <target>From</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.timeTo" datatype="html">
+        <source>Hasta</source>
+        <target>To</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.recurring.weekdays" datatype="html">
+        <source>Se repite los</source>
+        <target>Repeats on</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.recurring.indefinite" datatype="html">
+        <source>Sin fecha de fin</source>
+        <target>No end date</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.recurring.until" datatype="html">
+        <source>Finaliza el</source>
+        <target>Ends on</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.reason" datatype="html">
+        <source>Motivo</source>
+        <target>Reason</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.reason.placeholder" datatype="html">
+        <source>Selecciona un motivo…</source>
+        <target>Select a reason…</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.details" datatype="html">
+        <source> Detalles adicionales (opcional) </source>
+        <target> Additional details (optional) </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.details.placeholder" datatype="html">
+        <source>Especificaciones sobre el cierre…</source>
+        <target>Details about the closure…</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.notice.title" datatype="html">
+        <source>Notificación automática</source>
+        <target>Automatic notification</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.notice.body" datatype="html">
+        <source> Al confirmar, se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. </source>
+        <target> Confirming will cancel every active booking in this period and immediately notify the affected students by university email. </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.submit" datatype="html">
+        <source> Cerrar espacio y cancelar reservas </source>
+        <target> Close space and cancel bookings </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.confirm.title" datatype="html">
+        <source>Confirmar cierre del espacio</source>
+        <target>Confirm space closure</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.confirm.body" datatype="html">
+        <source>Se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. Esta acción no se puede deshacer.</source>
+        <target>Every active booking in this period will be cancelled and the affected students will be notified immediately by university email. This action cannot be undone.</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.confirm.yes" datatype="html">
+        <source>Cerrar espacio</source>
+        <target>Close space</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.confirm.no" datatype="html">
+        <source>Cancelar</source>
+        <target>Cancel</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.created.summary" datatype="html">
+        <source>Espacio cerrado</source>
+        <target>Space closed</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.created.detail" datatype="html">
+        <source>Las reservas del periodo se cancelaron y se notificó a los estudiantes.</source>
+        <target>Bookings in the period were cancelled and students were notified.</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.title" datatype="html">
+        <source>Historial de cierres</source>
+        <target>Closure history</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.scope.fullDay" datatype="html">
+        <source>Día completo</source>
+        <target>Full day</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.column.reason" datatype="html">
+        <source>Motivo</source>
+        <target>Reason</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.column.authorizedBy" datatype="html">
+        <source>Autorizado por</source>
+        <target>Authorized by</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.column.dateTime" datatype="html">
+        <source>Fecha / horario</source>
+        <target>Date / time</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.recurring.range" datatype="html">
+        <source><x id="DAYS" equiv-text="days"/>, <x id="START" equiv-text="start"/> – <x id="END" equiv-text="end"/></source>
+        <target><x id="DAYS" equiv-text="days"/>, <x id="START" equiv-text="start"/> – <x id="END" equiv-text="end"/></target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.recurring.until" datatype="html">
+        <source>hasta <x id="UNTIL" equiv-text="until"/></source>
+        <target>until <x id="UNTIL" equiv-text="until"/></target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.column.status" datatype="html">
+        <source>Estado</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.empty.heading" datatype="html">
+        <source>Todavía no hay cierres registrados</source>
+        <target>No closures registered yet</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.empty.description" datatype="html">
+        <source>Los cierres que registres para este espacio aparecerán aquí.</source>
+        <target>Closures you register for this space will appear here.</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.reason.maintenance" datatype="html">
+        <source>Mantenimiento</source>
+        <target>Maintenance</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.reason.technicalIncident" datatype="html">
+        <source>Incidencia técnica</source>
+        <target>Technical incident</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.reason.institutionalEvent" datatype="html">
+        <source>Evento institucional</source>
+        <target>Institutional event</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.reason.externalUse" datatype="html">
+        <source>Uso reservado a terceros</source>
+        <target>Reserved for third-party use</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.reason.other" datatype="html">
+        <source>Otro</source>
+        <target>Other</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.status.scheduled" datatype="html">
+        <source> Programado </source>
+        <target> Scheduled </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.status.active" datatype="html">
+        <source> En curso </source>
+        <target> In progress </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.status.completed" datatype="html">
+        <source> Finalizado </source>
+        <target> Completed </target>
+      </trans-unit>
+      <trans-unit id="admin.settings.title" datatype="html">
+        <source>Configuración y cancelación de espacio</source>
+        <target>Space configuration and cancellation</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.lead" datatype="html">
+        <source>Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o incidencias.</source>
+        <target>Manage the space's operating availability and register blocks for maintenance or incidents.</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.stats.thisMonth" datatype="html">
+        <source>Cierres este mes</source>
+        <target>Closures this month</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.stats.frequentReason" datatype="html">
+        <source>Motivo frecuente</source>
+        <target>Frequent reason</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.stats.noReason" datatype="html">
+        <source>Sin cierres</source>
+        <target>No closures</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

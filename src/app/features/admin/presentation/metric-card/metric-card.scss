@@ -1,0 +1,71 @@
+:host {
+  display: block;
+}
+
+.metric {
+  block-size: 100%;
+}
+
+// `[tuiCardLarge]` forces flex-direction: column and align-items: stretch on the card itself at a
+// specificity our classes can't outrank, so the icon-beside-text row lives one level down instead
+// of fighting it: `.metric` stretches this single child full width, and the row is built here.
+.metric__body {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+  block-size: 100%;
+}
+
+.metric__icon {
+  flex-shrink: 0;
+}
+
+// `align-items: stretch` (not `center`) so heading and value each become full-width boxes: without
+// it, `align-items: center` only centers a *narrower* child's box within the *widest* child's box,
+// leaving the widest one — often the heading — flush left with nothing to center it against.
+.metric__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+  text-align: center;
+}
+
+.metric__heading {
+  font: var(--tui-typography-heading-h6);
+}
+
+.metric__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: var(--univgo-space-s);
+}
+
+.metric__value {
+  margin: 0;
+  font: var(--tui-typography-heading-h4);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--univgo-letter-spacing-tight);
+}
+
+.metric__hint {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.metric__hint tui-icon {
+  font-size: var(--univgo-icon-inline);
+}
+
+.metric__hint:empty {
+  display: none;
+}

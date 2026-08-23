@@ -1,0 +1,139 @@
+:host {
+  display: block;
+}
+
+.roster {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.roster__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.roster__title {
+  font: var(--tui-typography-heading-h6);
+}
+
+// The card sets its own padding, and the table has to reach both of its edges to look like part of
+// it rather than a panel dropped inside one.
+.roster__scroll {
+  overflow-x: auto;
+  margin-inline: calc(-1 * var(--univgo-space-xl));
+  padding-inline: var(--univgo-space-xl);
+}
+
+.roster__table {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+// Taiga paints the header row in the page's own background, which is a shade below the card it
+// sits on here. Row separators are enough structure for five columns; the full grid the library
+// draws by default reads as a spreadsheet.
+.roster__table {
+  th {
+    border: none;
+    border-block-end: 1px solid var(--tui-border-normal);
+    background: transparent;
+    white-space: nowrap;
+  }
+
+  td {
+    border: none;
+    border-block-end: 1px solid var(--tui-border-normal);
+  }
+
+  tr:last-child td {
+    border-block-end: none;
+  }
+}
+
+// Identifiers and clock times line up digit over digit down the column, which is what makes a list
+// of them scannable.
+.cell--code {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cell--pending {
+  color: var(--tui-text-tertiary);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--univgo-space-m);
+  padding-block-end: var(--univgo-space-l);
+  border-block-end: 1px solid var(--tui-border-normal);
+}
+
+.card:last-child {
+  padding-block-end: 0;
+  border-block-end: none;
+}
+
+.card__top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  inline-size: 100%;
+}
+
+.card__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--univgo-space-m);
+  margin: 0;
+  inline-size: 100%;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: break-word;
+}
+
+.roster__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.roster__count {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}

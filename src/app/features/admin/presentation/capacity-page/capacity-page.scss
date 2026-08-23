@@ -1,0 +1,47 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+}
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--univgo-space-l);
+}
+
+.intro__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+}
+
+.intro__lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+  font-variant-numeric: tabular-nums;
+}
+
+// A separator, not a character somebody has to hear read out: it is drawn rather than typed so it
+// never reaches the accessibility tree and never needs translating.
+.intro__dot {
+  inline-size: var(--univgo-space-xs);
+  block-size: var(--univgo-space-xs);
+  border-radius: 50%;
+  background: var(--tui-text-tertiary);
+}
+
+// The product's card track: one tile on a phone, two from tablet, three from desktop.
+.summary {
+  display: grid;
+  grid-template-columns: var(--univgo-card-grid-columns);
+  gap: var(--univgo-space-l);
+}

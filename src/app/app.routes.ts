@@ -23,6 +23,13 @@ export const routes: Routes = [
       description: $localize`:@@auth.login.pageDescription:Accede con las credenciales de tu universidad para reservar espacios deportivos y de estudio.`,
     },
   },
+  // The panel has its own shell, so it hangs off the root rather than off the student's: it answers
+  // to a different person, and a tab bar within reach of a thumb is not what a desk tool needs.
+  {
+    path: 'admin',
+    loadComponent: () => import('./layout/admin-layout/admin-layout').then((m) => m.AdminLayout),
+    loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+  },
   {
     path: '',
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),

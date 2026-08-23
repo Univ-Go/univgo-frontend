@@ -1,0 +1,31 @@
+<article
+  [tuiCardLarge]="align() === 'center' ? 'compact' : ''"
+  tuiSurface
+  tuiAppearance="outline"
+  class="metric"
+>
+  <div class="metric__body">
+    <span
+      [tuiAvatar]="icon()"
+      [size]="align() === 'center' ? 's' : 'm'"
+      [tuiAppearance]="tone()"
+      class="metric__icon"
+      aria-hidden="true"
+    ></span>
+
+    <div class="metric__content">
+      <h2 class="metric__heading">{{ heading() }}</h2>
+
+      <div class="metric__row">
+        <p class="metric__value">{{ value() }}</p>
+
+        <p class="metric__hint">
+          @if (hintIcon(); as hint) {
+            <tui-icon [icon]="hint" aria-hidden="true" />
+          }
+          <ng-content />
+        </p>
+      </div>
+    </div>
+  </div>
+</article>

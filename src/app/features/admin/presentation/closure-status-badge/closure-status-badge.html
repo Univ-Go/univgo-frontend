@@ -1,0 +1,35 @@
+@switch (status()) {
+  @case ('scheduled') {
+    <span
+      tuiBadge
+      appearance="warning"
+      [size]="size()"
+      iconStart="@tui.clock"
+      i18n="@@admin.closure.status.scheduled"
+    >
+      Programado
+    </span>
+  }
+  @case ('active') {
+    <span
+      tuiBadge
+      appearance="positive"
+      [size]="size()"
+      iconStart="@tui.circle-check"
+      i18n="@@admin.closure.status.active"
+    >
+      En curso
+    </span>
+  }
+  @case ('completed') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.history"
+      i18n="@@admin.closure.status.completed"
+    >
+      Finalizado
+    </span>
+  }
+}

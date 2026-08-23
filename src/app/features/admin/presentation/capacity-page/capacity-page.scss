@@ -44,23 +44,26 @@
 // Occupancy is the headline stat; "en sala" and "pendientes" are its own breakdown, not peers of
 // it, so they share a rail instead of competing for the same width. `--univgo-card-grid-columns`
 // (one/two/three even tiles) is the wrong shape here on purpose — this track is 2:1, not N-even.
+// `minmax(0, 1fr)`, not bare `1fr`: a bare `fr` track is `minmax(auto, 1fr)` under the hood, and
+// `auto` refuses to shrink a track below its item's content size. A metric card's unwrapped hint
+// text is wide enough to blow that out on a narrow screen, pushing the row past the viewport edge.
 .summary {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--univgo-space-l);
 
   @media (width >= bp.$tablet) {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     align-items: start;
   }
 }
 
 .summary__chips {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--univgo-space-l);
 
   @media (width >= bp.$tablet) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }

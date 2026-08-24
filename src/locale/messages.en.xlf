@@ -907,8 +907,8 @@
         <target>Switch time block</target>
       </trans-unit>
       <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
-        <source> Registrar entrada manual </source>
-        <target> Register manual check-in </target>
+        <source>Reservar</source>
+        <target>Book</target>
       </trans-unit>
       <trans-unit id="admin.capacity.inRoom.title" datatype="html">
         <source>En sala</source>

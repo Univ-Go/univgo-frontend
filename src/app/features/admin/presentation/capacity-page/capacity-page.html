@@ -1,6 +1,6 @@
 <header class="intro">
   <div class="intro__text">
-    <h1 i18n="@@admin.capacity.title">Aforo del bloque</h1>
+    <h1 i18n="@@admin.capacity.title">Aforo</h1>
 
     <!-- Both pickers replaced what used to be plain text: which block and which space are the two
          things this heading no longer gets to assume, now that either can change. -->
@@ -22,16 +22,20 @@
   <!-- Letting an administrator wave someone in whose reservation expired is the open question of
        `docs/booking-flow.md` §11: it needs a decision from the university before it does anything,
        so the control is here and inert, like every other action in the mocked views. -->
+  <!-- Below desktop it leaves the header row entirely and floats over the content instead: `.intro`
+       wrapping it onto its own line already pushed it far from the controls it acts on, and a corner
+       FAB is the reachable shape that shows up. Same control either way — CSS repositions it, the
+       label and fill stay identical at every size. -->
   <button
     tuiButton
     type="button"
     size="m"
-    appearance="outline"
+    appearance="primary"
     iconStart="@tui.user-plus"
+    class="manual-check-in"
     i18n="@@admin.capacity.manualCheckIn"
+    >Reservar</button
   >
-    Registrar entrada manual
-  </button>
 </header>
 
 <div class="summary">
@@ -40,7 +44,7 @@
   <div class="summary__chips">
     <app-metric-card
       align="center"
-      iconSize="m"
+      iconSize="l"
       icon="@tui.circle-check"
       tone="positive"
       i18n-heading="@@admin.capacity.inRoom.title"
@@ -54,7 +58,7 @@
 
     <app-metric-card
       align="center"
-      iconSize="m"
+      iconSize="l"
       icon="@tui.hourglass"
       tone="warning"
       i18n-heading="@@admin.capacity.pending.title"

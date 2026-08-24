@@ -5,6 +5,7 @@
 .occupancy {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--univgo-space-l);
   block-size: 100%;
 }
@@ -67,6 +68,9 @@
 }
 
 .occupancy__rate {
+  // `[tuiCardLarge]` gives its own last child `margin-block-start: auto` by default, to push it to
+  // the card's foot when the card is taller than its content — the opposite of what centring the
+  // group asks for here, so this rule cancels it back to `0`.
   margin: 0;
   color: var(--tui-text-secondary);
   font: var(--tui-typography-ui-xs);

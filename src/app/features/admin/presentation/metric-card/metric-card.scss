@@ -16,12 +16,13 @@
   block-size: 100%;
 }
 
-// A standalone tile earns its height back: the icon anchors the top, and the content — already
-// centred within itself — grows to fill what is left, instead of one horizontal band floating in
+// A standalone tile earns its height back: the icon anchors the top-left corner, and the content
+// below it reads top-to-bottom — heading, value, hint — instead of one horizontal band floating in
 // the middle of a tall card.
 .metric__body--stacked {
   flex-direction: column;
-  gap: var(--univgo-space-s);
+  align-items: flex-start;
+  gap: var(--univgo-space-m);
 }
 
 .metric__icon {
@@ -42,6 +43,13 @@
   text-align: center;
 }
 
+// The stacked tile reads as a left-aligned block — icon, then heading, value and hint underneath
+// it — rather than centred text floating in the middle of the card.
+.metric__body--stacked .metric__content {
+  align-items: flex-start;
+  text-align: start;
+}
+
 .metric__heading {
   font: var(--tui-typography-heading-h6);
 }
@@ -54,11 +62,25 @@
   gap: var(--univgo-space-s);
 }
 
+// Value and hint stop sharing a line: the number stands on its own as the tile's headline, with the
+// hint reading as a caption underneath it rather than a sibling crowding the same row.
+.metric__body--stacked .metric__row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--univgo-space-xs);
+}
+
 .metric__value {
   margin: 0;
   font: var(--tui-typography-heading-h4);
   font-variant-numeric: tabular-nums;
   letter-spacing: var(--univgo-letter-spacing-tight);
+}
+
+// The number is the tile's headline — bolder than the row-layout variant so it carries the same
+// visual weight as the occupancy card's own counts — only when the card stands as its own block.
+.metric__body--stacked .metric__value {
+  font: var(--tui-typography-heading-h2);
 }
 
 .metric__hint {

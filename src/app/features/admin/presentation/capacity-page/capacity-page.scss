@@ -17,7 +17,7 @@
 .intro__text {
   display: flex;
   flex-direction: column;
-  gap: var(--univgo-space-xs);
+  gap: var(--univgo-space-l);
   min-inline-size: 0;
 }
 
@@ -41,29 +41,55 @@
   background: var(--tui-text-tertiary);
 }
 
-// Occupancy is the headline stat; "en sala" and "pendientes" are its own breakdown, not peers of
-// it, so they share a rail instead of competing for the same width. `--univgo-card-grid-columns`
-// (one/two/three even tiles) is the wrong shape here on purpose — this track is 2:1, not N-even.
-// `minmax(0, 1fr)`, not bare `1fr`: a bare `fr` track is `minmax(auto, 1fr)` under the hood, and
-// `auto` refuses to shrink a track below its item's content size. A metric card's unwrapped hint
-// text is wide enough to blow that out on a narrow screen, pushing the row past the viewport edge.
-.summary {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--univgo-space-l);
-
-  @media (width >= bp.$tablet) {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    align-items: start;
+// Clears the tab bar the same way MainLayout's footer does — its height plus the safe-area inset it
+// already reserves for itself, plus one gap on top so the two never touch. `appearance="primary"`
+// already fills the button at every size, so only position and elevation change here.
+@media (width < bp.$desktop) {
+  .manual-check-in {
+    position: fixed;
+    z-index: 3;
+    inset-inline-end: var(--univgo-layout-gutter);
+    inset-block-end: calc(
+      var(--univgo-tab-bar-height) + env(safe-area-inset-bottom) + var(--univgo-space-l)
+    );
+    box-shadow: var(--tui-shadow-medium);
   }
+}
+
+// Occupancy is the headline stat; "en sala" and "pendientes" are its own breakdown. At tablet there
+// is not enough rail width to give that breakdown its own column without cramming a hairline one, so
+// both stay in the mobile shape — hero on top, the pair two-across underneath. Desktop has room for
+// all three as equal peers, so it switches to the product's own card step
+// (`--univgo-card-grid-columns`, three-wide from here up) instead of keeping the hero oversized.
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  // Pulls the row up to the same distance `.intro`'s own row keeps between its title and its
+  // button, instead of the host's wider flex gap it would otherwise inherit from being a sibling.
+  margin-block-start: calc(var(--univgo-space-l) - var(--univgo-space-xl));
+
+  @media (width >= bp.$desktop) {
+    display: grid;
+    grid-template-columns: var(--univgo-card-grid-columns);
+  }
+}
+
+.summary__hero {
+  // Without this a flex/grid item's default `min-inline-size: auto` refuses to shrink below its
+  // content, which is exactly the mobile-overflow bug this page already had once.
+  min-inline-size: 0;
 }
 
 .summary__chips {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--univgo-space-l);
+  min-inline-size: 0;
 
-  @media (width >= bp.$tablet) {
-    grid-template-columns: minmax(0, 1fr);
+  // Dissolves into `.summary`'s own grid so the pair becomes two more equal peers of the hero in one
+  // row, instead of a nested column that would otherwise keep its own pair of half-width tracks.
+  @media (width >= bp.$desktop) {
+    display: contents;
   }
 }

@@ -440,45 +440,45 @@
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.title" datatype="html">
-        <source>Aforo del bloque</source>
+        <source>Aforo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
           <context context-type="linenumber">3,5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
-        <source> Registrar entrada manual </source>
+        <source>Reservar</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
-          <context context-type="linenumber">33,37</context>
+          <context context-type="linenumber">37,41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.inRoom.title" datatype="html">
         <source>En sala</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
-          <context context-type="linenumber">48,49</context>
+          <context context-type="linenumber">52,53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.inRoom.hint" datatype="html">
         <source>de <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> plazas ocupadas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
-          <context context-type="linenumber">51,52</context>
+          <context context-type="linenumber">55,56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.pending.title" datatype="html">
         <source>Pendientes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
-          <context context-type="linenumber">61,63</context>
+          <context context-type="linenumber">65,67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.pending.hint" datatype="html">
         <source>{VAR_PLURAL, plural, =0 {ninguna a punto de expirar} =1 {1 reserva a punto de expirar} other {<x id="INTERPOLATION"/> reservas a punto de expirar}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/capacity-page/capacity-page.html</context>
-          <context context-type="linenumber">65,69</context>
+          <context context-type="linenumber">69,73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.title" datatype="html">

@@ -20,12 +20,13 @@
   font: var(--tui-typography-heading-h6);
 }
 
-// The card sets its own padding, and the table has to reach both of its edges to look like part of
-// it rather than a panel dropped inside one.
+// Not bled flush to the card's edges: `tuiAppearance="outline"` paints its border as a negative-offset
+// CSS outline, sitting inside the padding box rather than outside it. `overflow-x: auto` makes this a
+// scroll container, which forms its own stacking context — a child reaching all the way to the edge
+// paints its own layer on top of that inset outline and visually cuts it. Staying inset keeps the
+// border intact; the scrollbar is still full-width, just inside the card's own padding.
 .roster__scroll {
   overflow-x: auto;
-  margin-inline: calc(-1 * var(--univgo-space-xl));
-  padding-inline: var(--univgo-space-xl);
 }
 
 .roster__table {

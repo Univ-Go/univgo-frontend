@@ -54,6 +54,12 @@
     );
     box-shadow: var(--tui-shadow-medium);
   }
+
+  // AdminLayout already leaves room for the tab bar itself; this stacks on top of that so the
+  // roster's own footer — pagination included — can still scroll clear of the FAB floating above it.
+  :host {
+    padding-block-end: calc(var(--tui-height-m) + var(--univgo-space-l));
+  }
 }
 
 // Occupancy is the headline stat; "en sala" and "pendientes" are its own breakdown. At tablet there

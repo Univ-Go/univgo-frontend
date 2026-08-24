@@ -14,7 +14,7 @@ import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
  * and the rounded corners this product already decided against. The landmark is plain semantic
  * markup; every control inside it is still a Taiga component.
  *
- * Tablet and up only: below that, `AppTabBar` renders these same destinations (`ADMIN_NAV_ITEMS`) as
+ * Desktop and up only: below that, `AppTabBar` renders these same destinations (`ADMIN_NAV_ITEMS`) as
  * its own admin variant, the fixed bottom bar the student shell already has — at the same breakpoint
  * that bar already hides itself at, so the two hand off without a gap where neither is visible. A
  * column and a bottom bar are different enough shapes — pill buttons with visible labels versus an
@@ -70,9 +70,9 @@ import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
       inline-size: 100%;
     }
 
-    // AppTabBar takes over below tablet, the same pixel it hides itself above; the column has
+    // AppTabBar takes over below desktop, the same pixel it hides itself above; the column has
     // nothing left to do at that width.
-    @media (width < bp.$tablet) {
+    @media (width < bp.$desktop) {
       :host {
         display: none;
       }

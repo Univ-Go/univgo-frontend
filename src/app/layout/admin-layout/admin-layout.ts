@@ -10,10 +10,10 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
  * is a desk tool whose destinations sit in a column and whose bar is a search field, while the
  * student's shell navigates a catalogue.
  *
- * Below tablet, both shells give their destinations to the same thumb-reachable bottom bar —
+ * Below desktop, both shells give their destinations to the same thumb-reachable bottom bar —
  * AppTabBar, told which destination set to render — rather than each keeping its own copy of that
  * shape. The three landmarks are laid out by named areas rather than by nesting, which is what lets
- * the same markup put the aside beside the content from tablet up and give the bar no grid area at
+ * the same markup put the aside beside the content from desktop up and give the bar no grid area at
  * all: a position: fixed element ignores one anyway, and leaving the track would book room next to
  * a main that no longer has a sibling there.
  */
@@ -63,7 +63,7 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
       }
     }
 
-    @media (width >= bp.$tablet) {
+    @media (width >= bp.$desktop) {
       :host {
         grid-template-areas:
           'aside header'
@@ -82,9 +82,9 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
       }
     }
 
-    // Room for the fixed bottom bar AppTabBar becomes below tablet, the same reservation
+    // Room for the fixed bottom bar AppTabBar becomes below desktop, the same reservation
     // MainLayout makes for it.
-    @media (width < bp.$tablet) {
+    @media (width < bp.$desktop) {
       main {
         padding-block-end: calc(
           var(--univgo-space-xl) + var(--univgo-tab-bar-height) + env(safe-area-inset-bottom)

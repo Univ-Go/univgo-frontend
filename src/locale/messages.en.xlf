@@ -895,16 +895,20 @@
         <target> Cancelled </target>
       </trans-unit>
       <trans-unit id="admin.capacity.title" datatype="html">
-        <source>Bloque actual</source>
-        <target>Current block</target>
+        <source>Aforo del bloque</source>
+        <target>Block occupancy</target>
       </trans-unit>
       <trans-unit id="admin.capacity.blockRange" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ block().start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ block().end | date: &apos;shortTime&apos; }}"/></source>
+        <source><x id="INTERPOLATION" equiv-text="{{ current()?.start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ current()?.end | date: &apos;shortTime&apos; }}"/></source>
         <target><x id="INTERPOLATION"/> – <x id="INTERPOLATION_1"/></target>
       </trans-unit>
+      <trans-unit id="admin.blockSwitcher.label" datatype="html">
+        <source>Cambiar de bloque horario</source>
+        <target>Switch time block</target>
+      </trans-unit>
       <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
-        <source> Registrar entrada manual </source>
-        <target> Register manual check-in </target>
+        <source>Reservar</source>
+        <target>Book</target>
       </trans-unit>
       <trans-unit id="admin.capacity.inRoom.title" datatype="html">
         <source>En sala</source>
@@ -954,6 +958,10 @@
         <source>Gestión de aforo</source>
         <target>Capacity management</target>
       </trans-unit>
+      <trans-unit id="admin.nav.capacityShort" datatype="html">
+        <source>Aforo</source>
+        <target>Capacity</target>
+      </trans-unit>
       <trans-unit id="admin.nav.calendar" datatype="html">
         <source>Calendario</source>
         <target>Calendar</target>
@@ -969,6 +977,10 @@
       <trans-unit id="admin.nav.label" datatype="html">
         <source>Secciones del panel</source>
         <target>Panel sections</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.manualBooking" datatype="html">
+        <source>Reservar por un estudiante</source>
+        <target>Book on a student's behalf</target>
       </trans-unit>
       <trans-unit id="admin.search.label" datatype="html">
         <source>Buscar estudiante o ID</source>

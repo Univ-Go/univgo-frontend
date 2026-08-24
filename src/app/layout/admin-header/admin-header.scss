@@ -67,9 +67,9 @@
   }
 }
 
-// On a phone the bar wraps: the mark and the controls share the first line and the search takes the
-// second whole, which is the only way a field stays wide enough to type an id into.
-@media (width < bp.$tablet) {
+// On a phone or tablet the bar wraps: the mark and the controls share the first line and the search
+// takes the second whole, which is the only way a field stays wide enough to type an id into.
+@media (width < bp.$desktop) {
   .bar {
     gap: var(--univgo-space-s);
     padding-inline: var(--univgo-space-l);

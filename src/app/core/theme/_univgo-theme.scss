@@ -374,15 +374,16 @@ $shadow-tint: 65, 0, 5;
   :root {
     --univgo-layout-gutter: 3rem;
     --univgo-card-grid-columns: repeat(2, 1fr);
-
-    // No tab bar from here up: the bar sits on the page's own bottom edge.
-    --univgo-action-bar-room: var(--univgo-space-3xl);
   }
 }
 
 @media (min-width: bp.$desktop) {
   :root {
     --univgo-card-grid-columns: repeat(3, 1fr);
+
+    // The tab bar holds the shell's destinations through tablet too, and only steps aside for the
+    // desktop nav here — the bar sits on the page's own bottom edge from this point up.
+    --univgo-action-bar-room: var(--univgo-space-3xl);
   }
 }
 

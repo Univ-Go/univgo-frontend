@@ -1,0 +1,36 @@
+<button
+  tuiButton
+  type="button"
+  appearance="outline"
+  size="m"
+  [id]="triggerId"
+  iconStart="@tui.clock"
+  iconEnd="@tui.chevron-down"
+  [tuiDropdown]="panel"
+  [(tuiDropdownOpen)]="open"
+  [attr.aria-label]="
+    switcherLabel + ': ' + (current()?.start | date: 'shortTime') + ' – ' + (current()?.end | date: 'shortTime')
+  "
+>
+  <span i18n="@@admin.capacity.blockRange"
+    >{{ current()?.start | date: 'shortTime' }} – {{ current()?.end | date: 'shortTime' }}</span
+  >
+</button>
+
+<ng-template #panel>
+  <tui-data-list [attr.aria-labelledby]="triggerId">
+    @for (block of blocks(); track block.start.getTime()) {
+      <button
+        tuiOption
+        type="button"
+        [iconEnd]="block.start.getTime() === selectedStart() ? '@tui.check' : null"
+        [attr.aria-selected]="block.start.getTime() === selectedStart() ? 'true' : null"
+        (click)="select(block.start.getTime())"
+      >
+        <span i18n="@@admin.capacity.blockRange"
+          >{{ block.start | date: 'shortTime' }} – {{ block.end | date: 'shortTime' }}</span
+        >
+      </button>
+    }
+  </tui-data-list>
+</ng-template>

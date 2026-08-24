@@ -4,10 +4,10 @@
   tuiAppearance="outline"
   class="metric"
 >
-  <div class="metric__body">
+  <div class="metric__body" [class.metric__body--stacked]="align() === 'center'">
     <span
       [tuiAvatar]="icon()"
-      [size]="align() === 'center' ? 's' : 'm'"
+      [size]="iconSize() ?? (align() === 'center' ? 's' : 'm')"
       [tuiAppearance]="tone()"
       class="metric__icon"
       aria-hidden="true"
@@ -18,11 +18,7 @@
 
       <div class="metric__row">
         <p class="metric__value">{{ value() }}</p>
-
         <p class="metric__hint">
-          @if (hintIcon(); as hint) {
-            <tui-icon [icon]="hint" aria-hidden="true" />
-          }
           <ng-content />
         </p>
       </div>

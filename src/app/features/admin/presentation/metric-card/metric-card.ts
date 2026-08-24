@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { TuiAppearance, TuiIcon } from '@taiga-ui/core';
+import { TuiAppearance } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 
@@ -15,7 +15,7 @@ import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
  */
 @Component({
   selector: 'app-metric-card',
-  imports: [TuiAppearance, TuiAvatar, TuiCardLarge, TuiIcon, TuiSurface],
+  imports: [TuiAppearance, TuiAvatar, TuiCardLarge, TuiSurface],
   templateUrl: './metric-card.html',
   styleUrl: './metric-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,4 +29,6 @@ export class MetricCard {
   public readonly hintIcon = input<string | null>(null);
   /** 'start' keeps the roster-adjacent metrics left-aligned; 'center' suits a standalone stat tile. */
   public readonly align = input<'start' | 'center'>('start');
+  /** Overrides the icon size `align` would otherwise imply, for a tile that needs more visual weight. */
+  public readonly iconSize = input<'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'>();
 }

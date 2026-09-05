@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiButton } from '@taiga-ui/core';
 import { APP_CONFIG } from '../../core/config/app-config';
-import { BrandLogo } from '../../shared/brand-logo/brand-logo';
+import { BrandLogo } from '../../shared/brand/brand-logo';
 import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
 
 /**

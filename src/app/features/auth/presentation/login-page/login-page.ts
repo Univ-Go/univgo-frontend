@@ -4,7 +4,8 @@ import { TuiButton, TuiCheckbox, TuiIcon, TuiInput, TuiLink, TuiTitle } from '@t
 import { TuiBadge, TuiPassword } from '@taiga-ui/kit';
 import { TuiForm } from '@taiga-ui/layout';
 import { APP_CONFIG } from '../../../../core/config/app-config';
-import { BrandLogo } from '../../../../shared/brand-logo/brand-logo';
+import { BrandIsotype } from '../../../../shared/brand/brand-isotype';
+import { BrandLogo } from '../../../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../../../shared/theme-toggle/theme-toggle';
 
@@ -16,6 +17,7 @@ import { ThemeToggle } from '../../../../shared/theme-toggle/theme-toggle';
 @Component({
   selector: 'app-login-page',
   imports: [
+    BrandIsotype,
     BrandLogo,
     TuiBadge,
     TuiButton,

@@ -64,11 +64,11 @@
 }
 
 .brand__watermark {
+  --brand-isotype-size: 60%;
+
   position: absolute;
   inset-block-start: -10%;
   inset-inline-end: -12%;
-  block-size: 60%;
-  inline-size: auto;
   opacity: 0.12;
   pointer-events: none;
 }

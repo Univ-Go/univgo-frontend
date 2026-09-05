@@ -1,10 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { BrandColors } from './brand-colors';
+
 /**
  * Level 1: the wordmark. The application bar, the footer and the sign-in panel all showed it, each
  * repeating the file, its intrinsic size and the plate it sits on. This is the one place that
- * knows which image the product is signed with — which is also the place a second institution's
+ * knows which artwork the product is signed with — which is also the place a second institution's
  * mark would be resolved from configuration.
+ *
+ * The artwork is inlined rather than referenced through `<img>`: a referenced SVG is an isolated
+ * document, so none of the page's custom properties reach it and the mark could not be recoloured.
  *
  * The height travels as a custom property: the bar shrinks it on a phone, and that is a decision of
  * the bar, not of the mark.
@@ -12,6 +17,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'app-brand-logo',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{ directive: BrandColors, inputs: ['colors'] }],
+  // The name of the product is not translated, so the accessible name is the mark itself. The role
+  // is on the host so the paths underneath are not announced one by one.
+  host: { role: 'img', 'aria-label': 'UnivGo' },
   styles: `
     :host {
       --brand-logo-height: 2.25rem;
@@ -19,18 +28,18 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       display: inline-flex;
     }
 
-    img {
+    svg {
       display: block;
       block-size: var(--brand-logo-height);
       inline-size: auto;
-      // The wordmark is crimson and teal ink with no light variant, so on dark surfaces it sits on
-      // a plate instead of being recoloured.
+      // The wordmark is crimson and teal ink, so on a surface it cannot sit on it takes a plate
+      // rather than being recoloured. Callers that would rather recolour it can: that is what the
+      // palette is for.
       padding: var(--univgo-space-xs) var(--univgo-space-s);
       border-radius: var(--tui-radius-s);
       background: var(--univgo-logo-plate);
     }
   `,
-  // The name of the product is not translated, so the alternative text is the mark itself.
-  template: `<img src="images/UnivGo_logo.png" alt="UnivGo" width="1867" height="564" />`,
+  templateUrl: './univgo-logo-full.svg',
 })
 export class BrandLogo {}

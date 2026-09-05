@@ -6,7 +6,7 @@ import { TuiButton, TuiDropdown, TuiInput } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgeNotification, TuiBadgedContent } from '@taiga-ui/kit';
 import { map } from 'rxjs';
 import { MOCK_SESSION_USER } from '../../features/auth/infrastructure/mock-session';
-import { BrandLogo } from '../../shared/brand-logo/brand-logo';
+import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { AccountMenu } from '../account-menu/account-menu';

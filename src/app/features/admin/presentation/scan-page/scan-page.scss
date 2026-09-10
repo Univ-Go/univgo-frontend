@@ -5,14 +5,13 @@
   flex-direction: column;
   gap: var(--univgo-space-xl);
 
-  // `min-block-size`, not `block-size`: the classic sticky-footer trick. A flex column with a fixed
-  // `block-size` keeps that size no matter what — a child that cannot shrink below its own floor
-  // (the camera's) simply spills past it, invisibly, with nothing to scroll to. A floor instead lets
-  // `flex: 1` still fill exactly this height when content fits, but grow the column — and, through
-  // it, `main` and the page — the moment it does not, which is what actually gives the short-viewport
-  // case a real scrollbar and somewhere for the sticky result panel to travel.
+  // `min-block-size: 100%`, not a viewport calc(): `AdminLayout`'s `main` is the one thing that
+  // scrolls on desktop (a fixed-height shell, `overflow: hidden`) — it already has a real, bounded
+  // height, so filling it is just "100%". A floor rather than a cap (`block-size`), so a viewport
+  // too short for the camera and the manual card to fit still lets this column grow past `main`'s
+  // height and give it something to scroll, instead of the pair spilling past it invisibly.
   @media (width >= bp.$desktop) {
-    min-block-size: calc(100svh - var(--univgo-admin-header-height) - var(--univgo-space-xl) * 2);
+    min-block-size: 100%;
   }
 }
 
@@ -38,7 +37,7 @@
     // Deliberately not `min-block-size: 0` here or on `.input-column`/`.camera-card` below: that
     // would let each one shrink past what its own content needs, and the camera's explicit floor
     // (`.camera-card__viewport`) would spill out of its card instead of the whole chain refusing to
-    // shrink below it — which is what turns into the page scrolling, with the sticky result panel,
+    // shrink below it — which is what turns into `main` scrolling, with the sticky result panel,
     // on a viewport too short for the pair to fit.
   }
 }
@@ -75,8 +74,8 @@
     // (`[tuiCardLarge][data-space]:where(...)` beats a single class) — so this grows into that flex
     // column with `flex` instead. The heading above it keeps its natural height; this takes the
     // rest. The floor below matters only on a viewport too short for that to fit: the card refuses
-    // to shrink past it (no `min-block-size: 0` anywhere in this chain undoes that refusal) and the
-    // page scrolls instead, with the sticky result panel, rather than the camera being squeezed
+    // to shrink past it (no `min-block-size: 0` anywhere in this chain undoes that refusal) and
+    // `main` scrolls instead, with the sticky result panel, rather than the camera being squeezed
     // into something unusably small.
     aspect-ratio: auto;
     flex: 1;
@@ -105,10 +104,10 @@
   min-block-size: 20rem;
 
   @media (width >= bp.$desktop) {
+    // Sticky within `main`, which is the scrolling element now — not within the page, so there is
+    // no outer header to clear here the way there would be if the whole shell still scrolled.
     position: sticky;
-    // Below the header, not at its top edge: the header is sticky too, with a higher `z-index`, so
-    // an offset shorter than its height leaves this panel stuck underneath it instead of below it.
-    inset-block-start: var(--univgo-admin-header-height);
+    inset-block-start: 0;
     block-size: 100%;
     min-block-size: 0;
   }

@@ -26,8 +26,12 @@ export interface Attendee {
   readonly faculty: string;
   readonly universityId: string;
   readonly status: CheckInStatus;
+  /** The code the scanner reads, in the same `UG-1234` shape the student's own QR carries. */
+  readonly checkInCode: string;
   /** When the administrator scanned them in, or `null` while they have not arrived. */
   readonly checkedInAt: Date | null;
+  /** When their check-in window opens. `null` once the window no longer decides anything. */
+  readonly checkInOpensAt: Date | null;
   /** When their check-in window closes. `null` once the window no longer decides anything. */
   readonly checkInClosesAt: Date | null;
 }

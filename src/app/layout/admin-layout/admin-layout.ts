@@ -69,15 +69,25 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
           'aside header'
           'aside main';
         grid-template-columns: 16rem minmax(0, 1fr);
+        // A hard cap here, not just a floor: the shell itself never scrolls from this breakpoint up.
+        // Only main does — the column and the header have no reason to move for a view whose own
+        // content runs long, and a page-level scroll was carrying them away with it.
+        block-size: 100svh;
+        overflow: hidden;
+      }
+
+      main {
+        // The one thing that scrolls on desktop. A view taller than the shell no longer stretches
+        // the whole grid to fit it — it scrolls inside this box instead, same as the aside's own
+        // nav does below if it ever grows past its column.
+        overflow-y: auto;
       }
 
       app-admin-aside {
         grid-area: aside;
-        // The column keeps its place while the roster beside it scrolls, and scrolls on its own once
-        // there are more destinations than fit.
-        position: sticky;
-        inset-block-start: 0;
-        block-size: 100svh;
+        // 100% of a now fixed-height shell, so this always is exactly one screen tall — no
+        // position: sticky needed to keep it in view, because nothing around it scrolls anymore.
+        block-size: 100%;
         overflow-y: auto;
       }
     }

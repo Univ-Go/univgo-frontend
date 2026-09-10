@@ -1,0 +1,83 @@
+<div class="frame">
+  <!-- Never hidden via CSS, even before scanning starts or if it fails: `qr-scanner` watches this
+       element's own computed visibility the moment it starts and, if it finds it hidden, "fixes"
+       that by pinning it to `opacity: 0; width: 0; height: 0` as inline styles it never undoes —
+       a Safari workaround that otherwise permanently zeroes the frame no CSS class can undo again. -->
+  <!-- tabindex="-1": some browsers (Firefox) make a <video> focusable even without `controls`, and
+       aria-hidden on a focusable element leaves a keyboard user tabbing onto something assistive
+       tech never announces. -->
+  <video #video class="frame__video" playsinline muted aria-hidden="true" tabindex="-1"></video>
+
+  @switch (state()) {
+    @case ('starting') {
+      <p class="frame__hint" i18n="@@admin.scan.camera.starting">Iniciando cámara…</p>
+    }
+    @case ('scanning') {
+      <span class="frame__corner frame__corner--tl" aria-hidden="true"></span>
+      <span class="frame__corner frame__corner--tr" aria-hidden="true"></span>
+      <span class="frame__corner frame__corner--bl" aria-hidden="true"></span>
+      <span class="frame__corner frame__corner--br" aria-hidden="true"></span>
+      <p class="frame__hint" i18n="@@admin.scan.camera.scanning">
+        Alinea el código QR en el recuadro
+      </p>
+
+      @if (hasMultipleCameras()) {
+        <button
+          tuiIconButton
+          type="button"
+          appearance="secondary"
+          size="s"
+          class="frame__switch"
+          iconStart="@tui.switch-camera"
+          (click)="switchCamera()"
+          i18n-aria-label="@@admin.scan.camera.switchCamera"
+          aria-label="Cambiar de cámara"
+        ></button>
+      }
+    }
+    @case ('permissionDenied') {
+      <app-empty-state
+        class="frame__empty"
+        icon="@tui.video-off"
+        i18n-heading="@@admin.scan.camera.permissionDenied.heading"
+        heading="Sin acceso a la cámara"
+        i18n-description="@@admin.scan.camera.permissionDenied.description"
+        description="Autoriza el uso de la cámara en tu navegador, o usa la entrada manual."
+      >
+        <button
+          tuiButton
+          type="button"
+          size="s"
+          appearance="outline"
+          iconStart="@tui.repeat"
+          (click)="retry()"
+          i18n="@@admin.scan.camera.retry"
+        >
+          Reintentar
+        </button>
+      </app-empty-state>
+    }
+    @case ('unavailable') {
+      <app-empty-state
+        class="frame__empty"
+        icon="@tui.video-off"
+        i18n-heading="@@admin.scan.camera.unavailable.heading"
+        heading="No se encontró ninguna cámara"
+        i18n-description="@@admin.scan.camera.unavailable.description"
+        description="Usa la entrada manual mientras revisas la conexión de la cámara."
+      >
+        <button
+          tuiButton
+          type="button"
+          size="s"
+          appearance="outline"
+          iconStart="@tui.repeat"
+          (click)="retry()"
+          i18n="@@admin.scan.camera.retry"
+        >
+          Reintentar
+        </button>
+      </app-empty-state>
+    }
+  }
+</div>

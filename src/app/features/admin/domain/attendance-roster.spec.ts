@@ -23,7 +23,9 @@ function attendee(overrides: Partial<Attendee> = {}): Attendee {
     faculty: 'Ingeniería',
     universityId: 'U-203948',
     status: 'reserved',
+    checkInCode: 'UG-0001',
     checkedInAt: null,
+    checkInOpensAt: minutesFrom(BLOCK_START, -15),
     checkInClosesAt: minutesFrom(BLOCK_START, 15),
     ...overrides,
   };

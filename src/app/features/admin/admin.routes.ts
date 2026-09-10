@@ -2,9 +2,9 @@ import type { Routes } from '@angular/router';
 
 /**
  * The administrator's panel. `docs/booking-flow.md` §11 asks it for four things — scanning, the
- * current block, the day's other blocks and cancelling reservations. The second and fourth exist so
- * far; scanning and the day's other blocks are still disabled in the aside rather than linked to
- * routes that would fail the whole navigation.
+ * current block, the day's other blocks and cancelling reservations. Scanning and the second now
+ * exist; the day's other blocks and cancelling reservations are still disabled in the aside rather
+ * than linked to routes that would fail the whole navigation.
  *
  * Loaded with `loadChildren` so that neither the panel's shell nor its views reach the bundle of a
  * visit that only ever books a court.
@@ -13,7 +13,17 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'capacity',
+    // §11: scanning is "la pantalla principal y casi la única" — where an administrator's session
+    // actually starts, not the roster they would only consult afterwards.
+    redirectTo: 'scan',
+  },
+  {
+    path: 'scan',
+    loadComponent: () => import('./presentation/scan-page/scan-page').then((m) => m.ScanPage),
+    title: $localize`:@@admin.scan.pageTitle:Escáner de acceso`,
+    data: {
+      description: $localize`:@@admin.scan.pageDescription:Escanea el código de un estudiante para registrar su check-in y confirmar el acceso al espacio.`,
+    },
   },
   {
     path: 'capacity',

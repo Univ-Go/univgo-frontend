@@ -1190,6 +1190,134 @@
         <source>Sin cierres</source>
         <target>No closures</target>
       </trans-unit>
+      <trans-unit id="admin.scan.pageTitle" datatype="html">
+        <source>Escáner de acceso</source>
+        <target>Access scanner</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.pageDescription" datatype="html">
+        <source>Escanea el código de un estudiante para registrar su check-in y confirmar el acceso al espacio.</source>
+        <target>Scan a student's code to record their check-in and confirm access to the space.</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.title" datatype="html">
+        <source>Escáner</source>
+        <target>Scanner</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.title" datatype="html">
+        <source>Cámara principal</source>
+        <target>Main camera</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.starting" datatype="html">
+        <source>Iniciando cámara…</source>
+        <target>Starting camera…</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.scanning" datatype="html">
+        <source>Alinea el código QR en el recuadro</source>
+        <target>Align the QR code inside the frame</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.switchCamera" datatype="html">
+        <source>Cambiar de cámara</source>
+        <target>Switch camera</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.retry" datatype="html">
+        <source> Reintentar </source>
+        <target> Retry </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.permissionDenied.heading" datatype="html">
+        <source>Sin acceso a la cámara</source>
+        <target>No access to the camera</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.permissionDenied.description" datatype="html">
+        <source>Autoriza el uso de la cámara en tu navegador, o usa la entrada manual.</source>
+        <target>Allow camera access in your browser, or use the manual entry instead.</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.unavailable.heading" datatype="html">
+        <source>No se encontró ninguna cámara</source>
+        <target>No camera was found</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.camera.unavailable.description" datatype="html">
+        <source>Usa la entrada manual mientras revisas la conexión de la cámara.</source>
+        <target>Use the manual entry while you check the camera connection.</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.manualEntry.hint" datatype="html">
+        <source> Úsalo si el código QR no se puede leer. </source>
+        <target> Use this if the QR code can't be read. </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.manualEntry.label" datatype="html">
+        <source>Código de reserva</source>
+        <target>Reservation code</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.manualEntry.placeholder" datatype="html">
+        <source>Ej. UG-1234</source>
+        <target>E.g. UG-1234</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.manualEntry.submit" datatype="html">
+        <source> Verificar </source>
+        <target> Verify </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.label" datatype="html">
+        <source>Resultado del escaneo</source>
+        <target>Scan result</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.idle.heading" datatype="html">
+        <source>Esperando código</source>
+        <target>Waiting for a code</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.idle.description" datatype="html">
+        <source>Acerca el código QR a la cámara o ingrésalo manualmente.</source>
+        <target>Hold the QR code up to the camera, or enter it manually.</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.valid.heading" datatype="html">
+        <source>Acceso concedido</source>
+        <target>Access granted</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.valid.detail" datatype="html">
+        <source> Hasta las <x id="INTERPOLATION" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </source>
+        <target> Until <x id="INTERPOLATION" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.tooEarly.heading" datatype="html">
+        <source>Aún no</source>
+        <target>Not yet</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.tooEarly.detail" datatype="html">
+        <source> El check-in abre a las <x id="INTERPOLATION" equiv-text="{{ opensAt | date: &apos;shortTime&apos; }}"/> </source>
+        <target> Check-in opens at <x id="INTERPOLATION" equiv-text="{{ opensAt | date: &apos;shortTime&apos; }}"/> </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.expired.heading" datatype="html">
+        <source>Expirada</source>
+        <target>Expired</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.expired.detail" datatype="html">
+        <source> Venció a las <x id="INTERPOLATION" equiv-text="{{ closesAt | date: &apos;shortTime&apos; }}"/> </source>
+        <target> Expired at <x id="INTERPOLATION" equiv-text="{{ closesAt | date: &apos;shortTime&apos; }}"/> </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.expired.detailUnknown" datatype="html">
+        <source> Ya no puede usarse. </source>
+        <target> It can no longer be used. </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.alreadyUsed.heading" datatype="html">
+        <source>Ya usada</source>
+        <target>Already used</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.alreadyUsed.detail" datatype="html">
+        <source> Entró a las <x id="INTERPOLATION" equiv-text="{{ checkedInAt | date: &apos;shortTime&apos; }}"/> </source>
+        <target> Checked in at <x id="INTERPOLATION" equiv-text="{{ checkedInAt | date: &apos;shortTime&apos; }}"/> </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.otherBlock.heading" datatype="html">
+        <source>Otro bloque</source>
+        <target>Different block</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.otherBlock.detail" datatype="html">
+        <source> Su reserva es de <x id="INTERPOLATION" equiv-text="{{ scan.block.start | date: &apos;shortTime&apos; }}"/> a <x id="INTERPOLATION_1" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </source>
+        <target> Their reservation is from <x id="INTERPOLATION" equiv-text="{{ scan.block.start | date: &apos;shortTime&apos; }}"/> to <x id="INTERPOLATION_1" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.notFound.heading" datatype="html">
+        <source>No existe</source>
+        <target>Not found</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.result.notFound.detail" datatype="html">
+        <source> Código desconocido o reserva cancelada. </source>
+        <target> Unknown code or cancelled reservation. </target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

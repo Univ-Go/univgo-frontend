@@ -1,0 +1,70 @@
+:host {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.outcome {
+  // `[tuiAppearance]` already sets `position: relative` on this element — the icon's negative
+  // `z-index` below stays trapped behind this card's own text instead of behind unrelated content
+  // on the page.
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  inline-size: 100%;
+  padding: var(--univgo-space-3xl) var(--univgo-space-l);
+  text-align: center;
+}
+
+// A watermark, not a status symbol someone has to read: the heading already says "Expirada" in
+// large type, so the icon's job here is texture and brand, not legibility — hence the size, the
+// opacity, and sitting behind the text (`z-index: -1`) rather than beside it.
+.outcome__icon {
+  position: absolute;
+  z-index: -1;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 13rem;
+  opacity: 0.14;
+  // Taiga's icons render via a CSS mask sized off this token (default 0.125rem) rather than an SVG
+  // stroke-width, so this is the one place to thicken it — scoped to the watermark, not every icon
+  // in the app, because at 13rem a hairline reads as sparse in a way it never does at 1.5rem.
+  --tui-stroke-width: 0.3rem;
+
+  &--positive {
+    color: var(--tui-status-positive);
+  }
+
+  &--warning {
+    color: var(--tui-status-warning);
+  }
+
+  &--negative {
+    color: var(--tui-status-negative);
+  }
+
+  &--neutral {
+    color: var(--tui-status-neutral);
+  }
+}
+
+.outcome__name {
+  margin: 0;
+  font: var(--tui-typography-heading-h4);
+}
+
+.outcome__detail {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-m);
+}

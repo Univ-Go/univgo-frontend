@@ -21,7 +21,7 @@ export const ADMIN_NAV_ITEMS: readonly AdminNavItem[] = [
   {
     icon: '@tui.scan-line',
     label: $localize`:@@admin.nav.scanner:Escáner`,
-    link: null,
+    link: '/admin/scan',
   },
   {
     icon: '@tui.users',

@@ -1,0 +1,84 @@
+<div class="result" aria-live="polite">
+  @if (result(); as scan) {
+    @switch (scan.outcome) {
+      @case ('valid') {
+        <article tuiCardLarge tuiSurface tuiAppearance="positive" class="outcome">
+          <tui-icon icon="@tui.user-check" class="outcome__icon outcome__icon--positive" aria-hidden="true" />
+          <h2 i18n="@@admin.scan.result.valid.heading">Acceso concedido</h2>
+          <p class="outcome__name">{{ scan.attendee.name }}</p>
+          <p class="outcome__detail" i18n="@@admin.scan.result.valid.detail">
+            Hasta las {{ scan.block.end | date: 'shortTime' }}
+          </p>
+        </article>
+      }
+      @case ('tooEarly') {
+        <article tuiCardLarge tuiSurface tuiAppearance="warning" class="outcome">
+          <tui-icon icon="@tui.clock" class="outcome__icon outcome__icon--warning" aria-hidden="true" />
+          <h2 i18n="@@admin.scan.result.tooEarly.heading">Aún no</h2>
+          <p class="outcome__name">{{ scan.attendee.name }}</p>
+          @if (scan.attendee.checkInOpensAt; as opensAt) {
+            <p class="outcome__detail" i18n="@@admin.scan.result.tooEarly.detail">
+              El check-in abre a las {{ opensAt | date: 'shortTime' }}
+            </p>
+          }
+        </article>
+      }
+      @case ('expired') {
+        <article tuiCardLarge tuiSurface tuiAppearance="negative" class="outcome">
+          <tui-icon icon="@tui.circle-x" class="outcome__icon outcome__icon--negative" aria-hidden="true" />
+          <h2 i18n="@@admin.scan.result.expired.heading">Expirada</h2>
+          <p class="outcome__name">{{ scan.attendee.name }}</p>
+          @if (scan.attendee.checkInClosesAt; as closesAt) {
+            <p class="outcome__detail" i18n="@@admin.scan.result.expired.detail">
+              Venció a las {{ closesAt | date: 'shortTime' }}
+            </p>
+          } @else {
+            <p class="outcome__detail" i18n="@@admin.scan.result.expired.detailUnknown">
+              Ya no puede usarse.
+            </p>
+          }
+        </article>
+      }
+      @case ('alreadyUsed') {
+        <article tuiCardLarge tuiSurface tuiAppearance="neutral" class="outcome">
+          <tui-icon icon="@tui.history" class="outcome__icon outcome__icon--neutral" aria-hidden="true" />
+          <h2 i18n="@@admin.scan.result.alreadyUsed.heading">Ya usada</h2>
+          <p class="outcome__name">{{ scan.attendee.name }}</p>
+          @if (scan.attendee.checkedInAt; as checkedInAt) {
+            <p class="outcome__detail" i18n="@@admin.scan.result.alreadyUsed.detail">
+              Entró a las {{ checkedInAt | date: 'shortTime' }}
+            </p>
+          }
+        </article>
+      }
+      @case ('otherBlock') {
+        <article tuiCardLarge tuiSurface tuiAppearance="warning" class="outcome">
+          <tui-icon icon="@tui.calendar-days" class="outcome__icon outcome__icon--warning" aria-hidden="true" />
+          <h2 i18n="@@admin.scan.result.otherBlock.heading">Otro bloque</h2>
+          <p class="outcome__name">{{ scan.attendee.name }}</p>
+          <p class="outcome__detail" i18n="@@admin.scan.result.otherBlock.detail">
+            Su reserva es de {{ scan.block.start | date: 'shortTime' }} a
+            {{ scan.block.end | date: 'shortTime' }}
+          </p>
+        </article>
+      }
+      @case ('notFound') {
+        <article tuiCardLarge tuiSurface tuiAppearance="negative" class="outcome">
+          <tui-icon icon="@tui.user-x" class="outcome__icon outcome__icon--negative" aria-hidden="true" />
+          <h2 i18n="@@admin.scan.result.notFound.heading">No existe</h2>
+          <p class="outcome__detail" i18n="@@admin.scan.result.notFound.detail">
+            Código desconocido o reserva cancelada.
+          </p>
+        </article>
+      }
+    }
+  } @else {
+    <app-empty-state
+      icon="@tui.qr-code"
+      i18n-heading="@@admin.scan.result.idle.heading"
+      heading="Esperando código"
+      i18n-description="@@admin.scan.result.idle.description"
+      description="Acerca el código QR a la cámara o ingrésalo manualmente."
+    />
+  }
+</div>

@@ -1,0 +1,115 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+
+  // `min-block-size`, not `block-size`: the classic sticky-footer trick. A flex column with a fixed
+  // `block-size` keeps that size no matter what — a child that cannot shrink below its own floor
+  // (the camera's) simply spills past it, invisibly, with nothing to scroll to. A floor instead lets
+  // `flex: 1` still fill exactly this height when content fits, but grow the column — and, through
+  // it, `main` and the page — the moment it does not, which is what actually gives the short-viewport
+  // case a real scrollbar and somewhere for the sticky result panel to travel.
+  @media (width >= bp.$desktop) {
+    min-block-size: calc(100svh - var(--univgo-admin-header-height) - var(--univgo-space-xl) * 2);
+  }
+}
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--univgo-space-l);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+
+  @media (width >= bp.$desktop) {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    // Stretch (the grid default) rather than `start`: the result column matches whatever height
+    // `.input-column` ends up with instead of shrinking to its own content.
+    flex: 1;
+    // Deliberately not `min-block-size: 0` here or on `.input-column`/`.camera-card` below: that
+    // would let each one shrink past what its own content needs, and the camera's explicit floor
+    // (`.camera-card__viewport`) would spill out of its card instead of the whole chain refusing to
+    // shrink below it — which is what turns into the page scrolling, with the sticky result panel,
+    // on a viewport too short for the pair to fit.
+  }
+}
+
+.input-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  min-inline-size: 0;
+
+  // A grid, not a flex column: a flex item that also carries `aspect-ratio` computes its main-size
+  // hypothesis from that ratio before flex-grow ever runs, so `flex: 1` and `aspect-ratio: auto`
+  // fight each other instead of the second cleanly cancelling the first. Grid's `1fr` track has no
+  // such interaction — the camera row simply takes what the manual-entry row's own height leaves.
+  @media (width >= bp.$desktop) {
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  padding: var(--univgo-space-l);
+}
+
+.camera-card__viewport {
+  aspect-ratio: 3 / 4;
+
+  @media (width >= bp.$desktop) {
+    // `.camera-card` (a `[tuiCardLarge]`) can't become a grid — Taiga forces it to
+    // `display: flex; flex-direction: column;` at a specificity ours can't out-rank
+    // (`[tuiCardLarge][data-space]:where(...)` beats a single class) — so this grows into that flex
+    // column with `flex` instead. The heading above it keeps its natural height; this takes the
+    // rest. The floor below matters only on a viewport too short for that to fit: the card refuses
+    // to shrink past it (no `min-block-size: 0` anywhere in this chain undoes that refusal) and the
+    // page scrolls instead, with the sticky result panel, rather than the camera being squeezed
+    // into something unusably small.
+    aspect-ratio: auto;
+    flex: 1;
+    min-block-size: 16rem;
+  }
+}
+
+.manual-card__form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: var(--univgo-space-m);
+}
+
+.manual-card__field {
+  flex: 1 1 12rem;
+}
+
+.manual-card__hint {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-xs);
+}
+
+.result-column {
+  min-block-size: 20rem;
+
+  @media (width >= bp.$desktop) {
+    position: sticky;
+    // Below the header, not at its top edge: the header is sticky too, with a higher `z-index`, so
+    // an offset shorter than its height leaves this panel stuck underneath it instead of below it.
+    inset-block-start: var(--univgo-admin-header-height);
+    block-size: 100%;
+    min-block-size: 0;
+  }
+}

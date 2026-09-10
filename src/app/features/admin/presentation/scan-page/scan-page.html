@@ -1,0 +1,70 @@
+<header class="intro">
+  <h1 i18n="@@admin.scan.title">Escáner</h1>
+  <app-space-switcher
+    [spaces]="spaces"
+    [selectedId]="selectedSpaceId()"
+    (spaceSelected)="selectSpace($event)"
+  />
+</header>
+
+<div class="layout">
+  <div class="input-column">
+    <section tuiCardLarge tuiSurface tuiAppearance="outline" class="card camera-card">
+      <h2 i18n="@@admin.scan.camera.title">Cámara principal</h2>
+      <app-qr-camera class="camera-card__viewport" (codeScanned)="onCameraCode($event)" />
+    </section>
+
+    <section tuiCardLarge tuiSurface tuiAppearance="outline" class="card manual-card">
+      <!-- `docs/booking-flow.md` §10/§11: this is what the student's printed code falls back to when
+           the camera can't read the QR. No heading of its own — the label on the field already says
+           what it is, and a title here only took height away from the camera above it. -->
+      <form class="manual-card__form" (submit)="$event.preventDefault(); submitManualCode()">
+        <tui-textfield tuiTextfieldSize="l" iconStart="@tui.keyboard" class="manual-card__field">
+          <label tuiLabel for="scan-manual-code" i18n="@@admin.scan.manualEntry.label"
+            >Código de reserva</label
+          >
+          <input
+            id="scan-manual-code"
+            tuiInput
+            name="code"
+            autocomplete="off"
+            i18n-placeholder="@@admin.scan.manualEntry.placeholder"
+            placeholder="Ej. UG-1234"
+            [ngModel]="manualCode()"
+            (ngModelChange)="manualCode.set($event)"
+            [disabled]="verifying()"
+          />
+        </tui-textfield>
+
+        <tui-loader [loading]="verifying()" class="manual-card__loader">
+          <button
+            tuiButton
+            type="submit"
+            appearance="primary"
+            size="l"
+            iconEnd="@tui.arrow-right"
+            [disabled]="verifying() || !manualCode().trim()"
+            i18n="@@admin.scan.manualEntry.submit"
+          >
+            Verificar
+          </button>
+        </tui-loader>
+      </form>
+
+      <p class="manual-card__hint" i18n="@@admin.scan.manualEntry.hint">
+        Úsalo si el código QR no se puede leer.
+      </p>
+    </section>
+  </div>
+
+  <aside
+    tuiCardLarge
+    tuiSurface
+    tuiAppearance="outline"
+    class="card result-column"
+    aria-label="Resultado del escaneo"
+    i18n-aria-label="@@admin.scan.result.label"
+  >
+    <app-check-in-result [result]="result()" />
+  </aside>
+</div>

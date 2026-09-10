@@ -1,3 +1,4 @@
+import { createReservationCode } from '../../booking/infrastructure/mock-reservation-code';
 import type { Attendee, CapacityBlock, CheckInStatus } from '../domain/attendance';
 
 const MINUTES_PER_HOUR = 60;
@@ -111,15 +112,30 @@ function timesFor(
   status: CheckInStatus,
   position: number,
   total: number,
-): Pick<Attendee, 'checkedInAt' | 'checkInClosesAt'> {
+): Pick<Attendee, 'checkedInAt' | 'checkInOpensAt' | 'checkInClosesAt'> {
   switch (status) {
     case 'reserved':
-      return { checkedInAt: null, checkInClosesAt: pendingDeadline(position) };
+      // The window already opened, same as a real reservation mid-tolerance: only the closing
+      // edge is what the roster needs to warn about, so the opening one sits a fixed step behind
+      // "now" rather than chasing the block's own start.
+      return {
+        checkedInAt: null,
+        checkInOpensAt: minutesFrom(NOW, -CHECK_IN_TOLERANCE_MINUTES),
+        checkInClosesAt: pendingDeadline(position),
+      };
     case 'in_progress':
     case 'completed':
-      return { checkedInAt: arrival(position, total), checkInClosesAt: null };
+      return { checkedInAt: arrival(position, total), checkInOpensAt: null, checkInClosesAt: null };
+    case 'expired':
+      // Kept for the scanner: a code scanned after the fact still needs the instant it lapsed to
+      // tell "expiró hace un minuto" from "expiró hace una hora".
+      return {
+        checkedInAt: null,
+        checkInOpensAt: null,
+        checkInClosesAt: minutesFrom(NOW, -(5 + position * 4)),
+      };
     default:
-      return { checkedInAt: null, checkInClosesAt: null };
+      return { checkedInAt: null, checkInOpensAt: null, checkInClosesAt: null };
   }
 }
 
@@ -137,6 +153,7 @@ function buildAttendees(roster: RosterShape): readonly Attendee[] {
         name: `${GIVEN_NAMES[overall % GIVEN_NAMES.length]} ${SURNAMES[overall % SURNAMES.length]}`,
         faculty: FACULTIES[overall % FACULTIES.length],
         universityId: `U-${203948 + overall * 137}`,
+        checkInCode: createReservationCode(),
         status,
         ...timesFor(status, position, count),
       };

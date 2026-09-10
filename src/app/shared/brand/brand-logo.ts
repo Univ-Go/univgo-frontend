@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { BrandColors } from './brand-colors';
 
+let nextInstanceId = 0;
+
 /**
  * Level 1: the wordmark. The application bar, the footer and the sign-in panel all showed it, each
  * repeating the file, its intrinsic size and the plate it sits on. This is the one place that
@@ -42,4 +44,8 @@ import { BrandColors } from './brand-colors';
   `,
   templateUrl: './univgo-logo-full.svg',
 })
-export class BrandLogo {}
+export class BrandLogo {
+  // The artwork's masks carry fixed ids. Two instances mounted at once — admin header + admin
+  // aside, app header + app footer — would collide on the same id and corrupt one of the masks.
+  protected readonly maskSuffix = `-${nextInstanceId++}`;
+}

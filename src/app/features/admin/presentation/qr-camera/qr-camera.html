@@ -3,7 +3,10 @@
        element's own computed visibility the moment it starts and, if it finds it hidden, "fixes"
        that by pinning it to `opacity: 0; width: 0; height: 0` as inline styles it never undoes —
        a Safari workaround that otherwise permanently zeroes the frame no CSS class can undo again. -->
-  <video #video class="frame__video" playsinline muted aria-hidden="true"></video>
+  <!-- tabindex="-1": some browsers (Firefox) make a <video> focusable even without `controls`, and
+       aria-hidden on a focusable element leaves a keyboard user tabbing onto something assistive
+       tech never announces. -->
+  <video #video class="frame__video" playsinline muted aria-hidden="true" tabindex="-1"></video>
 
   @switch (state()) {
     @case ('starting') {

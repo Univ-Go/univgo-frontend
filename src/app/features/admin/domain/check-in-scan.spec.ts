@@ -1,4 +1,5 @@
 import type { Attendee, CapacityBlock, CheckInStatus } from './attendance';
+import type { ScanOutcome } from './check-in-scan';
 import { evaluateCheckInScan } from './check-in-scan';
 
 const BLOCK_START = new Date(2026, 7, 20, 14, 0);
@@ -89,28 +90,18 @@ describe('evaluateCheckInScan', () => {
     expect(evaluateCheckInScan('UG-1234', current, [current], NOW).outcome).toBe('expired');
   });
 
-  it('reports a reservation the clock already expired', () => {
-    const current = block([withStatus('expired')]);
+  it.each<[CheckInStatus, ScanOutcome]>([
+    // The clock already expired it.
+    ['expired', 'expired'],
+    // Already inside, or already gone — both stop counting as "waiting to be scanned".
+    ['in_progress', 'alreadyUsed'],
+    ['completed', 'alreadyUsed'],
+    // Cancelled reads as not found, the same as a code the system never issued.
+    ['cancelled', 'notFound'],
+  ])('reports a %s reservation as %s', (status, outcome) => {
+    const current = block([withStatus(status)]);
 
-    expect(evaluateCheckInScan('UG-1234', current, [current], NOW).outcome).toBe('expired');
-  });
-
-  it('reports a reservation already checked in as already used', () => {
-    const current = block([withStatus('in_progress')]);
-
-    expect(evaluateCheckInScan('UG-1234', current, [current], NOW).outcome).toBe('alreadyUsed');
-  });
-
-  it('reports a finished stay as already used, not as not found', () => {
-    const current = block([withStatus('completed')]);
-
-    expect(evaluateCheckInScan('UG-1234', current, [current], NOW).outcome).toBe('alreadyUsed');
-  });
-
-  it('reports a cancelled reservation as not found, the same as a code the system never issued', () => {
-    const current = block([withStatus('cancelled')]);
-
-    expect(evaluateCheckInScan('UG-1234', current, [current], NOW).outcome).toBe('notFound');
+    expect(evaluateCheckInScan('UG-1234', current, [current], NOW).outcome).toBe(outcome);
   });
 
   it('reports a code from another block as otherBlock, with that block attached', () => {

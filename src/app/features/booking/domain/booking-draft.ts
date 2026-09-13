@@ -6,7 +6,7 @@ import { BOOKING_DURATION_MINUTES } from '../../spaces/domain/space';
  * `docs/booking-flow.md` §2 says the day's blocks do not overlap and the student chooses among them.
  * Stepping by less would offer 14:00–16:00 and 15:00–17:00 as separate choices for the same seat.
  */
-export const BOOKING_START_STEP_MINUTES = BOOKING_DURATION_MINUTES;
+export { BOOKING_DURATION_MINUTES as BOOKING_START_STEP_MINUTES } from '../../spaces/domain/space';
 
 /**
  * What the user has answered so far. Every field is optional because the flow is walked in steps and

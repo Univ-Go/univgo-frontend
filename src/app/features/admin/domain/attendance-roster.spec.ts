@@ -105,6 +105,44 @@ describe('occupancyOf', () => {
   it('does not report a block of unknown capacity as full', () => {
     expect(occupancyOf(block([withStatus('reserved', 'a')], 0)).ratio).toBe(0);
   });
+
+  it('reports who used the block and who was lost to the clock once it has ended', () => {
+    const attendees = [
+      ...Array.from({ length: 7 }, (_, index) => withStatus('completed', `done-${index}`)),
+      ...Array.from({ length: 3 }, (_, index) => withStatus('expired', `late-${index}`)),
+    ];
+
+    const occupancy = occupancyOf(block(attendees, 10));
+
+    expect(occupancy.attended).toBe(7);
+    expect(occupancy.missed).toBe(3);
+    expect(occupancy.occupied).toBe(0);
+    expect(occupancy.free).toBe(10);
+  });
+
+  it('counts a reservation still inside the room as attended', () => {
+    expect(occupancyOf(block([withStatus('in_progress', 'a')], 10)).attended).toBe(1);
+  });
+
+  /**
+   * `docs/booking-flow.md` §7 separates cancelling from expiring precisely because one was announced
+   * and the other was not, and cancelling is the behaviour the flow rewards. Counting it as a
+   * no-show would report the opposite of what the institution wants to encourage.
+   */
+  it('counts a cancellation as neither attended nor missed', () => {
+    const occupancy = occupancyOf(block([withStatus('cancelled', 'a')], 10));
+
+    expect(occupancy.attended).toBe(0);
+    expect(occupancy.missed).toBe(0);
+  });
+
+  it('reports zeroes rather than NaN for a block nobody booked', () => {
+    const occupancy = occupancyOf(block([], 10));
+
+    expect(occupancy.attended).toBe(0);
+    expect(occupancy.missed).toBe(0);
+    expect(occupancy.ratio).toBe(0);
+  });
 });
 
 describe('countExpiringSoon', () => {

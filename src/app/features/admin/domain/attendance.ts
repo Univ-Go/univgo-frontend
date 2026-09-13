@@ -36,12 +36,20 @@ export interface Attendee {
   readonly checkInClosesAt: Date | null;
 }
 
-export interface CapacityBlock {
+/**
+ * A space the administrator is responsible for, with no block attached. Separate from
+ * `CapacityBlock` because "which spaces can I switch to" and "what is happening at 14:00" are two
+ * questions: answering the first with a block forces a time to be picked before a space is.
+ */
+export interface AdminSpace {
   readonly spaceId: string;
   readonly spaceName: string;
+  readonly capacity: number;
+}
+
+export interface CapacityBlock extends AdminSpace {
   readonly start: Date;
   readonly end: Date;
-  readonly capacity: number;
   readonly attendees: readonly Attendee[];
 }
 
@@ -58,6 +66,17 @@ export interface BlockOccupancy {
   readonly pending: number;
   /** `occupied / capacity`, between 0 and 1, for the meters that draw it. */
   readonly ratio: number;
+  /**
+   * How many of the block's reservations were actually used — checked in, whether or not the block
+   * has ended. The only counters that still say something once every seat has been released.
+   */
+  readonly attended: number;
+  /**
+   * How many were lost to the clock. Cancellations are in neither counter on purpose: the student
+   * said they were not coming, and `docs/booking-flow.md` §7 rewards exactly that, so counting one
+   * as a no-show would report the opposite of what the flow encourages.
+   */
+  readonly missed: number;
 }
 
 export interface AttendeeFilter {

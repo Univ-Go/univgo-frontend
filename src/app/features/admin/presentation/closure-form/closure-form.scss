@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 .form {
   display: flex;
   flex-direction: column;
@@ -17,21 +19,32 @@
   inline-size: var(--tui-height-s);
   block-size: var(--tui-height-s);
   border-radius: var(--tui-radius-l);
-  background: var(--tui-background-accent-1);
-  color: var(--tui-text-negative);
+  // The background comes from `tuiAppearance="negative"` on this same element (its `--t-bg`), so
+  // only the icon's own colour needs setting here — `--tui-text-negative` was never a real Taiga
+  // token, so it fell back to the plain text colour instead of the intended negative-status red.
+  // `--tui-status-negative` is the same token `CheckInResult`'s outcome icon and the submit
+  // button's `appearance="negative"` already use.
+  color: var(--tui-status-negative);
 }
 
 .form__heading {
   font: var(--tui-typography-heading-h6);
 }
 
+// Mobile-first: three pills squeezed into a phone's width leave each one too narrow for its icon
+// and two-line label, which is what forced the awkward mid-word wraps. One column until there is a
+// tablet's worth of room for three to breathe.
 .scope {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--univgo-space-m);
   margin: 0;
   padding: 0;
   border: none;
+
+  @media (width >= bp.$tablet) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .scope legend {
@@ -50,10 +63,16 @@
   text-align: center;
 }
 
+// Same reasoning as `.scope`: two time fields side by side leave too little room for the clock
+// icon and the clear button on a phone, which is what cropped them in the mock.
 .time-range {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--univgo-space-m);
+
+  @media (width >= bp.$tablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .weekdays {
@@ -128,6 +147,17 @@
   font: var(--tui-typography-ui-xs);
 }
 
+// `[tuiButton]` fixes its own block-size to `--t-size` and keeps its label on one line, which is
+// what pushed "Cerrar espacio y cancelar reservas" past the pill's edges on a phone. Letting it wrap
+// needs the height freed to match, since the fixed size would otherwise just clip a second line.
 .form__submit {
   inline-size: 100%;
+
+  @media (width < bp.$tablet) {
+    block-size: auto;
+    min-block-size: var(--tui-height-l);
+    padding-block: var(--univgo-space-s);
+    white-space: normal;
+    text-align: center;
+  }
 }

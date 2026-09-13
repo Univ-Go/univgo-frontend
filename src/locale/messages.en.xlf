@@ -1011,8 +1011,8 @@
         <target>View details</target>
       </trans-unit>
       <trans-unit id="admin.blocks.row.detailsLabel" datatype="html">
-        <source>Ver el bloque de <x id="INTERPOLATION"/> a <x id="INTERPOLATION_1"/></source>
-        <target>View the <x id="INTERPOLATION"/> to <x id="INTERPOLATION_1"/> block</target>
+        <source>Ver detalles: bloque de <x id="INTERPOLATION"/> a <x id="INTERPOLATION_1"/></source>
+        <target>View details: <x id="INTERPOLATION"/> to <x id="INTERPOLATION_1"/> block</target>
       </trans-unit>
       <trans-unit id="admin.blocks.capacity.upcoming" datatype="html">
         <source>Aforo previsto</source>

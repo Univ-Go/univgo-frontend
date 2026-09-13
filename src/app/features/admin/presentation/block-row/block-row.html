@@ -72,8 +72,10 @@
   </div>
 
   <!-- Seven links all reading "Ver detalles" are indistinguishable to anyone tabbing the list, so
-       each carries the hours it opens. `aria-current` is what says "this is the one happening now"
-       without a visually hidden paragraph repeating the badge beside it. -->
+       each carries the hours it opens. The visible label opens the accessible name rather than being
+       replaced by it — WCAG 2.5.3 needs the two to match for anyone navigating by voice. `aria-current`
+       is what says "this is the one happening now" without a visually hidden paragraph repeating the
+       badge beside it. -->
   <a
     tuiButton
     size="m"
@@ -83,7 +85,7 @@
     [routerLink]="['./', key()]"
     [queryParams]="{ space: block().spaceId, date: day() }"
     [attr.aria-current]="phase() === 'live' ? 'true' : null"
-    aria-label="Ver el bloque de {{ block().start | date: 'shortTime' }} a {{
+    aria-label="Ver detalles: bloque de {{ block().start | date: 'shortTime' }} a {{
       block().end | date: 'shortTime'
     }}"
     i18n-aria-label="@@admin.blocks.row.detailsLabel"

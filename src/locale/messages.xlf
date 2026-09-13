@@ -379,21 +379,21 @@
         <source>No hay estudiantes con estos filtros</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
-          <context context-type="linenumber">119,120</context>
+          <context context-type="linenumber">121,122</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.roster.empty.description" datatype="html">
         <source>Prueba con otro estado, o borra lo que hayas escrito en el buscador.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
-          <context context-type="linenumber">121,125</context>
+          <context context-type="linenumber">123,127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.roster.count" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {Mostrando <x id="INTERPOLATION"/> de 1 registro} other {Mostrando <x id="INTERPOLATION"/> de <x id="INTERPOLATION_1"/> registros}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.html</context>
-          <context context-type="linenumber">132,138</context>
+          <context context-type="linenumber">134,140</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-history/closure-history.html</context>
@@ -411,7 +411,7 @@
         <source>Estado</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/attendee-roster/attendee-roster.ts</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.attendee.status.inProgress" datatype="html">
@@ -460,7 +460,7 @@
         <source>Día siguiente</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-day-stepper/block-day-stepper.html</context>
-          <context context-type="linenumber">44,48</context>
+          <context context-type="linenumber">43,47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.day.label" datatype="html">
@@ -541,19 +541,19 @@
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.row.detailsLabel" datatype="html">
-        <source>Ver el bloque de <x id="INTERPOLATION" equiv-text="{{ block().start | date: &apos;shortTime&apos; }}"/> a <x id="INTERPOLATION_1" equiv-text="{{
+        <source>Ver detalles: bloque de <x id="INTERPOLATION" equiv-text="{{ block().start | date: &apos;shortTime&apos; }}"/> a <x id="INTERPOLATION_1" equiv-text="{{
       block().end | date: &apos;shortTime&apos;
     }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-row/block-row.html</context>
-          <context context-type="linenumber">86,89</context>
+          <context context-type="linenumber">88,91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.row.details" datatype="html">
         <source>Ver detalles</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-row/block-row.html</context>
-          <context context-type="linenumber">91,94</context>
+          <context context-type="linenumber">93,96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.band.finished" datatype="html">
@@ -588,11 +588,11 @@
         <source><x id="INTERPOLATION" equiv-text="{{ current()?.start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ current()?.end | date: &apos;shortTime&apos; }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-switcher/block-switcher.html</context>
-          <context context-type="linenumber">20,22</context>
+          <context context-type="linenumber">16,18</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-switcher/block-switcher.html</context>
-          <context context-type="linenumber">35,37</context>
+          <context context-type="linenumber">31,33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blockSwitcher.label" datatype="html">
@@ -734,105 +734,105 @@
         <source>Acceso concedido</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">11,12</context>
+          <context context-type="linenumber">7,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.valid.detail" datatype="html">
         <source> Hasta las <x id="INTERPOLATION" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">14,16</context>
+          <context context-type="linenumber">10,12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.tooEarly.heading" datatype="html">
         <source>Aún no</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">25,26</context>
+          <context context-type="linenumber">17,18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.tooEarly.detail" datatype="html">
         <source> El check-in abre a las <x id="INTERPOLATION" equiv-text="{{ opensAt | date: &apos;shortTime&apos; }}"/> </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">29,31</context>
+          <context context-type="linenumber">21,23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.expired.heading" datatype="html">
         <source>Expirada</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">41,42</context>
+          <context context-type="linenumber">29,30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.expired.detail" datatype="html">
         <source> Venció a las <x id="INTERPOLATION" equiv-text="{{ closesAt | date: &apos;shortTime&apos; }}"/> </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">45,47</context>
+          <context context-type="linenumber">33,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.expired.detailUnknown" datatype="html">
         <source> Ya no puede usarse. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">49,52</context>
+          <context context-type="linenumber">37,40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.alreadyUsed.heading" datatype="html">
         <source>Ya usada</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">61,62</context>
+          <context context-type="linenumber">45,46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.alreadyUsed.detail" datatype="html">
         <source> Entró a las <x id="INTERPOLATION" equiv-text="{{ checkedInAt | date: &apos;shortTime&apos; }}"/> </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">65,67</context>
+          <context context-type="linenumber">49,51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.otherBlock.heading" datatype="html">
         <source>Otro bloque</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">77,78</context>
+          <context context-type="linenumber">57,58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.otherBlock.detail" datatype="html">
         <source> Su reserva es de <x id="INTERPOLATION" equiv-text="{{ scan.block.start | date: &apos;shortTime&apos; }}"/> a <x id="INTERPOLATION_1" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">80,83</context>
+          <context context-type="linenumber">60,63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.notFound.heading" datatype="html">
         <source>No existe</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">92,93</context>
+          <context context-type="linenumber">68,69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.notFound.detail" datatype="html">
         <source> Código desconocido o reserva cancelada. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">94,97</context>
+          <context context-type="linenumber">70,73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.idle.heading" datatype="html">
         <source>Esperando código</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">103,104</context>
+          <context context-type="linenumber">79,80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.idle.description" datatype="html">
         <source>Acerca el código QR a la cámara o ingrésalo manualmente.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/check-in-result/check-in-result.html</context>
-          <context context-type="linenumber">105,109</context>
+          <context context-type="linenumber">81,85</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.title" datatype="html">
@@ -846,168 +846,168 @@
         <source>Comienza el</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">20,23</context>
+          <context context-type="linenumber">12,15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.date" datatype="html">
         <source>Fecha de cierre</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">24,28</context>
+          <context context-type="linenumber">16,20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.scope" datatype="html">
         <source>Alcance del cierre</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">39,41</context>
+          <context context-type="linenumber">31,33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.scope.fullDay" datatype="html">
         <source>Día completo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">51,54</context>
+          <context context-type="linenumber">43,46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.scope.timeBlock" datatype="html">
         <source>Bloque específico</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">64,67</context>
+          <context context-type="linenumber">56,59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.scope.recurring" datatype="html">
         <source>Bloque recurrente</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">77,81</context>
+          <context context-type="linenumber">69,73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.timeFrom" datatype="html">
         <source>Desde</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">84,86</context>
+          <context context-type="linenumber">76,78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.timeTo" datatype="html">
         <source>Hasta</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">107,109</context>
+          <context context-type="linenumber">99,101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.recurring.weekdays" datatype="html">
         <source>Se repite los</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">133,136</context>
+          <context context-type="linenumber">125,128</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.recurring.indefinite" datatype="html">
         <source>Sin fecha de fin</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">165,169</context>
+          <context context-type="linenumber">155,159</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.recurring.until" datatype="html">
         <source>Finaliza el</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">171,174</context>
+          <context context-type="linenumber">161,164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.reason" datatype="html">
         <source>Motivo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">188,190</context>
+          <context context-type="linenumber">178,180</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.reason.placeholder" datatype="html">
         <source>Selecciona un motivo…</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">194,196</context>
+          <context context-type="linenumber">184,186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.details" datatype="html">
         <source> Detalles adicionales (opcional) </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">214,217</context>
+          <context context-type="linenumber">204,207</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.details.placeholder" datatype="html">
         <source>Especificaciones sobre el cierre…</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">221,223</context>
+          <context context-type="linenumber">211,213</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.notice.title" datatype="html">
         <source>Notificación automática</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">230,231</context>
+          <context context-type="linenumber">220,221</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.notice.body" datatype="html">
         <source> Al confirmar, se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">232,236</context>
+          <context context-type="linenumber">222,226</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.form.submit" datatype="html">
         <source> Cerrar espacio y cancelar reservas </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.html</context>
-          <context context-type="linenumber">248,251</context>
+          <context context-type="linenumber">238,241</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.title" datatype="html">
         <source>Confirmar cierre del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">195</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.body" datatype="html">
         <source>Se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. Esta acción no se puede deshacer.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">203</context>
+          <context context-type="linenumber">198</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.yes" datatype="html">
         <source>Cerrar espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">204</context>
+          <context context-type="linenumber">199</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.no" datatype="html">
         <source>Cancelar</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">205</context>
+          <context context-type="linenumber">200</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.created.summary" datatype="html">
         <source>Espacio cerrado</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">245</context>
+          <context context-type="linenumber">240</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.created.detail" datatype="html">
         <source>Las reservas del periodo se cancelaron y se notificó a los estudiantes.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">246</context>
+          <context context-type="linenumber">241</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.history.title" datatype="html">
@@ -1156,31 +1156,31 @@
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.lead" datatype="html">
-        <source>Capacidad máxima permitida</source>
+        <source> Capacidad máxima permitida </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">4,8</context>
+          <context context-type="linenumber">5,9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.occupied" datatype="html">
         <source>Ocupadas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">9,10</context>
+          <context context-type="linenumber">11,12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.free" datatype="html">
         <source> Libres (de <x id="INTERPOLATION" equiv-text="{{ occupancy().capacity }}"/>) </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">17,19</context>
+          <context context-type="linenumber">19,21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.rate" datatype="html">
         <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().ratio | percent }}"/> de ocupación </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">35,37</context>
+          <context context-type="linenumber">37,39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.camera.starting" datatype="html">
@@ -1303,28 +1303,28 @@
         <source> Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o incidencias. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">6,10</context>
+          <context context-type="linenumber">6,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.thisMonth" datatype="html">
         <source>Cierres este mes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">27,28</context>
+          <context context-type="linenumber">28,29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.frequentReason" datatype="html">
         <source>Motivo frecuente</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">36,38</context>
+          <context context-type="linenumber">37,39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.noReason" datatype="html">
         <source>Sin cierres</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSwitcher.label" datatype="html">
@@ -2527,28 +2527,28 @@
         <source>Escáner</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.blocks" datatype="html">
         <source>Consulta de bloques</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.blocksShort" datatype="html">
         <source>Bloques</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.settings" datatype="html">
         <source>Ajustes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footer.rights" datatype="html">

@@ -69,7 +69,7 @@
               <th tuiTh i18n="@@admin.roster.column.universityId">ID universitario</th>
               <th tuiTh i18n="@@admin.roster.column.checkedInAt">Hora de entrada</th>
               <th tuiTh i18n="@@admin.roster.column.status">Estado</th>
-              <th tuiTh i18n="@@admin.roster.column.actions">Acciones</th>
+              <th tuiTh class="cell--center" i18n="@@admin.roster.column.actions">Acciones</th>
             </tr>
           </thead>
 
@@ -92,16 +92,18 @@
                 <td tuiTd>
                   <app-attendee-status-badge [status]="attendee.status" size="s" />
                 </td>
-                <td tuiTd>
+                <td tuiTd class="cell--center">
                   @if (actionFor(attendee); as action) {
                     <!-- The name rides in the label: the column header does not reach a screen
-                         reader that jumped straight to the button. -->
+                         reader that jumped straight to the button. The hint repeats only the action,
+                         not the name, for a mouse user hovering a row they can already see. -->
                     <button
                       tuiIconButton
                       type="button"
                       size="s"
                       [appearance]="action.appearance"
                       [iconStart]="action.icon"
+                      [tuiHint]="action.label"
                       [attr.aria-label]="action.label + ': ' + attendee.name"
                     ></button>
                   }

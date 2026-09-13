@@ -1,0 +1,61 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--univgo-space-l);
+}
+
+.intro__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+}
+
+.intro__lead {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+.day {
+  // Pulls the stepper up against the heading it qualifies, instead of floating at the host's own
+  // wider rhythm halfway between the title and the list.
+  margin-block-start: calc(var(--univgo-space-s) - var(--univgo-space-l));
+}
+
+.day__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-s);
+  font-variant-numeric: tabular-nums;
+}
+
+// Drawn rather than typed, like every other separator in the panel: never in the accessibility
+// tree, never translated.
+.day__dot {
+  inline-size: var(--univgo-space-xs);
+  block-size: var(--univgo-space-xs);
+  border-radius: 50%;
+  background: var(--tui-text-tertiary);
+}
+
+.schedule {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

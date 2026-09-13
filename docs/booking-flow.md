@@ -54,13 +54,15 @@ nunca de «espacio libre u ocupado».
 Todo el comportamiento sale de estos números. Son configuración de la institución (`APP_CONFIG`), no
 reglas escritas en el dominio: cambiarlos no debe exigir tocar el producto.
 
-| Parámetro                  | Valor       | Qué gobierna                                                                                                                       |
-| -------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Duración del bloque        | 120 min     | La rejilla de bloques de todos los espacios.                                                                                       |
-| Tolerancia de check-in     | 15 min      | Cuánto antes del inicio se puede entrar, y cuánto margen hay después para no perder la reserva. Un solo número para las dos cosas. |
-| Uso mínimo garantizado     | 75 min      | Cuánto tiempo de bloque debe quedar para que la plaza siga ofreciéndose.                                                           |
-| Reservas por espacio y día | 1           | Cuántas veces al día puede un mismo estudiante reservar el mismo espacio.                                                          |
-| Aforo                      | por espacio | Cuántas plazas ofrece cada bloque de ese espacio.                                                                                  |
+| Parámetro                  | Valor       | Qué gobierna                                                                                                                                 |
+| -------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Duración del bloque        | 120 min     | La rejilla de bloques de todos los espacios.                                                                                                 |
+| Tolerancia de check-in     | 15 min      | Cuánto antes del inicio se puede entrar, y cuánto margen hay después para no perder la reserva. Un solo número para las dos cosas.           |
+| Uso mínimo garantizado     | 75 min      | Cuánto tiempo de bloque debe quedar para que la plaza siga ofreciéndose.                                                                     |
+| Reservas por espacio y día | 1           | Cuántas veces al día puede un mismo estudiante reservar el mismo espacio.                                                                    |
+| Aforo                      | por espacio | Cuántas plazas ofrece cada bloque de ese espacio.                                                                                            |
+| Historial consultable      | 7 días      | Cuántos días hacia atrás puede abrir el panel un día de bloques.                                                                             |
+| Planificación consultable  | 7 días      | Cuántos días hacia adelante. Nunca menor que el horizonte de reserva del estudiante, o el panel no podría mostrar una reserva que ya existe. |
 
 ---
 
@@ -251,12 +253,30 @@ esperando:
 - **Otro bloque** — su reserva es de 16:00 a 18:00.
 - **No existe** — código desconocido o cancelado.
 
-**Ver el bloque actual.** Aforo, plazas ocupadas, plazas libres y la lista de estudiantes con su
-estado. Es lo que permite responder «¿queda sitio?» sin escanear nada.
+**Consultar los bloques de un día.** Todos los bloques de un espacio para un día, uno debajo de
+otro, y en cada uno lo que el reloj permite afirmar: si aún no ha empezado, las plazas reservadas
+sobre el aforo; si está en curso, quién está dentro y quién falta por entrar; si ya terminó, cuánta
+gente se presentó y cuánta no. Un bloque nunca afirma algo que no sabe — «en sala» sobre un bloque
+de mañana no es un dato, es un error. La lectura es por bloque y no por día: a las tres de la tarde
+el bloque de las seis de la mañana ya terminó y el de las seis de la tarde no ha abierto.
 
-**Consultar otros bloques.** Los del día, para responder preguntas y preparar el turno siguiente.
+El día se elige dentro de un rango acotado y configurable: `capacityHistoryDays` hacia atrás y
+`capacityPlanningDays` hacia adelante (§3). El panel es una herramienta de mostrador, no un informe
+histórico; un calendario sin fin prometería datos que nadie va a consultar.
 
-**Cancelar reservas del espacio.** Para mantenimiento imprevisto, cierre anticipado o incidencias.
+En la asistencia de un bloque terminado, las canceladas **no** cuentan como ausencias: el estudiante
+avisó, y §7 premia justamente eso. El denominador es quien se esperaba, no el aforo de la sala.
+
+**Ver el detalle de un bloque.** Desde esa lista, uno concreto: aforo, plazas ocupadas, plazas libres
+y la lista de estudiantes con su estado. Es lo que permite responder «¿queda sitio?» sin escanear
+nada. El bloque en curso no es un caso aparte: es una fila más de la lista, marcada como tal.
+
+**Cancelar reservas de un espacio.** Para mantenimiento imprevisto, cierre anticipado o incidencias.
+
+**Un administrador gestiona varios espacios.** Todo lo anterior está siempre situado en uno: el
+escáner comprueba contra el bloque en curso de un espacio concreto, y la lista muestra el día de un
+espacio concreto. El selector de espacio es por tanto parte del panel y no de una vista: cambiarlo no
+cambia de pantalla, cambia el sujeto de la que está abierta.
 
 ### Decisión pendiente
 
@@ -299,7 +319,11 @@ pase lo que pase en pantalla.
 
 ### Qué cambia respecto a lo que ya está construido
 
-- `BOOKING_DURATION_MINUTES` y `BOOKING_START_STEP_MINUTES` pasan de `60` a `120`.
+- ~~`BOOKING_DURATION_MINUTES` y `BOOKING_START_STEP_MINUTES` pasan de `60` a `120`.~~ Hecho. El
+  paso va a `120` igual que la duración: bloques de dos horas cada hora se solaparían, y §2 dice que
+  no se solapan.
+- El rango de días que el panel puede consultar sale de `APP_CONFIG` (`capacityHistoryDays`,
+  `capacityPlanningDays`), no de una constante en la vista.
 - Los horarios de apertura (`Space.freeSlots`) dejan de ser ventanas continuas y se dividen en
   bloques fijos de dos horas.
 - `SpaceAvailability` deja de ser «libre / ocupado» y pasa a ser un recuento de plazas por bloque.

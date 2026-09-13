@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { TuiTable } from '@taiga-ui/addon-table';
-import { TUI_BREAKPOINT, TuiAppearance, TuiButton } from '@taiga-ui/core';
+import { TUI_BREAKPOINT, TuiAppearance, TuiButton, TuiHintDirective } from '@taiga-ui/core';
 import { TuiPagination } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { CheckboxFilter } from '../../../../shared/checkbox-filter/checkbox-filter';
@@ -71,6 +71,7 @@ const ROW_ACTIONS: Readonly<Record<CheckInStatus, RowAction | null>> = {
     TuiAppearance,
     TuiButton,
     TuiCardLarge,
+    TuiHintDirective,
     TuiPagination,
     TuiSurface,
     TuiTable,

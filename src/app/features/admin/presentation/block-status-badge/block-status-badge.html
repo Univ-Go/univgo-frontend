@@ -1,0 +1,47 @@
+@if (phase() === 'past') {
+  <span
+    tuiBadge
+    appearance="neutral"
+    [size]="size()"
+    iconStart="@tui.history"
+    i18n="@@admin.blocks.band.finished"
+  >
+    Finalizado
+  </span>
+} @else {
+  @switch (band()) {
+    @case ('available') {
+      <span
+        tuiBadge
+        appearance="positive"
+        [size]="size()"
+        iconStart="@tui.circle-check"
+        i18n="@@admin.blocks.band.available"
+      >
+        Disponible
+      </span>
+    }
+    @case ('nearlyFull') {
+      <span
+        tuiBadge
+        appearance="warning"
+        [size]="size()"
+        iconStart="@tui.triangle-alert"
+        i18n="@@admin.blocks.band.nearlyFull"
+      >
+        Casi lleno
+      </span>
+    }
+    @case ('full') {
+      <span
+        tuiBadge
+        appearance="negative"
+        [size]="size()"
+        iconStart="@tui.circle-slash"
+        i18n="@@admin.blocks.band.full"
+      >
+        Lleno
+      </span>
+    }
+  }
+}

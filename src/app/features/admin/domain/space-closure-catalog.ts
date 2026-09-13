@@ -1,12 +1,5 @@
+import { startOfDay } from '../../../shared/time/calendar-day';
 import type { ClosureReason, ClosureStatus, SpaceClosure } from './space-closure';
-
-function startOfDay(date: Date): Date {
-  const start = new Date(date);
-
-  start.setHours(0, 0, 0, 0);
-
-  return start;
-}
 
 function endOfDay(date: Date): Date {
   const end = new Date(date);
@@ -62,7 +55,9 @@ function activeDuringMonth(closure: SpaceClosure, now: Date): boolean {
   const period = closurePeriodOf(closure);
   const month = monthRange(now);
 
-  return period.start.getTime() <= month.end.getTime() && period.end.getTime() >= month.start.getTime();
+  return (
+    period.start.getTime() <= month.end.getTime() && period.end.getTime() >= month.start.getTime()
+  );
 }
 
 export function closuresThisMonth(closures: readonly SpaceClosure[], now: Date): number {

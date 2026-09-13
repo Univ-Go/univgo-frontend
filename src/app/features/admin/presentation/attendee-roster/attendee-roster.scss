@@ -66,6 +66,12 @@
   color: var(--tui-text-tertiary);
 }
 
+// The lone icon button otherwise sits flush against the cell's start edge, same as a text cell —
+// fine for a name or a date, but a single centred action reads as a deliberate column instead.
+.cell--center {
+  text-align: center;
+}
+
 .cards {
   display: flex;
   flex-direction: column;

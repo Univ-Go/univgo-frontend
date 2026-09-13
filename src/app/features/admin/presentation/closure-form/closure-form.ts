@@ -23,7 +23,6 @@ import {
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { MOCK_SESSION_USER } from '../../../auth/infrastructure/mock-session';
-import type { CapacityBlock } from '../../domain/attendance';
 import type {
   ClosureReason,
   ClosureRecurrence,
@@ -31,7 +30,6 @@ import type {
   SpaceClosure,
 } from '../../domain/space-closure';
 import { CLOSURE_REASON_OPTIONS, closureReasonName } from '../closure-reason';
-import { SpaceSwitcher } from '../space-switcher/space-switcher';
 import { WEEKDAY_OPTIONS } from '../closure-weekday';
 
 let nextFormId = 0;
@@ -96,7 +94,6 @@ function closureTimeOptions(openingHour: number, closingHour: number): readonly 
     TuiSurface,
     TuiSwitch,
     TuiTextarea,
-    SpaceSwitcher,
   ],
   templateUrl: './closure-form.html',
   styleUrl: './closure-form.scss',
@@ -108,10 +105,8 @@ function closureTimeOptions(openingHour: number, closingHour: number): readonly 
 })
 export class ClosureForm {
   public readonly spaceId = input.required<string>();
-  public readonly spaces = input.required<readonly CapacityBlock[]>();
 
   public readonly closureCreated = output<SpaceClosure>();
-  public readonly spaceSelected = output<string>();
 
   private readonly confirm = inject(TuiConfirmService);
   private readonly notifications = inject(NotificationService);
@@ -162,7 +157,10 @@ export class ClosureForm {
 
   protected readonly formValid = computed(
     () =>
-      this.date() !== null && this.reason() !== null && this.timeRangeValid() && this.recurrenceValid(),
+      this.date() !== null &&
+      this.reason() !== null &&
+      this.timeRangeValid() &&
+      this.recurrenceValid(),
   );
 
   protected setScope(scope: ClosureScope): void {

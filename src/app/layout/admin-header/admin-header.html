@@ -2,25 +2,30 @@
   <!-- One wordmark on screen at a time: the aside signs the panel where it is a column, so the bar
        hides this one from that width up. The stylesheet decides, not a signal — the aside changes
        shape in CSS, and a second opinion in TypeScript would need the same number written twice. -->
-  <a class="bar__logo" routerLink="/admin/capacity">
+  <a class="bar__logo" routerLink="/admin/blocks">
     <app-brand-logo />
   </a>
 
   <!-- Nothing to submit: the roster answers as the field changes. The handler is what keeps Enter
-       from reloading the page. -->
-  <form class="bar__search" (submit)="$event.preventDefault()">
-    <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
-      <label tuiLabel for="admin-search" i18n="@@admin.search.label">Buscar estudiante o ID</label>
-      <input
-        id="admin-search"
-        tuiInput
-        name="query"
-        autocomplete="off"
-        [ngModel]="query()"
-        (ngModelChange)="search($event)"
-      />
-    </tui-textfield>
-  </form>
+       from reloading the page. Absent, rather than disabled, on the views that do not read it: a
+       field nobody consumes is worse than no field, and the bar keeps its shape either way. -->
+  @if (searchable()) {
+    <form class="bar__search" (submit)="$event.preventDefault()">
+      <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
+        <label tuiLabel for="admin-search" i18n="@@admin.search.label"
+          >Buscar estudiante o ID</label
+        >
+        <input
+          id="admin-search"
+          tuiInput
+          name="query"
+          autocomplete="off"
+          [ngModel]="query()"
+          (ngModelChange)="search($event)"
+        />
+      </tui-textfield>
+    </form>
+  }
 
   <div class="bar__actions">
     <tui-badged-content>

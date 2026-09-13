@@ -7,15 +7,16 @@
       incidencias.
     </p>
   </div>
+
+  <app-space-switcher
+    [spaces]="spaces"
+    [selectedId]="selectedSpaceId()"
+    (spaceSelected)="selectSpace($event)"
+  />
 </header>
 
 <div class="layout">
-  <app-closure-form
-    [spaceId]="selectedSpaceId()"
-    [spaces]="spaces"
-    (spaceSelected)="selectSpace($event)"
-    (closureCreated)="addClosure($event)"
-  />
+  <app-closure-form [spaceId]="selectedSpaceId()" (closureCreated)="addClosure($event)" />
 
   <div class="layout__side">
     <div class="stats">

@@ -6,14 +6,6 @@
     <h2 class="form__heading" i18n="@@admin.closure.form.title">Cierre del espacio</h2>
   </header>
 
-  <app-space-switcher
-    class="form__switcher"
-    [fullWidth]="true"
-    [spaces]="spaces()"
-    [selectedId]="spaceId()"
-    (spaceSelected)="spaceSelected.emit($event)"
-  />
-
   <tui-textfield tuiTextfieldSize="m">
     @if (scope() === 'recurring') {
       <label tuiLabel [for]="formId + '-date'" i18n="@@admin.closure.form.recurring.from"

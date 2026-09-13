@@ -3,7 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiButton } from '@taiga-ui/core';
 import { APP_CONFIG } from '../../core/config/app-config';
 import { BrandLogo } from '../../shared/brand/brand-logo';
-import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
+import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
 
 /**
  * Level 1: the panel's destinations, as a column.
@@ -99,7 +99,7 @@ import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
             [iconStart]="item.icon"
             [routerLink]="link"
             routerLinkActive
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="matchOptions"
             [attr.aria-current]="active.isActive ? 'page' : null"
             #active="routerLinkActive"
           >
@@ -125,4 +125,5 @@ import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
 export class AdminAside {
   protected readonly organizationName = inject(APP_CONFIG).organizationName;
   protected readonly items = ADMIN_NAV_ITEMS;
+  protected readonly matchOptions = ADMIN_NAV_MATCH_OPTIONS;
 }

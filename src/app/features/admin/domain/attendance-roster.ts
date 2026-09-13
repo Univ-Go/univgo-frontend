@@ -25,10 +25,18 @@ const STATUS_RANK: Readonly<Record<Attendee['status'], number>> = {
   cancelled: 4,
 };
 
+/**
+ * The two states that prove a reservation was used. `in_progress` counts as attended rather than as
+ * pending an outcome: the student is in the room, and the block merely has not ended yet.
+ */
+const WAS_USED: ReadonlySet<Attendee['status']> = new Set(['in_progress', 'completed'] as const);
+
 export function occupancyOf(block: CapacityBlock): BlockOccupancy {
   const inRoom = block.attendees.filter((attendee) => attendee.status === 'in_progress').length;
   const pending = block.attendees.filter((attendee) => attendee.status === 'reserved').length;
   const occupied = block.attendees.filter((attendee) => HOLDS_A_SEAT.has(attendee.status)).length;
+  const attended = block.attendees.filter((attendee) => WAS_USED.has(attendee.status)).length;
+  const missed = block.attendees.filter((attendee) => attendee.status === 'expired').length;
 
   return {
     capacity: block.capacity,
@@ -36,6 +44,8 @@ export function occupancyOf(block: CapacityBlock): BlockOccupancy {
     free: Math.max(0, block.capacity - occupied),
     inRoom,
     pending,
+    attended,
+    missed,
     // A block with no capacity on record is not "full": it is unknown, and a full meter would be an
     // assertion nobody made.
     ratio: block.capacity > 0 ? Math.min(1, occupied / block.capacity) : 0,

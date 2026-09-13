@@ -8,11 +8,14 @@ export type SpaceCategory = 'sports' | 'study' | 'lab';
 export const SPACE_CATEGORIES: readonly SpaceCategory[] = ['sports', 'study', 'lab'];
 
 /**
- * Every booking is one campus slot of this length. It lives with the space and not with the booking
- * feature because the catalogue needs it too: "free at ten" means "free long enough to be booked at
- * ten", and a space with twenty minutes left is not an answer to that question.
+ * Every booking is one campus block of this length. `docs/booking-flow.md` §2 fixes it: a student
+ * does not pick a start time, they pick one of the day's fixed two-hour blocks.
+ *
+ * It lives with the space and not with the booking feature because the catalogue needs it too:
+ * "free at ten" means "free long enough to be booked at ten", and a space with twenty minutes left
+ * is not an answer to that question.
  */
-export const BOOKING_DURATION_MINUTES = 60;
+export const BOOKING_DURATION_MINUTES = 120;
 
 /**
  * A window in which a space can be booked. `from` and `to` are minutes from midnight of `date`,

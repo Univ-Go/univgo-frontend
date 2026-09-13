@@ -6,6 +6,30 @@
   gap: var(--univgo-space-xl);
 }
 
+// Same shape the student's reservation detail uses: the back button is the action, the trail is the
+// orientation, and they share one row — one affordance at two levels of commitment. The trail waits
+// for tablet because `tui-breadcrumbs` sets `white-space: nowrap` and would overflow the gutter on a
+// phone, where the button already carries the same parent.
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.page-nav__trail {
+  display: none;
+}
+
+.page-nav__current {
+  color: var(--tui-text-primary);
+}
+
+@media (width >= bp.$tablet) {
+  .page-nav__trail {
+    display: block;
+  }
+}
+
 .intro {
   display: flex;
   flex-wrap: wrap;
@@ -92,6 +116,11 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--univgo-space-l);
   min-inline-size: 0;
+  // Taiga's icons render via a CSS mask sized off this token (default 0.125rem) rather than an SVG
+  // stroke-width — same mechanism `CheckInResult` uses for its outcome watermark. Scoped to these two
+  // chips, whose icon sits alone at `iconSize="l"` with no accompanying text weight to match; `Settings`'s
+  // own metric cards stay at the library default.
+  --tui-stroke-width: 0.1875rem;
 
   // Dissolves into `.summary`'s own grid so the pair becomes two more equal peers of the hero in one
   // row, instead of a nested column that would otherwise keep its own pair of half-width tracks.

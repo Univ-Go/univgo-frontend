@@ -4,7 +4,7 @@ import { TuiAppearance, TuiButton, TuiInput, TuiLoader } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import type { ScanResult } from '../../domain/check-in-scan';
 import { logMockCheckInCodes, scanCheckInCode } from '../../infrastructure/mock-check-in-scanner';
-import { MOCK_SPACES } from '../../infrastructure/mock-attendance';
+import { MOCK_SPACE_PROFILES } from '../../infrastructure/mock-attendance';
 import { CheckInResult } from '../check-in-result/check-in-result';
 import { QrCamera } from '../qr-camera/qr-camera';
 import { SpaceSwitcher } from '../space-switcher/space-switcher';
@@ -40,9 +40,9 @@ import { SpaceSwitcher } from '../space-switcher/space-switcher';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScanPage {
-  protected readonly spaces = MOCK_SPACES;
+  protected readonly spaces = MOCK_SPACE_PROFILES;
 
-  protected readonly selectedSpaceId = signal(MOCK_SPACES[0].spaceId);
+  protected readonly selectedSpaceId = signal(MOCK_SPACE_PROFILES[0].spaceId);
   protected readonly manualCode = signal('');
   protected readonly verifying = signal(false);
   protected readonly result = signal<ScanResult | null>(null);

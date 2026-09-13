@@ -6,7 +6,7 @@
           class="tab"
           [routerLink]="link"
           routerLinkActive="tab--active"
-          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActiveOptions]="adminMatchOptions"
         >
           <tui-icon [icon]="item.icon" aria-hidden="true" />
           <span>{{ item.compactLabel ?? item.label }}</span>

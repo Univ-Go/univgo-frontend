@@ -3,7 +3,7 @@ import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiButton, TuiDropdown, TuiIcon } from '@taiga-ui/core';
 import { AccountMenu } from '../account-menu/account-menu';
-import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
+import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
 
 /**
  * Level 1: the phone's navigation. A bar pinned to the bottom puts every destination inside the
@@ -36,6 +36,7 @@ export class AppTabBar {
   public readonly admin = input(false, { transform: booleanAttribute });
 
   protected readonly adminItems = ADMIN_NAV_ITEMS;
+  protected readonly adminMatchOptions = ADMIN_NAV_MATCH_OPTIONS;
 
   /**
    * The catalogue carries its filter in the query string, so `exact` alone would drop the highlight

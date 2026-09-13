@@ -6,6 +6,16 @@
   gap: var(--univgo-space-xl);
 }
 
+// Same shape `BlocksPage` and `ScanPage` give their own header: the space switcher rides the title
+// row, right-aligned, and drops to its own line under the title once the row can't fit both.
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--univgo-space-l);
+}
+
 .intro__text {
   display: flex;
   flex-direction: column;

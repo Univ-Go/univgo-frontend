@@ -7,6 +7,7 @@ import { closureReasonName } from '../closure-reason';
 import { ClosureForm } from '../closure-form/closure-form';
 import { ClosureHistory } from '../closure-history/closure-history';
 import { MetricCard } from '../metric-card/metric-card';
+import { SpaceSwitcher } from '../space-switcher/space-switcher';
 
 /**
  * Visual mock: layout and component inventory are final, the data is not. Reuses `MOCK_SPACE_PROFILES` from
@@ -20,7 +21,7 @@ import { MetricCard } from '../metric-card/metric-card';
  */
 @Component({
   selector: 'app-settings-page',
-  imports: [ClosureForm, ClosureHistory, MetricCard],
+  imports: [ClosureForm, ClosureHistory, MetricCard, SpaceSwitcher],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

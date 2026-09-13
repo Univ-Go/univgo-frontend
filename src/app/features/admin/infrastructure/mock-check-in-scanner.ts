@@ -1,6 +1,6 @@
 import type { ScanResult } from '../domain/check-in-scan';
 import { evaluateCheckInScan } from '../domain/check-in-scan';
-import { MOCK_SPACE_SCHEDULE, MOCK_SPACES } from './mock-attendance';
+import { mockCurrentBlock, mockDaySchedule } from './mock-attendance';
 
 /**
  * What a real check-in request would cost. It exists so the scanning view has something to show
@@ -10,23 +10,23 @@ import { MOCK_SPACE_SCHEDULE, MOCK_SPACES } from './mock-attendance';
 const SIMULATED_DELAY_MS = 400;
 
 /**
- * Visual mock standing in for the check-in endpoint. `MOCK_SPACES` already holds one block per
- * space — the one in progress right now (`infrastructure/mock-attendance.ts`) — which is exactly
- * the block a scan is ever checked against, per `docs/booking-flow.md` §9. The scanning view only
- * knows this function's shape; it moves behind a domain port once the endpoint exists.
+ * Visual mock standing in for the check-in endpoint. A scan is only ever checked against the block
+ * in progress, per `docs/booking-flow.md` §9, with the rest of the day's schedule alongside it so a
+ * code booked for another block can be told apart from one that does not exist. The scanning view
+ * only knows this function's shape; it moves behind a domain port once the endpoint exists.
  */
 export function scanCheckInCode(
   code: string,
   spaceId: string,
   now: Date = new Date(),
 ): Promise<ScanResult> {
-  const currentBlock = MOCK_SPACES.find((space) => space.spaceId === spaceId);
+  const currentBlock = mockCurrentBlock(spaceId, now);
 
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(
         currentBlock
-          ? evaluateCheckInScan(code, currentBlock, MOCK_SPACE_SCHEDULE, now)
+          ? evaluateCheckInScan(code, currentBlock, mockDaySchedule(now, now), now)
           : { outcome: 'notFound' },
       );
     }, SIMULATED_DELAY_MS);
@@ -40,7 +40,7 @@ export function scanCheckInCode(
  * day a real reservation hands back a code (and a QR) of its own.
  */
 export function logMockCheckInCodes(spaceId: string): void {
-  const block = MOCK_SPACES.find((space) => space.spaceId === spaceId);
+  const block = mockCurrentBlock(spaceId);
 
   if (!block) {
     return;

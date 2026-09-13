@@ -16,7 +16,7 @@ function atHour(date: Date, hour: number): Date {
 }
 
 /**
- * Visual mock: dated relative to the moment the app loads, like `MOCK_SPACES`, so the demo always
+ * Visual mock: dated relative to the moment the app loads, like the attendance mock, so the demo always
  * shows one of each status (completed, active, scheduled) instead of a fixed set of 2023 dates that
  * would read as stale the day after they were written. It moves behind a port once the closures API
  * exists.

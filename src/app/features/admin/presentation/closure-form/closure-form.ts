@@ -23,7 +23,7 @@ import {
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { MOCK_SESSION_USER } from '../../../auth/infrastructure/mock-session';
-import type { CapacityBlock } from '../../domain/attendance';
+import type { AdminSpace } from '../../domain/attendance';
 import type {
   ClosureReason,
   ClosureRecurrence,
@@ -108,7 +108,7 @@ function closureTimeOptions(openingHour: number, closingHour: number): readonly 
 })
 export class ClosureForm {
   public readonly spaceId = input.required<string>();
-  public readonly spaces = input.required<readonly CapacityBlock[]>();
+  public readonly spaces = input.required<readonly AdminSpace[]>();
 
   public readonly closureCreated = output<SpaceClosure>();
   public readonly spaceSelected = output<string>();
@@ -162,7 +162,10 @@ export class ClosureForm {
 
   protected readonly formValid = computed(
     () =>
-      this.date() !== null && this.reason() !== null && this.timeRangeValid() && this.recurrenceValid(),
+      this.date() !== null &&
+      this.reason() !== null &&
+      this.timeRangeValid() &&
+      this.recurrenceValid(),
   );
 
   protected setScope(scope: ClosureScope): void {

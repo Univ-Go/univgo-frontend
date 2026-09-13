@@ -7,14 +7,14 @@ import { ADMIN_NAV_ITEMS } from '../admin-nav-items';
 
 /**
  * Level 1: the phone's navigation. A bar pinned to the bottom puts every destination inside the
- * thumb's reach, which the top bar never was, and it is where a fifth destination would go without
- * redesigning anything — the bar grows a column.
+ * thumb's reach, which the top bar never was, and a destination added or removed is a column more
+ * or less without redesigning anything.
  *
  * Both shells use it: the `admin` input swaps the destination set and the centre action for the
  * panel's own (`ADMIN_NAV_ITEMS`, and booking on a student's behalf instead of a new reservation),
- * but the shape — five columns, a raised action in the middle — does not change. Splitting it into
- * two components would duplicate that shape for no reason two data-driven branches do not already
- * cover.
+ * but the shape — equal columns with a raised action among them — does not change. Splitting it
+ * into two components would duplicate that shape for no reason two data-driven branches do not
+ * already cover.
  *
  * Not a Taiga component: the library ships tabs for switching content inside a view
  * (`tuiTabs`, `tui-segmented`), not a bottom navigation bar, so this is built from Taiga's own

@@ -1,10 +1,12 @@
 import type { Routes } from '@angular/router';
 
 /**
- * The administrator's panel. `docs/booking-flow.md` §11 asks it for four things — scanning, the
- * current block, the day's other blocks and cancelling reservations. Scanning and the second now
- * exist; the day's other blocks and cancelling reservations are still disabled in the aside rather
- * than linked to routes that would fail the whole navigation.
+ * The administrator's panel. `docs/booking-flow.md` §11 asks it for four things — scanning, a day's
+ * blocks, one block in detail and cancelling reservations — and all four now have a route.
+ *
+ * The day's blocks and one block are a list and its detail rather than two views: the block in
+ * progress is the row the list opens on, not a screen of its own. Which space and which day ride in
+ * the query string, so going back from the detail is dropping a segment.
  *
  * Loaded with `loadChildren` so that neither the panel's shell nor its views reach the bundle of a
  * visit that only ever books a court.
@@ -26,12 +28,25 @@ export const ADMIN_ROUTES: Routes = [
     },
   },
   {
-    path: 'capacity',
-    loadComponent: () =>
-      import('./presentation/capacity-page/capacity-page').then((m) => m.CapacityPage),
-    title: $localize`:@@admin.capacity.pageTitle:Gestión de aforo`,
+    path: 'blocks',
+    loadComponent: () => import('./presentation/blocks-page/blocks-page').then((m) => m.BlocksPage),
+    title: $localize`:@@admin.blocks.pageTitle:Consulta de bloques`,
     data: {
-      description: $localize`:@@admin.capacity.pageDescription:Consulta el aforo del bloque actual, quién ha entrado y qué reservas siguen pendientes de check-in.`,
+      description: $localize`:@@admin.blocks.pageDescription:Consulta los bloques de un espacio para un día concreto, con su aforo previsto, quién está dentro y quién asistió.`,
+    },
+  },
+  {
+    path: 'blocks/:block',
+    loadComponent: () =>
+      import('./presentation/capacity-detail-page/capacity-detail-page').then(
+        (m) => m.CapacityDetailPage,
+      ),
+    title: $localize`:@@admin.capacity.detail.pageTitle:Detalle del bloque`,
+    data: {
+      // The only view that consumes the shell's search box, which is how `AdminHeader` knows to
+      // render it here and to leave it out of the views where it would do nothing.
+      search: true,
+      description: $localize`:@@admin.capacity.detail.pageDescription:Consulta el aforo de un bloque, quién ha entrado y qué reservas siguen pendientes de check-in.`,
     },
   },
   {

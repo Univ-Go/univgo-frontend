@@ -1,0 +1,55 @@
+<button
+  tuiIconButton
+  type="button"
+  appearance="outline"
+  size="m"
+  iconStart="@tui.chevron-left"
+  [disabled]="atFirst()"
+  i18n-aria-label="@@admin.blocks.day.previous"
+  aria-label="Día anterior"
+  (click)="step(-1)"
+></button>
+
+<button
+  tuiButton
+  type="button"
+  appearance="outline"
+  size="m"
+  class="stepper__day"
+  iconStart="@tui.calendar-days"
+  [id]="triggerId"
+  [tuiDropdown]="picker"
+  [(tuiDropdownOpen)]="open"
+  [attr.aria-label]="pickerLabel + ': ' + (day() | date: 'fullDate')"
+>
+  @if (relativeLabel(); as relative) {
+    <span>{{ relative }}</span>
+    <!-- Drawn, not typed: a separator nobody has to hear read out, and one that disappears together
+         with the word it follows instead of leaving punctuation in front of a bare date. -->
+    <span class="stepper__dot" aria-hidden="true"></span>
+  }
+
+  <time [attr.datetime]="day() | date: 'yyyy-MM-dd'">{{ day() | date: 'd MMMM' }}</time>
+</button>
+
+<button
+  tuiIconButton
+  type="button"
+  appearance="outline"
+  size="m"
+  iconStart="@tui.chevron-right"
+  [disabled]="atLast()"
+  i18n-aria-label="@@admin.blocks.day.next"
+  aria-label="Día siguiente"
+  (click)="step(1)"
+></button>
+
+<ng-template #picker>
+  <tui-calendar
+    [attr.aria-labelledby]="triggerId"
+    [min]="min()"
+    [max]="max()"
+    [value]="value()"
+    (dayClick)="pick($event)"
+  />
+</ng-template>

@@ -1,0 +1,52 @@
+<header class="intro">
+  <div class="intro__text">
+    <h1 i18n="@@admin.blocks.title">Consulta de bloques</h1>
+    <p class="intro__lead" i18n="@@admin.blocks.lead">Gestión de reservas y aforo por horario.</p>
+  </div>
+
+  <app-space-switcher
+    [fullWidth]="compact()"
+    [spaces]="spaces"
+    [selectedId]="selectedSpaceId()"
+    (spaceSelected)="selectSpace($event)"
+  />
+</header>
+
+<app-block-day-stepper
+  class="day"
+  [day]="selectedDay()"
+  [range]="range()"
+  [now]="now"
+  (daySelected)="selectDay($event)"
+/>
+
+<!-- Changing the day swaps the list without a page change, so a screen reader would otherwise be
+     told nothing at all. The count and the date are announced rather than the list itself: a live
+     region around seven cards would read the whole schedule back on every press of an arrow. -->
+<p class="day__status" aria-live="polite">
+  <span i18n="@@admin.blocks.count">{blocks().length, plural,
+    =0 {Sin bloques}
+    =1 {1 bloque}
+    other {{{blocks().length}} bloques}
+  }</span>
+  <span class="day__dot" aria-hidden="true"></span>
+  <time [attr.datetime]="dayParam()">{{ selectedDay() | date: 'fullDate' }}</time>
+</p>
+
+@if (blocks().length > 0) {
+  <ul class="schedule" i18n-aria-label="@@admin.blocks.list.label" aria-label="Bloques del día">
+    @for (block of blocks(); track block.start.getTime()) {
+      <li>
+        <app-block-row [block]="block" [now]="now" [day]="dayParam()" />
+      </li>
+    }
+  </ul>
+} @else {
+  <app-empty-state
+    icon="@tui.calendar-x"
+    i18n-heading="@@admin.blocks.list.empty.title"
+    heading="Este espacio no abre este día"
+    i18n-description="@@admin.blocks.list.empty.description"
+    description="Prueba con otra fecha, o cambia de espacio desde el selector de arriba."
+  />
+}

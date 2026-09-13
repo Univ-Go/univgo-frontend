@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
+import type { ActivatedRouteSnapshot } from '@angular/router';
 import { TuiButton, TuiDropdown, TuiInput } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgeNotification, TuiBadgedContent } from '@taiga-ui/kit';
-import { map } from 'rxjs';
+import { filter, map, startWith } from 'rxjs';
 import { MOCK_SESSION_USER } from '../../features/auth/infrastructure/mock-session';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
@@ -13,6 +14,16 @@ import { AccountMenu } from '../account-menu/account-menu';
 
 /** The query-string key the roster reads its search from. */
 const QUERY_PARAM = 'query';
+
+function deepest(root: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
+  let route = root;
+
+  while (route.firstChild) {
+    route = route.firstChild;
+  }
+
+  return route;
+}
 
 /**
  * Level 1: the panel's bar.
@@ -25,6 +36,12 @@ const QUERY_PARAM = 'query';
  *
  * Every keystroke replaces the current entry rather than pushing a new one, so Back leaves the
  * panel instead of walking a letter at a time out of a word somebody typed.
+ *
+ * The field only appears where something reads it. Which views those are is declared by the routes
+ * themselves (`data.search`) rather than listed here, so the bar narrows the view underneath without
+ * knowing which view it is — the same arrangement `PageMetadataStrategy` already uses for titles. A
+ * box that did nothing on three of the panel's four screens would be a control with no feedback,
+ * which is the one thing §7 will not have.
  */
 @Component({
   selector: 'app-admin-header',
@@ -57,6 +74,15 @@ export class AdminHeader {
   protected readonly query = toSignal(
     this.route.queryParamMap.pipe(map((params) => params.get(QUERY_PARAM) ?? '')),
     { initialValue: '' },
+  );
+
+  protected readonly searchable = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => deepest(this.router.routerState.snapshot.root).data['search'] === true),
+    ),
+    { initialValue: false },
   );
 
   /**

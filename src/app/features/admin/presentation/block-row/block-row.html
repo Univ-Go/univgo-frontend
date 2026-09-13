@@ -1,0 +1,93 @@
+<article
+  tuiSurface
+  tuiAppearance="outline"
+  class="row"
+  [attr.data-live]="phase() === 'live' ? '' : null"
+>
+  <div class="row__plate" aria-hidden="true">
+    <tui-icon icon="@tui.clock" />
+  </div>
+
+  <div class="row__when">
+    <p class="row__start">{{ block().start | date: 'shortTime' }}</p>
+    <p class="row__end">{{ block().end | date: 'shortTime' }}</p>
+  </div>
+
+  <div class="row__meter">
+    <p class="row__capacity">
+      <tui-icon icon="@tui.users" [attr.aria-hidden]="true" />
+      <span>{{ capacityLabel() }}</span>
+      <span class="row__count">{{ shown() }} / {{ total() }}</span>
+    </p>
+
+    <!-- The count above says the same number in words, so the meter adds nothing for a screen
+         reader and is hidden from it rather than read out twice — the same call `OccupancyCard`
+         makes about its own. -->
+    <progress
+      tuiProgressBar
+      size="m"
+      class="row__bar"
+      aria-hidden="true"
+      [attr.data-load]="load()"
+      [value]="ratio()"
+      [max]="1"
+    ></progress>
+
+    @switch (phase()) {
+      @case ('upcoming') {
+        <p class="row__caption" i18n="@@admin.blocks.caption.upcoming">
+          {{ occupancy().occupied }} reservas confirmadas · {{ occupancy().free }} libres
+        </p>
+      }
+      @case ('live') {
+        <p class="row__caption" i18n="@@admin.blocks.caption.live">
+          {{ occupancy().inRoom }} en sala · {{ occupancy().pending }} pendientes de check-in
+        </p>
+      }
+      @case ('past') {
+        <p class="row__caption">
+          <span i18n="@@admin.blocks.caption.past">{occupancy().missed, plural,
+            =0 {Todos se presentaron}
+            =1 {1 no se presentó}
+            other {{{occupancy().missed}} no se presentaron}
+          }</span>
+        </p>
+      }
+    }
+  </div>
+
+  <div class="row__flags">
+    @if (phase() === 'live') {
+      <span
+        tuiBadge
+        appearance="info"
+        size="s"
+        iconStart="@tui.radio"
+        i18n="@@admin.blocks.row.live"
+        >En curso</span
+      >
+    }
+
+    <app-block-status-badge [band]="band()" [phase]="phase()" />
+  </div>
+
+  <!-- Seven links all reading "Ver detalles" are indistinguishable to anyone tabbing the list, so
+       each carries the hours it opens. `aria-current` is what says "this is the one happening now"
+       without a visually hidden paragraph repeating the badge beside it. -->
+  <a
+    tuiButton
+    size="m"
+    class="row__action"
+    [appearance]="phase() === 'live' ? 'primary' : 'outline'"
+    iconEnd="@tui.arrow-right"
+    [routerLink]="['./', key()]"
+    [queryParams]="{ space: block().spaceId, date: day() }"
+    [attr.aria-current]="phase() === 'live' ? 'true' : null"
+    aria-label="Ver el bloque de {{ block().start | date: 'shortTime' }} a {{
+      block().end | date: 'shortTime'
+    }}"
+    i18n-aria-label="@@admin.blocks.row.detailsLabel"
+    i18n="@@admin.blocks.row.details"
+    >Ver detalles</a
+  >
+</article>

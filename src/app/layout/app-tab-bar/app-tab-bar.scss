@@ -18,11 +18,14 @@
   }
 }
 
-// Four destinations and the action between them, so the raised button lands on the centre of the
-// bar — the easiest point to reach with either hand. A fifth destination is one more `1fr`.
+// Every cell gets an equal share, the raised action included, so the bar keeps its rhythm whatever
+// the destination count is — the student shell has four and the panel three, and a fixed track list
+// left an empty column on whichever side had fewer. The action is centred inside its own share
+// rather than given a narrower track of its own.
 .bar {
   display: grid;
-  grid-template-columns: repeat(2, 1fr) auto repeat(2, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   align-items: center;
   gap: var(--univgo-space-xs);
   block-size: var(--univgo-tab-bar-height);

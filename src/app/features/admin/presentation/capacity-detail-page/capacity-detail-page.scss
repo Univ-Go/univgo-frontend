@@ -6,6 +6,30 @@
   gap: var(--univgo-space-xl);
 }
 
+// Same shape the student's reservation detail uses: the back button is the action, the trail is the
+// orientation, and they share one row — one affordance at two levels of commitment. The trail waits
+// for tablet because `tui-breadcrumbs` sets `white-space: nowrap` and would overflow the gutter on a
+// phone, where the button already carries the same parent.
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.page-nav__trail {
+  display: none;
+}
+
+.page-nav__current {
+  color: var(--tui-text-primary);
+}
+
+@media (width >= bp.$tablet) {
+  .page-nav__trail {
+    display: block;
+  }
+}
+
 .intro {
   display: flex;
   flex-wrap: wrap;

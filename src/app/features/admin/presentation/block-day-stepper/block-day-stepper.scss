@@ -1,0 +1,29 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  // The stepper is a control, not a band: without this it stretches to the page's full width, which
+  // puts the two arrows at opposite ends of the screen.
+  align-self: start;
+  max-inline-size: 100%;
+}
+
+// A floor rather than a share of the row, so the arrows stay put as the label changes width —
+// "Hoy · 13 septiembre" and "3 octubre" are very different lengths, and an arrow that slides
+// sideways between presses is hard to press twice in a row. Same 12rem the space switcher uses.
+// No `gap` here on purpose. Taiga's button computes its own as
+// `calc(var(--t-gap) - 2 * var(--t-margin))`, where the negative margin is what pulls its icons back
+// into the padding; overriding the result with a flat value collapses the space between the icon and
+// the first word. To widen it, set `--t-gap` and let the button do the arithmetic.
+.stepper__day {
+  justify-content: center;
+  min-inline-size: 12rem;
+}
+
+// Same drawn separator the detail's heading uses: never in the accessibility tree, never translated.
+.stepper__dot {
+  inline-size: var(--univgo-space-xs);
+  block-size: var(--univgo-space-xs);
+  border-radius: 50%;
+  background: var(--tui-text-tertiary);
+}

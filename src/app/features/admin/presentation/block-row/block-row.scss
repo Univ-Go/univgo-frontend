@@ -1,0 +1,151 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: block;
+}
+
+// `tuiSurface` rather than one of the `tuiCard*` directives: Taiga's cards are fixed-width by
+// design — `tuiCardMedium` is 8.75rem with `flex-shrink: 0`, which is what a card grid wants and the
+// opposite of what a full-width row does — and `tuiCardRow` is a flex row meant to sit *inside* a
+// card. The surface carries the appearance; the padding and radius are the product's own tokens.
+//
+// Five zones that reflow rather than shrink: on a phone the row stacks into three bands — when and
+// flags, then the meter, then the action full width — and only at tablet does it become the single
+// line of the desktop design. Squeezing all five onto 360px would leave the meter a few pixels wide
+// and the action unreachable without a horizontal scroller.
+.row {
+  display: grid;
+  padding: var(--univgo-space-l);
+  border-radius: var(--tui-radius-l);
+  grid-template-areas:
+    'plate when flags'
+    'meter meter meter'
+    'action action action';
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--univgo-space-m) var(--univgo-space-l);
+
+  @media (width >= bp.$tablet) {
+    grid-template-areas: 'plate when meter flags action';
+    grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+  }
+}
+
+// The block happening now is marked three ways — this outline, the "En curso" badge and the filled
+// action — so the row still reads as current for anyone who cannot separate the two hues.
+.row[data-live] {
+  border-color: var(--tui-background-accent-1);
+  box-shadow: inset 0 0 0 1px var(--tui-background-accent-1);
+}
+
+.row__plate {
+  grid-area: plate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tui-height-m);
+  block-size: var(--tui-height-m);
+  border-radius: 50%;
+  background: var(--tui-background-neutral-1);
+  color: var(--tui-text-secondary);
+}
+
+.row[data-live] .row__plate {
+  background: var(--tui-background-accent-1);
+  color: var(--tui-background-base);
+}
+
+.row__when {
+  grid-area: when;
+  display: flex;
+  flex-direction: column;
+  font-variant-numeric: tabular-nums;
+}
+
+.row__start {
+  margin: 0;
+  font: var(--tui-typography-heading-h6);
+}
+
+.row__end {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-s);
+}
+
+.row__meter {
+  grid-area: meter;
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  // Without this a grid item's default `min-inline-size: auto` refuses to shrink below its content,
+  // which is how a meter row overflows its card on a narrow screen.
+  min-inline-size: 0;
+}
+
+.row__capacity {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+// The figure is the point of the row, so it keeps the full-strength text colour the label gives up,
+// and tabular figures so the counts line up down the list instead of dancing.
+.row__count {
+  margin-inline-start: auto;
+  color: var(--tui-text-primary);
+  font-variant-numeric: tabular-nums;
+  font-weight: bold;
+}
+
+// The meter carries the pressure in colour as well as in length: teal while there is room, the brand
+// crimson from three quarters, and the error orange-red once it is all but gone. Written as
+// `--tui-progress-color`, which is the variable Taiga's own `color` input sets, so the values stay in
+// the stylesheet instead of becoming CSS strings held in TypeScript.
+//
+// Colour is never the only signal — the count beside it and the badge after it both say the same
+// thing in words, and a finished block carries no `data-load` at all, because there the bar measures
+// attendance and a high figure is the good outcome.
+.row__bar {
+  inline-size: 100%;
+
+  &[data-load='low'] {
+    --tui-progress-color: var(--tui-status-positive);
+  }
+
+  &[data-load='high'] {
+    --tui-progress-color: var(--tui-background-accent-1);
+  }
+
+  &[data-load='critical'] {
+    --tui-progress-color: var(--tui-status-negative);
+  }
+}
+
+.row__caption {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-xs);
+}
+
+.row__flags {
+  grid-area: flags;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: end;
+  gap: var(--univgo-space-xs);
+}
+
+.row__action {
+  grid-area: action;
+
+  // Full width while it has a band to itself, so the tap target spans the row rather than hiding in
+  // a corner; at tablet it goes back to sitting on the line at its natural size.
+  @media (width < bp.$tablet) {
+    inline-size: 100%;
+  }
+}

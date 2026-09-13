@@ -1,0 +1,124 @@
+<div class="page-nav">
+  <a
+    tuiButton
+    type="button"
+    appearance="flat"
+    size="m"
+    iconStart="@tui.arrow-left"
+    routerLink="/admin/blocks"
+    [queryParams]="listParams()"
+    i18n="@@common.back"
+    >Volver</a
+  >
+
+  <!-- `tui-breadcrumbs` renders a plain flex container, so the landmark and its accessible name are
+       ours to provide. It also sets `white-space: nowrap`: on a phone the trail would overflow the
+       layout gutter, and the back button already carries the same parent, so it starts at tablet. -->
+  <nav
+    class="page-nav__trail"
+    i18n-aria-label="@@navigation.breadcrumbLabel"
+    aria-label="Ruta de navegación"
+  >
+    <tui-breadcrumbs>
+      <a
+        *tuiItem
+        tuiLink
+        routerLink="/admin/blocks"
+        [queryParams]="listParams()"
+        i18n="@@admin.blocks.title"
+        >Consulta de bloques</a
+      >
+      <span *tuiItem class="page-nav__current" aria-current="page" i18n="@@admin.capacity.title"
+        >Aforo</span
+      >
+    </tui-breadcrumbs>
+  </nav>
+</div>
+
+@if (current(); as block) {
+  <header class="intro">
+    <div class="intro__text">
+      <h1 i18n="@@admin.capacity.title">Aforo</h1>
+
+      <!-- The switcher replaced what used to be plain text: which block this is, is the one thing
+           the heading no longer gets to assume now that it can change without leaving the view. -->
+      <p class="intro__lead">
+        <app-block-switcher
+          [blocks]="blocksForDay()"
+          [selectedStart]="block.start.getTime()"
+          (blockSelected)="selectBlock($event)"
+        />
+        <span class="intro__dot" aria-hidden="true"></span>
+        <span>{{ block.spaceName }}</span>
+      </p>
+    </div>
+
+    <!-- Letting an administrator wave someone in whose reservation expired is the open question of
+         `docs/booking-flow.md` §11: it needs a decision from the university before it does anything,
+         so the control is here and inert, like every other action in the mocked views. -->
+    <!-- Below desktop it leaves the header row entirely and floats over the content instead: `.intro`
+         wrapping it onto its own line already pushed it far from the controls it acts on, and a corner
+         FAB is the reachable shape that shows up. Same control either way — CSS repositions it, the
+         label and fill stay identical at every size. -->
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="primary"
+      iconStart="@tui.user-plus"
+      class="manual-check-in"
+      i18n="@@admin.capacity.manualCheckIn"
+    >
+      Reservar
+    </button>
+  </header>
+
+  @if (occupancy(); as occupancy) {
+    <div class="summary">
+      <app-occupancy-card class="summary__hero" [occupancy]="occupancy" />
+
+      <div class="summary__chips">
+        <app-metric-card
+          align="center"
+          iconSize="l"
+          icon="@tui.circle-check"
+          tone="positive"
+          i18n-heading="@@admin.capacity.inRoom.title"
+          heading="En sala"
+          [value]="occupancy.inRoom"
+        >
+          <ng-container i18n="@@admin.capacity.inRoom.hint"
+            >de {{ occupancy.occupied }} plazas ocupadas</ng-container
+          >
+        </app-metric-card>
+
+        <app-metric-card
+          align="center"
+          iconSize="l"
+          icon="@tui.hourglass"
+          tone="warning"
+          i18n-heading="@@admin.capacity.pending.title"
+          heading="Pendientes"
+          [value]="occupancy.pending"
+          [hintIcon]="expiryIcon()"
+        >
+          <ng-container i18n="@@admin.capacity.pending.hint">{expiringSoon(), plural,
+            =0 {ninguna a punto de expirar}
+            =1 {1 reserva a punto de expirar}
+            other {{{expiringSoon()}} reservas a punto de expirar}
+          }</ng-container>
+        </app-metric-card>
+      </div>
+    </div>
+  }
+
+  <app-attendee-roster [attendees]="block.attendees" [query]="query()" />
+} @else {
+  <app-empty-state
+    icon="@tui.calendar-x"
+    i18n-heading="@@admin.capacity.notFound.title"
+    heading="Bloque no encontrado"
+    i18n-description="@@admin.capacity.notFound.description"
+    description="Puede que el enlace sea incorrecto o que este espacio no abra a esa hora."
+  />
+}

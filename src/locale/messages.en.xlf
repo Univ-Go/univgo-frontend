@@ -738,9 +738,9 @@
         <source>Hora de inicio</source>
         <target>Start time</target>
       </trans-unit>
-      <trans-unit id="booking.schedule.blockLength" datatype="html">
-        <source>Bloques de 1 hora</source>
-        <target>1-hour blocks</target>
+      <trans-unit id="booking.schedule.blockLength2h" datatype="html">
+        <source>Bloques de 2 horas</source>
+        <target>2-hour blocks</target>
       </trans-unit>
       <trans-unit id="booking.schedule.until" datatype="html">
         <source>hasta <x id="INTERPOLATION" equiv-text="{{ hour.end }}"/></source>
@@ -797,14 +797,6 @@
       <trans-unit id="spaces.filters.toggle" datatype="html">
         <source>{VAR_PLURAL, plural, =0 {Filtros} other {Filtros (<x id="INTERPOLATION"/>)}}</source>
         <target>{VAR_PLURAL, plural, =0 {Filters} other {Filters (<x id="INTERPOLATION"/>)}}</target>
-      </trans-unit>
-      <trans-unit id="admin.capacity.pageTitle" datatype="html">
-        <source>Gestión de aforo</source>
-        <target>Capacity management</target>
-      </trans-unit>
-      <trans-unit id="admin.capacity.pageDescription" datatype="html">
-        <source>Consulta el aforo del bloque actual, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
-        <target>Check the current block's capacity, who has checked in, and which bookings are still waiting to check in.</target>
       </trans-unit>
       <trans-unit id="admin.roster.filters.status.inProgress" datatype="html">
         <source>En sala</source>
@@ -895,7 +887,7 @@
         <target> Cancelled </target>
       </trans-unit>
       <trans-unit id="admin.capacity.title" datatype="html">
-        <source>Aforo del bloque</source>
+        <source>Aforo</source>
         <target>Block occupancy</target>
       </trans-unit>
       <trans-unit id="admin.capacity.blockRange" datatype="html">
@@ -954,17 +946,137 @@
         <source>Escáner</source>
         <target>Scanner</target>
       </trans-unit>
-      <trans-unit id="admin.nav.capacity" datatype="html">
-        <source>Gestión de aforo</source>
-        <target>Capacity management</target>
+      <trans-unit id="admin.blocks.pageTitle" datatype="html">
+        <source>Consulta de bloques</source>
+        <target>Block schedule</target>
       </trans-unit>
-      <trans-unit id="admin.nav.capacityShort" datatype="html">
-        <source>Aforo</source>
-        <target>Capacity</target>
+      <trans-unit id="admin.blocks.pageDescription" datatype="html">
+        <source>Consulta los bloques de un espacio para un día concreto, con su aforo previsto, quién está dentro y quién asistió.</source>
+        <target>Review a space's blocks for a given day, with their expected capacity, who is inside and who attended.</target>
       </trans-unit>
-      <trans-unit id="admin.nav.calendar" datatype="html">
-        <source>Calendario</source>
-        <target>Calendar</target>
+      <trans-unit id="admin.blocks.title" datatype="html">
+        <source>Consulta de bloques</source>
+        <target>Block schedule</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.lead" datatype="html">
+        <source>Gestión de reservas y aforo por horario.</source>
+        <target>Bookings and capacity by time slot.</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.count" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {Sin bloques} =1 {1 bloque} other {<x id="INTERPOLATION"/> bloques}}</source>
+        <target>{VAR_PLURAL, plural, =0 {No blocks} =1 {1 block} other {<x id="INTERPOLATION"/> blocks}}</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.list.label" datatype="html">
+        <source>Bloques del día</source>
+        <target>The day's blocks</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.list.empty.title" datatype="html">
+        <source>Este espacio no abre este día</source>
+        <target>This space does not open on this day</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.list.empty.description" datatype="html">
+        <source>Prueba con otra fecha, o cambia de espacio desde el selector de arriba.</source>
+        <target>Try another date, or switch space using the picker above.</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.label" datatype="html">
+        <source>Cambiar de día</source>
+        <target>Change day</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.previous" datatype="html">
+        <source>Día anterior</source>
+        <target>Previous day</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.next" datatype="html">
+        <source>Día siguiente</source>
+        <target>Next day</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.today" datatype="html">
+        <source>Hoy</source>
+        <target>Today</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.yesterday" datatype="html">
+        <source>Ayer</source>
+        <target>Yesterday</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.tomorrow" datatype="html">
+        <source>Mañana</source>
+        <target>Tomorrow</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.row.live" datatype="html">
+        <source> En curso </source>
+        <target> In progress </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.row.details" datatype="html">
+        <source>Ver detalles</source>
+        <target>View details</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.row.detailsLabel" datatype="html">
+        <source>Ver el bloque de <x id="INTERPOLATION"/> a <x id="INTERPOLATION_1"/></source>
+        <target>View the <x id="INTERPOLATION"/> to <x id="INTERPOLATION_1"/> block</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.capacity.upcoming" datatype="html">
+        <source>Aforo previsto</source>
+        <target>Expected capacity</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.capacity.live" datatype="html">
+        <source>Aforo actual</source>
+        <target>Current capacity</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.capacity.past" datatype="html">
+        <source>Asistencia</source>
+        <target>Attendance</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.caption.upcoming" datatype="html">
+        <source> <x id="INTERPOLATION"/> reservas confirmadas · <x id="INTERPOLATION_1"/> libres </source>
+        <target> <x id="INTERPOLATION"/> bookings confirmed · <x id="INTERPOLATION_1"/> free </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.caption.live" datatype="html">
+        <source> <x id="INTERPOLATION"/> en sala · <x id="INTERPOLATION_1"/> pendientes de check-in </source>
+        <target> <x id="INTERPOLATION"/> in the room · <x id="INTERPOLATION_1"/> awaiting check-in </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.caption.past" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {Todos se presentaron} =1 {1 no se presentó} other {<x id="INTERPOLATION"/> no se presentaron}}</source>
+        <target>{VAR_PLURAL, plural, =0 {Everyone turned up} =1 {1 no-show} other {<x id="INTERPOLATION"/> no-shows}}</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.band.available" datatype="html">
+        <source> Disponible </source>
+        <target> Available </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.band.nearlyFull" datatype="html">
+        <source> Casi lleno </source>
+        <target> Nearly full </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.band.full" datatype="html">
+        <source> Lleno </source>
+        <target> Full </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.band.finished" datatype="html">
+        <source> Finalizado </source>
+        <target> Finished </target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.detail.pageTitle" datatype="html">
+        <source>Detalle del bloque</source>
+        <target>Block detail</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.detail.pageDescription" datatype="html">
+        <source>Consulta el aforo de un bloque, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
+        <target>Review a block's capacity, who has checked in and which bookings are still awaiting check-in.</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.notFound.title" datatype="html">
+        <source>Bloque no encontrado</source>
+        <target>Block not found</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.notFound.description" datatype="html">
+        <source>Puede que el enlace sea incorrecto o que este espacio no abra a esa hora.</source>
+        <target>The link may be wrong, or this space may not open at that time.</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.blocks" datatype="html">
+        <source>Consulta de bloques</source>
+        <target>Block schedule</target>
+      </trans-unit>
+      <trans-unit id="admin.nav.blocksShort" datatype="html">
+        <source>Bloques</source>
+        <target>Blocks</target>
       </trans-unit>
       <trans-unit id="admin.nav.settings" datatype="html">
         <source>Ajustes</source>

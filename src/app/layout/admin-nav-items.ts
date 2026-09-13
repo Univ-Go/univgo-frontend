@@ -24,15 +24,10 @@ export const ADMIN_NAV_ITEMS: readonly AdminNavItem[] = [
     link: '/admin/scan',
   },
   {
-    icon: '@tui.users',
-    label: $localize`:@@admin.nav.capacity:Gestión de aforo`,
-    compactLabel: $localize`:@@admin.nav.capacityShort:Aforo`,
-    link: '/admin/capacity',
-  },
-  {
     icon: '@tui.calendar-days',
-    label: $localize`:@@admin.nav.calendar:Calendario`,
-    link: null,
+    label: $localize`:@@admin.nav.blocks:Consulta de bloques`,
+    compactLabel: $localize`:@@admin.nav.blocksShort:Bloques`,
+    link: '/admin/blocks',
   },
   {
     icon: '@tui.settings',

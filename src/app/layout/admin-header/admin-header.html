@@ -2,9 +2,18 @@
   <!-- One wordmark on screen at a time: the aside signs the panel where it is a column, so the bar
        hides this one from that width up. The stylesheet decides, not a signal — the aside changes
        shape in CSS, and a second opinion in TypeScript would need the same number written twice. -->
-  <a class="bar__logo" routerLink="/admin/blocks">
+  <a
+    class="bar__logo"
+    routerLink="/admin/spaces"
+    i18n-aria-label="@@admin.header.backToSpaces"
+    aria-label="Volver a espacios"
+  >
     <app-brand-logo />
   </a>
+
+  @if (currentSpaceId(); as id) {
+    <app-space-switcher [spaces]="spaces" [selectedId]="id" (spaceSelected)="changeSpace($event)" />
+  }
 
   <!-- Nothing to submit: the roster answers as the field changes. The handler is what keeps Enter
        from reloading the page. Absent, rather than disabled, on the views that do not read it: a

@@ -942,6 +942,30 @@
         <source>Cambiar de espacio</source>
         <target>Switch space</target>
       </trans-unit>
+      <trans-unit id="admin.spaceSwitcher.viewAll" datatype="html">
+        <source>Ver todos los espacios</source>
+        <target>View all spaces</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.pageTitle" datatype="html">
+        <source>Espacios</source>
+        <target>Spaces</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.pageDescription" datatype="html">
+        <source>Elige el espacio que quieres gestionar: escanear accesos, consultar sus bloques o cambiar su configuración.</source>
+        <target>Choose the space you want to manage: scan access, review its blocks or change its settings.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.title" datatype="html">
+        <source>Espacios</source>
+        <target>Spaces</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.lead" datatype="html">
+        <source> Elige el espacio que quieres gestionar. </source>
+        <target> Choose the space you want to manage. </target>
+      </trans-unit>
+      <trans-unit id="admin.spacesGrid.card.capacity" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 persona} other {<x id="INTERPOLATION"/> personas}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 person} other {<x id="INTERPOLATION"/> people}}</target>
+      </trans-unit>
       <trans-unit id="admin.nav.scanner" datatype="html">
         <source>Escáner</source>
         <target>Scanner</target>
@@ -1093,6 +1117,10 @@
       <trans-unit id="admin.nav.manualBooking" datatype="html">
         <source>Reservar por un estudiante</source>
         <target>Book on a student's behalf</target>
+      </trans-unit>
+      <trans-unit id="admin.header.backToSpaces" datatype="html">
+        <source>Volver a espacios</source>
+        <target>Back to spaces</target>
       </trans-unit>
       <trans-unit id="admin.search.label" datatype="html">
         <source>Buscar estudiante o ID</source>

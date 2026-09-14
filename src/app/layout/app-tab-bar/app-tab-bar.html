@@ -1,10 +1,10 @@
 <nav class="bar" i18n-aria-label="@@navigation.mainLabel" aria-label="Navegación principal">
   @if (admin()) {
     @for (item of adminItems; track item.label) {
-      @if (item.link; as link) {
+      @if (adminSpaceId() && item.link; as link) {
         <a
           class="tab"
-          [routerLink]="link"
+          [routerLink]="['/admin', adminSpaceId(), link]"
           routerLinkActive="tab--active"
           [routerLinkActiveOptions]="adminMatchOptions"
         >

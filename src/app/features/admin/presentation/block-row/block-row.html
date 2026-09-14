@@ -83,7 +83,7 @@
     [appearance]="phase() === 'live' ? 'primary' : 'outline'"
     iconEnd="@tui.arrow-right"
     [routerLink]="['./', key()]"
-    [queryParams]="{ space: block().spaceId, date: day() }"
+    [queryParams]="{ date: day() }"
     [attr.aria-current]="phase() === 'live' ? 'true' : null"
     aria-label="Ver detalles: bloque de {{ block().start | date: 'shortTime' }} a {{
       block().end | date: 'shortTime'

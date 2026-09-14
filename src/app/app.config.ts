@@ -5,6 +5,7 @@ import {
   provideRouter,
   withComponentInputBinding,
   withInMemoryScrolling,
+  withRouterConfig,
 } from '@angular/router';
 import { provideTaiga, tuiCheckboxOptionsProvider } from '@taiga-ui/core';
 import { APP_CONFIG } from './core/config/app-config';
@@ -25,6 +26,11 @@ export const appConfig: ApplicationConfig = {
       // Binds route params directly to component inputs (e.g. the detail view's `id`), so a view
       // does not need to inject `ActivatedRoute` just to read one param.
       withComponentInputBinding(),
+      // Angular's default only merges a parent's path params into a child's own paramMap when the
+      // child's path is empty. The admin panel nests every view under `:spaceId`, so without this
+      // `spaceId` would never reach `scan`/`blocks`/`settings`'s own paramMap for input binding to
+      // read.
+      withRouterConfig({ paramsInheritanceStrategy: 'always' }),
     ),
     provideHttpClient(withFetch(), withInterceptors([httpErrorInterceptor])),
     // Supplies the event plugins the library's own templates rely on and mirrors `TUI_DARK_MODE`

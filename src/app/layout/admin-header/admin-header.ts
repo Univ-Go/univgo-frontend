@@ -6,6 +6,10 @@ import type { ActivatedRouteSnapshot } from '@angular/router';
 import { TuiButton, TuiDropdown, TuiInput } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgeNotification, TuiBadgedContent } from '@taiga-ui/kit';
 import { filter, map, startWith } from 'rxjs';
+import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
+import { withSpaceId } from '../../features/admin/domain/admin-navigation';
+import { MOCK_SPACE_PROFILES } from '../../features/admin/infrastructure/mock-attendance';
+import { SpaceSwitcher } from '../../features/admin/presentation/space-switcher/space-switcher';
 import { MOCK_SESSION_USER } from '../../features/auth/infrastructure/mock-session';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
@@ -40,8 +44,14 @@ function deepest(root: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
  * The field only appears where something reads it. Which views those are is declared by the routes
  * themselves (`data.search`) rather than listed here, so the bar narrows the view underneath without
  * knowing which view it is — the same arrangement `PageMetadataStrategy` already uses for titles. A
- * box that did nothing on three of the panel's four screens would be a control with no feedback,
+ * box that did nothing on three of the panel's five screens would be a control with no feedback,
  * which is the one thing §7 will not have.
+ *
+ * The space switcher lives here for the same reason `docs/booking-flow.md` §11 gives: which space is
+ * open is the panel's subject, not one screen's. Switching it rewrites the current URL in place
+ * (`withSpaceId`) rather than navigating to a fixed destination, so the section the administrator was
+ * already on stays open, now about a different space. It is absent, not disabled, on `/admin/spaces`,
+ * where there is no current space to switch.
  */
 @Component({
   selector: 'app-admin-header',
@@ -51,6 +61,7 @@ function deepest(root: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
     FormsModule,
     LanguageSelector,
     RouterLink,
+    SpaceSwitcher,
     ThemeToggle,
     TuiAvatar,
     TuiBadgeNotification,
@@ -70,6 +81,10 @@ export class AdminHeader {
   protected readonly initials = MOCK_SESSION_USER.name.slice(0, 1);
 
   protected readonly menuOpen = signal(false);
+
+  protected readonly spaces = MOCK_SPACE_PROFILES;
+
+  protected readonly currentSpaceId = currentAdminSpaceId();
 
   protected readonly query = toSignal(
     this.route.queryParamMap.pipe(map((params) => params.get(QUERY_PARAM) ?? '')),
@@ -103,5 +118,15 @@ export class AdminHeader {
     tree.queryParams = params;
 
     void this.router.navigateByUrl(tree, { replaceUrl: true });
+  }
+
+  protected changeSpace(nextSpaceId: string): void {
+    const current = this.currentSpaceId();
+
+    if (current === null) {
+      return;
+    }
+
+    void this.router.navigateByUrl(withSpaceId(this.router.url, current, nextSpaceId));
   }
 }

@@ -278,6 +278,10 @@ escáner comprueba contra el bloque en curso de un espacio concreto, y la lista 
 espacio concreto. El selector de espacio es por tanto parte del panel y no de una vista: cambiarlo no
 cambia de pantalla, cambia el sujeto de la que está abierta.
 
+Entrar al panel sin más lleva primero a una rejilla con los espacios del administrador
+(`/admin/spaces`); elegir uno abre su escáner (`/admin/:spaceId/scan`), que es donde vive el resto de
+lo descrito arriba.
+
 ### Decisión pendiente
 
 **¿Puede el administrador dejar entrar a alguien cuya reserva expiró?** Tal como está definido, no:

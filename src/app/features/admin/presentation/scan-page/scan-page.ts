@@ -1,13 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TuiAppearance, TuiButton, TuiInput, TuiLoader } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import type { ScanResult } from '../../domain/check-in-scan';
 import { logMockCheckInCodes, scanCheckInCode } from '../../infrastructure/mock-check-in-scanner';
-import { MOCK_SPACE_PROFILES } from '../../infrastructure/mock-attendance';
 import { CheckInResult } from '../check-in-result/check-in-result';
 import { QrCamera } from '../qr-camera/qr-camera';
-import { SpaceSwitcher } from '../space-switcher/space-switcher';
 
 /**
  * The administrator's main screen (`docs/booking-flow.md` §11: "la pantalla principal y casi la
@@ -27,7 +25,6 @@ import { SpaceSwitcher } from '../space-switcher/space-switcher';
     CheckInResult,
     FormsModule,
     QrCamera,
-    SpaceSwitcher,
     TuiAppearance,
     TuiButton,
     TuiCardLarge,
@@ -40,9 +37,8 @@ import { SpaceSwitcher } from '../space-switcher/space-switcher';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScanPage {
-  protected readonly spaces = MOCK_SPACE_PROFILES;
+  public readonly spaceId = input.required<string>();
 
-  protected readonly selectedSpaceId = signal(MOCK_SPACE_PROFILES[0].spaceId);
   protected readonly manualCode = signal('');
   protected readonly verifying = signal(false);
   protected readonly result = signal<ScanResult | null>(null);
@@ -50,14 +46,15 @@ export class ScanPage {
   private lastCameraCode: string | null = null;
 
   constructor() {
-    logMockCheckInCodes(this.selectedSpaceId());
-  }
+    // The header's switcher rewrites the URL rather than routing to a new instance, so this runs
+    // again on every space change, not just once at construction.
+    effect(() => {
+      const id = this.spaceId();
 
-  protected selectSpace(spaceId: string): void {
-    this.selectedSpaceId.set(spaceId);
-    this.result.set(null);
-    this.lastCameraCode = null;
-    logMockCheckInCodes(spaceId);
+      this.result.set(null);
+      this.lastCameraCode = null;
+      logMockCheckInCodes(id);
+    });
   }
 
   protected onCameraCode(code: string): void {
@@ -82,7 +79,7 @@ export class ScanPage {
   private async verify(code: string): Promise<void> {
     this.verifying.set(true);
 
-    const result = await scanCheckInCode(code, this.selectedSpaceId());
+    const result = await scanCheckInCode(code, this.spaceId());
 
     this.verifying.set(false);
     this.result.set(result);

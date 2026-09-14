@@ -13,7 +13,7 @@ import {
   findBlockByKey,
   navigableDayRange,
 } from '../../domain/block-schedule';
-import { MOCK_SPACE_PROFILES, mockBlocksFor } from '../../infrastructure/mock-attendance';
+import { mockBlocksFor } from '../../infrastructure/mock-attendance';
 import { AttendeeRoster } from '../attendee-roster/attendee-roster';
 import { BlockSwitcher } from '../block-switcher/block-switcher';
 import { MetricCard } from '../metric-card/metric-card';
@@ -27,9 +27,10 @@ import { OccupancyCard } from '../occupancy-card/occupancy-card';
  * default. The `BlockSwitcher` stays for the sideways move between adjacent blocks: somebody
  * comparing 14:00 with 16:00 should not have to go back up and come down again.
  *
- * Space, day and block all travel in the address, so going back is dropping the last segment and
- * everything else survives. Everything is derived with `computed()` for the same reason the list
- * is: the router re-emits inputs on this instance when only the query changes.
+ * Space, day and block all travel in the address — space and block as path segments, day in the
+ * query string — so going back is dropping the last segment and everything else survives. Everything
+ * is derived with `computed()` for the same reason the list is: the router re-emits inputs on this
+ * instance when only the query changes.
  */
 @Component({
   selector: 'app-capacity-detail-page',
@@ -50,9 +51,9 @@ import { OccupancyCard } from '../occupancy-card/occupancy-card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CapacityDetailPage {
+  public readonly spaceId = input.required<string>();
   /** The block's start within its day, as `HH-mm`. The day itself travels in `?date=`. */
   public readonly block = input<string | null>(null);
-  public readonly space = input<string | null>(null);
   public readonly date = input<string | null>(null);
   /** Free text from the panel's bar, which searches the roster of whatever block is open. */
   public readonly query = input<string | null>(null);
@@ -66,15 +67,6 @@ export class CapacityDetailPage {
    * underneath. The countdown belongs to the scanning view, not to this one.
    */
   protected readonly now = new Date();
-
-  protected readonly selectedSpaceId = computed(() => {
-    const requested = this.space();
-
-    return MOCK_SPACE_PROFILES.some((candidate) => candidate.spaceId === requested) &&
-      requested !== null
-      ? requested
-      : MOCK_SPACE_PROFILES[0].spaceId;
-  });
 
   protected readonly selectedDay = computed(() =>
     clampToNavigableRange(
@@ -90,7 +82,7 @@ export class CapacityDetailPage {
   protected readonly dayParam = computed(() => toIsoDate(this.selectedDay()));
 
   protected readonly blocksForDay = computed(() =>
-    mockBlocksFor(this.selectedSpaceId(), this.selectedDay(), this.now),
+    mockBlocksFor(this.spaceId(), this.selectedDay(), this.now),
   );
 
   /** `undefined` rather than a fallback: a block that is not there is worth saying so about, and
@@ -115,8 +107,6 @@ export class CapacityDetailPage {
   );
 
   protected readonly listParams = computed(() => ({
-    space:
-      this.selectedSpaceId() === MOCK_SPACE_PROFILES[0].spaceId ? null : this.selectedSpaceId(),
     date: this.dayParam() === toIsoDate(startOfDay(this.now)) ? null : this.dayParam(),
   }));
 
@@ -128,7 +118,7 @@ export class CapacityDetailPage {
       return;
     }
 
-    void this.router.navigate(['/admin/blocks', blockKeyOf(target)], {
+    void this.router.navigate(['/admin', this.spaceId(), 'blocks', blockKeyOf(target)], {
       queryParams: this.listParams(),
     });
   }

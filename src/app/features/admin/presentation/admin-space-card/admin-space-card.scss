@@ -1,0 +1,44 @@
+@use 'cards';
+
+:host {
+  display: flex;
+  inline-size: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  inline-size: 100%;
+  text-decoration: none;
+  color: inherit;
+
+  @include cards.lift($ring: true);
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+.card__name {
+  margin: 0;
+  font: var(--tui-typography-ui-l);
+  overflow-wrap: anywhere;
+}
+
+.card__fact {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    flex: none;
+    color: var(--tui-text-tertiary);
+    font-size: var(--univgo-icon-inline);
+  }
+}

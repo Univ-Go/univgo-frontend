@@ -223,60 +223,95 @@
           <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="admin.spaces.pageTitle" datatype="html">
+        <source>Espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.pageDescription" datatype="html">
+        <source>Elige el espacio que quieres gestionar: escanear accesos, consultar sus bloques o cambiar su configuración.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="admin.scan.pageTitle" datatype="html">
         <source>Escáner de acceso</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.pageDescription" datatype="html">
         <source>Escanea el código de un estudiante para registrar su check-in y confirmar el acceso al espacio.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.pageTitle" datatype="html">
         <source>Consulta de bloques</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.pageDescription" datatype="html">
         <source>Consulta los bloques de un espacio para un día concreto, con su aforo previsto, quién está dentro y quién asistió.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.detail.pageTitle" datatype="html">
         <source>Detalle del bloque</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.detail.pageDescription" datatype="html">
         <source>Consulta el aforo de un bloque, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.settings.pageTitle" datatype="html">
         <source>Configuración y cancelación de espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.settings.pageDescription" datatype="html">
         <source>Registra el cierre de un espacio por mantenimiento o incidencias y consulta el historial de cierres.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spacesGrid.card.capacity" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 persona} other {<x id="INTERPOLATION"/> personas}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
+          <context context-type="linenumber">15,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.title" datatype="html">
+        <source>Espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.lead" datatype="html">
+        <source> Elige el espacio que quieres gestionar. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
+          <context context-type="linenumber">4,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.roster.filters.status.inProgress" datatype="html">
@@ -617,35 +652,35 @@
         <source>Gestión de reservas y aforo por horario.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/blocks-page/blocks-page.html</context>
-          <context context-type="linenumber">4,7</context>
+          <context context-type="linenumber">4,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.count" datatype="html">
         <source>{VAR_PLURAL, plural, =0 {Sin bloques} =1 {1 bloque} other {<x id="INTERPOLATION"/> bloques}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/blocks-page/blocks-page.html</context>
-          <context context-type="linenumber">27,32</context>
+          <context context-type="linenumber">20,25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.list.label" datatype="html">
         <source>Bloques del día</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/blocks-page/blocks-page.html</context>
-          <context context-type="linenumber">37,38</context>
+          <context context-type="linenumber">30,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.list.empty.title" datatype="html">
         <source>Este espacio no abre este día</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/blocks-page/blocks-page.html</context>
-          <context context-type="linenumber">48,49</context>
+          <context context-type="linenumber">41,42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.list.empty.description" datatype="html">
         <source>Prueba con otra fecha, o cambia de espacio desde el selector de arriba.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/blocks-page/blocks-page.html</context>
-          <context context-type="linenumber">50,53</context>
+          <context context-type="linenumber">43,46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.back" datatype="html">
@@ -1247,49 +1282,49 @@
         <source>Escáner</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/scan-page/scan-page.html</context>
-          <context context-type="linenumber">2,4</context>
+          <context context-type="linenumber">2,5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.camera.title" datatype="html">
         <source>Cámara principal</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/scan-page/scan-page.html</context>
-          <context context-type="linenumber">13,14</context>
+          <context context-type="linenumber">8,9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.manualEntry.label" datatype="html">
         <source>Código de reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/scan-page/scan-page.html</context>
-          <context context-type="linenumber">24,27</context>
+          <context context-type="linenumber">19,22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.manualEntry.placeholder" datatype="html">
         <source>Ej. UG-1234</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/scan-page/scan-page.html</context>
-          <context context-type="linenumber">32,34</context>
+          <context context-type="linenumber">27,29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.manualEntry.submit" datatype="html">
         <source> Verificar </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/scan-page/scan-page.html</context>
-          <context context-type="linenumber">49,51</context>
+          <context context-type="linenumber">44,46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.manualEntry.hint" datatype="html">
         <source> Úsalo si el código QR no se puede leer. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/scan-page/scan-page.html</context>
-          <context context-type="linenumber">55,58</context>
+          <context context-type="linenumber">50,53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.result.label" datatype="html">
         <source>Resultado del escaneo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/scan-page/scan-page.html</context>
-          <context context-type="linenumber">65,66</context>
+          <context context-type="linenumber">60,61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.settings.title" datatype="html">
@@ -1303,35 +1338,42 @@
         <source> Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o incidencias. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">6,11</context>
+          <context context-type="linenumber">6,10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.thisMonth" datatype="html">
         <source>Cierres este mes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">28,29</context>
+          <context context-type="linenumber">22,23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.frequentReason" datatype="html">
         <source>Motivo frecuente</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">37,39</context>
+          <context context-type="linenumber">31,33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.noReason" datatype="html">
         <source>Sin cierres</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaceSwitcher.viewAll" datatype="html">
+        <source>Ver todos los espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-switcher/space-switcher.html</context>
+          <context context-type="linenumber">39,42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSwitcher.label" datatype="html">
         <source>Cambiar de espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-switcher/space-switcher.ts</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.skipToForm" datatype="html">
@@ -2462,28 +2504,35 @@
         <source>Gestión institucional</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
-          <context context-type="linenumber">86,89</context>
+          <context context-type="linenumber">87,90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.label" datatype="html">
         <source>Secciones del panel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
-          <context context-type="linenumber">89,90</context>
+          <context context-type="linenumber">90,91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.header.backToSpaces" datatype="html">
+        <source>Volver a espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+          <context context-type="linenumber">9,14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.search.label" datatype="html">
         <source>Buscar estudiante o ID</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">16,19</context>
+          <context context-type="linenumber">25,28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.notifications" datatype="html">
         <source>Notificaciones</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">40,42</context>
+          <context context-type="linenumber">49,51</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
@@ -2494,14 +2543,14 @@
         <source>Ayuda</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">52,54</context>
+          <context context-type="linenumber">61,63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.accountMenu" datatype="html">
         <source>Tu cuenta</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">64,66</context>
+          <context context-type="linenumber">73,75</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
@@ -2527,28 +2576,28 @@
         <source>Escáner</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.blocks" datatype="html">
         <source>Consulta de bloques</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.blocksShort" datatype="html">
         <source>Bloques</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.settings" datatype="html">
         <source>Ajustes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footer.rights" datatype="html">

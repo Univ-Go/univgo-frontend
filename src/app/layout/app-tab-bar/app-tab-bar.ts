@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, booleanAttribute, input, signal } f
 import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiButton, TuiDropdown, TuiIcon } from '@taiga-ui/core';
+import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
 import { AccountMenu } from '../account-menu/account-menu';
 import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
 
@@ -37,6 +38,7 @@ export class AppTabBar {
 
   protected readonly adminItems = ADMIN_NAV_ITEMS;
   protected readonly adminMatchOptions = ADMIN_NAV_MATCH_OPTIONS;
+  protected readonly adminSpaceId = currentAdminSpaceId();
 
   /**
    * The catalogue carries its filter in the query string, so `exact` alone would drop the highlight

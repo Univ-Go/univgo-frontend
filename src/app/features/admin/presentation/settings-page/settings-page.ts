@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { MOCK_SPACE_PROFILES } from '../../infrastructure/mock-attendance';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { MOCK_CLOSURES } from '../../infrastructure/mock-closures';
 import { closuresThisMonth, mostFrequentReasonThisMonth } from '../../domain/space-closure-catalog';
 import type { SpaceClosure } from '../../domain/space-closure';
@@ -7,13 +6,11 @@ import { closureReasonName } from '../closure-reason';
 import { ClosureForm } from '../closure-form/closure-form';
 import { ClosureHistory } from '../closure-history/closure-history';
 import { MetricCard } from '../metric-card/metric-card';
-import { SpaceSwitcher } from '../space-switcher/space-switcher';
 
 /**
- * Visual mock: layout and component inventory are final, the data is not. Reuses `MOCK_SPACE_PROFILES` from
- * the capacity view so switching spaces here lines up with the same three spaces there, and starts
- * from `MOCK_CLOSURES` — the panel's only other hardcoded source, moving behind a port once the
- * closures API exists.
+ * Visual mock: layout and component inventory are final, the data is not. Starts from
+ * `MOCK_CLOSURES` — the panel's only other hardcoded source, moving behind a port once the closures
+ * API exists.
  *
  * `docs/booking-flow.md` §11 asks the panel to be able to "cancelar reservas del espacio, para
  * mantenimiento imprevisto, cierre anticipado o incidencias": this is the fourth and last of the
@@ -21,21 +18,18 @@ import { SpaceSwitcher } from '../space-switcher/space-switcher';
  */
 @Component({
   selector: 'app-settings-page',
-  imports: [ClosureForm, ClosureHistory, MetricCard, SpaceSwitcher],
+  imports: [ClosureForm, ClosureHistory, MetricCard],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsPage {
-  protected readonly spaces = MOCK_SPACE_PROFILES;
-
-  /** Page-local, like the capacity view's: the shell has no say in which space this is about. */
-  protected readonly selectedSpaceId = signal(MOCK_SPACE_PROFILES[0].spaceId);
+  public readonly spaceId = input.required<string>();
 
   protected readonly closures = signal<readonly SpaceClosure[]>(MOCK_CLOSURES);
 
   protected readonly spaceClosures = computed(() =>
-    this.closures().filter((closure) => closure.spaceId === this.selectedSpaceId()),
+    this.closures().filter((closure) => closure.spaceId === this.spaceId()),
   );
 
   protected readonly closuresThisMonthCount = computed(() =>
@@ -49,10 +43,6 @@ export class SettingsPage {
       ? $localize`:@@admin.closure.stats.noReason:Sin cierres`
       : closureReasonName(reason);
   });
-
-  protected selectSpace(spaceId: string): void {
-    this.selectedSpaceId.set(spaceId);
-  }
 
   protected addClosure(closure: SpaceClosure): void {
     this.closures.update((current) => [closure, ...current]);

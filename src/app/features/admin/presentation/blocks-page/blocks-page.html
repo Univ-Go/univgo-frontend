@@ -3,13 +3,6 @@
     <h1 i18n="@@admin.blocks.title">Consulta de bloques</h1>
     <p class="intro__lead" i18n="@@admin.blocks.lead">Gestión de reservas y aforo por horario.</p>
   </div>
-
-  <app-space-switcher
-    [fullWidth]="compact()"
-    [spaces]="spaces"
-    [selectedId]="selectedSpaceId()"
-    (spaceSelected)="selectSpace($event)"
-  />
 </header>
 
 <app-block-day-stepper

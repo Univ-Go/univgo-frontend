@@ -1,0 +1,21 @@
+<a
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="card"
+  [routerLink]="['/admin', space().spaceId, 'scan']"
+>
+  <app-media-plate icon="@tui.map-pin" />
+
+  <div class="card__body">
+    <h3 class="card__name">{{ space().spaceName }}</h3>
+
+    <p class="card__fact">
+      <tui-icon icon="@tui.users" aria-hidden="true" />
+      <span i18n="@@admin.spacesGrid.card.capacity">{space().capacity, plural,
+        =1 {1 persona}
+        other {{{space().capacity}} personas}
+      }</span>
+    </p>
+  </div>
+</a>

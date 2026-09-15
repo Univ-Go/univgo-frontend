@@ -1,0 +1,14 @@
+<header class="intro">
+  <h1 i18n="@@admin.spaces.title">Espacios</h1>
+  <p class="intro__lead" i18n="@@admin.spaces.lead">
+    Elige el espacio que quieres gestionar.
+  </p>
+</header>
+
+<ul class="grid">
+  @for (space of spaces; track space.spaceId) {
+    <li class="grid__item">
+      <app-admin-space-card [space]="space" />
+    </li>
+  }
+</ul>

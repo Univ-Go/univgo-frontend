@@ -1,0 +1,21 @@
+@use 'cards';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.intro__lead {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+.grid {
+  @include cards.grid;
+}
+
+.grid__item {
+  display: flex;
+}

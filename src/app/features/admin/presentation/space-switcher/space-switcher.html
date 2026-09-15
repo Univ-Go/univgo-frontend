@@ -26,5 +26,17 @@
         {{ space.spaceName }}
       </button>
     }
+
+    <!-- Below the spaces rather than among them: this leaves the picker entirely, for the grid
+         where there is no "current" space to be one of these options. -->
+    <a
+      tuiOption
+      class="panel__all"
+      routerLink="/admin/spaces"
+      iconStart="@tui.layout-grid"
+      (click)="open.set(false)"
+      i18n="@@admin.spaceSwitcher.viewAll"
+      >Ver todos los espacios</a
+    >
   </tui-data-list>
 </ng-template>

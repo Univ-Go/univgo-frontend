@@ -17,3 +17,9 @@ button {
 :host([data-full]) button {
   inline-size: 100%;
 }
+
+// Set off from the spaces above it, the same way the account menu separates its sign-out action
+// from the items above: leaving the picker is a different kind of choice than picking within it.
+.panel__all {
+  border-block-start: 1px solid var(--tui-border-normal);
+}

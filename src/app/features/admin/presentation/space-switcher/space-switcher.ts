@@ -1,21 +1,25 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TuiButton, TuiDataList, TuiDropdown } from '@taiga-ui/core';
 import type { AdminSpace } from '../../domain/attendance';
 
 let nextTriggerId = 0;
 
 /**
- * Level 2: which of the administrator's spaces the open view is showing. It sits next to the block
- * heading it controls rather than in the shell — the header's search and the aside's navigation
- * apply to the whole panel session, but which space is open is this page's own state, the way a
- * repository switcher sits under the repository name rather than in a global bar.
+ * Level 2: which of the administrator's spaces the panel is currently about. Rendered once, from
+ * `AdminHeader` — `docs/booking-flow.md` §11 treats the space as the subject of the whole session,
+ * not of one screen, so the control sits in the shell rather than being repeated under each view's
+ * own heading.
  *
  * Built on the trigger-plus-`tuiOption`-list shape `AccountMenu` and `FilterDropdown` already use,
- * so a fourth dropdown doesn't invent a fifth pattern.
+ * so a fourth dropdown doesn't invent a fifth pattern. The panel's last item leaves the picker
+ * entirely for the spaces grid — the same destination the shell's logo links to — so the escape
+ * hatch out of "some space" is available from wherever the switcher already is, not only from the
+ * header's far corner.
  */
 @Component({
   selector: 'app-space-switcher',
-  imports: [TuiButton, TuiDataList, TuiDropdown],
+  imports: [RouterLink, TuiButton, TuiDataList, TuiDropdown],
   templateUrl: './space-switcher.html',
   styleUrl: './space-switcher.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TuiButton } from '@taiga-ui/core';
+import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
 import { APP_CONFIG } from '../../core/config/app-config';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
@@ -21,6 +22,10 @@ import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
  * icon-over-label cell five across a phone's width — that reusing one component's markup for both
  * fights it more than it saves; sharing the destination data instead is what keeps the two from
  * drifting apart.
+ *
+ * The mark links to the spaces grid: from desktop up, `AdminHeader`'s own logo is hidden precisely
+ * because this one is on screen instead, so the "leave this space" escape hatch has to live here
+ * too, not only in the bar.
  */
 @Component({
   selector: 'app-admin-aside',
@@ -45,6 +50,10 @@ import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
       gap: var(--univgo-space-s);
       padding-block: var(--univgo-space-l);
       text-align: center;
+    }
+
+    .brand__logo {
+      display: flex;
     }
 
     .brand__name {
@@ -80,7 +89,14 @@ import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
   `,
   template: `
     <div class="brand">
-      <app-brand-logo />
+      <a
+        class="brand__logo"
+        routerLink="/admin/spaces"
+        i18n-aria-label="@@admin.header.backToSpaces"
+        aria-label="Volver a espacios"
+      >
+        <app-brand-logo />
+      </a>
 
       <span class="brand__name">{{ organizationName }}</span>
       <p class="brand__role" i18n="@@admin.brandRole">Gestión institucional</p>
@@ -88,7 +104,7 @@ import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
 
     <nav class="nav" i18n-aria-label="@@admin.nav.label" aria-label="Secciones del panel">
       @for (item of items; track item.label) {
-        @if (item.link; as link) {
+        @if (spaceId() && item.link; as link) {
           <!-- The destination the panel is on is filled rather than flat, and carries aria-current
                as well: the fill on its own is colour doing the talking. -->
           <a
@@ -97,7 +113,7 @@ import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
             class="nav__item"
             [appearance]="active.isActive ? 'primary' : 'flat'"
             [iconStart]="item.icon"
-            [routerLink]="link"
+            [routerLink]="['/admin', spaceId(), link]"
             routerLinkActive
             [routerLinkActiveOptions]="matchOptions"
             [attr.aria-current]="active.isActive ? 'page' : null"
@@ -126,4 +142,5 @@ export class AdminAside {
   protected readonly organizationName = inject(APP_CONFIG).organizationName;
   protected readonly items = ADMIN_NAV_ITEMS;
   protected readonly matchOptions = ADMIN_NAV_MATCH_OPTIONS;
+  protected readonly spaceId = currentAdminSpaceId();
 }

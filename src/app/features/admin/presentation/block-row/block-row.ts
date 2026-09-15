@@ -48,7 +48,8 @@ export class BlockRow {
   public readonly block = input.required<CapacityBlock>();
   /** Passed in rather than read here, so the whole list agrees on one instant and stays testable. */
   public readonly now = input.required<Date>();
-  /** Carried through to the detail's address so returning lands back on this same day and space. */
+  /** Carried through to the detail's address so returning lands back on this same day; the space is
+   *  already part of both routes' shared `:spaceId` prefix and needs no carrying. */
   public readonly day = input.required<string>();
 
   protected readonly occupancy = computed(() => occupancyOf(this.block()));

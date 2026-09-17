@@ -1,4 +1,4 @@
-@if (booking(); as booking) {
+@if (reservation(); as reservation) {
   <!-- Decorative: the heading right below already says what happened, so the mark is hidden from
        assistive technology rather than given a second, redundant name. -->
   <div tuiAvatar="@tui.check" size="xxl" appearance="positive" aria-hidden="true"></div>
@@ -17,7 +17,7 @@
     class="done-card"
     aria-labelledby="done-space"
   >
-    <h2 id="done-space" class="done-card__name">{{ booking.space.name }}</h2>
+    <h2 id="done-space" class="done-card__name">{{ reservation.spaceName }}</h2>
 
     <dl class="done-card__facts">
       <div class="fact fact--date">
@@ -25,7 +25,7 @@
         <dd>
           <tui-icon icon="@tui.calendar" aria-hidden="true" />
           <span>
-            {{ booking.date | date: 'EEEE d MMMM' }}
+            {{ reservation.date | date: 'EEEE d MMMM' }}
             <span class="fact__detail">{{ range() }}</span>
           </span>
         </dd>
@@ -34,7 +34,20 @@
         <dt i18n="@@reservation.factLocation">Ubicación</dt>
         <dd>
           <tui-icon icon="@tui.map-pin" aria-hidden="true" />
-          <span>{{ booking.space.location }}</span>
+          <span>{{ reservation.location }}</span>
+        </dd>
+      </div>
+      <!-- The one thing that can still lose the plaza, so it travels with the booking rather than
+           living in a rule list: reserving is not enough, the student has to show up and be
+           scanned inside this window (`docs/booking-flow.md` §6). -->
+      <div class="fact">
+        <dt i18n="@@reservation.factCheckIn">Check-in</dt>
+        <dd>
+          <tui-icon icon="@tui.scan-line" aria-hidden="true" />
+          <span i18n="@@reservation.checkInWindow"
+            >De {{ reservation.checkInOpensAt | date: 'HH:mm' }} a
+            {{ reservation.checkInClosesAt | date: 'HH:mm' }}</span
+          >
         </dd>
       </div>
     </dl>
@@ -43,7 +56,7 @@
          it is what a person is asked for at the door. -->
     <p class="done-card__code">
       <span i18n="@@booking.done.code">Código</span>
-      <code>{{ code() }}</code>
+      <code>{{ reservation.code }}</code>
     </p>
   </section>
 

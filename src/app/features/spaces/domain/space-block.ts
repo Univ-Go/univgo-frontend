@@ -15,7 +15,31 @@ export interface SpaceBlock {
   readonly endMinutes: number;
   readonly capacity: number;
   readonly free: number;
+  /**
+   * The check-in window this student would get by reserving the block right now, as the server
+   * computed it. `docs/booking-flow.md` §5 requires the deadline to be shown *before* confirming,
+   * and only the server's clock can state it.
+   */
+  readonly checkInOpensAt: Date;
+  readonly checkInClosesAt: Date;
   readonly blocker: BlockBlocker | null;
+}
+
+/**
+ * Whether taking this block would be a last-minute booking — one made after the block already
+ * started, which buys less time and a check-in window that closes sooner
+ * (`docs/booking-flow.md` §9).
+ *
+ * Read from the server's own answer rather than from the browser's clock: check-in opens at
+ * `max(start − tolerance, creation)`, so a window that opens *after* the block began can only mean
+ * the block began first.
+ */
+export function isLastMinute(block: SpaceBlock, date: Date): boolean {
+  const start = new Date(date);
+
+  start.setHours(0, block.startMinutes, 0, 0);
+
+  return block.checkInOpensAt.getTime() > start.getTime();
 }
 
 /** What the server states about a block, before it is read as a reason a person can act on. */

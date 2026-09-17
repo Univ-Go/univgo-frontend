@@ -108,6 +108,31 @@
   .facts-card {
     grid-column: 2;
   }
+
+  // A booking with no pass left to show leaves the narrow column's first row empty, so the facts
+  // move up into it rather than starting halfway down the page.
+  .detail__content--passless .facts-card {
+    grid-row: 1;
+  }
+}
+
+// The structure before the data, like every other view that waits on the server: two blocks in the
+// proportions the content will take, so the page does not reflow when it arrives.
+.detail__loading {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-l);
+}
+
+.detail__loading-block {
+  block-size: var(--univgo-card-placeholder-height);
+  border-radius: var(--tui-radius-l);
+}
+
+@media (min-width: bp.$desktop) {
+  .detail__loading {
+    grid-template-columns: 2fr 1fr;
+  }
 }
 
 // `tuiCardLarge` already lays its content out as a column and owns the vertical rhythm between

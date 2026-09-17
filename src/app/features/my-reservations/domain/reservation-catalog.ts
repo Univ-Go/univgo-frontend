@@ -1,5 +1,6 @@
 import type { SpaceCategory } from '../../spaces/domain/space';
-import type { Reservation, ReservationStatus } from './reservation';
+import type { Reservation, ReservationState } from './reservation';
+import { isActive } from './reservation';
 
 /**
  * The question the list view asks of the bookings on record. Both ends of the range are days, not
@@ -7,7 +8,7 @@ import type { Reservation, ReservationStatus } from './reservation';
  * day never decides whether it shows. A `null` end is unbounded on that side.
  */
 export interface ReservationFilter {
-  readonly statuses: ReadonlySet<ReservationStatus>;
+  readonly states: ReadonlySet<ReservationState>;
   readonly categories: ReadonlySet<SpaceCategory>;
   readonly from: Date | null;
   readonly to: Date | null;
@@ -23,31 +24,45 @@ function isWithinDays(date: Date, from: Date | null, to: Date | null): boolean {
   return (from === null || day >= startOfDay(from)) && (to === null || day <= startOfDay(to));
 }
 
+function chronologically(one: Reservation, other: Reservation): number {
+  return one.date.getTime() - other.date.getTime() || one.startMinutes - other.startMinutes;
+}
+
 /**
- * Every condition narrows: an empty set of statuses or of categories legitimately answers with
- * nothing, because the user did untick every option. Input order is preserved — how the bookings
- * are ranked is not settled yet, and inventing an order here would decide it silently.
+ * How a student reads their own list: what still holds a plaza first and soonest at the top,
+ * because that is what they may still have to act on, and the history after it with the most
+ * recent first. The server answers in no particular order, so ranking is the reading's job — and
+ * it belongs here, with the filtering, rather than in the view that happens to paginate it.
+ */
+function byRelevance(one: Reservation, other: Reservation): number {
+  const live = Number(isActive(other)) - Number(isActive(one));
+
+  return live || (isActive(one) ? chronologically(one, other) : chronologically(other, one));
+}
+
+/**
+ * Every condition narrows: an empty set of states or of categories legitimately answers with
+ * nothing, because the user did untick every option.
  */
 export function listReservations(
   reservations: readonly Reservation[],
   filter: ReservationFilter,
 ): readonly Reservation[] {
-  return reservations.filter(
-    (reservation) =>
-      filter.statuses.has(reservation.status) &&
-      filter.categories.has(reservation.category) &&
-      isWithinDays(reservation.date, filter.from, filter.to),
-  );
+  return reservations
+    .filter(
+      (reservation) =>
+        filter.states.has(reservation.state) &&
+        filter.categories.has(reservation.category) &&
+        isWithinDays(reservation.date, filter.from, filter.to),
+    )
+    .sort(byRelevance);
 }
 
 /**
- * The soonest booking that has not finished, which is the only one a dashboard has room to show.
- * "Not finished" reads the status rather than the clock: whether a booking is over is what the
- * status records, and deriving it from the date again here would give two answers to one question.
+ * The soonest booking that still holds a plaza, which is the only one a dashboard has room to show.
+ * Whether a booking is still live reads its state and not the clock: the server already answered
+ * that question, and answering it again from the date here would give two answers to one.
  */
 export function findNextReservation(reservations: readonly Reservation[]): Reservation | undefined {
-  return reservations
-    .filter((reservation) => reservation.status !== 'past')
-    .sort((one, other) => one.date.getTime() - other.date.getTime())
-    .at(0);
+  return reservations.filter(isActive).sort(chronologically).at(0);
 }

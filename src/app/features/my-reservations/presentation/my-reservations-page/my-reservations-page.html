@@ -2,10 +2,10 @@
 
 <section class="filters">
   <app-checkbox-filter
-    [label]="statusLabel"
-    [options]="statusOptions"
-    [selected]="selectedStatuses()"
-    (toggled)="toggleStatus($event.value, $event.checked)"
+    [label]="stateLabel"
+    [options]="stateOptions"
+    [selected]="selectedStates()"
+    (toggled)="toggleState($event.value, $event.checked)"
   />
 
   <app-checkbox-filter
@@ -31,40 +31,99 @@
   </app-filter-dropdown>
 </section>
 
-<section class="results">
-  @let found = filteredReservations().length;
+@if (reservations.isLoading()) {
+  <!-- The structure comes first and the data fills it in: an empty page that suddenly reflows is
+       read as a bug, and on a phone it is the whole screen moving. -->
+  <ul
+    class="reservations"
+    aria-busy="true"
+    i18n-aria-label="@@reservations.loading.label"
+    aria-label="Cargando tus reservas"
+  >
+    @for (card of skeletonCards; track card) {
+      <li class="reservations__item reservations__item--skeleton" [tuiSkeleton]="true"></li>
+    }
+  </ul>
+} @else if (reservations.error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@reservations.error.heading"
+    heading="No pudimos cargar tus reservas"
+    i18n-description="@@reservations.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="reservations.reload()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (reservations.value().length === 0) {
+  <!-- Never having booked and having filtered everything out are different situations with
+       different ways forward, so they are different states. -->
+  <app-empty-state
+    icon="@tui.calendar-plus"
+    i18n-heading="@@reservations.none.title"
+    heading="Todavía no tienes reservas"
+    i18n-description="@@reservations.none.description"
+    description="Cuando reserves un espacio lo verás aquí, con su código de acceso y su horario."
+  >
+    <a
+      tuiButton
+      routerLink="/spaces"
+      size="m"
+      appearance="primary"
+      iconStart="@tui.search"
+      i18n="@@reservations.none.action"
+      >Buscar un espacio</a
+    >
+  </app-empty-state>
+} @else {
+  <section class="results">
+    @let found = filteredReservations().length;
 
-  @if (pagedReservations().length > 0) {
-    <!-- Also the missing level between the page title and each card's `h3`, so the outline never
-         skips a step. The plural sits in an inline element for the same reason it does in the
-         catalogue: a block one lets the formatter pad it and Angular extracts a second, unnamed
-         ICU unit. -->
-    <h2 class="results__count">
-      <span i18n="@@reservations.results.count">{found, plural,
-        =1 {1 reserva}
-        other {{{found}} reservas}
-      }</span>
-    </h2>
+    @if (pagedReservations().length > 0) {
+      <!-- Also the missing level between the page title and each card's `h3`, so the outline never
+           skips a step. The plural sits in an inline element for the same reason it does in the
+           catalogue: a block one lets the formatter pad it and Angular extracts a second, unnamed
+           ICU unit. -->
+      <h2 class="results__count">
+        <span i18n="@@reservations.results.count">{found, plural,
+          =1 {1 reserva}
+          other {{{found}} reservas}
+        }</span>
+      </h2>
 
-    <ul class="reservations">
-      @for (reservation of pagedReservations(); track reservation.id) {
-        <li class="reservations__item">
-          <app-reservation-card [reservation]="reservation" />
-        </li>
-      }
-    </ul>
-  } @else {
-    <app-empty-state
-      icon="@tui.filter-x"
-      i18n-heading="@@reservations.empty.title"
-      heading="No hay reservas con estos filtros"
-      i18n-description="@@reservations.empty.description"
-      description="Prueba a cambiar los filtros para ver otras reservas."
-    />
-  }
+      <ul class="reservations">
+        @for (reservation of pagedReservations(); track reservation.id) {
+          <li class="reservations__item">
+            <app-reservation-card
+              [reservation]="reservation"
+              [cancelling]="cancellingId() === reservation.id"
+              (cancelled)="confirmCancel($event)"
+            />
+          </li>
+        }
+      </ul>
+    } @else {
+      <app-empty-state
+        icon="@tui.filter-x"
+        i18n-heading="@@reservations.empty.title"
+        heading="No hay reservas con estos filtros"
+        i18n-description="@@reservations.empty.description"
+        description="Prueba a cambiar los filtros para ver otras reservas."
+      />
+    }
 
-  <!-- Nothing to page through with a single page, and paging an empty result is meaningless. -->
-  @if (pageCount() > 1) {
-    <tui-pagination [length]="pageCount()" [(index)]="pageIndex" />
-  }
-</section>
+    <!-- Nothing to page through with a single page, and paging an empty result is meaningless. -->
+    @if (pageCount() > 1) {
+      <tui-pagination [length]="pageCount()" [(index)]="pageIndex" />
+    }
+  </section>
+}

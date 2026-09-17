@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { type Observable, map } from 'rxjs';
 import { APP_CONFIG } from '../../../core/config/app-config';
+import { fromIsoDateTime, minutesFromIsoTime } from '../../../shared/time/api-time';
+import { toIsoDate } from '../../../shared/time/calendar-day';
 import { BOOKING_DURATION_MINUTES, type Space, categoryFromName } from '../domain/space';
 import type { SpaceBlock } from '../domain/space-block';
 import { blockerOf } from '../domain/space-block';
@@ -26,14 +28,9 @@ interface BlockAvailabilityDto {
   readonly offered: boolean;
   readonly alreadyReservedByUserToday: boolean;
   readonly overlapsUserReservation: boolean;
-}
-
-const MINUTES_PER_HOUR = 60;
-
-function toMinutes(time: string): number {
-  const [hours, minutes] = time.split(':');
-
-  return Number(hours) * MINUTES_PER_HOUR + Number(minutes);
+  /** The check-in window the student would get by reserving this block right now. */
+  readonly previewCheckInOpensAt: string;
+  readonly previewCheckInClosesAt: string;
 }
 
 /**
@@ -51,18 +48,20 @@ function toSpace(dto: SpaceCatalogDto, date: Date): Space {
     underMaintenance: dto.underMaintenance,
     freeSlots: dto.freeBlockStarts.map((start) => ({
       date,
-      from: toMinutes(start),
-      to: toMinutes(start) + BOOKING_DURATION_MINUTES,
+      from: minutesFromIsoTime(start),
+      to: minutesFromIsoTime(start) + BOOKING_DURATION_MINUTES,
     })),
   };
 }
 
 function toBlock(dto: BlockAvailabilityDto): SpaceBlock {
   return {
-    startMinutes: toMinutes(dto.start),
-    endMinutes: toMinutes(dto.end),
+    startMinutes: minutesFromIsoTime(dto.start),
+    endMinutes: minutesFromIsoTime(dto.end),
     capacity: dto.capacity,
     free: dto.free,
+    checkInOpensAt: fromIsoDateTime(dto.previewCheckInOpensAt),
+    checkInClosesAt: fromIsoDateTime(dto.previewCheckInClosesAt),
     blocker: blockerOf({
       offered: dto.offered,
       free: dto.free,
@@ -70,15 +69,6 @@ function toBlock(dto: BlockAvailabilityDto): SpaceBlock {
       overlapsAnother: dto.overlapsUserReservation,
     }),
   };
-}
-
-/** The server reads a calendar day, so the date has to travel as the user's own, not as UTC. */
-function toIsoDate(date: Date): string {
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, '0'),
-    String(date.getDate()).padStart(2, '0'),
-  ].join('-');
 }
 
 @Injectable()

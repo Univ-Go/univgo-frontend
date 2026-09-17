@@ -59,29 +59,29 @@
     </p>
   } @else if (blocks().length > 0) {
     <div class="picker__hours">
-      @for (block of blocks(); track block.minutes) {
+      @for (offered of blocks(); track offered.minutes) {
         <label tuiBlock="m" class="hour">
           <input
             tuiBlock
             type="radio"
             name="booking-hour"
-            [value]="block.minutes"
-            [disabled]="!block.available"
-            [ngModel]="startMinutes()"
-            (ngModelChange)="startSelected.emit($event)"
+            [value]="offered.minutes"
+            [disabled]="!offered.available"
+            [ngModel]="selectedStart()"
+            (ngModelChange)="pickBlock(offered)"
           />
           <span tuiTitle>
-            {{ block.label }}
-            @switch (block.blocker) {
+            {{ offered.label }}
+            @switch (offered.blocker) {
               @case (null) {
-                <span tuiSubtitle i18n="@@booking.schedule.until">hasta {{ block.end }}</span>
+                <span tuiSubtitle i18n="@@booking.schedule.until">hasta {{ offered.end }}</span>
                 <!-- The ICU stands alone in its own element: nested inside another message it is
                      extracted as a second, auto-numbered unit nobody can translate against a
                      stable id. Two subtitles rather than one line — a block is a narrow column on
                      a phone, and one sentence wrapped into three ragged lines reads as damage. -->
-                <span tuiSubtitle i18n="@@booking.schedule.freePlaces">{block.free, plural,
+                <span tuiSubtitle i18n="@@booking.schedule.freePlaces">{offered.free, plural,
                   =1 {1 plaza}
-                  other {{{block.free}} plazas}
+                  other {{{offered.free}} plazas}
                 }</span>
               }
               @case ('full') {

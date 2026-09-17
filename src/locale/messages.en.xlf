@@ -210,6 +210,10 @@
         <source>Elige un espacio y resérvalo en menos de un minuto.</source>
         <target>Pick a space and book it in under a minute.</target>
       </trans-unit>
+      <trans-unit id="home.nextReservation.loading" datatype="html">
+        <source>Cargando tu próxima reserva</source>
+        <target>Loading your next booking</target>
+      </trans-unit>
       <trans-unit id="reservation.factTime" datatype="html">
         <source>Horario</source>
         <target>Time</target>
@@ -306,21 +310,29 @@
         <source>Mis reservas</source>
         <target>My bookings</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.label" datatype="html">
+      <trans-unit id="reservations.filters.state.label" datatype="html">
         <source>Estado</source>
         <target>Status</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.upcoming" datatype="html">
-        <source>Próximas</source>
-        <target>Upcoming</target>
+      <trans-unit id="reservations.filters.state.reserved" datatype="html">
+        <source>Reservadas</source>
+        <target>Booked</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.ongoing" datatype="html">
-        <source>Actuales</source>
-        <target>Ongoing</target>
+      <trans-unit id="reservations.filters.state.inProgress" datatype="html">
+        <source>En curso</source>
+        <target>In progress</target>
       </trans-unit>
-      <trans-unit id="reservations.filters.status.past" datatype="html">
-        <source>Pasadas</source>
-        <target>Past</target>
+      <trans-unit id="reservations.filters.state.finished" datatype="html">
+        <source>Finalizadas</source>
+        <target>Finished</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.state.expired" datatype="html">
+        <source>Expiradas</source>
+        <target>Expired</target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.state.cancelled" datatype="html">
+        <source>Canceladas</source>
+        <target>Cancelled</target>
       </trans-unit>
       <trans-unit id="reservations.filters.category.label" datatype="html">
         <source>Tipo de espacio</source>
@@ -346,17 +358,25 @@
         <source> Quitar filtro </source>
         <target> Clear filter </target>
       </trans-unit>
-      <trans-unit id="reservations.card.status.upcoming" datatype="html">
-        <source> Próxima </source>
-        <target> Upcoming </target>
+      <trans-unit id="reservations.card.status.reserved" datatype="html">
+        <source> Reservada </source>
+        <target> Booked </target>
       </trans-unit>
-      <trans-unit id="reservations.card.status.ongoing" datatype="html">
+      <trans-unit id="reservations.card.status.inProgress" datatype="html">
         <source> En curso </source>
-        <target> Ongoing </target>
+        <target> In progress </target>
       </trans-unit>
-      <trans-unit id="reservations.card.status.past" datatype="html">
-        <source> Pasada </source>
-        <target> Past </target>
+      <trans-unit id="reservations.card.status.finished" datatype="html">
+        <source> Finalizada </source>
+        <target> Finished </target>
+      </trans-unit>
+      <trans-unit id="reservations.card.status.expired" datatype="html">
+        <source> Expirada </source>
+        <target> Expired </target>
+      </trans-unit>
+      <trans-unit id="reservations.card.status.cancelled" datatype="html">
+        <source> Cancelada </source>
+        <target> Cancelled </target>
       </trans-unit>
       <trans-unit id="reservations.card.cancel" datatype="html">
         <source> Cancelar </source>
@@ -365,6 +385,54 @@
       <trans-unit id="reservations.card.viewQr" datatype="html">
         <source> Ver QR </source>
         <target> View QR </target>
+      </trans-unit>
+      <trans-unit id="reservations.loading.label" datatype="html">
+        <source>Cargando tus reservas</source>
+        <target>Loading your bookings</target>
+      </trans-unit>
+      <trans-unit id="reservations.error.heading" datatype="html">
+        <source>No pudimos cargar tus reservas</source>
+        <target>We couldn't load your bookings</target>
+      </trans-unit>
+      <trans-unit id="reservations.error.description" datatype="html">
+        <source>Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos.</source>
+        <target>Check your connection and try again. If it keeps failing, try again in a few minutes.</target>
+      </trans-unit>
+      <trans-unit id="reservations.none.title" datatype="html">
+        <source>Todavía no tienes reservas</source>
+        <target>You don't have any bookings yet</target>
+      </trans-unit>
+      <trans-unit id="reservations.none.description" datatype="html">
+        <source>Cuando reserves un espacio lo verás aquí, con su código de acceso y su horario.</source>
+        <target>Once you book a space it will appear here, with its access code and its times.</target>
+      </trans-unit>
+      <trans-unit id="reservations.none.action" datatype="html">
+        <source> Buscar un espacio </source>
+        <target> Find a space </target>
+      </trans-unit>
+      <trans-unit id="reservations.cancel.title" datatype="html">
+        <source>¿Cancelar esta reserva?</source>
+        <target>Cancel this booking?</target>
+      </trans-unit>
+      <trans-unit id="reservations.cancel.content" datatype="html">
+        <source>La plaza volverá a estar disponible para otras personas y podrás reservar otro bloque hoy.</source>
+        <target>The place goes back to other people, and you can book another block today.</target>
+      </trans-unit>
+      <trans-unit id="reservations.cancel.confirm" datatype="html">
+        <source>Cancelar la reserva</source>
+        <target>Cancel the booking</target>
+      </trans-unit>
+      <trans-unit id="reservations.cancel.keep" datatype="html">
+        <source>Conservarla</source>
+        <target>Keep it</target>
+      </trans-unit>
+      <trans-unit id="reservations.cancel.done.summary" datatype="html">
+        <source>Reserva cancelada</source>
+        <target>Booking cancelled</target>
+      </trans-unit>
+      <trans-unit id="reservations.cancel.done.detail" datatype="html">
+        <source>La plaza ya está disponible para otras personas.</source>
+        <target>The place is available to other people again.</target>
       </trans-unit>
       <trans-unit id="reservations.empty.title" datatype="html">
         <source>No hay reservas con estos filtros</source>
@@ -410,6 +478,14 @@
         <source>Ubicación</source>
         <target>Location</target>
       </trans-unit>
+      <trans-unit id="reservation.factCheckIn" datatype="html">
+        <source>Check-in</source>
+        <target>Check-in</target>
+      </trans-unit>
+      <trans-unit id="reservation.checkInWindow" datatype="html">
+        <source>De <x id="INTERPOLATION" equiv-text="{{ reservation.checkInOpensAt | date: &apos;HH:mm&apos; }}"/> a <x id="INTERPOLATION_1" equiv-text="{{ reservation.checkInClosesAt | date: &apos;HH:mm&apos; }}"/></source>
+        <target>From <x id="INTERPOLATION" equiv-text="{{ reservation.checkInOpensAt | date: &apos;HH:mm&apos; }}"/> to <x id="INTERPOLATION_1" equiv-text="{{ reservation.checkInClosesAt | date: &apos;HH:mm&apos; }}"/></target>
+      </trans-unit>
       <trans-unit id="reservations.detail.rules.title" datatype="html">
         <source>Normas del espacio</source>
         <target>Space rules</target>
@@ -421,6 +497,14 @@
       <trans-unit id="reservations.detail.notFound.description" datatype="html">
         <source> Puede que el enlace sea incorrecto o que la reserva ya no exista. </source>
         <target> The link may be wrong, or the booking may no longer exist. </target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.loading" datatype="html">
+        <source>Cargando la reserva</source>
+        <target>Loading the booking</target>
+      </trans-unit>
+      <trans-unit id="reservations.detail.error.heading" datatype="html">
+        <source>No pudimos cargar esta reserva</source>
+        <target>We couldn't load this booking</target>
       </trans-unit>
       <trans-unit id="reservations.rules.sports.gear" datatype="html">
         <source>Usa calzado deportivo adecuado para la superficie de la cancha.</source>
@@ -745,6 +829,22 @@
       <trans-unit id="booking.review.create" datatype="html">
         <source> Crear reserva </source>
         <target> Create booking </target>
+      </trans-unit>
+      <trans-unit id="booking.review.lastMinute.title" datatype="html">
+        <source>Reserva de último minuto</source>
+        <target>Last-minute booking</target>
+      </trans-unit>
+      <trans-unit id="booking.review.lastMinute.detail" datatype="html">
+        <source>El bloque ya empezó: debes presentarte antes de las <x id="INTERPOLATION" equiv-text="{{ booking.checkInClosesAt | date: &apos;HH:mm&apos; }}"/> o perderás la plaza.</source>
+        <target>The block has already started: you must be there before <x id="INTERPOLATION" equiv-text="{{ booking.checkInClosesAt | date: &apos;HH:mm&apos; }}"/> or you lose the place.</target>
+      </trans-unit>
+      <trans-unit id="booking.review.taken.summary" datatype="html">
+        <source>Ese bloque ya no está disponible</source>
+        <target>That block is no longer available</target>
+      </trans-unit>
+      <trans-unit id="booking.review.taken.detail" datatype="html">
+        <source>Puede que se haya llenado o que ya no dé tiempo. Elige otro bloque para continuar.</source>
+        <target>It may have filled up, or there may no longer be enough time left. Pick another block to continue.</target>
       </trans-unit>
       <trans-unit id="booking.info.title" datatype="html">
         <source>Información importante</source>

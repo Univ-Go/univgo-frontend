@@ -43,9 +43,9 @@
       <app-booking-slot-picker
         [space]="space"
         [date]="draft.date()"
-        [startMinutes]="draft.startMinutes()"
+        [block]="draft.block()"
         (dateSelected)="draft.setDate($event)"
-        (startSelected)="draft.setStartMinutes($event)"
+        (blockSelected)="draft.selectBlock($event)"
       />
 
       <!-- A live region: the picker is a grid of blocks, so the confirmation that a choice landed

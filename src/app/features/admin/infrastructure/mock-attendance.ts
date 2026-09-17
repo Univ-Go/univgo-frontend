@@ -1,7 +1,19 @@
 import { startOfDay, toIsoDate } from '../../../shared/time/calendar-day';
-import { createReservationCode } from '../../booking/infrastructure/mock-reservation-code';
 import { BOOKING_DURATION_MINUTES } from '../../spaces/domain/space';
 import type { AdminSpace, Attendee, CapacityBlock, CheckInStatus } from '../domain/attendance';
+
+/** Human-readable length: a code the panel prints is read out loud at a desk and typed by hand. */
+const CODE_DIGITS = 4;
+
+/**
+ * The panel's own stand-in for the identifier a reservation carries. The student's side reads the
+ * real one from the server now; this stays until the panel does too.
+ */
+function createReservationCode(): string {
+  const number = Math.floor(Math.random() * 10 ** CODE_DIGITS);
+
+  return `UG-${number.toString().padStart(CODE_DIGITS, '0')}`;
+}
 
 const MINUTES_PER_HOUR = 60;
 const MS_PER_MINUTE = 60_000;

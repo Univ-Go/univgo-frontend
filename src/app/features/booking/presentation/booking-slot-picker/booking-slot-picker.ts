@@ -4,10 +4,10 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { TuiButton, TuiTitle } from '@taiga-ui/core';
 import { TuiBlock, TuiSkeleton } from '@taiga-ui/kit';
+import { formatTimeOfDay } from '../../../../shared/time/time-of-day';
 import type { Space } from '../../../spaces/domain/space';
-import type { BlockBlocker } from '../../../spaces/domain/space-block';
+import type { BlockBlocker, SpaceBlock } from '../../../spaces/domain/space-block';
 import { SpaceRepository } from '../../../spaces/domain/space.repository';
-import { formatBookingTime } from '../booking-time';
 
 /** A booking window a person can plan around without the picker turning into a calendar. */
 const DAYS_OFFERED = 7;
@@ -38,6 +38,7 @@ interface OfferedDay {
 }
 
 interface OfferedBlock {
+  readonly block: SpaceBlock;
   readonly minutes: number;
   readonly available: boolean;
   readonly free: number;
@@ -75,10 +76,10 @@ interface OfferedBlock {
 export class BookingSlotPicker {
   public readonly space = input.required<Space>();
   public readonly date = input.required<Date>();
-  public readonly startMinutes = input.required<number | null>();
+  public readonly block = input.required<SpaceBlock | null>();
 
   public readonly dateSelected = output<Date>();
-  public readonly startSelected = output<number>();
+  public readonly blockSelected = output<SpaceBlock>();
 
   private readonly spaces = inject(SpaceRepository);
 
@@ -103,18 +104,30 @@ export class BookingSlotPicker {
 
   protected readonly skeletonBlocks = SKELETON_BLOCKS;
 
+  protected readonly selectedStart = computed(() => this.block()?.startMinutes ?? null);
+
   protected readonly blocks = computed<readonly OfferedBlock[]>(() =>
     this.availability.value().map((block) => ({
+      block,
       minutes: block.startMinutes,
       available: block.blocker === null,
       free: block.free,
       blocker: block.blocker,
-      label: formatBookingTime(block.startMinutes),
-      end: formatBookingTime(block.endMinutes),
+      label: formatTimeOfDay(block.startMinutes),
+      end: formatTimeOfDay(block.endMinutes),
     })),
   );
 
   protected pickDay(time: number): void {
     this.dateSelected.emit(new Date(time));
+  }
+
+  /**
+   * The whole block travels on, not just its hour: the check-in window the server computed for it
+   * is what step three has to warn about, and looking it up again later would mean asking the
+   * server a second time for an answer already in hand.
+   */
+  protected pickBlock(offered: OfferedBlock): void {
+    this.blockSelected.emit(offered.block);
   }
 }

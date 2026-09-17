@@ -3,6 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { type Observable, map } from 'rxjs';
 import { APP_CONFIG } from '../../../core/config/app-config';
 import { BOOKING_DURATION_MINUTES, type Space, categoryFromName } from '../domain/space';
+import type { SpaceBlock } from '../domain/space-block';
+import { blockerOf } from '../domain/space-block';
 import { SpaceRepository } from '../domain/space.repository';
 
 interface SpaceCatalogDto {
@@ -14,6 +16,16 @@ interface SpaceCatalogDto {
   readonly underMaintenance: boolean;
   /** Start of every block that still has a plaza on the requested day, as `HH:mm:ss`. */
   readonly freeBlockStarts: readonly string[];
+}
+
+interface BlockAvailabilityDto {
+  readonly start: string;
+  readonly end: string;
+  readonly capacity: number;
+  readonly free: number;
+  readonly offered: boolean;
+  readonly alreadyReservedByUserToday: boolean;
+  readonly overlapsUserReservation: boolean;
 }
 
 const MINUTES_PER_HOUR = 60;
@@ -42,6 +54,21 @@ function toSpace(dto: SpaceCatalogDto, date: Date): Space {
       from: toMinutes(start),
       to: toMinutes(start) + BOOKING_DURATION_MINUTES,
     })),
+  };
+}
+
+function toBlock(dto: BlockAvailabilityDto): SpaceBlock {
+  return {
+    startMinutes: toMinutes(dto.start),
+    endMinutes: toMinutes(dto.end),
+    capacity: dto.capacity,
+    free: dto.free,
+    blocker: blockerOf({
+      offered: dto.offered,
+      free: dto.free,
+      alreadyBookedToday: dto.alreadyReservedByUserToday,
+      overlapsAnother: dto.overlapsUserReservation,
+    }),
   };
 }
 
@@ -74,5 +101,13 @@ export class HttpSpaceRepository extends SpaceRepository {
     return this.catalog(new Date()).pipe(
       map((spaces) => spaces.find((space) => space.id === id) ?? null),
     );
+  }
+
+  availability(spaceId: string, date: Date): Observable<readonly SpaceBlock[]> {
+    return this.http
+      .get<readonly BlockAvailabilityDto[]>(`${this.baseUrl}/${spaceId}/availability`, {
+        params: { date: toIsoDate(date) },
+      })
+      .pipe(map((blocks) => blocks.map(toBlock)));
   }
 }

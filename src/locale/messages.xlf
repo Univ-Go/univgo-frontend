@@ -20,49 +20,49 @@
         <source>Inicio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.pageDescription" datatype="html">
         <source>Consulta tu próxima reserva y los espacios destacados del campus.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.pageTitle" datatype="html">
         <source>Espacios</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.pageDescription" datatype="html">
         <source>Consulta los espacios deportivos, salas de estudio y laboratorios del campus, y reserva el que necesites.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.pageTitle" datatype="html">
         <source>Mis reservas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.pageDescription" datatype="html">
         <source>Consulta, filtra y gestiona las reservas que has hecho en el campus.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.pageTitle" datatype="html">
         <source>Detalle de la reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">87</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
@@ -73,21 +73,21 @@
         <source>Consulta el pase, el horario, la ubicación y las normas de tu reserva.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFound.pageTitle" datatype="html">
         <source>Página no encontrada</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">97</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFound.pageDescription" datatype="html">
         <source>La página que buscas no existe o ha cambiado de dirección. Vuelve al inicio o consulta tus reservas.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.network.summary" datatype="html">
@@ -1401,7 +1401,7 @@
         <source> Consulta la disponibilidad de canchas, salas de estudio y laboratorios, y confirma tu reserva desde cualquier dispositivo. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">19,21</context>
+          <context context-type="linenumber">19,22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.highlightAvailability" datatype="html">
@@ -1457,21 +1457,21 @@
         <source> ¿Olvidaste tu contraseña? Pide ayuda en tu facultad mientras habilitamos la recuperación. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">96,99</context>
+          <context context-type="linenumber">96,100</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.submit" datatype="html">
         <source>Iniciar sesión</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">108,109</context>
+          <context context-type="linenumber">108,110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.alternativeSeparator" datatype="html">
         <source>o</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">113,117</context>
+          <context context-type="linenumber">114,117</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.submitWithCard" datatype="html">
@@ -1485,7 +1485,7 @@
         <source> El acceso con el carné estará disponible más adelante. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">129,132</context>
+          <context context-type="linenumber">129,133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.helpLabel" datatype="html">
@@ -1499,70 +1499,70 @@
         <source>Política de privacidad</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">154,156</context>
+          <context context-type="linenumber">154,157</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.legal" datatype="html">
         <source> Todos los derechos reservados. Acceso exclusivo para la comunidad universitaria. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">162,163</context>
+          <context context-type="linenumber">162,164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.identifierRequired" datatype="html">
         <source>Introduce tu correo institucional o tu documento.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.ts</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.passwordRequired" datatype="html">
         <source>Introduce tu contraseña.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.ts</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.unknownSpace.summary" datatype="html">
         <source>No encontramos ese espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/application/booking-flow.guards.ts</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.unknownSpace.detail" datatype="html">
         <source>Puede que el enlace sea antiguo. Elige un espacio del catálogo para continuar.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/application/booking-flow.guards.ts</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.leave.title" datatype="html">
         <source>¿Salir sin crear la reserva?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/application/booking-flow.guards.ts</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.leave.content" datatype="html">
         <source>Se perderá el espacio y el horario que elegiste.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/application/booking-flow.guards.ts</context>
-          <context context-type="linenumber">105</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.leave.confirm" datatype="html">
         <source>Salir</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/application/booking-flow.guards.ts</context>
-          <context context-type="linenumber">106</context>
+          <context context-type="linenumber">114</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.leave.stay" datatype="html">
         <source>Seguir aquí</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/application/booking-flow.guards.ts</context>
-          <context context-type="linenumber">107</context>
+          <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.space.pageTitle" datatype="html">
@@ -1900,39 +1900,96 @@
         <source>Hora de inicio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">30,31</context>
+          <context context-type="linenumber">29,30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.blockLength2h" datatype="html">
         <source>Bloques de 2 horas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">31,34</context>
+          <context context-type="linenumber">30,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="booking.schedule.loading" datatype="html">
+        <source>Cargando los bloques del día</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
+          <context context-type="linenumber">38,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="booking.schedule.error" datatype="html">
+        <source>No pudimos consultar los bloques de este día.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
+          <context context-type="linenumber">46,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="spaces.error.retry" datatype="html">
+        <source> Reintentar </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
+          <context context-type="linenumber">57,60</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
+          <context context-type="linenumber">120,122</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
+          <context context-type="linenumber">172,174</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.until" datatype="html">
-        <source>hasta <x id="INTERPOLATION" equiv-text="{{ hour.end }}"/></source>
+        <source>hasta <x id="INTERPOLATION" equiv-text="{{ block.end }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">50,51</context>
+          <context context-type="linenumber">78,79</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="booking.schedule.taken" datatype="html">
-        <source>ocupado</source>
+      <trans-unit id="booking.schedule.freePlaces" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 plaza} other {<x id="INTERPOLATION"/> plazas}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">52,54</context>
+          <context context-type="linenumber">82,85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="booking.schedule.full" datatype="html">
+        <source>completo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
+          <context context-type="linenumber">89,91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="booking.schedule.alreadyBooked" datatype="html">
+        <source>ya reservaste aquí hoy</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
+          <context context-type="linenumber">93,96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="booking.schedule.overlaps" datatype="html">
+        <source>se cruza con otra reserva</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
+          <context context-type="linenumber">98,100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="booking.schedule.tooLate" datatype="html">
+        <source>ya no da tiempo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
+          <context context-type="linenumber">102,105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.noHours" datatype="html">
         <source> Este espacio no abre este día. Prueba con otra fecha. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">60,64</context>
+          <context context-type="linenumber">111,115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.greeting" datatype="html">
-        <source>Hola, <x id="INTERPOLATION" equiv-text="{{ userName }}"/></source>
+        <source>Hola, <x id="INTERPOLATION" equiv-text="{{ userName() }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
           <context context-type="linenumber">3,4</context>
@@ -1989,6 +2046,39 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
           <context context-type="linenumber">89,92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="spaces.loading.label" datatype="html">
+        <source>Cargando espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
+          <context context-type="linenumber">97,99</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
+          <context context-type="linenumber">149,151</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="spaces.error.heading" datatype="html">
+        <source>No pudimos cargar los espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
+          <context context-type="linenumber">107,108</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
+          <context context-type="linenumber">159,160</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="spaces.error.description" datatype="html">
+        <source>Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
+          <context context-type="linenumber">109,112</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
+          <context context-type="linenumber">161,165</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.title" datatype="html">
@@ -2476,35 +2566,35 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">185,187</context>
+          <context context-type="linenumber">219,221</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.results.label" datatype="html">
         <source>Resultados</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">143,144</context>
+          <context context-type="linenumber">177,178</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.results.count" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 espacio encontrado} other {<x id="INTERPOLATION"/> espacios encontrados}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">151,155</context>
+          <context context-type="linenumber">185,189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.empty.heading" datatype="html">
         <source>No hay espacios libres con estos filtros</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">172,173</context>
+          <context context-type="linenumber">206,207</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.empty.description" datatype="html">
         <source>Prueba con otra franja horaria, otro día o revisa todos los tipos de espacio.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
-          <context context-type="linenumber">174,177</context>
+          <context context-type="linenumber">208,211</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.profile" datatype="html">

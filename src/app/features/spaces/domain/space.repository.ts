@@ -1,5 +1,6 @@
 import type { Observable } from 'rxjs';
 import type { Space } from './space';
+import type { SpaceBlock } from './space-block';
 
 /**
  * Catalogue port. A space is always read for a day, because what the catalogue answers — whether
@@ -11,4 +12,11 @@ export abstract class SpaceRepository {
 
   /** Answers `null` for an id that is not in the catalogue, which is a link gone stale, not a fault. */
   abstract findById(id: string): Observable<Space | null>;
+
+  /**
+   * Every block the space runs that day, offered or not, resolved against the student asking: the
+   * server is the only one that knows what else they have booked, and a grid that hid the blocks it
+   * refuses would read as "the space closes at ten".
+   */
+  abstract availability(spaceId: string, date: Date): Observable<readonly SpaceBlock[]>;
 }

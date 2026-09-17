@@ -4,7 +4,6 @@ import {
   groupByCategory,
   isFilterActive,
   listSpaces,
-  listStartOptions,
   resolveAvailability,
 } from './space-catalog';
 
@@ -129,61 +128,6 @@ describe('listSpaces', () => {
     const listed = listSpaces([court], filter({ date: TUESDAY }));
 
     expect(listed.map((entry) => entry.availability.kind)).toEqual(['unavailable']);
-  });
-});
-
-describe('listStartOptions', () => {
-  function starts(space: Space, date: Date, step: number): readonly number[] {
-    return listStartOptions(space, date, 60, step)
-      .filter((option) => option.available)
-      .map((option) => option.minutes);
-  }
-
-  it('steps through a window at the requested granularity', () => {
-    const oneSlot = space({ freeSlots: [slot(MONDAY, 8, 10)] });
-
-    expect(starts(oneSlot, MONDAY, 30)).toEqual([at(8), at(8, 30), at(9)]);
-  });
-
-  it('drops a window shorter than the requested duration instead of stitching it to the next one', () => {
-    const shortThenLong = space({
-      freeSlots: [
-        { date: MONDAY, from: at(8), to: at(8, 30) },
-        { date: MONDAY, from: at(8, 30), to: at(10) },
-      ],
-    });
-
-    expect(starts(shortThenLong, MONDAY, 30)).toEqual([at(8, 30), at(9)]);
-  });
-
-  it('collects starts across every window of the day, not just the first', () => {
-    expect(starts(space(), MONDAY, 60)).toEqual([
-      at(8),
-      at(9),
-      at(10),
-      at(11),
-      at(15),
-      at(16),
-      at(17),
-    ]);
-  });
-
-  it('keeps the hours between two windows in the grid, marked as taken', () => {
-    const options = listStartOptions(space(), MONDAY, 60, 60);
-
-    expect(options.filter((option) => !option.available).map((option) => option.minutes)).toEqual([
-      at(12),
-      at(13),
-      at(14),
-    ]);
-  });
-
-  it('reports nothing on a day the space has no free slot', () => {
-    expect(listStartOptions(space(), TUESDAY, 60, 30)).toEqual([]);
-  });
-
-  it('reports nothing for a space under maintenance, whatever its slots say', () => {
-    expect(listStartOptions(space({ underMaintenance: true }), MONDAY, 60, 60)).toEqual([]);
   });
 });
 

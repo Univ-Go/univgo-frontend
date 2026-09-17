@@ -84,3 +84,24 @@
   color: var(--tui-text-secondary);
   font: var(--tui-typography-body-s);
 }
+
+// A separator, not a word: it belongs to the layout rather than to the message, so it stays out of
+// i18n and out of what a screen reader announces.
+.hour__free::before {
+  content: '·';
+  margin-inline: var(--univgo-space-xs);
+}
+
+// The empty state carries a retry button when the day could not be read, so it lays its children
+// out rather than being a plain paragraph.
+.picker__empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-s);
+}
+
+.hour--skeleton {
+  block-size: var(--tui-height-l);
+  border-radius: var(--tui-radius-m);
+}

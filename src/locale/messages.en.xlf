@@ -774,9 +774,33 @@
         <source>hasta <x id="INTERPOLATION" equiv-text="{{ hour.end }}"/></source>
         <target>until <x id="INTERPOLATION" equiv-text="{{ hour.end }}"/></target>
       </trans-unit>
-      <trans-unit id="booking.schedule.taken" datatype="html">
-        <source>ocupado</source>
-        <target>taken</target>
+      <trans-unit id="booking.schedule.freePlaces" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 plaza} other {<x id="INTERPOLATION"/> plazas}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 space left} other {<x id="INTERPOLATION"/> spaces left}}</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.full" datatype="html">
+        <source>completo</source>
+        <target>full</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.alreadyBooked" datatype="html">
+        <source>ya reservaste aquí hoy</source>
+        <target>you already booked here today</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.overlaps" datatype="html">
+        <source>se cruza con otra reserva</source>
+        <target>clashes with another reservation</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.tooLate" datatype="html">
+        <source>ya no da tiempo</source>
+        <target>not enough time left</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.loading" datatype="html">
+        <source>Cargando los bloques del día</source>
+        <target>Loading the day's blocks</target>
+      </trans-unit>
+      <trans-unit id="booking.schedule.error" datatype="html">
+        <source>No pudimos consultar los bloques de este día.</source>
+        <target>We could not check this day's blocks.</target>
       </trans-unit>
       <trans-unit id="booking.schedule.noHours" datatype="html">
         <source> Este espacio no abre este día. Prueba con otra fecha. </source>

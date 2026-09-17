@@ -30,6 +30,13 @@ export const bookingSpaceGuard: CanActivateFn = (route) => {
     return router.createUrlTree(SPACE_STEP);
   }
 
+  // Walking between steps re-runs this guard, and the draft already holds the space it resolved on
+  // the way in. Reading the catalogue again would put a request in front of every step of a flow
+  // that has not changed its mind about which space it is booking.
+  if (draft.space()?.id === id) {
+    return true;
+  }
+
   return spaces.findById(id).pipe(
     map((space) => {
       if (!space) {

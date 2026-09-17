@@ -23,7 +23,7 @@ Los pasos son los de `booking-flow.md` §5 y §11.
 | Catálogo de espacios                | **Real** | `GET /spaces?date=`                                 |
 | Elegir día y bloque                 | **Real** | `GET /spaces/{id}/availability?date=`               |
 | Confirmar la reserva                | **Real** | `POST /reservations`, con el aviso de último minuto |
-| Ver el código de acceso             | Mixto    | El código es el del servidor; el QR sigue dibujado  |
+| Ver el código de acceso             | **Real** | El código del servidor, dibujado como QR escaneable |
 | Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`   |
 | Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                    |
 | Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante     |
@@ -87,6 +87,13 @@ veredictos vienen del servidor: es quien tiene el reloj, la tolerancia y la escr
 un escaneo en check-in. La lógica que el frontend tenía para decidirlos (`evaluateCheckInScan`) se
 retiró: era una segunda opinión sobre algo que no le corresponde.
 
+**El pase es escaneable.** El QR se genera en el navegador a partir del `qrCodeData` de la reserva
+con `qrcode-generator` (~10 kB, sin dependencias), dibujado como un solo `path` SVG que escala del
+tamaño de la tarjeta al del diálogo sin una segunda copia. Es la única pareja de colores del
+producto que no sigue el tema —`--univgo-qr-ink` sobre `--univgo-qr-paper`, oscuro sobre claro en
+ambos modos— porque un QR invertido hay lectores que lo rechazan. La lectura ya estaba: el panel usa
+`qr-scanner`, que también viaja aparte.
+
 **Cancelar pide confirmación.** Diálogo de Taiga, no alerta: la plaza vuelve al bloque en ese mismo
 instante y no hay vuelta atrás. Después la lista se relee en lugar de parchearse, porque el estado lo
 decide el reloj del servidor.
@@ -116,10 +123,9 @@ consulta del día y su detalle se generan sobre el espacio real —su id, su nom
 del catálogo— y lo que se fabrica es quién está dentro. Cablearlo tiene una decisión de producto
 delante, y está en la deuda 4.7.
 
-**El lado del estudiante ya no tiene ninguno.** Lo único que sigue dibujado ahí es el **QR**: el
-código que hay debajo es el `qrCodeData` real de la reserva —el que el escáner del panel comprobará—
-pero la imagen es un marcador de posición. Generarlo exige una librería y sólo sirve cuando el
-escáner sea real, así que entra con el paso 4.
+**El lado del estudiante ya no tiene ninguno.** El pase enseña el `qrCodeData` real de la reserva,
+como código y como QR, y el escáner del panel lo comprueba contra el servidor: el ciclo se cierra
+sin teclear nada.
 
 ---
 
@@ -186,8 +192,13 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
   Inicio son dos peticiones, y Mis reservas otras dos. Se arregla por cualquiera de los dos lados —una
   caché del catálogo en el frontend, o el nombre del espacio en la respuesta del backend— y la segunda
   es la que ahorra la ida y vuelta entera.
-- **El QR es un dibujo.** El código de debajo es real; la imagen no. Va con el paso 4, que es cuando
-  hay algo que escanee.
+- **El código de acceso es un UUID, y no debería serlo.** `qr_code_data` se genera como
+  `UUID.randomUUID()`, así que lo que el estudiante enseña —y lo que hay que teclear cuando el
+  escáner falla— son 36 caracteres hexadecimales. Dentro de un QR da igual; leído en voz alta en un
+  mostrador, o escrito a mano, es justo el caso en que el código de respaldo tiene que servir. **Lo
+  ideal es un código corto y legible generado por el backend** —del estilo `UG-4F7K`, sin vocales
+  para que no forme palabras ni se confunda `O` con `0`— único por reserva y con el UUID detrás si
+  hace falta. Es un cambio de backend: el frontend ya sólo enseña lo que el servidor emite.
 - **Los códigos inventados del panel ya no se cruzan con los reales.** El escáner comprueba contra
   el servidor, así que los `UG-1234` que el listado de un bloque sigue fabricando no valen para
   nada: escanear uno responde «no existe», que es la verdad. Se van con la deuda 4.7.
@@ -236,15 +247,15 @@ rol. Y no hay tests de componente ni end-to-end, que es lo acordado hasta que el
 ## 5. Por dónde seguir
 
 El orden no es de gusto: cada paso desbloquea al siguiente. Lo que estaba primero —crear la reserva,
-el lado del estudiante, el selector de espacios del panel y el escáner— está hecho: **una reserva
-creada en el móvil ya se conserva escaneándola en el mostrador**.
+el lado del estudiante, el pase con su QR, el selector de espacios del panel y el escáner— está
+hecho: **una reserva creada en el móvil se conserva enseñando su QR en el mostrador**. Lo que queda
+es el panel, y las dos deudas que lo bloquean las está atendiendo el backend.
 
-1. **El QR de verdad en el pase del estudiante.** Es lo único que falta para que el ciclo se cierre
-   sin teclear: hoy el código real hay que escribirlo a mano en el escáner.
-2. **Decidir la 4.7** y, con eso resuelto, cablear la consulta de bloques y su detalle.
-3. **Ajustes del espacio**: mantenimiento y cancelación masiva tienen endpoint; el historial de
+1. **La consulta de bloques y su detalle**, en cuanto la 4.7 esté resuelta en el backend.
+2. **Ajustes del espacio**: mantenimiento y cancelación masiva tienen endpoint; el historial de
    cierres no existe en el backend, así que esa mitad de la vista se queda o se retira.
 
-De la deuda, lo que conviene no dejar para después: **4.6** (el escaneo no mira el espacio, y es un
-agujero funcional, no una molestia), **4.2** (los parámetros duplicados, porque cada vista nueva que
-los lea multiplica el problema) y **4.4** (los datos, porque es lo que se ve en una demostración).
+La **4.6** (que el escaneo compruebe el espacio) y la **4.7** (lo que el detalle de un bloque puede
+enseñar) están en manos del backend. De lo que queda en este lado, lo que conviene no dejar para
+después: **4.2** (los parámetros duplicados, porque cada vista nueva que los lea multiplica el
+problema) y **4.4** (los datos, porque es lo que se ve en una demostración).

@@ -3,20 +3,29 @@
     @switch (scan.outcome) {
       @case ('valid') {
         <article tuiCardLarge tuiSurface tuiAppearance="positive" class="outcome">
-          <tui-icon icon="@tui.user-check" class="outcome__icon outcome__icon--positive" aria-hidden="true" />
+          <tui-icon
+            icon="@tui.user-check"
+            class="outcome__icon outcome__icon--positive"
+            aria-hidden="true"
+          />
           <h2 i18n="@@admin.scan.result.valid.heading">Acceso concedido</h2>
-          <p class="outcome__name">{{ scan.attendee.name }}</p>
-          <p class="outcome__detail" i18n="@@admin.scan.result.valid.detail">
-            Hasta las {{ scan.block.end | date: 'shortTime' }}
-          </p>
+          <p class="outcome__name">{{ scan.studentName }}</p>
+          @if (scan.blockEnd; as blockEnd) {
+            <p class="outcome__detail" i18n="@@admin.scan.result.valid.detail">
+              Hasta las {{ blockEnd | date: 'shortTime' }}
+            </p>
+          }
         </article>
       }
       @case ('tooEarly') {
         <article tuiCardLarge tuiSurface tuiAppearance="warning" class="outcome">
-          <tui-icon icon="@tui.clock" class="outcome__icon outcome__icon--warning" aria-hidden="true" />
+          <tui-icon
+            icon="@tui.clock"
+            class="outcome__icon outcome__icon--warning"
+            aria-hidden="true"
+          />
           <h2 i18n="@@admin.scan.result.tooEarly.heading">Aún no</h2>
-          <p class="outcome__name">{{ scan.attendee.name }}</p>
-          @if (scan.attendee.checkInOpensAt; as opensAt) {
+          @if (scan.opensAt; as opensAt) {
             <p class="outcome__detail" i18n="@@admin.scan.result.tooEarly.detail">
               El check-in abre a las {{ opensAt | date: 'shortTime' }}
             </p>
@@ -25,12 +34,15 @@
       }
       @case ('expired') {
         <article tuiCardLarge tuiSurface tuiAppearance="negative" class="outcome">
-          <tui-icon icon="@tui.circle-x" class="outcome__icon outcome__icon--negative" aria-hidden="true" />
+          <tui-icon
+            icon="@tui.circle-x"
+            class="outcome__icon outcome__icon--negative"
+            aria-hidden="true"
+          />
           <h2 i18n="@@admin.scan.result.expired.heading">Expirada</h2>
-          <p class="outcome__name">{{ scan.attendee.name }}</p>
-          @if (scan.attendee.checkInClosesAt; as closesAt) {
+          @if (scan.expiredAt; as expiredAt) {
             <p class="outcome__detail" i18n="@@admin.scan.result.expired.detail">
-              Venció a las {{ closesAt | date: 'shortTime' }}
+              Venció a las {{ expiredAt | date: 'shortTime' }}
             </p>
           } @else {
             <p class="outcome__detail" i18n="@@admin.scan.result.expired.detailUnknown">
@@ -41,10 +53,14 @@
       }
       @case ('alreadyUsed') {
         <article tuiCardLarge tuiSurface tuiAppearance="neutral" class="outcome">
-          <tui-icon icon="@tui.history" class="outcome__icon outcome__icon--neutral" aria-hidden="true" />
+          <tui-icon
+            icon="@tui.history"
+            class="outcome__icon outcome__icon--neutral"
+            aria-hidden="true"
+          />
           <h2 i18n="@@admin.scan.result.alreadyUsed.heading">Ya usada</h2>
-          <p class="outcome__name">{{ scan.attendee.name }}</p>
-          @if (scan.attendee.checkedInAt; as checkedInAt) {
+          <p class="outcome__name">{{ scan.studentName }}</p>
+          @if (scan.checkedInAt; as checkedInAt) {
             <p class="outcome__detail" i18n="@@admin.scan.result.alreadyUsed.detail">
               Entró a las {{ checkedInAt | date: 'shortTime' }}
             </p>
@@ -53,18 +69,26 @@
       }
       @case ('otherBlock') {
         <article tuiCardLarge tuiSurface tuiAppearance="warning" class="outcome">
-          <tui-icon icon="@tui.calendar-days" class="outcome__icon outcome__icon--warning" aria-hidden="true" />
+          <tui-icon
+            icon="@tui.calendar-days"
+            class="outcome__icon outcome__icon--warning"
+            aria-hidden="true"
+          />
           <h2 i18n="@@admin.scan.result.otherBlock.heading">Otro bloque</h2>
-          <p class="outcome__name">{{ scan.attendee.name }}</p>
-          <p class="outcome__detail" i18n="@@admin.scan.result.otherBlock.detail">
-            Su reserva es de {{ scan.block.start | date: 'shortTime' }} a
-            {{ scan.block.end | date: 'shortTime' }}
-          </p>
+          @if (scan.range; as blockRange) {
+            <p class="outcome__detail" i18n="@@admin.scan.result.otherBlock.detail">
+              Su reserva es de {{ formatRange(blockRange.startMinutes, blockRange.endMinutes) }}
+            </p>
+          }
         </article>
       }
       @case ('notFound') {
         <article tuiCardLarge tuiSurface tuiAppearance="negative" class="outcome">
-          <tui-icon icon="@tui.user-x" class="outcome__icon outcome__icon--negative" aria-hidden="true" />
+          <tui-icon
+            icon="@tui.user-x"
+            class="outcome__icon outcome__icon--negative"
+            aria-hidden="true"
+          />
           <h2 i18n="@@admin.scan.result.notFound.heading">No existe</h2>
           <p class="outcome__detail" i18n="@@admin.scan.result.notFound.detail">
             Código desconocido o reserva cancelada.

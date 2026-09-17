@@ -1,17 +1,31 @@
-import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { TuiAppearance, TuiButton, TuiInput, TuiLoader } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
+import { formatTimeRange } from '../../../../shared/time/time-of-day';
+import { AdminBlockRepository, blockInProgress } from '../../domain/admin-block.repository';
 import type { ScanResult } from '../../domain/check-in-scan';
-import { logMockCheckInCodes, scanCheckInCode } from '../../infrastructure/mock-check-in-scanner';
+import { CheckInScanner } from '../../domain/check-in.scanner';
 import { CheckInResult } from '../check-in-result/check-in-result';
 import { QrCamera } from '../qr-camera/qr-camera';
 
 /**
  * The administrator's main screen (`docs/booking-flow.md` §11: "la pantalla principal y casi la
- * única"). It always checks against the space's block in progress right now — never a picker — the
- * same block `SpaceSwitcher` already resolves for `capacity-page`, because a scan only ever means
- * "let this person in right now" (§9).
+ * única"). It always checks against the space's block in progress right now — never a picker —
+ * because a scan only ever means "let this person in right now" (§9).
+ *
+ * That block travels with the scan so the server can answer "su reserva es de otro bloque" instead
+ * of judging the code against its own window alone. Outside opening hours there is no block, and
+ * the scan still goes through: the reservation's own window is then the only thing that decides.
  *
  * The camera and the manual field feed the same verification path, so a code typed by hand gets
  * exactly the same six answers a decoded one would. `lastCameraCode` exists only to stop a QR still
@@ -39,21 +53,44 @@ import { QrCamera } from '../qr-camera/qr-camera';
 export class ScanPage {
   public readonly spaceId = input.required<string>();
 
+  private readonly scanner = inject(CheckInScanner);
+  private readonly blocks = inject(AdminBlockRepository);
+
+  /** Read once: the door is attended for one session, and a block that moved under the person
+   *  scanning would change what a code means halfway through a queue. */
+  private readonly now = new Date();
+
   protected readonly manualCode = signal('');
   protected readonly verifying = signal(false);
   protected readonly result = signal<ScanResult | null>(null);
 
   private lastCameraCode: string | null = null;
 
+  private readonly daySchedule = rxResource({
+    params: () => this.spaceId(),
+    stream: ({ params }) => this.blocks.blocksOf(params, this.now),
+    defaultValue: [],
+  });
+
+  protected readonly currentBlock = computed(() =>
+    blockInProgress(this.daySchedule.value(), this.now),
+  );
+
+  /** What the header says the scanner is checking against, so it is never a guess. */
+  protected readonly currentRange = computed(() => {
+    const block = this.currentBlock();
+
+    return block ? formatTimeRange(block.startMinutes, block.endMinutes) : null;
+  });
+
   constructor() {
     // The header's switcher rewrites the URL rather than routing to a new instance, so this runs
     // again on every space change, not just once at construction.
     effect(() => {
-      const id = this.spaceId();
+      this.spaceId();
 
       this.result.set(null);
       this.lastCameraCode = null;
-      logMockCheckInCodes(id);
     });
   }
 
@@ -63,7 +100,7 @@ export class ScanPage {
     }
 
     this.lastCameraCode = code;
-    void this.verify(code);
+    this.verify(code);
   }
 
   protected submitManualCode(): void {
@@ -73,16 +110,32 @@ export class ScanPage {
       return;
     }
 
-    void this.verify(code);
+    this.verify(code);
   }
 
-  private async verify(code: string): Promise<void> {
+  private verify(code: string): void {
+    const block = this.currentBlock();
+
     this.verifying.set(true);
 
-    const result = await scanCheckInCode(code, this.spaceId());
-
-    this.verifying.set(false);
-    this.result.set(result);
-    this.manualCode.set('');
+    this.scanner
+      .scan({
+        code,
+        startMinutes: block?.startMinutes ?? null,
+        endMinutes: block?.endMinutes ?? null,
+      })
+      .subscribe({
+        next: (result) => {
+          this.verifying.set(false);
+          this.result.set(result);
+          this.manualCode.set('');
+        },
+        // The failure is already announced by the interceptor. The previous answer is cleared
+        // because leaving it on screen would read as the verdict for the code just scanned.
+        error: () => {
+          this.verifying.set(false);
+          this.result.set(null);
+        },
+      });
   }
 }

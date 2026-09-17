@@ -1114,6 +1114,22 @@
         <source> Elige el espacio que quieres gestionar. </source>
         <target> Choose the space you want to manage. </target>
       </trans-unit>
+      <trans-unit id="admin.spaces.loading" datatype="html">
+        <source>Cargando los espacios</source>
+        <target>Loading the spaces</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.error.heading" datatype="html">
+        <source>No pudimos cargar los espacios</source>
+        <target>We couldn't load the spaces</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.empty.heading" datatype="html">
+        <source>No hay espacios que gestionar</source>
+        <target>There are no spaces to manage</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.empty.description" datatype="html">
+        <source> Cuando la universidad registre un espacio, aparecerá aquí. </source>
+        <target> Once the university registers a space, it will appear here. </target>
+      </trans-unit>
       <trans-unit id="admin.spacesGrid.card.capacity" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 persona} other {<x id="INTERPOLATION"/> personas}}</source>
         <target>{VAR_PLURAL, plural, =1 {1 person} other {<x id="INTERPOLATION"/> people}}</target>
@@ -1539,8 +1555,16 @@
         <target>Reservation code</target>
       </trans-unit>
       <trans-unit id="admin.scan.manualEntry.placeholder" datatype="html">
-        <source>Ej. UG-1234</source>
-        <target>E.g. UG-1234</target>
+        <source>Pega o escribe el código del estudiante</source>
+        <target>Paste or type the student's code</target>
+      </trans-unit>
+      <trans-unit id="admin.scan.currentBlock" datatype="html">
+        <source>Bloque en curso: <x id="INTERPOLATION" equiv-text="{{ range }}"/></source>
+        <target>Block in progress: <x id="INTERPOLATION" equiv-text="{{ range }}"/></target>
+      </trans-unit>
+      <trans-unit id="admin.scan.noCurrentBlock" datatype="html">
+        <source> Ahora mismo no hay ningún bloque en curso en este espacio. </source>
+        <target> There is no block in progress in this space right now. </target>
       </trans-unit>
       <trans-unit id="admin.scan.manualEntry.submit" datatype="html">
         <source> Verificar </source>
@@ -1599,8 +1623,8 @@
         <target>Different block</target>
       </trans-unit>
       <trans-unit id="admin.scan.result.otherBlock.detail" datatype="html">
-        <source> Su reserva es de <x id="INTERPOLATION" equiv-text="{{ scan.block.start | date: &apos;shortTime&apos; }}"/> a <x id="INTERPOLATION_1" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </source>
-        <target> Their reservation is from <x id="INTERPOLATION" equiv-text="{{ scan.block.start | date: &apos;shortTime&apos; }}"/> to <x id="INTERPOLATION_1" equiv-text="{{ scan.block.end | date: &apos;shortTime&apos; }}"/> </target>
+        <source> Su reserva es de <x id="INTERPOLATION" equiv-text="{{ formatRange(blockRange.startMinutes, blockRange.endMinutes) }}"/> </source>
+        <target> Their reservation is <x id="INTERPOLATION" equiv-text="{{ formatRange(blockRange.startMinutes, blockRange.endMinutes) }}"/> </target>
       </trans-unit>
       <trans-unit id="admin.scan.result.notFound.heading" datatype="html">
         <source>No existe</source>

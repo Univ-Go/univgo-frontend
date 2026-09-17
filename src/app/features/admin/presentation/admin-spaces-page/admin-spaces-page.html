@@ -1,14 +1,53 @@
 <header class="intro">
   <h1 i18n="@@admin.spaces.title">Espacios</h1>
-  <p class="intro__lead" i18n="@@admin.spaces.lead">
-    Elige el espacio que quieres gestionar.
-  </p>
+  <p class="intro__lead" i18n="@@admin.spaces.lead">Elige el espacio que quieres gestionar.</p>
 </header>
 
-<ul class="grid">
-  @for (space of spaces; track space.spaceId) {
-    <li class="grid__item">
-      <app-admin-space-card [space]="space" />
-    </li>
-  }
-</ul>
+@if (spaces.isLoading()) {
+  <ul
+    class="grid"
+    aria-busy="true"
+    i18n-aria-label="@@admin.spaces.loading"
+    aria-label="Cargando los espacios"
+  >
+    @for (card of skeletonCards; track card) {
+      <li class="grid__item grid__item--skeleton" [tuiSkeleton]="true"></li>
+    }
+  </ul>
+} @else if (spaces.error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.spaces.error.heading"
+    heading="No pudimos cargar los espacios"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="retry()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (spaces.value().length === 0) {
+  <app-empty-state
+    icon="@tui.map-pin-off"
+    i18n-heading="@@admin.spaces.empty.heading"
+    heading="No hay espacios que gestionar"
+    i18n-description="@@admin.spaces.empty.description"
+    description="Cuando la universidad registre un espacio, aparecerá aquí."
+  />
+} @else {
+  <ul class="grid">
+    @for (space of spaces.value(); track space.spaceId) {
+      <li class="grid__item">
+        <app-admin-space-card [space]="space" />
+      </li>
+    }
+  </ul>
+}

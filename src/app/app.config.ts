@@ -10,6 +10,10 @@ import {
 import { provideTaiga, tuiCheckboxOptionsProvider } from '@taiga-ui/core';
 import { APP_CONFIG } from './core/config/app-config';
 import { defaultAppConfig } from './core/config/default-app-config';
+import { AdminBlockRepository } from './features/admin/domain/admin-block.repository';
+import { CheckInScanner } from './features/admin/domain/check-in.scanner';
+import { HttpAdminBlockRepository } from './features/admin/infrastructure/http-admin-block.repository';
+import { HttpCheckInScanner } from './features/admin/infrastructure/http-check-in.scanner';
 import { AuthRepository } from './features/auth/domain/auth.repository';
 import { HttpAuthRepository } from './features/auth/infrastructure/http-auth.repository';
 import { ReservationRepository } from './features/my-reservations/domain/reservation.repository';
@@ -57,6 +61,8 @@ export const appConfig: ApplicationConfig = {
     { provide: AuthRepository, useClass: HttpAuthRepository },
     { provide: SpaceRepository, useClass: HttpSpaceRepository },
     { provide: ReservationRepository, useClass: HttpReservationRepository },
+    { provide: CheckInScanner, useClass: HttpCheckInScanner },
+    { provide: AdminBlockRepository, useClass: HttpAdminBlockRepository },
     { provide: Logger, useClass: ConsoleLogger },
     { provide: TitleStrategy, useClass: PageMetadataStrategy },
   ],

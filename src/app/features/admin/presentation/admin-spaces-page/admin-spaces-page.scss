@@ -19,3 +19,8 @@
 .grid__item {
   display: flex;
 }
+
+.grid__item--skeleton {
+  block-size: var(--univgo-card-placeholder-height);
+  border-radius: var(--tui-radius-l);
+}

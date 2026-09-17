@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TuiItem } from '@taiga-ui/cdk';
 import { TuiButton, TuiLink } from '@taiga-ui/core';
@@ -13,6 +14,7 @@ import {
   findBlockByKey,
   navigableDayRange,
 } from '../../domain/block-schedule';
+import { AdminSpacesStore } from '../../application/admin-spaces.store';
 import { mockBlocksFor } from '../../infrastructure/mock-attendance';
 import { AttendeeRoster } from '../attendee-roster/attendee-roster';
 import { BlockSwitcher } from '../block-switcher/block-switcher';
@@ -59,6 +61,7 @@ export class CapacityDetailPage {
   public readonly query = input<string | null>(null);
 
   private readonly config = inject(APP_CONFIG);
+  private readonly spaces = inject(AdminSpacesStore);
   private readonly router = inject(Router);
 
   /**
@@ -81,9 +84,22 @@ export class CapacityDetailPage {
 
   protected readonly dayParam = computed(() => toIsoDate(this.selectedDay()));
 
-  protected readonly blocksForDay = computed(() =>
-    mockBlocksFor(this.spaceId(), this.selectedDay(), this.now),
-  );
+  /**
+   * The space is the catalogue's, so its name, id and capacity are real; who is inside it is what
+   * `mock-attendance` still fabricates. Reading it through the store costs no request of its own:
+   * the guard on `:spaceId` already filled that cache on the way in.
+   */
+  private readonly space = rxResource({
+    params: () => this.spaceId(),
+    stream: ({ params }) => this.spaces.find(params),
+    defaultValue: null,
+  });
+
+  protected readonly blocksForDay = computed(() => {
+    const space = this.space.value();
+
+    return space ? mockBlocksFor(space, this.selectedDay(), this.now) : [];
+  });
 
   /** `undefined` rather than a fallback: a block that is not there is worth saying so about, and
    *  quietly opening a different hour would be a worse answer than an empty state. */

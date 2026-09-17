@@ -1,11 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Params } from '@angular/router';
 import { APP_CONFIG } from '../../../../core/config/app-config';
 import { parseIsoDate, startOfDay, toIsoDate } from '../../../../shared/time/calendar-day';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import { clampToNavigableRange, navigableDayRange } from '../../domain/block-schedule';
+import { AdminSpacesStore } from '../../application/admin-spaces.store';
 import { mockBlocksFor } from '../../infrastructure/mock-attendance';
 import { BlockDayStepper } from '../block-day-stepper/block-day-stepper';
 import { BlockRow } from '../block-row/block-row';
@@ -41,6 +43,7 @@ export class BlocksPage {
   public readonly date = input<string | null>(null);
 
   private readonly config = inject(APP_CONFIG);
+  private readonly spaces = inject(AdminSpacesStore);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
@@ -64,9 +67,22 @@ export class BlocksPage {
 
   protected readonly dayParam = computed(() => toIsoDate(this.selectedDay()));
 
-  protected readonly blocks = computed(() =>
-    mockBlocksFor(this.spaceId(), this.selectedDay(), this.now),
-  );
+  /**
+   * The space is the catalogue's, so its name, id and capacity are real; who is inside it is what
+   * `mock-attendance` still fabricates. Reading it through the store costs no request of its own:
+   * the guard on `:spaceId` already filled that cache on the way in.
+   */
+  private readonly space = rxResource({
+    params: () => this.spaceId(),
+    stream: ({ params }) => this.spaces.find(params),
+    defaultValue: null,
+  });
+
+  protected readonly blocks = computed(() => {
+    const space = this.space.value();
+
+    return space ? mockBlocksFor(space, this.selectedDay(), this.now) : [];
+  });
 
   protected selectDay(day: Date): void {
     const iso = toIsoDate(day);

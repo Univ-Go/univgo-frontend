@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TuiAppearance, TuiIcon } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import type { ScanResult } from '../../domain/check-in-scan';
 
 /**
@@ -24,4 +25,7 @@ import type { ScanResult } from '../../domain/check-in-scan';
 })
 export class CheckInResult {
   public readonly result = input<ScanResult | null>(null);
+
+  /** A block the reservation belongs to elsewhere arrives as minutes, like every other block. */
+  protected readonly formatRange = formatTimeRange;
 }

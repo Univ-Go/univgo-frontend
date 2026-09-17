@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import type { CanActivateFn } from '@angular/router';
 import { Router } from '@angular/router';
-import { MOCK_SPACE_PROFILES } from '../infrastructure/mock-attendance';
+import { map } from 'rxjs';
+import { AdminSpacesStore } from './admin-spaces.store';
 
 const SPACES_STEP = ['/admin', 'spaces'];
 
@@ -11,14 +12,18 @@ const SPACES_STEP = ['/admin', 'spaces'];
  * `:spaceId` route rather than on each leaf, so one check covers scanning, the block list, a block's
  * detail and settings alike.
  *
- * Looking the space up from `MOCK_SPACE_PROFILES` is the same visual-mock shortcut the views take;
- * it moves behind a port once the check-in API exists.
+ * The answer comes from the catalogue, through the store that already holds it, so this costs a
+ * request only the first time the panel is opened.
  */
 export const adminSpaceGuard: CanActivateFn = (route) => {
   const router = inject(Router);
   const id = route.paramMap.get('spaceId');
 
-  return MOCK_SPACE_PROFILES.some((space) => space.spaceId === id)
-    ? true
-    : router.createUrlTree(SPACES_STEP);
+  if (!id) {
+    return router.createUrlTree(SPACES_STEP);
+  }
+
+  return inject(AdminSpacesStore)
+    .find(id)
+    .pipe(map((space) => (space ? true : router.createUrlTree(SPACES_STEP))));
 };

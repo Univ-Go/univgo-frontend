@@ -7,8 +7,8 @@ import { TuiButton, TuiDropdown, TuiInput } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgeNotification, TuiBadgedContent } from '@taiga-ui/kit';
 import { filter, map, startWith } from 'rxjs';
 import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
+import { AdminSpacesStore } from '../../features/admin/application/admin-spaces.store';
 import { withSpaceId } from '../../features/admin/domain/admin-navigation';
-import { MOCK_SPACE_PROFILES } from '../../features/admin/infrastructure/mock-attendance';
 import { SpaceSwitcher } from '../../features/admin/presentation/space-switcher/space-switcher';
 import { SessionStore } from '../../features/auth/application/session-store';
 import { BrandLogo } from '../../shared/brand/brand-logo';
@@ -84,7 +84,13 @@ export class AdminHeader {
 
   protected readonly menuOpen = signal(false);
 
-  protected readonly spaces = MOCK_SPACE_PROFILES;
+  /**
+   * The switcher only has to offer the other spaces, and the guard on `:spaceId` has already read
+   * the catalogue by the time the shell renders, so this resolves from the store's cache rather
+   * than costing a request of its own. An empty list while it is in flight leaves the trigger
+   * naming the current space and nothing to switch to, which is the truth for that instant.
+   */
+  protected readonly spaces = toSignal(inject(AdminSpacesStore).list(), { initialValue: [] });
 
   protected readonly currentSpaceId = currentAdminSpaceId();
 

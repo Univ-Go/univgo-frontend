@@ -33,7 +33,8 @@ Los pasos son los de `booking-flow.md` §5 y §11.
 
 **El backend está completo para todo el flujo.** Lo que falta es cablear el frontend: de los catorce
 endpoints que publica para las reservas —sin contar los de sesión ni los de usuarios— hoy se llaman
-seis. Los ocho que quedan son todos del panel de administrador.
+ocho. Los seis que quedan son todos del panel: los bloques de un día, el detalle de uno, el
+mantenimiento de un espacio y la cancelación masiva.
 
 ---
 
@@ -73,6 +74,19 @@ de que el bloque empezara sólo si se reservó ya empezado—, no del reloj del 
 un estado de error con reintento. «Todavía no tienes reservas» y «no hay reservas con estos filtros»
 son estados distintos, porque lo que se puede hacer a continuación es distinto.
 
+**El panel elige entre espacios reales.** La rejilla de entrada, el selector de la cabecera y el
+guard de `:spaceId` leen el catálogo por el mismo puerto que el estudiante, a través de
+`AdminSpacesStore`, que lo retiene durante la sesión: un directorio de espacios no cambia mientras
+alguien escanea en una puerta, y sin esa caché serían tres peticiones para abrir el panel. Los ids
+de las URLs del panel son ya los UUID de la base, que es lo que hacía falta para que el escáner
+pueda comprobar algo.
+
+**El escáner responde de verdad.** `POST /admin/checkin/scan` con el código y —cuando lo hay— el
+bloque en curso del espacio, que el panel obtiene de `GET /admin/spaces/{id}/blocks`. Los seis
+veredictos vienen del servidor: es quien tiene el reloj, la tolerancia y la escritura que convierte
+un escaneo en check-in. La lógica que el frontend tenía para decidirlos (`evaluateCheckInScan`) se
+retiró: era una segunda opinión sobre algo que no le corresponde.
+
 **Cancelar pide confirmación.** Diálogo de Taiga, no alerta: la plaza vuelve al bloque en ese mismo
 instante y no hay vuelta atrás. Después la lista se relee en lugar de parchearse, porque el estado lo
 decide el reloj del servidor.
@@ -90,17 +104,17 @@ decide el reloj del servidor.
 
 ## 3. Lo que sigue siendo maqueta
 
-Tres ficheros, todos del panel, y cada uno dice a quién sostiene:
+Dos ficheros, los dos del panel, y cada uno dice a quién sostiene:
 
-| Fichero                                         | Sostiene                                                   |
-| ----------------------------------------------- | ---------------------------------------------------------- |
-| `admin/infrastructure/mock-attendance.ts`       | Perfiles de espacio del panel, sus bloques y su asistencia |
-| `admin/infrastructure/mock-check-in-scanner.ts` | El escáner y sus seis veredictos                           |
-| `admin/infrastructure/mock-closures.ts`         | Los cierres de la vista de ajustes                         |
+| Fichero                                   | Sostiene                                         |
+| ----------------------------------------- | ------------------------------------------------ |
+| `admin/infrastructure/mock-attendance.ts` | Quién ocupa cada bloque: el listado y su detalle |
+| `admin/infrastructure/mock-closures.ts`   | Los cierres de la vista de ajustes               |
 
-**El panel de administrador está entero sobre datos inventados**, incluido el selector de espacios,
-que no comparte fuente con el catálogo del estudiante: sus ids no son los UUID de la base. Cablearlo
-empieza por ahí, o el escáner comprobará códigos contra espacios que no existen.
+**Lo que queda inventado del panel son las personas, no los espacios.** Los bloques que dibujan la
+consulta del día y su detalle se generan sobre el espacio real —su id, su nombre y su aforo vienen
+del catálogo— y lo que se fabrica es quién está dentro. Cablearlo tiene una decisión de producto
+delante, y está en la deuda 4.7.
 
 **El lado del estudiante ya no tiene ninguno.** Lo único que sigue dibujado ahí es el **QR**: el
 código que hay debajo es el `qrCodeData` real de la reserva —el que el escáner del panel comprobará—
@@ -174,8 +188,9 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
   es la que ahorra la ida y vuelta entera.
 - **El QR es un dibujo.** El código de debajo es real; la imagen no. Va con el paso 4, que es cuando
   hay algo que escanee.
-- **La reserva del panel y la del estudiante no comparten vocabulario todavía.** El panel sigue
-  inventando sus códigos `UG-1234`; los reales son el `qrCodeData` de la reserva, un UUID.
+- **Los códigos inventados del panel ya no se cruzan con los reales.** El escáner comprueba contra
+  el servidor, así que los `UG-1234` que el listado de un bloque sigue fabricando no valen para
+  nada: escanear uno responde «no existe», que es la verdad. Se van con la deuda 4.7.
 - **El filtro «disponible a las» cambió de significado.** Ofrece horas cada media hora, pero ahora
   los bloques son fijos: pedir las 14:30 nunca encaja con el bloque de 14:00 y siempre responde «más
   tarde». Es correcto, y el control sugiere lo contrario. Debería ofrecer los inicios de bloque.
@@ -185,7 +200,32 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
 - **Mobile no se ha probado en un viewport real.** Las vistas se construyeron responsive, pero la
   comprobación sigue pendiente desde el bootstrap.
 
-### 4.6 Fuera de foco, anotado a propósito
+### 4.6 El escaneo no comprueba el espacio
+
+`POST /admin/checkin/scan` busca la reserva **por el código y nada más**. El espacio que el
+administrador tiene abierto no viaja en la petición y el servidor no lo mira: un código de otro
+espacio, con su bloque a la misma hora, se da por bueno y queda con check-in hecho donde no era.
+
+Lo único que hoy lo acota es el bloque: el panel manda `expectedBlockStart` / `expectedBlockEnd` del
+bloque en curso, así que una reserva de otra hora responde «otro bloque». A la misma hora, en otro
+espacio, no hay nada que lo distinga.
+
+El arreglo es del backend —aceptar el `spaceId` y contestar que la reserva es de otro espacio— y es
+pequeño. Se anota aquí, y no se disimula en el frontend: comprobarlo en el navegador sería una regla
+de negocio en el sitio donde `CLAUDE.md` §12 dice que no vale ponerla.
+
+### 4.7 El listado de un bloque enseña más de lo que el servidor sabe
+
+La consulta de bloques y su detalle muestran, por cada persona: nombre, facultad, documento, código
+de check-in, estado y horas de su ventana. `GET /admin/spaces/{id}/blocks/{start}` devuelve
+**nombre, estado y hora de entrada**, y nada más.
+
+Son dos caminos y hay que elegir antes de cablearlo: o el backend publica lo que falta —facultad y
+documento salen de `users`, el código es el `qr_code_data` que ya tiene— o el panel se queda con las
+tres columnas que el servidor sí contesta y pierde el buscador por documento. No es trabajo de
+cableado, es una decisión de producto.
+
+### 4.8 Fuera de foco, anotado a propósito
 
 Seguridad (`CLAUDE.md` §12) sigue fuera de foco salvo sus tres invariantes, que se mantienen. Los
 trece permisos de `role_permissions` siguen sembrados y sin comprobarse: la autorización es sólo por
@@ -195,16 +235,16 @@ rol. Y no hay tests de componente ni end-to-end, que es lo acordado hasta que el
 
 ## 5. Por dónde seguir
 
-El orden no es de gusto: cada paso desbloquea al siguiente. Los dos primeros —crear la reserva y el
-lado del estudiante— están hechos.
+El orden no es de gusto: cada paso desbloquea al siguiente. Lo que estaba primero —crear la reserva,
+el lado del estudiante, el selector de espacios del panel y el escáner— está hecho: **una reserva
+creada en el móvil ya se conserva escaneándola en el mostrador**.
 
-1. **El selector de espacios del panel sobre el catálogo real.** Sin UUID reales el escáner no puede
-   comprobar nada.
-2. **`POST /admin/checkin/scan`**, y con él el QR de verdad en el pase del estudiante. Cierra el
-   ciclo: una reserva creada en el móvil se conserva escaneándola en el mostrador. Es la demo
-   completa.
-3. Bloques del día, detalle y cierres del panel.
+1. **El QR de verdad en el pase del estudiante.** Es lo único que falta para que el ciclo se cierre
+   sin teclear: hoy el código real hay que escribirlo a mano en el escáner.
+2. **Decidir la 4.7** y, con eso resuelto, cablear la consulta de bloques y su detalle.
+3. **Ajustes del espacio**: mantenimiento y cancelación masiva tienen endpoint; el historial de
+   cierres no existe en el backend, así que esa mitad de la vista se queda o se retira.
 
-De la deuda, lo que conviene no dejar para después: **4.2** (los parámetros duplicados, porque cada
-vista nueva que los lea multiplica el problema) y **4.4** (los datos, porque es lo que se ve en una
-demostración).
+De la deuda, lo que conviene no dejar para después: **4.6** (el escaneo no mira el espacio, y es un
+agujero funcional, no una molestia), **4.2** (los parámetros duplicados, porque cada vista nueva que
+los lea multiplica el problema) y **4.4** (los datos, porque es lo que se ve en una demostración).

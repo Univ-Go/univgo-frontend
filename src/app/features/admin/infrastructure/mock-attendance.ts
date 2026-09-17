@@ -253,47 +253,26 @@ function projectedRoster(
   ).filter(([, count]) => count > 0);
 }
 
-interface SpaceSpec extends AdminSpace {
-  /** The mix shown for the block in progress right now; every other slot is projected. */
-  readonly currentRoster: RosterShape;
-}
-
 /**
- * Three spaces stand in for the ones an administrator would actually be assigned, with different
- * capacities and roster shapes so switching between them is visibly not the same block twice.
+ * The mix shown for the block in progress right now, as shares of whatever the space actually
+ * holds: the spaces are real and their capacities range from a handful to dozens, so a fixed head
+ * count would put more people in a room than it has seats.
  */
-const SPACE_SPECS: readonly SpaceSpec[] = [
-  {
-    spaceId: 'court-basketball-a',
-    spaceName: 'Cancha de Básquetbol A',
-    capacity: 50,
-    currentRoster: [
-      ['in_progress', 38],
-      ['reserved', 4],
-      ['expired', 3],
-      ['cancelled', 2],
-    ],
-  },
-  {
-    spaceId: 'study-room-b',
-    spaceName: 'Sala de Estudio Grupal B',
-    capacity: 16,
-    currentRoster: [
-      ['in_progress', 9],
-      ['reserved', 2],
-      ['completed', 3],
-      ['expired', 1],
-    ],
-  },
-  {
-    spaceId: 'field-soccer-c',
-    spaceName: 'Cancha de Fútbol Sintética C',
-    capacity: 22,
-    currentRoster: [['in_progress', 22]],
-  },
+const LIVE_MIX: readonly (readonly [CheckInStatus, number])[] = [
+  ['in_progress', 0.62],
+  ['reserved', 0.12],
+  ['expired', 0.08],
+  ['cancelled', 0.04],
 ];
 
-function buildDaySchedule(spec: SpaceSpec, day: Date, now: Date): readonly CapacityBlock[] {
+function liveRoster(capacity: number): RosterShape {
+  return LIVE_MIX.map(([status, share]): readonly [CheckInStatus, number] => [
+    status,
+    Math.round(capacity * share),
+  ]).filter(([, count]) => count > 0);
+}
+
+function buildDaySchedule(space: AdminSpace, day: Date, now: Date): readonly CapacityBlock[] {
   const dayOffset = daysBetween(now, day);
   const liveIndex = dayOffset === 0 ? currentBlockIndex(now) : -1;
 
@@ -303,13 +282,15 @@ function buildDaySchedule(spec: SpaceSpec, day: Date, now: Date): readonly Capac
     const live = hourIndex === liveIndex;
 
     return {
-      spaceId: spec.spaceId,
-      spaceName: spec.spaceName,
-      capacity: spec.capacity,
+      spaceId: space.spaceId,
+      spaceName: space.spaceName,
+      capacity: space.capacity,
       start,
       end,
       attendees: buildAttendees(
-        live ? spec.currentRoster : projectedRoster(spec.capacity, hourIndex, start, end, now),
+        live
+          ? liveRoster(space.capacity)
+          : projectedRoster(space.capacity, hourIndex, start, end, now),
         start,
         now,
         live,
@@ -330,55 +311,25 @@ function buildDaySchedule(spec: SpaceSpec, day: Date, now: Date): readonly Capac
  */
 const scheduleCache = new Map<string, readonly CapacityBlock[]>();
 
-/** Every block of `day` for one space, opening to closing. */
+/**
+ * Every block of `day` for one space, opening to closing. The space is real — it comes from the
+ * catalogue — and what is fabricated is who is in it.
+ */
 export function mockBlocksFor(
-  spaceId: string,
+  space: AdminSpace,
   day: Date,
   now: Date = new Date(),
 ): readonly CapacityBlock[] {
-  const spec = SPACE_SPECS.find((candidate) => candidate.spaceId === spaceId);
-
-  if (!spec) {
-    return [];
-  }
-
-  const key = `${spaceId}|${toIsoDate(day)}`;
+  const key = `${space.spaceId}|${toIsoDate(day)}`;
   const cached = scheduleCache.get(key);
 
   if (cached) {
     return cached;
   }
 
-  const blocks = buildDaySchedule(spec, day, now);
+  const blocks = buildDaySchedule(space, day, now);
 
   scheduleCache.set(key, blocks);
 
   return blocks;
 }
-
-/**
- * Every space's blocks for one day, which is the set a scan is checked against when it has to say
- * "su reserva es de otro bloque" (`docs/booking-flow.md` §11).
- */
-export function mockDaySchedule(day: Date, now: Date = new Date()): readonly CapacityBlock[] {
-  return SPACE_SPECS.flatMap((spec) => mockBlocksFor(spec.spaceId, day, now));
-}
-
-/** The block a scan is ever checked against, per `docs/booking-flow.md` §9. */
-export function mockCurrentBlock(
-  spaceId: string,
-  now: Date = new Date(),
-): CapacityBlock | undefined {
-  return mockBlocksFor(spaceId, now, now)[currentBlockIndex(now)];
-}
-
-/**
- * Visual mock: the panel's only hardcoded source. It moves behind a domain port once the check-in
- * API exists; nothing outside this file knows the data is fabricated.
- *
- * The spaces themselves, with no block attached — which is what a space picker needs, and all it
- * needs. Asking for "the space" and getting a block forced a time to be chosen before a space was.
- */
-export const MOCK_SPACE_PROFILES: readonly AdminSpace[] = SPACE_SPECS.map(
-  ({ spaceId, spaceName, capacity }) => ({ spaceId, spaceName, capacity }),
-);

@@ -11,6 +11,11 @@ export function formatTimeOfDay(minutes: number): string {
   return new TuiTime(Math.floor(minutes / MINUTES_PER_HOUR), minutes % MINUTES_PER_HOUR).toString();
 }
 
+/** The other direction: where an instant falls inside its own day, in the domain's own unit. */
+export function minutesOfDay(instant: Date): number {
+  return instant.getHours() * MINUTES_PER_HOUR + instant.getMinutes();
+}
+
 export function formatTimeRange(startMinutes: number, endMinutes: number): string {
   return `${formatTimeOfDay(startMinutes)} – ${formatTimeOfDay(endMinutes)}`;
 }

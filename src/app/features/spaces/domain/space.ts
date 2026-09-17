@@ -8,6 +8,17 @@ export type SpaceCategory = 'sports' | 'study' | 'lab';
 export const SPACE_CATEGORIES: readonly SpaceCategory[] = ['sports', 'study', 'lab'];
 
 /**
+ * The backend names categories in its own vocabulary (`SPORTS`, `STUDY`, `LAB`). Translating them
+ * here keeps that spelling out of every view, so a change on the server stays a change in one
+ * function. An unknown category is not a reason to hide a space: it lands in the widest group.
+ */
+export function categoryFromName(name: string): SpaceCategory {
+  const category = name.toLowerCase() as SpaceCategory;
+
+  return SPACE_CATEGORIES.includes(category) ? category : 'sports';
+}
+
+/**
  * Every booking is one campus block of this length. `docs/booking-flow.md` §2 fixes it: a student
  * does not pick a start time, they pick one of the day's fixed two-hour blocks.
  *

@@ -574,6 +574,22 @@
         <source>{VAR_PLURAL, plural, =1 {1 espacio encontrado} other {<x id="INTERPOLATION"/> espacios encontrados}}</source>
         <target>{VAR_PLURAL, plural, =1 {1 space found} other {<x id="INTERPOLATION"/> spaces found}}</target>
       </trans-unit>
+      <trans-unit id="spaces.loading.label" datatype="html">
+        <source>Cargando espacios</source>
+        <target>Loading spaces</target>
+      </trans-unit>
+      <trans-unit id="spaces.error.heading" datatype="html">
+        <source>No pudimos cargar los espacios</source>
+        <target>We could not load the spaces</target>
+      </trans-unit>
+      <trans-unit id="spaces.error.description" datatype="html">
+        <source>Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos.</source>
+        <target>Check your connection and try again. If it keeps failing, try in a few minutes.</target>
+      </trans-unit>
+      <trans-unit id="spaces.error.retry" datatype="html">
+        <source>Reintentar</source>
+        <target>Try again</target>
+      </trans-unit>
       <trans-unit id="spaces.empty.heading" datatype="html">
         <source>No hay espacios libres con estos filtros</source>
         <target>No spaces are free with these filters</target>

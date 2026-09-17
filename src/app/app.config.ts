@@ -12,6 +12,8 @@ import { APP_CONFIG } from './core/config/app-config';
 import { defaultAppConfig } from './core/config/default-app-config';
 import { AuthRepository } from './features/auth/domain/auth.repository';
 import { HttpAuthRepository } from './features/auth/infrastructure/http-auth.repository';
+import { SpaceRepository } from './features/spaces/domain/space.repository';
+import { HttpSpaceRepository } from './features/spaces/infrastructure/http-space.repository';
 import { authInterceptor } from './core/http/auth.interceptor';
 import { httpErrorInterceptor } from './core/http/http-error.interceptor';
 import { provideTaigaDateFormat } from './core/i18n/taiga-date-format';
@@ -51,6 +53,7 @@ export const appConfig: ApplicationConfig = {
     }),
     { provide: APP_CONFIG, useValue: defaultAppConfig },
     { provide: AuthRepository, useClass: HttpAuthRepository },
+    { provide: SpaceRepository, useClass: HttpSpaceRepository },
     { provide: Logger, useClass: ConsoleLogger },
     { provide: TitleStrategy, useClass: PageMetadataStrategy },
   ],

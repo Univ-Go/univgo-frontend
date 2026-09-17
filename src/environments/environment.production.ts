@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://api.univgo.example',
+  apiBaseUrl: 'https://univgo-backend.onrender.com',
 };

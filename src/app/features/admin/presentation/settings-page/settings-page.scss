@@ -29,6 +29,49 @@
   font: var(--tui-typography-body-m);
 }
 
+// The real controls come first: they are the ones that change what a student sees.
+.service-card {
+  h2 {
+    font: var(--tui-typography-heading-h6);
+  }
+}
+
+.service-card__switch {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--univgo-space-m);
+  cursor: pointer;
+}
+
+.service-card__switch-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  font: var(--tui-typography-ui-m);
+}
+
+.service-card__hint {
+  margin: 0;
+  max-inline-size: 44rem;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+.service-card__action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--univgo-space-m);
+  padding-block-start: var(--univgo-space-m);
+  border-block-start: 1px solid var(--tui-border-normal);
+}
+
+.service-card__placeholder {
+  margin: 0;
+  block-size: var(--tui-height-m);
+  border-radius: var(--tui-radius-m);
+}
+
 // The form is the page's main task and gets the wider column; the stats and history follow it.
 .layout {
   display: grid;

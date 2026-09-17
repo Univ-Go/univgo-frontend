@@ -1490,6 +1490,66 @@
         <source>Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o incidencias.</source>
         <target>Manage the space's operating availability and register blocks for maintenance or incidents.</target>
       </trans-unit>
+      <trans-unit id="admin.settings.service.title" datatype="html">
+        <source>Disponibilidad del espacio</source>
+        <target>Space availability</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.service.maintenanceLabel" datatype="html">
+        <source>Fuera de servicio</source>
+        <target>Out of service</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.service.maintenanceHint" datatype="html">
+        <source>Mientras esté activado, el espacio no ofrece bloques a los estudiantes.</source>
+        <target>While this is on, the space offers students no blocks.</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.on" datatype="html">
+        <source>Espacio fuera de servicio</source>
+        <target>Space out of service</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.onDetail" datatype="html">
+        <source>Ya no ofrece bloques. Las reservas que tuviera siguen en pie hasta que las canceles.</source>
+        <target>It offers no blocks now. The bookings it already had stand until you cancel them.</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.off" datatype="html">
+        <source>Espacio disponible de nuevo</source>
+        <target>Space available again</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.offDetail" datatype="html">
+        <source>Vuelve a ofrecer sus bloques desde ahora.</source>
+        <target>It offers its blocks again from now on.</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.hint" datatype="html">
+        <source> Cancelar las reservas que ya existen es una acción aparte: no ocurre al dejar el espacio fuera de servicio, y no se puede deshacer. </source>
+        <target> Cancelling the bookings that already exist is a separate action: taking the space out of service does not do it, and it cannot be undone. </target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.action" datatype="html">
+        <source>Cancelar las reservas del espacio</source>
+        <target>Cancel the space's bookings</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.title" datatype="html">
+        <source>¿Cancelar todas las reservas de este espacio?</source>
+        <target>Cancel every booking for this space?</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.content" datatype="html">
+        <source>Se cancelarán las reservas que no hayan terminado. Los estudiantes las verán como canceladas y podrán reservar en otro sitio.</source>
+        <target>Every booking that has not finished will be cancelled. Students will see them as cancelled and can book somewhere else.</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.confirm" datatype="html">
+        <source>Cancelar las reservas</source>
+        <target>Cancel the bookings</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.keep" datatype="html">
+        <source>Dejarlas como están</source>
+        <target>Leave them as they are</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.done" datatype="html">
+        <source>Reservas canceladas</source>
+        <target>Bookings cancelled</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.doneDetail" datatype="html">
+        <source>Plazas liberadas: <x id="count" equiv-text="cancelled"/></source>
+        <target>Places freed: <x id="count" equiv-text="cancelled"/></target>
+      </trans-unit>
       <trans-unit id="admin.closure.stats.thisMonth" datatype="html">
         <source>Cierres este mes</source>
         <target>Closures this month</target>

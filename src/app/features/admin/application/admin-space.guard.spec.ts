@@ -10,6 +10,7 @@ const COURT: AdminSpace = {
   spaceId: 'f2e1',
   spaceName: 'Cancha de Básquetbol A',
   capacity: 50,
+  underMaintenance: false,
 };
 
 function routeWithSpaceId(spaceId: string | null): ActivatedRouteSnapshot {

@@ -1429,25 +1429,130 @@
           <context context-type="linenumber">6,10</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="admin.settings.service.title" datatype="html">
+        <source>Disponibilidad del espacio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">22,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.service.maintenanceLabel" datatype="html">
+        <source>Fuera de servicio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.service.maintenanceHint" datatype="html">
+        <source>Mientras esté activado, el espacio no ofrece bloques a los estudiantes.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">39,44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.hint" datatype="html">
+        <source> Cancelar las reservas que ya existen es una acción aparte: no ocurre al dejar el espacio fuera de servicio, y no se puede deshacer. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">46,51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.action" datatype="html">
+        <source>Cancelar las reservas del espacio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">60,63</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="admin.closure.stats.thisMonth" datatype="html">
         <source>Cierres este mes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">22,23</context>
+          <context context-type="linenumber">77,78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.frequentReason" datatype="html">
         <source>Motivo frecuente</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">31,33</context>
+          <context context-type="linenumber">86,88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.noReason" datatype="html">
         <source>Sin cierres</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.on" datatype="html">
+        <source>Espacio fuera de servicio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.off" datatype="html">
+        <source>Espacio disponible de nuevo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.onDetail" datatype="html">
+        <source>Ya no ofrece bloques. Las reservas que tuviera siguen en pie hasta que las canceles.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.maintenance.offDetail" datatype="html">
+        <source>Vuelve a ofrecer sus bloques desde ahora.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.title" datatype="html">
+        <source>¿Cancelar todas las reservas de este espacio?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.content" datatype="html">
+        <source>Se cancelarán las reservas que no hayan terminado. Los estudiantes las verán como canceladas y podrán reservar en otro sitio.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.confirm" datatype="html">
+        <source>Cancelar las reservas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.keep" datatype="html">
+        <source>Dejarlas como están</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.done" datatype="html">
+        <source>Reservas canceladas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">159</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.doneDetail" datatype="html">
+        <source>Plazas liberadas: <x id="count" equiv-text="cancelled"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">160</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSwitcher.viewAll" datatype="html">

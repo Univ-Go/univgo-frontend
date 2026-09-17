@@ -45,9 +45,18 @@ export interface AdminSpace {
   readonly spaceId: string;
   readonly spaceName: string;
   readonly capacity: number;
+  /** Out of service: it offers no blocks, and the panel is where that is turned on and off. */
+  readonly underMaintenance: boolean;
 }
 
-export interface CapacityBlock extends AdminSpace {
+/**
+ * Carries the space's identity rather than extending `AdminSpace`: a block is about one hour of one
+ * space, and whether the space is out of service says nothing about the hour that already happened.
+ */
+export interface CapacityBlock {
+  readonly spaceId: string;
+  readonly spaceName: string;
+  readonly capacity: number;
   readonly start: Date;
   readonly end: Date;
   readonly attendees: readonly Attendee[];

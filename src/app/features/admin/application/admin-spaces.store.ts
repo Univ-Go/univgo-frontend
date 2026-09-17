@@ -5,7 +5,12 @@ import { SpaceRepository } from '../../spaces/domain/space.repository';
 import type { AdminSpace } from '../domain/attendance';
 
 function toAdminSpace(space: Space): AdminSpace {
-  return { spaceId: space.id, spaceName: space.name, capacity: space.capacity };
+  return {
+    spaceId: space.id,
+    spaceName: space.name,
+    capacity: space.capacity,
+    underMaintenance: space.underMaintenance,
+  };
 }
 
 /**

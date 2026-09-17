@@ -26,15 +26,15 @@ Los pasos son los de `booking-flow.md` §5 y §11.
 | Ver el código de acceso             | Mixto    | El código es el del servidor; el QR sigue dibujado  |
 | Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`   |
 | Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                    |
-| Panel: elegir espacio               | Maqueta  | Perfiles de espacio inventados                      |
-| Panel: escanear el check-in         | Maqueta  | `POST /admin/checkin/scan` existe                   |
-| Panel: bloques del día y su detalle | Maqueta  | `GET /admin/spaces/{id}/blocks` existe              |
+| Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante     |
+| Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso   |
+| Panel: bloques del día y su detalle | Maqueta  | Espacio real, ocupantes inventados; deuda 4.7       |
 | Panel: cierres y mantenimiento      | Maqueta  | `PUT /admin/spaces/{id}/maintenance` existe         |
 
 **El backend está completo para todo el flujo.** Lo que falta es cablear el frontend: de los catorce
 endpoints que publica para las reservas —sin contar los de sesión ni los de usuarios— hoy se llaman
-ocho. Los seis que quedan son todos del panel: los bloques de un día, el detalle de uno, el
-mantenimiento de un espacio y la cancelación masiva.
+ocho. Los seis que quedan son todos del panel: el detalle de un bloque, el mantenimiento de un
+espacio, la cancelación masiva y la configuración de la institución.
 
 ---
 

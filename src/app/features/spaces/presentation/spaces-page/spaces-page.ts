@@ -7,27 +7,31 @@ import {
   linkedSignal,
   signal,
 } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
 import { TuiAppearance, TuiButton, TuiDataList, TuiExpand, TuiInput } from '@taiga-ui/core';
-import { TuiInputDate, TuiInputTime, TuiPagination, TuiSelect } from '@taiga-ui/kit';
+import { TuiInputDate, TuiInputTime, TuiPagination, TuiSelect, TuiSkeleton } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSearch, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import type { SpaceCategory, SpaceFilter } from '../../domain/space';
 import { SPACE_CATEGORIES } from '../../domain/space';
+import { SpaceRepository } from '../../domain/space.repository';
 import {
   countActiveFilters,
   groupByCategory,
   isFilterActive,
   listSpaces,
 } from '../../domain/space-catalog';
-import { MOCK_SPACES } from '../../infrastructure/mock-spaces';
 import { SpaceCard } from '../space-card/space-card';
 import { spaceCategoryName } from '../space-category';
 import { SpaceShelf } from '../space-shelf/space-shelf';
 
 const SPACES_PER_PAGE = 9;
+
+/** Placeholder cards drawn while the catalogue loads: a screenful, not the whole page. */
+const SKELETON_CARDS = Array.from({ length: 6 }, (_, index) => index);
 
 /** A rail is a preview, not a list: past this many cards, "Ver todos" is the honest way through. */
 const SHELF_LIMIT = 10;
@@ -60,9 +64,10 @@ function toCategory(value: unknown): SpaceCategory | null {
 }
 
 /**
- * Visual mock: layout and component inventory are final, the data is not. `MOCK_SPACES` is the
- * feature's only hardcoded source; filtering, ranking and grouping run as real domain logic over
- * that sample and move behind a port once the spaces API exists.
+ * The catalogue is read one day at a time, because that is what the server can answer: a space
+ * carries the blocks that still have a plaza on the day asked for, so changing the date is a new
+ * request and not a re-filter of what is already on screen. Search, category and start time are
+ * narrowings of that answer and stay in the browser.
  *
  * The view has two states, and which one is showing is decided by the domain, not by a flag here:
  * with nothing asked for it browses by category in rails, and the moment a request exists — a
@@ -95,6 +100,7 @@ function toCategory(value: unknown): SpaceCategory | null {
     TuiPagination,
     TuiSearch,
     TuiSelect,
+    TuiSkeleton,
     TuiSurface,
   ],
   templateUrl: './spaces-page.html',
@@ -106,6 +112,7 @@ export class SpacesPage {
 
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly spaces = inject(SpaceRepository);
 
   protected readonly categories = SPACE_CATEGORIES;
   protected readonly categoryName = spaceCategoryName;
@@ -142,7 +149,19 @@ export class SpacesPage {
     countActiveFilters(this.filter(), this.today.toLocalNativeDate()),
   );
 
-  protected readonly listed = computed(() => listSpaces(MOCK_SPACES, this.filter()));
+  /**
+   * Keyed on the `TuiDay` itself rather than on a native date: a new `Date` on every read would
+   * make each recomputation look like a different day and refetch the catalogue forever.
+   */
+  protected readonly catalog = rxResource({
+    params: () => this.date(),
+    stream: ({ params }) => this.spaces.catalog(params.toLocalNativeDate()),
+    defaultValue: [],
+  });
+
+  protected readonly skeletonCards = SKELETON_CARDS;
+
+  protected readonly listed = computed(() => listSpaces(this.catalog.value(), this.filter()));
 
   protected readonly shelves = computed(() =>
     groupByCategory(this.listed()).map((group) => ({

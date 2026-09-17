@@ -3,7 +3,7 @@ import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TUI_BREAKPOINT, TuiButton, TuiDropdown, TuiLink } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadgedContent, TuiBadgeNotification } from '@taiga-ui/kit';
-import { MOCK_SESSION_USER } from '../../features/auth/infrastructure/mock-session';
+import { SessionStore } from '../../features/auth/application/session-store';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
@@ -43,7 +43,7 @@ import { AccountMenu } from '../account-menu/account-menu';
 export class AppHeader {
   private readonly breakpoint = inject(TUI_BREAKPOINT);
 
-  private readonly userName = MOCK_SESSION_USER.name;
+  private readonly session = inject(SessionStore);
 
   /**
    * On a phone the navigation, the utilities and the account belong to the tab bar, which puts them
@@ -65,5 +65,5 @@ export class AppHeader {
 
   protected readonly menuOpen = signal(false);
 
-  protected readonly initials = this.userName.slice(0, 1);
+  protected readonly initials = computed(() => this.session.user()?.firstName.slice(0, 1) ?? '');
 }

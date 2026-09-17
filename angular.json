@@ -61,7 +61,7 @@
               }
             ],
             "styles": ["node_modules/@taiga-ui/styles/taiga-ui-theme.less", "src/styles.scss"],
-            "externalDependencies": ["fonts/*"]
+            "externalDependencies": ["fonts/*", "images/*"]
           },
           "configurations": {
             "production": {

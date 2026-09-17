@@ -1,16 +1,19 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { TuiTitle } from '@taiga-ui/core';
-import { TuiBlock } from '@taiga-ui/kit';
+import { TuiButton, TuiTitle } from '@taiga-ui/core';
+import { TuiBlock, TuiSkeleton } from '@taiga-ui/kit';
 import type { Space } from '../../../spaces/domain/space';
-import { BOOKING_DURATION_MINUTES } from '../../../spaces/domain/space';
-import { listStartOptions } from '../../../spaces/domain/space-catalog';
-import { BOOKING_START_STEP_MINUTES } from '../../domain/booking-draft';
+import type { BlockBlocker } from '../../../spaces/domain/space-block';
+import { SpaceRepository } from '../../../spaces/domain/space.repository';
 import { formatBookingTime } from '../booking-time';
 
 /** A booking window a person can plan around without the picker turning into a calendar. */
 const DAYS_OFFERED = 7;
+
+/** Placeholder blocks drawn while the day's availability loads. */
+const SKELETON_BLOCKS = Array.from({ length: 6 }, (_, index) => index);
 
 function startOfToday(): number {
   const date = new Date();
@@ -32,21 +35,30 @@ function addDays(time: number, days: number): Date {
 interface OfferedDay {
   readonly date: Date;
   readonly time: number;
-  readonly available: boolean;
 }
 
-interface OfferedHour {
+interface OfferedBlock {
   readonly minutes: number;
   readonly available: boolean;
+  readonly free: number;
+  readonly blocker: BlockBlocker | null;
   readonly label: string;
   readonly end: string;
 }
 
 /**
  * Level 3: the "when" of the booking, as the two questions it actually is — which day, then which
- * hour of that day. A day strip and a grid of hour blocks beat a date field and a time field on a
- * phone: everything on offer is visible and one tap away, and an hour that is already taken can be
- * shown as taken instead of quietly missing from a dropdown.
+ * block of that day. A day strip and a grid of blocks beat a date field and a time field on a
+ * phone: everything on offer is visible and one tap away, and a block that cannot be taken is shown
+ * with the reason instead of quietly missing from a dropdown.
+ *
+ * The day's blocks are read from the server rather than derived here, because what makes a block
+ * available is not opening hours: it is how many plazas are left, what else this student has
+ * booked, and how much of the block remains. Only the server knows the first two, and only its
+ * clock can be trusted for the third (`docs/booking-flow.md` §13).
+ *
+ * Which is also why no day in the strip claims to have room: that answer costs one request per day
+ * and would go stale immediately. A day is a question the student asks, and the grid answers it.
  *
  * Built from `label[tuiBlock]` around native radios rather than from a bespoke button group: one
  * choice out of many is what a radio group is, so keyboard support, grouping and the announced
@@ -55,7 +67,7 @@ interface OfferedHour {
  */
 @Component({
   selector: 'app-booking-slot-picker',
-  imports: [DatePipe, FormsModule, TuiBlock, TuiTitle],
+  imports: [DatePipe, FormsModule, TuiBlock, TuiButton, TuiSkeleton, TuiTitle],
   templateUrl: './booking-slot-picker.html',
   styleUrl: './booking-slot-picker.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -68,6 +80,8 @@ export class BookingSlotPicker {
   public readonly dateSelected = output<Date>();
   public readonly startSelected = output<number>();
 
+  private readonly spaces = inject(SpaceRepository);
+
   protected readonly selectedDay = computed(() => this.date().getTime());
 
   /** Read once: the strip must not slide forward every time the user picks a day further out. */
@@ -77,38 +91,30 @@ export class BookingSlotPicker {
     Array.from({ length: DAYS_OFFERED }, (_, offset) => {
       const date = addDays(this.firstDay, offset);
 
-      return {
-        date,
-        time: date.getTime(),
-        available: this.hasHours(date),
-      };
+      return { date, time: date.getTime() };
     }),
   );
 
-  protected readonly hours = computed<readonly OfferedHour[]>(() =>
-    listStartOptions(
-      this.space(),
-      this.date(),
-      BOOKING_DURATION_MINUTES,
-      BOOKING_START_STEP_MINUTES,
-    ).map((option) => ({
-      minutes: option.minutes,
-      available: option.available,
-      label: formatBookingTime(option.minutes),
-      end: formatBookingTime(option.minutes + BOOKING_DURATION_MINUTES),
+  protected readonly availability = rxResource({
+    params: () => ({ spaceId: this.space().id, day: this.selectedDay() }),
+    stream: ({ params }) => this.spaces.availability(params.spaceId, new Date(params.day)),
+    defaultValue: [],
+  });
+
+  protected readonly skeletonBlocks = SKELETON_BLOCKS;
+
+  protected readonly blocks = computed<readonly OfferedBlock[]>(() =>
+    this.availability.value().map((block) => ({
+      minutes: block.startMinutes,
+      available: block.blocker === null,
+      free: block.free,
+      blocker: block.blocker,
+      label: formatBookingTime(block.startMinutes),
+      end: formatBookingTime(block.endMinutes),
     })),
   );
 
   protected pickDay(time: number): void {
     this.dateSelected.emit(new Date(time));
-  }
-
-  private hasHours(date: Date): boolean {
-    return listStartOptions(
-      this.space(),
-      date,
-      BOOKING_DURATION_MINUTES,
-      BOOKING_START_STEP_MINUTES,
-    ).some((option) => option.available);
   }
 }

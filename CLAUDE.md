@@ -690,6 +690,7 @@ Antes de dar una tarea por terminada:
 - ¿Mantiene estándares para SonarCloud?
 - ¿Evita problemas de Lighthouse en accesibilidad y rendimiento?
 - ¿El SEO está considerado?
+- ¿Toqué la base de datos sin actualizar `docs/database.md`?
 - ¿Estoy intentando commitear sin autorización?
 
 ---
@@ -893,3 +894,29 @@ Un bloque **ya empezado se sigue ofreciendo** mientras cumpla la primera. Eso es
 **No hay confirmación previa, ni lista de espera, ni recordatorios.** Los tres exigen notificar al
 usuario fuera de la aplicación y hoy no hay canal. Están en `docs/booking-flow.md` §12 con el
 motivo, para no volver a proponerlos sin resolver antes esa carencia.
+
+---
+
+## 23. Base de datos
+
+El estado real de la base vive en **`docs/database.md`**: dónde está, qué migraciones tiene
+aplicadas, qué tablas y qué datos. Es un retrato verificado contra la base, no una lectura del
+código, y existe porque **su historial no se deduce leyendo `db/migration`**: Flyway hizo baseline
+sobre un esquema preexistente, así que `V1__init.sql` describe algo que nunca se ejecutó.
+
+Lo que no debe redescubrirse: **para saber qué hay, leer desde `V2`, no desde `V1`.** Los roles no
+son una columna sino `user_roles` → `roles.name` en mayúsculas. El estado de una reserva no se
+guarda, se calcula. Y `seed_gym_data.sql` **no se puede ejecutar** contra esta base: choca con lo que
+ya sembraron las migraciones.
+
+**Mantenerlo actualizado es parte de la tarea, no un extra.** Una migración nueva, un cambio de
+datos de prueba o cualquier intervención manual sobre la base **no está terminada hasta que
+`docs/database.md` lo refleja**, incluida la fecha de última verificación de su cabecera. Un
+documento de estado desfasado es peor que no tenerlo: se lee con la misma confianza y lleva a
+conclusiones falsas.
+
+Actualizarlo comprobando contra la base, no deduciéndolo del código — es justamente la diferencia
+que lo hace útil. Las consultas para hacerlo están en su §5.
+
+La base es **compartida**. Ninguna intervención destructiva —reconstruir el esquema, borrar datos,
+rehacer el historial de Flyway— se ejecuta sin acuerdo explícito del equipo.

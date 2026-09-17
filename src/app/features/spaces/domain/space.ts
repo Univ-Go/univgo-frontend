@@ -8,6 +8,17 @@ export type SpaceCategory = 'sports' | 'study' | 'lab';
 export const SPACE_CATEGORIES: readonly SpaceCategory[] = ['sports', 'study', 'lab'];
 
 /**
+ * The backend names categories in its own vocabulary (`SPORTS`, `STUDY`, `LAB`). Translating them
+ * here keeps that spelling out of every view, so a change on the server stays a change in one
+ * function. An unknown category is not a reason to hide a space: it lands in the widest group.
+ */
+export function categoryFromName(name: string): SpaceCategory {
+  const category = name.toLowerCase() as SpaceCategory;
+
+  return SPACE_CATEGORIES.includes(category) ? category : 'sports';
+}
+
+/**
  * Every booking is one campus block of this length. `docs/booking-flow.md` §2 fixes it: a student
  * does not pick a start time, they pick one of the day's fixed two-hour blocks.
  *
@@ -59,17 +70,6 @@ export interface SpaceFilter {
   readonly from: number | null;
   /** Free text the user typed; matched against what identifies a space to a person. */
   readonly query: string | null;
-}
-
-/**
- * A minute mark a booking could start at on a given day, and whether the space is actually free
- * for the whole booking from there. Unavailable marks travel with the available ones on purpose:
- * a grid that silently drops the busy hours reads as "the space closes at 10", which is a
- * different — and wrong — piece of information.
- */
-export interface SpaceStartOption {
-  readonly minutes: number;
-  readonly available: boolean;
 }
 
 export interface ListedSpace {

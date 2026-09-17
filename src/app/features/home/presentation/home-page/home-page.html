@@ -1,6 +1,6 @@
 <section class="greeting">
   <div class="greeting__copy">
-    <h1 i18n="@@home.greeting">Hola, {{ userName }}</h1>
+    <h1 i18n="@@home.greeting">Hola, {{ userName() }}</h1>
     <p class="greeting__lead" i18n="@@home.greetingLead">
       Tus espacios favoritos están libres hoy. Elige uno y resérvalo en menos de un minuto.
     </p>
@@ -89,11 +89,44 @@
     <a tuiLink routerLink="/spaces" iconEnd="@tui.arrow-right" i18n="@@home.viewAll">Ver todos</a>
   </header>
 
-  <ul class="spaces">
-    @for (listed of featuredSpaces; track listed.space.id) {
-      <li class="spaces__item">
-        <app-space-card [listed]="listed" />
-      </li>
-    }
-  </ul>
+  @if (catalog.isLoading()) {
+    <ul
+      class="spaces"
+      aria-busy="true"
+      i18n-aria-label="@@spaces.loading.label"
+      aria-label="Cargando espacios"
+    >
+      @for (card of skeletonCards; track card) {
+        <li class="spaces__item spaces__item--skeleton" [tuiSkeleton]="true"></li>
+      }
+    </ul>
+  } @else if (catalog.error()) {
+    <app-empty-state
+      icon="@tui.wifi-off"
+      i18n-heading="@@spaces.error.heading"
+      heading="No pudimos cargar los espacios"
+      i18n-description="@@spaces.error.description"
+      description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+    >
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="outline"
+        iconStart="@tui.refresh-cw"
+        (click)="catalog.reload()"
+        i18n="@@spaces.error.retry"
+      >
+        Reintentar
+      </button>
+    </app-empty-state>
+  } @else {
+    <ul class="spaces">
+      @for (listed of featuredSpaces(); track listed.space.id) {
+        <li class="spaces__item">
+          <app-space-card [listed]="listed" />
+        </li>
+      }
+    </ul>
+  }
 </section>

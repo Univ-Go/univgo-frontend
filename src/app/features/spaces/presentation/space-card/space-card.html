@@ -72,9 +72,11 @@
       No disponible
     </button>
   } @else {
-    <button
+    <!-- Nothing free today is not nothing to offer: the schedule step is where the other days are,
+         so this goes to the same place "Reservar" does and only promises less. -->
+    <a
       tuiButton
-      type="button"
+      [routerLink]="['/book', space.id, 'when']"
       size="m"
       appearance="outline"
       iconStart="@tui.calendar-search"
@@ -82,6 +84,6 @@
       i18n="@@spaces.card.viewSchedule"
     >
       Ver horarios
-    </button>
+    </a>
   }
 </article>

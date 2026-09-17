@@ -38,10 +38,15 @@
   align-items: center;
   overflow: hidden;
   padding: var(--univgo-space-xl) var(--univgo-layout-gutter);
-  background: var(--univgo-brand-surface);
+  // The brand colour stays underneath as the background-color: it is what the panel shows while the
+  // photograph loads, and what it falls back to if the request never arrives.
+  background: var(--univgo-brand-surface) url('images/auth-image.jpg') center / cover no-repeat;
   color: var(--univgo-on-brand-surface);
 
-  // Stands in for the campus photograph: depth without an image request.
+  // The wash that turns the photograph into brand surface. It sits between the image and the
+  // watermark, which is a real element and therefore paints after this pseudo-element. The tint
+  // percentage is the contrast lever: the copy on top is designed against the solid brand colour,
+  // so lowering it to reveal more photograph eats into that margin.
   &::before {
     content: '';
     position: absolute;
@@ -49,7 +54,8 @@
     background:
       radial-gradient(circle at 15% 20%, rgb(255 255 255 / 18%), transparent 45%),
       radial-gradient(circle at 85% 0%, rgb(255 255 255 / 10%), transparent 40%),
-      linear-gradient(160deg, transparent 40%, rgb(0 0 0 / 24%));
+      linear-gradient(160deg, transparent 40%, rgb(0 0 0 / 24%)),
+      color-mix(in srgb, var(--univgo-brand-surface) 85%, transparent);
   }
 }
 
@@ -179,19 +185,24 @@
   min-inline-size: 15rem;
 }
 
-.form__row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--univgo-space-s);
+// Sign-in refuses credentials without saying which half was wrong, so the message earns the same
+// weight as an error beside a field rather than a passing alert.
+.form__failure {
+  margin: 0;
+  padding: var(--univgo-space-m);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-status-negative-pale);
+  color: var(--tui-status-negative);
+  font: var(--tui-typography-body-s);
 }
 
-.remember {
-  display: flex;
-  align-items: center;
-  gap: var(--univgo-space-s);
-  font: var(--tui-typography-ui-s);
+// What a control cannot do yet, said next to it. A tooltip would never reach a touch device, and a
+// disabled control announces its state without ever explaining it.
+.form__pending {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+  text-align: center;
 }
 
 .separator {

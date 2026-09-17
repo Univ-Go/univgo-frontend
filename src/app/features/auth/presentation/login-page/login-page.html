@@ -3,7 +3,7 @@
 <div class="login">
   <section class="brand" aria-labelledby="brand-title">
     <!-- Decorative: the mark is crimson on crimson, so it works as a watermark and never as a logo. -->
-    <app-brand-isotype class="brand__watermark" />
+    <!--<app-brand-isotype class="brand__watermark" />-->
 
     <div class="brand__inner">
       <div class="brand__copy">
@@ -51,14 +51,22 @@
         </p>
       </header>
 
-      <form class="form" tuiForm="l">
+      <form class="form" tuiForm="l" [formGroup]="form" (ngSubmit)="submit()">
         <tui-textfield>
           <label tuiLabel for="login-identifier" i18n="@@auth.login.identifierLabel"
             >Correo institucional o documento</label
           >
-          <input id="login-identifier" tuiInput autocomplete="username" name="identifier" />
+          <input
+            id="login-identifier"
+            tuiInput
+            autocomplete="username"
+            formControlName="identifier"
+          />
           <tui-icon icon="@tui.user" />
         </tui-textfield>
+        @if (form.controls.identifier.touched && form.controls.identifier.invalid) {
+          <tui-error [error]="identifierMessage" />
+        }
 
         <tui-textfield>
           <label tuiLabel for="login-password" i18n="@@auth.login.passwordLabel">Contraseña</label>
@@ -67,31 +75,38 @@
             tuiInput
             type="password"
             autocomplete="current-password"
-            name="password"
+            formControlName="password"
           />
           <tui-icon tuiPassword />
         </tui-textfield>
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <tui-error [error]="passwordMessage" />
+        }
 
-        <div class="form__row">
-          <label class="remember">
-            <input type="checkbox" tuiCheckbox name="remember" />
-            <span i18n="@@auth.login.rememberMe">No cerrar sesión</span>
-          </label>
+        @if (failed()) {
+          <p class="form__failure" role="alert" i18n="@@auth.login.invalidCredentials">
+            No hemos podido iniciar sesión con esos datos. Revisa tu documento o correo y tu
+            contraseña, e inténtalo de nuevo.
+          </p>
+        }
 
-          <a tuiLink href="#" i18n="@@auth.login.forgotPassword">¿Olvidaste tu contraseña?</a>
-        </div>
+        <!-- TEMPORARY: password recovery has no backing flow yet, so this states it rather than
+             offering a link that leads nowhere. -->
+        <p class="form__pending" i18n="@@auth.login.forgotUnavailable">
+          ¿Olvidaste tu contraseña? Pide ayuda en tu facultad mientras habilitamos la recuperación.
+        </p>
 
-        <!-- TEMPORARY: walks to the home view so the flow can be clicked through. -->
         <button
           tuiButton
-          type="button"
+          type="submit"
           size="l"
           appearance="primary"
           iconEnd="@tui.log-in"
-          routerLink="/home"
-          i18n="@@auth.login.submit"
+          [disabled]="submitting()"
         >
-          Iniciar sesión
+          <tui-loader [loading]="submitting()" [inheritColor]="true" [overlay]="true">
+            <span i18n="@@auth.login.submit">Iniciar sesión</span>
+          </tui-loader>
         </button>
 
         <p class="separator">
@@ -104,11 +119,15 @@
           size="l"
           appearance="outline"
           iconStart="@tui.id-card"
-          routerLink="/home"
+          disabled
+          aria-describedby="card-unavailable"
           i18n="@@auth.login.submitWithCard"
         >
           Entrar con el carné universitario
         </button>
+        <p id="card-unavailable" class="form__pending" i18n="@@auth.login.cardUnavailable">
+          El acceso con el carné estará disponible más adelante.
+        </p>
       </form>
 
       <footer class="panel__footer">

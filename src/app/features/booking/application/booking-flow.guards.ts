@@ -3,9 +3,9 @@ import type { CanActivateFn, CanDeactivateFn } from '@angular/router';
 import { Router } from '@angular/router';
 import { TuiDialogService } from '@taiga-ui/core';
 import { TUI_CONFIRM } from '@taiga-ui/kit';
-import { defaultIfEmpty } from 'rxjs';
+import { defaultIfEmpty, map } from 'rxjs';
 import { NotificationService } from '../../../core/notifications/notification.service';
-import { MOCK_SPACES } from '../../spaces/infrastructure/mock-spaces';
+import { SpaceRepository } from '../../spaces/domain/space.repository';
 import { BookingDraftStore } from './booking-draft.store';
 
 const SPACE_STEP = ['/book', 'space'];
@@ -16,30 +16,45 @@ const SPACE_STEP = ['/book', 'space'];
  * typed, bookmarked, or reloaded — sends the user to the step that produces it instead of rendering
  * half a booking.
  *
- * Looking the space up from `MOCK_SPACES` is the same visual-mock shortcut the views take; it moves
- * behind a resolver over the spaces port once that API exists.
+ * The space is read from the catalogue rather than taken on trust from the URL, so a link to a
+ * space that no longer exists is answered instead of rendering a booking for nothing.
  */
 export const bookingSpaceGuard: CanActivateFn = (route) => {
   const draft = inject(BookingDraftStore);
   const router = inject(Router);
   const notifications = inject(NotificationService);
+  const spaces = inject(SpaceRepository);
   const id = route.paramMap.get('id');
-  const space = MOCK_SPACES.find((candidate) => candidate.id === id);
 
-  if (!space) {
-    notifications.warn(
-      $localize`:@@booking.unknownSpace.summary:No encontramos ese espacio`,
-      $localize`:@@booking.unknownSpace.detail:Puede que el enlace sea antiguo. Elige un espacio del catálogo para continuar.`,
-    );
-
+  if (!id) {
     return router.createUrlTree(SPACE_STEP);
   }
 
-  // The URL is the stronger statement of intent: opening a link for another space changes the
-  // draft rather than being overridden by what the user picked before.
-  draft.selectSpace(space);
+  // Walking between steps re-runs this guard, and the draft already holds the space it resolved on
+  // the way in. Reading the catalogue again would put a request in front of every step of a flow
+  // that has not changed its mind about which space it is booking.
+  if (draft.space()?.id === id) {
+    return true;
+  }
 
-  return true;
+  return spaces.findById(id).pipe(
+    map((space) => {
+      if (!space) {
+        notifications.warn(
+          $localize`:@@booking.unknownSpace.summary:No encontramos ese espacio`,
+          $localize`:@@booking.unknownSpace.detail:Puede que el enlace sea antiguo. Elige un espacio del catálogo para continuar.`,
+        );
+
+        return router.createUrlTree(SPACE_STEP);
+      }
+
+      // The URL is the stronger statement of intent: opening a link for another space changes the
+      // draft rather than being overridden by what the user picked before.
+      draft.selectSpace(space);
+
+      return true;
+    }),
+  );
 };
 
 /**

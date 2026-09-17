@@ -119,6 +119,11 @@ article.reservation[tuiCardLarge] {
   display: flex;
 }
 
+.spaces__item--skeleton {
+  block-size: var(--univgo-card-placeholder-height);
+  border-radius: var(--tui-radius-l);
+}
+
 // No ring: this one is a floating card, so there is no outline for the lift to reinforce.
 .reservation {
   @include cards.lift;

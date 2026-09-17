@@ -85,6 +85,11 @@
   display: flex;
 }
 
+.grid__item--skeleton {
+  block-size: var(--univgo-card-placeholder-height);
+  border-radius: var(--tui-radius-l);
+}
+
 .shelves {
   display: flex;
   flex-direction: column;

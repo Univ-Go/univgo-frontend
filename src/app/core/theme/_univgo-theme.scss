@@ -363,6 +363,10 @@ $shadow-tint: 65, 0, 5;
   // is the same width on every page, rather than however many happen to fit.
   --univgo-card-grid-columns: 1fr;
 
+  // The room a card placeholder reserves while its data loads. It is a card's own height and not a
+  // guess at one: the point of a skeleton is that nothing moves when the content arrives.
+  --univgo-card-placeholder-height: 13.5rem;
+
   // How far a card rises under the pointer. Small enough to read as a lift rather than a jump.
   --univgo-lift: -0.125rem;
 

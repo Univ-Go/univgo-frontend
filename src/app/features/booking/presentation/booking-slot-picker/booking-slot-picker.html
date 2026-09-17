@@ -74,16 +74,15 @@
             {{ block.label }}
             @switch (block.blocker) {
               @case (null) {
-                <span tuiSubtitle>
-                  <span i18n="@@booking.schedule.until">hasta {{ block.end }}</span>
-                  <!-- The ICU stands alone in its own element: nested inside another message it is
-                       extracted as a second, auto-numbered unit nobody can translate against a
-                       stable id. -->
-                  <span class="hour__free" i18n="@@booking.schedule.freePlaces">{block.free, plural,
-                    =1 {1 plaza}
-                    other {{{block.free}} plazas}
-                  }</span>
-                </span>
+                <span tuiSubtitle i18n="@@booking.schedule.until">hasta {{ block.end }}</span>
+                <!-- The ICU stands alone in its own element: nested inside another message it is
+                     extracted as a second, auto-numbered unit nobody can translate against a
+                     stable id. Two subtitles rather than one line — a block is a narrow column on
+                     a phone, and one sentence wrapped into three ragged lines reads as damage. -->
+                <span tuiSubtitle i18n="@@booking.schedule.freePlaces">{block.free, plural,
+                  =1 {1 plaza}
+                  other {{{block.free}} plazas}
+                }</span>
               }
               @case ('full') {
                 <span tuiSubtitle i18n="@@booking.schedule.full">completo</span>

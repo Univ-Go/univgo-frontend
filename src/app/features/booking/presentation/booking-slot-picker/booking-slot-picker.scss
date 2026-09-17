@@ -85,13 +85,6 @@
   font: var(--tui-typography-body-s);
 }
 
-// A separator, not a word: it belongs to the layout rather than to the message, so it stays out of
-// i18n and out of what a screen reader announces.
-.hour__free::before {
-  content: '·';
-  margin-inline: var(--univgo-space-xs);
-}
-
 // The empty state carries a retry button when the day could not be read, so it lays its children
 // out rather than being a plain paragraph.
 .picker__empty {

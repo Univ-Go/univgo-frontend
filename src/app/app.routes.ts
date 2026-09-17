@@ -29,13 +29,17 @@ export const routes: Routes = [
   // to a different person, and a tab bar within reach of a thumb is not what a desk tool needs.
   {
     path: 'admin',
+    // `canActivate` alone fires only when the shell is entered: Angular reuses a parent whose child
+    // changes, so moving between views inside it would never check the session again.
     canActivate: [adminGuard],
+    canActivateChild: [adminGuard],
     loadComponent: () => import('./layout/admin-layout/admin-layout').then((m) => m.AdminLayout),
     loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
   },
   {
     path: '',
     canActivate: [studentGuard],
+    canActivateChild: [studentGuard],
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
       {

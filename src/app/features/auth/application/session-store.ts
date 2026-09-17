@@ -8,6 +8,8 @@ import { type AuthenticatedUser, landingPathFor } from '../domain/session';
 
 export type SessionStatus = 'unknown' | 'authenticated' | 'anonymous';
 
+const SESSION_HINT = 'univgo.session';
+
 /**
  * The single answer to "who is using the application". `unknown` is a real state and not a default:
  * before asking the server, an absent user and a user we have not looked up yet are different
@@ -30,14 +32,13 @@ export class SessionStore {
   readonly isAuthenticated = computed(() => this.currentStatus() === 'authenticated');
 
   /**
-   * Shared between every guard of a single navigation, so a route tree with three of them still
-   * asks the server once.
+   * Asks the server on every navigation rather than trusting what it learned once: the cookies are
+   * `HttpOnly`, so their expiry is unreadable here and a cached answer would let someone walk
+   * through the application on a session that ended minutes ago. The single-flight keeps a route
+   * tree with three guards down to one request, and a session whose access cookie merely lapsed is
+   * renewed by the interceptor without this ever seeing a failure.
    */
   ensureRestored(): Observable<AuthenticatedUser | null> {
-    if (this.currentStatus() !== 'unknown') {
-      return of(this.state());
-    }
-
     this.restoring ??= this.repository.currentUser().pipe(
       tap((user) => this.adopt(user)),
       catchError(() => {
@@ -79,6 +80,7 @@ export class SessionStore {
     return this.repository.signOut().pipe(
       finalize(() => {
         this.forget();
+        this.rememberSignedIn(false);
         void this.router.navigateByUrl('/login');
       }),
     );
@@ -90,10 +92,11 @@ export class SessionStore {
    * from a request in flight.
    */
   expire(): void {
-    const wasAuthenticated = this.currentStatus() === 'authenticated';
+    const hadSession = this.currentStatus() === 'authenticated' || this.wasSignedIn();
     this.forget();
+    this.rememberSignedIn(false);
 
-    if (wasAuthenticated) {
+    if (hadSession) {
       this.notifications.error(createAppError('unauthorized'));
       void this.router.navigateByUrl('/login');
     }
@@ -107,6 +110,33 @@ export class SessionStore {
   private adopt(user: AuthenticatedUser): void {
     this.state.set(user);
     this.currentStatus.set('authenticated');
+    this.rememberSignedIn(true);
+  }
+
+  /**
+   * A reload starts with no state at all, so without this an expired session and a first-time
+   * visitor look identical and the wrong one gets told their session ran out. The flag says only
+   * that a session once existed — it is not a credential and grants nothing.
+   */
+  private wasSignedIn(): boolean {
+    try {
+      return localStorage.getItem(SESSION_HINT) !== null;
+    } catch {
+      return false;
+    }
+  }
+
+  private rememberSignedIn(value: boolean): void {
+    try {
+      if (value) {
+        localStorage.setItem(SESSION_HINT, '1');
+      } else {
+        localStorage.removeItem(SESSION_HINT);
+      }
+    } catch {
+      // Private browsing or blocked storage: the flag is an improvement to the message, not a
+      // requirement for signing in.
+    }
   }
 
   private forget(): void {

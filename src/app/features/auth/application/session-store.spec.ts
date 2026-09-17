@@ -37,6 +37,7 @@ describe('SessionStore', () => {
       signOut: vi.fn(),
     };
     notifications = { error: vi.fn() };
+    localStorage.clear();
     router = { navigateByUrl: vi.fn() };
 
     TestBed.configureTestingModule({
@@ -53,17 +54,54 @@ describe('SessionStore', () => {
     expect(store().user()).toBeNull();
   });
 
-  it('asks the server once no matter how many guards need the answer', () => {
-    repository.currentUser.mockReturnValue(of(USER));
+  it('asks the server once no matter how many guards of one navigation need the answer', () => {
+    // The request has to be in flight while the other guards subscribe, which is what a real
+    // one is and a synchronous stub is not.
+    const inFlight = new Subject<AuthenticatedUser>();
+    repository.currentUser.mockReturnValue(inFlight);
     const session = store();
 
     session.ensureRestored().subscribe();
     session.ensureRestored().subscribe();
     session.ensureRestored().subscribe();
+    inFlight.next(USER);
+    inFlight.complete();
 
     expect(repository.currentUser).toHaveBeenCalledTimes(1);
     expect(session.status()).toBe('authenticated');
     expect(session.user()).toEqual(USER);
+  });
+
+  it('checks again on the next navigation instead of trusting what it learned once', async () => {
+    repository.currentUser.mockReturnValue(of(USER));
+    const session = store();
+
+    await new Promise<void>((resolve) => session.ensureRestored().subscribe(() => resolve()));
+    await new Promise<void>((resolve) => session.ensureRestored().subscribe(() => resolve()));
+
+    expect(repository.currentUser).toHaveBeenCalledTimes(2);
+  });
+
+  it('announces the expiry after a reload, when only the stored hint remembers the session', () => {
+    repository.currentUser.mockReturnValue(of(USER));
+    const session = store();
+    session.ensureRestored().subscribe();
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: AuthRepository, useValue: repository },
+        { provide: NotificationService, useValue: notifications },
+        { provide: Router, useValue: router },
+      ],
+    });
+    const reloaded = TestBed.inject(SessionStore);
+
+    expect(reloaded.status()).toBe('unknown');
+    reloaded.expire();
+
+    expect(notifications.error).toHaveBeenCalledTimes(1);
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/login');
   });
 
   it('treats a rejected restore as nobody being signed in, silently', () => {

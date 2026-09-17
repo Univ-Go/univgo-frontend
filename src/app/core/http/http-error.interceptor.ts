@@ -35,7 +35,10 @@ export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
         reference: appError.reference,
       });
 
-      if (!request.context.get(SKIP_ERROR_NOTIFICATION)) {
+      // 401 is the one status this interceptor stays quiet about: `SessionStore` owns the
+      // expiry message, and it can tell a session that ran out from a visitor who never had
+      // one. Notifying here as well would say it twice, or say it to the wrong person.
+      if (code !== 'unauthorized' && !request.context.get(SKIP_ERROR_NOTIFICATION)) {
         notifications.error(appError);
       }
 

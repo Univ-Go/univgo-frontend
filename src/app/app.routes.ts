@@ -1,12 +1,13 @@
 import type { Routes } from '@angular/router';
+import { adminGuard, guestGuard, studentGuard } from './features/auth/application/auth.guards';
 
 /**
  * Every route declares `title` and `data.description`, which `PageMetadataStrategy` turns into
  * document metadata, so that no page can ship without a title. Sign-in sits outside the shell:
  * a navigation bar is meaningless before there is a session.
  *
- * TEMPORARY: the entry point redirects to sign-in and the mock buttons walk between the two views,
- * so the flow can be clicked through. Real guards replace this once authentication exists.
+ * The entry point redirects to sign-in, where `guestGuard` forwards anyone who already has a
+ * session on to the landing page their role calls for.
  */
 export const routes: Routes = [
   {
@@ -16,6 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [guestGuard],
     loadComponent: () =>
       import('./features/auth/presentation/login-page/login-page').then((m) => m.LoginPage),
     title: $localize`:@@auth.login.pageTitle:Inicia sesión`,
@@ -27,11 +29,13 @@ export const routes: Routes = [
   // to a different person, and a tab bar within reach of a thumb is not what a desk tool needs.
   {
     path: 'admin',
+    canActivate: [adminGuard],
     loadComponent: () => import('./layout/admin-layout/admin-layout').then((m) => m.AdminLayout),
     loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
   },
   {
     path: '',
+    canActivate: [studentGuard],
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
       {

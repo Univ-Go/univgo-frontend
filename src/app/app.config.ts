@@ -10,6 +10,9 @@ import {
 import { provideTaiga, tuiCheckboxOptionsProvider } from '@taiga-ui/core';
 import { APP_CONFIG } from './core/config/app-config';
 import { defaultAppConfig } from './core/config/default-app-config';
+import { AuthRepository } from './features/auth/domain/auth.repository';
+import { HttpAuthRepository } from './features/auth/infrastructure/http-auth.repository';
+import { authInterceptor } from './core/http/auth.interceptor';
 import { httpErrorInterceptor } from './core/http/http-error.interceptor';
 import { provideTaigaDateFormat } from './core/i18n/taiga-date-format';
 import { provideTaigaLanguage } from './core/i18n/taiga-language';
@@ -32,7 +35,9 @@ export const appConfig: ApplicationConfig = {
       // read.
       withRouterConfig({ paramsInheritanceStrategy: 'always' }),
     ),
-    provideHttpClient(withFetch(), withInterceptors([httpErrorInterceptor])),
+    // Order matters: responses unwind in reverse, so `authInterceptor` sees a 401 first and can
+    // renew the session and replay the request before the error interceptor ever reports it.
+    provideHttpClient(withFetch(), withInterceptors([httpErrorInterceptor, authInterceptor])),
     // Supplies the event plugins the library's own templates rely on and mirrors `TUI_DARK_MODE`
     // onto the document's `tuiTheme` attribute.
     provideTaiga(),
@@ -45,6 +50,7 @@ export const appConfig: ApplicationConfig = {
       appearance: ({ checked }) => (checked ? 'accent' : 'outline-grayscale'),
     }),
     { provide: APP_CONFIG, useValue: defaultAppConfig },
+    { provide: AuthRepository, useClass: HttpAuthRepository },
     { provide: Logger, useClass: ConsoleLogger },
     { provide: TitleStrategy, useClass: PageMetadataStrategy },
   ],

@@ -17,24 +17,24 @@ Este fichero no repite ninguno de los dos: sólo dice por dónde va la implement
 
 Los pasos son los de `booking-flow.md` §5 y §11.
 
-| Paso                                | Estado   | Qué lo sostiene                                     |
-| ----------------------------------- | -------- | --------------------------------------------------- |
-| Iniciar sesión                      | **Real** | `POST /auth/login`, cookies, refresco y guards      |
-| Catálogo de espacios                | **Real** | `GET /spaces?date=`                                 |
-| Elegir día y bloque                 | **Real** | `GET /spaces/{id}/availability?date=`               |
-| Confirmar la reserva                | **Real** | `POST /reservations`, con el aviso de último minuto |
-| Ver el código de acceso             | **Real** | El código del servidor, dibujado como QR escaneable |
-| Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`   |
-| Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                    |
-| Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante     |
-| Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso   |
-| Panel: bloques del día y su detalle | Maqueta  | Espacio real, ocupantes inventados; deuda 4.7       |
-| Panel: cierres y mantenimiento      | Maqueta  | `PUT /admin/spaces/{id}/maintenance` existe         |
+| Paso                                | Estado   | Qué lo sostiene                                                      |
+| ----------------------------------- | -------- | -------------------------------------------------------------------- |
+| Iniciar sesión                      | **Real** | `POST /auth/login`, cookies, refresco y guards                       |
+| Catálogo de espacios                | **Real** | `GET /spaces?date=`                                                  |
+| Elegir día y bloque                 | **Real** | `GET /spaces/{id}/availability?date=`                                |
+| Confirmar la reserva                | **Real** | `POST /reservations`, con el aviso de último minuto                  |
+| Ver el código de acceso             | **Real** | El código del servidor, dibujado como QR escaneable                  |
+| Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`                    |
+| Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                                     |
+| Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante                      |
+| Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso                    |
+| Panel: bloques del día y su detalle | Maqueta  | Espacio real, ocupantes inventados; deuda 4.7                        |
+| Panel: cierres y mantenimiento      | Mixto    | Mantenimiento y cancelación masiva reales; el registro de cierres no |
 
 **El backend está completo para todo el flujo.** Lo que falta es cablear el frontend: de los catorce
 endpoints que publica para las reservas —sin contar los de sesión ni los de usuarios— hoy se llaman
-ocho. Los seis que quedan son todos del panel: el detalle de un bloque, el mantenimiento de un
-espacio, la cancelación masiva y la configuración de la institución.
+diez. Los cuatro que quedan son el detalle de un bloque, el listado de reservas del administrador y
+las dos mitades de la configuración de la institución.
 
 ---
 
@@ -87,6 +87,14 @@ veredictos vienen del servidor: es quien tiene el reloj, la tolerancia y la escr
 un escaneo en check-in. La lógica que el frontend tenía para decidirlos (`evaluateCheckInScan`) se
 retiró: era una segunda opinión sobre algo que no le corresponde.
 
+**El espacio se puede retirar del servicio, y sus reservas cancelarse.** `PUT
+/admin/spaces/{id}/maintenance` y `POST /admin/spaces/{id}/reservations/cancel-all`, que son las dos
+cosas que `booking-flow.md` §10 y §11 piden y las dos únicas que el servidor sabe hacer con un
+espacio. Están separadas a propósito: anunciar el cierre de la semana que viene no debe vaciar hoy,
+y devolver un espacio al servicio no tiene nada que deshacer. El interruptor no guarda el estado —lo
+relee del catálogo después de escribir— así que una escritura fallida deja el control enseñando lo
+que es verdad, no lo que se pidió.
+
 **El pase es escaneable.** El QR se genera en el navegador a partir del `qrCodeData` de la reserva
 con `qrcode-generator` (~10 kB, sin dependencias), dibujado como un solo `path` SVG que escala del
 tamaño de la tarjeta al del diálogo sin una segunda copia. Es la única pareja de colores del
@@ -113,10 +121,15 @@ decide el reloj del servidor.
 
 Dos ficheros, los dos del panel, y cada uno dice a quién sostiene:
 
-| Fichero                                   | Sostiene                                         |
-| ----------------------------------------- | ------------------------------------------------ |
-| `admin/infrastructure/mock-attendance.ts` | Quién ocupa cada bloque: el listado y su detalle |
-| `admin/infrastructure/mock-closures.ts`   | Los cierres de la vista de ajustes               |
+| Fichero                                   | Sostiene                                                    |
+| ----------------------------------------- | ----------------------------------------------------------- |
+| `admin/infrastructure/mock-attendance.ts` | Quién ocupa cada bloque: el listado y su detalle            |
+| `admin/infrastructure/mock-closures.ts`   | El registro de cierres: formulario, historial e indicadores |
+
+**El registro de cierres no tiene API que lo sostenga.** El formulario guarda alcance, motivo,
+recurrencia y quién lo autorizó, y el servidor guarda un booleano por espacio. No es cableado
+pendiente: es una funcionalidad que el backend no tiene. O crece una tabla de cierres, o esa mitad
+de la vista se retira y se queda con el interruptor y la cancelación, que ya son reales.
 
 **Lo que queda inventado del panel son las personas, no los espacios.** Los bloques que dibujan la
 consulta del día y su detalle se generan sobre el espacio real —su id, su nombre y su aforo vienen
@@ -252,8 +265,8 @@ hecho: **una reserva creada en el móvil se conserva enseñando su QR en el most
 es el panel, y las dos deudas que lo bloquean las está atendiendo el backend.
 
 1. **La consulta de bloques y su detalle**, en cuanto la 4.7 esté resuelta en el backend.
-2. **Ajustes del espacio**: mantenimiento y cancelación masiva tienen endpoint; el historial de
-   cierres no existe en el backend, así que esa mitad de la vista se queda o se retira.
+2. **Decidir qué pasa con el registro de cierres**: o el backend crece una tabla, o la vista se
+   queda con el interruptor y la cancelación masiva, que ya funcionan.
 
 La **4.6** (que el escaneo compruebe el espacio) y la **4.7** (lo que el detalle de un bloque puede
 enseñar) están en manos del backend. De lo que queda en este lado, lo que conviene no dejar para

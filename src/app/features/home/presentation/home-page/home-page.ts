@@ -1,11 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TuiAppearance, TuiIcon, TuiLink, TuiTitle } from '@taiga-ui/core';
 import { TuiButton } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
-import { MOCK_SESSION_USER } from '../../../auth/infrastructure/mock-session';
+import { SessionStore } from '../../../auth/application/session-store';
 import { findNextReservation } from '../../../my-reservations/domain/reservation-catalog';
 import { MOCK_RESERVATIONS } from '../../../my-reservations/infrastructure/mock-reservations';
 import { ReservationStatusBadge } from '../../../my-reservations/presentation/reservation-status-badge/reservation-status-badge';
@@ -47,7 +47,9 @@ const FEATURED_SPACES = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
-  protected readonly userName = MOCK_SESSION_USER.name;
+  private readonly session = inject(SessionStore);
+
+  protected readonly userName = computed(() => this.session.user()?.firstName ?? '');
 
   protected readonly categoryIcon = spaceCategoryIcon;
 

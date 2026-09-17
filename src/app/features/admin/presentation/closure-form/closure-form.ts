@@ -22,7 +22,8 @@ import {
 } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { NotificationService } from '../../../../core/notifications/notification.service';
-import { MOCK_SESSION_USER } from '../../../auth/infrastructure/mock-session';
+import { SessionStore } from '../../../auth/application/session-store';
+import { fullName } from '../../../auth/domain/session';
 import type {
   ClosureReason,
   ClosureRecurrence,
@@ -110,6 +111,13 @@ export class ClosureForm {
 
   private readonly confirm = inject(TuiConfirmService);
   private readonly notifications = inject(NotificationService);
+  private readonly session = inject(SessionStore);
+
+  /** Who authorised a closure is part of its record, so it is read from the session, not typed. */
+  private readonly authorizedBy = computed(() => {
+    const user = this.session.user();
+    return user ? fullName(user) : '';
+  });
 
   protected readonly formId = `closure-form-${nextFormId++}`;
   protected readonly reasonOptions = CLOSURE_REASON_OPTIONS;
@@ -233,7 +241,7 @@ export class ClosureForm {
       recurrence,
       reason,
       details: this.details().trim().length > 0 ? this.details().trim() : null,
-      authorizedBy: MOCK_SESSION_USER.name,
+      authorizedBy: this.authorizedBy(),
     });
 
     this.notifications.success(

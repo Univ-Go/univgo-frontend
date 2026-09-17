@@ -126,17 +126,29 @@
         <source>Contraseña</source>
         <target>Password</target>
       </trans-unit>
-      <trans-unit id="auth.login.rememberMe" datatype="html">
-        <source>No cerrar sesión</source>
-        <target>Keep me signed in</target>
-      </trans-unit>
-      <trans-unit id="auth.login.forgotPassword" datatype="html">
-        <source>¿Olvidaste tu contraseña?</source>
-        <target>Forgot your password?</target>
-      </trans-unit>
       <trans-unit id="auth.login.submit" datatype="html">
         <source>Iniciar sesión</source>
         <target>Sign in</target>
+      </trans-unit>
+      <trans-unit id="auth.login.identifierRequired" datatype="html">
+        <source>Introduce tu correo institucional o tu documento.</source>
+        <target>Enter your university email or your ID number.</target>
+      </trans-unit>
+      <trans-unit id="auth.login.passwordRequired" datatype="html">
+        <source>Introduce tu contraseña.</source>
+        <target>Enter your password.</target>
+      </trans-unit>
+      <trans-unit id="auth.login.invalidCredentials" datatype="html">
+        <source> No hemos podido iniciar sesión con esos datos. Revisa tu documento o correo y tu contraseña, e inténtalo de nuevo. </source>
+        <target> We could not sign you in with those details. Check your ID number or email and your password, then try again. </target>
+      </trans-unit>
+      <trans-unit id="auth.login.forgotUnavailable" datatype="html">
+        <source> ¿Olvidaste tu contraseña? Pide ayuda en tu facultad mientras habilitamos la recuperación. </source>
+        <target> Forgot your password? Ask your faculty for help while we finish setting up recovery. </target>
+      </trans-unit>
+      <trans-unit id="auth.login.cardUnavailable" datatype="html">
+        <source> El acceso con el carné estará disponible más adelante. </source>
+        <target> Signing in with your student card will be available later on. </target>
       </trans-unit>
       <trans-unit id="auth.login.alternativeSeparator" datatype="html">
         <source>o</source>

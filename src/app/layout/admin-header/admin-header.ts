@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
@@ -10,7 +10,7 @@ import { currentAdminSpaceId } from '../../features/admin/application/admin-spac
 import { withSpaceId } from '../../features/admin/domain/admin-navigation';
 import { MOCK_SPACE_PROFILES } from '../../features/admin/infrastructure/mock-attendance';
 import { SpaceSwitcher } from '../../features/admin/presentation/space-switcher/space-switcher';
-import { MOCK_SESSION_USER } from '../../features/auth/infrastructure/mock-session';
+import { SessionStore } from '../../features/auth/application/session-store';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
@@ -78,7 +78,9 @@ export class AdminHeader {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  protected readonly initials = MOCK_SESSION_USER.name.slice(0, 1);
+  private readonly session = inject(SessionStore);
+
+  protected readonly initials = computed(() => this.session.user()?.firstName.slice(0, 1) ?? '');
 
   protected readonly menuOpen = signal(false);
 

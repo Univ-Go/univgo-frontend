@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { TUI_BREAKPOINT, TuiDataList } from '@taiga-ui/core';
+import { SessionStore } from '../../features/auth/application/session-store';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 
@@ -15,7 +15,7 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
  */
 @Component({
   selector: 'app-account-menu',
-  imports: [LanguageSelector, RouterLink, ThemeToggle, TuiDataList],
+  imports: [LanguageSelector, ThemeToggle, TuiDataList],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     .menu__utilities {
@@ -40,12 +40,12 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
         Tu perfil
       </button>
 
-      <!-- TEMPORARY: walks back to sign-in. Real sign-out clears the session first. -->
       <button
         tuiOption
         type="button"
         iconStart="@tui.log-out"
-        routerLink="/login"
+        [disabled]="signingOut()"
+        (click)="signOut()"
         i18n="@@navigation.signOut"
       >
         Cerrar sesión
@@ -55,6 +55,15 @@ import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 })
 export class AccountMenu {
   private readonly breakpoint = inject(TUI_BREAKPOINT);
+  private readonly session = inject(SessionStore);
 
   protected readonly compact = computed(() => this.breakpoint() === 'mobile');
+
+  protected readonly signingOut = signal(false);
+
+  /** The store clears the session and navigates whether the server answered or not. */
+  protected signOut(): void {
+    this.signingOut.set(true);
+    this.session.signOut().subscribe({ error: () => this.signingOut.set(false) });
+  }
 }

@@ -6,63 +6,63 @@
         <source>Inicia sesión</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.pageDescription" datatype="html">
         <source>Accede con las credenciales de tu universidad para reservar espacios deportivos y de estudio.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.pageTitle" datatype="html">
         <source>Inicio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.pageDescription" datatype="html">
         <source>Consulta tu próxima reserva y los espacios destacados del campus.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.pageTitle" datatype="html">
         <source>Espacios</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.pageDescription" datatype="html">
         <source>Consulta los espacios deportivos, salas de estudio y laboratorios del campus, y reserva el que necesites.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.pageTitle" datatype="html">
         <source>Mis reservas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.pageDescription" datatype="html">
         <source>Consulta, filtra y gestiona las reservas que has hecho en el campus.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.pageTitle" datatype="html">
         <source>Detalle de la reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">83</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
@@ -73,21 +73,21 @@
         <source>Consulta el pase, el horario, la ubicación y las normas de tu reserva.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">85</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFound.pageTitle" datatype="html">
         <source>Página no encontrada</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">93</context>
+          <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFound.pageDescription" datatype="html">
         <source>La página que buscas no existe o ha cambiado de dirección. Vuelve al inicio o consulta tus reservas.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.routes.ts</context>
-          <context context-type="linenumber">95</context>
+          <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.network.summary" datatype="html">
@@ -1007,42 +1007,42 @@
         <source>Confirmar cierre del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">195</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.body" datatype="html">
         <source>Se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. Esta acción no se puede deshacer.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">198</context>
+          <context context-type="linenumber">206</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.yes" datatype="html">
         <source>Cerrar espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">199</context>
+          <context context-type="linenumber">207</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.no" datatype="html">
         <source>Cancelar</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">208</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.created.summary" datatype="html">
         <source>Espacio cerrado</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">240</context>
+          <context context-type="linenumber">248</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.created.detail" datatype="html">
         <source>Las reservas del periodo se cancelaron y se notificó a los estudiantes.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/closure-form/closure-form.ts</context>
-          <context context-type="linenumber">241</context>
+          <context context-type="linenumber">249</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.history.title" datatype="html">
@@ -1401,7 +1401,7 @@
         <source> Consulta la disponibilidad de canchas, salas de estudio y laboratorios, y confirma tu reserva desde cualquier dispositivo. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">19,22</context>
+          <context context-type="linenumber">19,21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.highlightAvailability" datatype="html">
@@ -1436,70 +1436,91 @@
         <source>Correo institucional o documento</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">57,59</context>
+          <context context-type="linenumber">57,60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.passwordLabel" datatype="html">
         <source>Contraseña</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">64,66</context>
+          <context context-type="linenumber">72,74</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="auth.login.rememberMe" datatype="html">
-        <source>No cerrar sesión</source>
+      <trans-unit id="auth.login.invalidCredentials" datatype="html">
+        <source> No hemos podido iniciar sesión con esos datos. Revisa tu documento o correo y tu contraseña, e inténtalo de nuevo. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">78,81</context>
+          <context context-type="linenumber">88,91</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="auth.login.forgotPassword" datatype="html">
-        <source>¿Olvidaste tu contraseña?</source>
+      <trans-unit id="auth.login.forgotUnavailable" datatype="html">
+        <source> ¿Olvidaste tu contraseña? Pide ayuda en tu facultad mientras habilitamos la recuperación. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">81,84</context>
+          <context context-type="linenumber">96,99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.submit" datatype="html">
-        <source> Iniciar sesión </source>
+        <source>Iniciar sesión</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">94,97</context>
+          <context context-type="linenumber">108,109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.alternativeSeparator" datatype="html">
         <source>o</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">99,102</context>
+          <context context-type="linenumber">113,117</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.submitWithCard" datatype="html">
         <source> Entrar con el carné universitario </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">110,112</context>
+          <context context-type="linenumber">126,128</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.login.cardUnavailable" datatype="html">
+        <source> El acceso con el carné estará disponible más adelante. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
+          <context context-type="linenumber">129,132</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.helpLabel" datatype="html">
         <source>Centro de ayuda</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">124,126</context>
+          <context context-type="linenumber">143,145</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.privacyLabel" datatype="html">
         <source>Política de privacidad</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">135,138</context>
+          <context context-type="linenumber">154,156</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auth.login.legal" datatype="html">
         <source> Todos los derechos reservados. Acceso exclusivo para la comunidad universitaria. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.html</context>
-          <context context-type="linenumber">143,145</context>
+          <context context-type="linenumber">162,163</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.login.identifierRequired" datatype="html">
+        <source>Introduce tu correo institucional o tu documento.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.login.passwordRequired" datatype="html">
+        <source>Introduce tu contraseña.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/presentation/login-page/login-page.ts</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.unknownSpace.summary" datatype="html">
@@ -2500,25 +2521,29 @@
           <context context-type="linenumber">51,53</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="admin.header.backToSpaces" datatype="html">
+        <source>Volver a espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
+          <context context-type="linenumber">96,99</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+          <context context-type="linenumber">9,14</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="admin.brandRole" datatype="html">
         <source>Gestión institucional</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
-          <context context-type="linenumber">87,90</context>
+          <context context-type="linenumber">102,105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.label" datatype="html">
         <source>Secciones del panel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
-          <context context-type="linenumber">90,91</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.header.backToSpaces" datatype="html">
-        <source>Volver a espacios</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">9,14</context>
+          <context context-type="linenumber">105,106</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.search.label" datatype="html">

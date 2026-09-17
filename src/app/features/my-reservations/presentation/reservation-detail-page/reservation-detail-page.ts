@@ -17,6 +17,7 @@ import { TuiBreadcrumbs, TuiSkeleton } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
+import { QrCode } from '../../../../shared/qr-code/qr-code';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import { spaceCategoryIcon, spaceCategoryRules } from '../../../spaces/presentation/space-category';
 import { isActive } from '../../domain/reservation';
@@ -38,6 +39,7 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
     DatePipe,
     EmptyState,
     MediaPlate,
+    QrCode,
     ReservationStatusBadge,
     RouterLink,
     TuiAppearance,
@@ -92,6 +94,12 @@ export class ReservationDetailPage {
 
     return reservation !== null && isActive(reservation);
   });
+
+  /**
+   * The code is a picture of the booking's own identifier, so what names it is the booking, not the
+   * symbol. Written once here because the card and the dialog show the same code twice.
+   */
+  protected readonly passLabel = $localize`:@@reservations.detail.pass.codeLabel:Código QR de tu reserva`;
 
   /** Follows the link that asked for it, and closing the dialog is still the viewer's to do. */
   protected readonly qrOpen = linkedSignal(() => this.pass() && this.showsPass());

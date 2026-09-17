@@ -156,31 +156,22 @@
   }
 }
 
-// Visual mock for the scannable pass: a dashed plate is the same "this is a placeholder, not a
-// generated code" cue the media placeholders already use, just square instead of a photo frame.
-// Shared by the card and the dialog, which differ only in how big the plate gets.
+// The frame around the code. The code brings its own paper — a QR is dark on light whatever the
+// theme — so this is only the button's edge and the corner icon that says it opens larger.
 .pass-code {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   align-self: center;
-  aspect-ratio: 1;
-  border: 1px dashed var(--tui-border-normal);
+  border: 1px solid var(--tui-border-normal);
   border-radius: var(--tui-radius-m);
-  background: var(--tui-background-neutral-1);
-
-  tui-icon {
-    color: var(--tui-text-secondary);
-    font-size: 3.5rem;
-  }
+  background: var(--univgo-qr-paper);
 
   .pass-code__zoom {
     position: absolute;
     inset-block-start: var(--univgo-space-s);
     inset-inline-end: var(--univgo-space-s);
-    color: var(--tui-text-tertiary);
+    color: var(--univgo-qr-ink);
     font-size: 1rem;
+    opacity: 0.5;
   }
 }
 
@@ -197,7 +188,7 @@
     border-color: var(--tui-border-hover);
 
     .pass-code__zoom {
-      color: var(--tui-text-primary);
+      opacity: 1;
     }
   }
 }
@@ -227,8 +218,8 @@
   }
 }
 
-// Presentation view: the plate takes the room the dialog gives it so the code is readable at
-// arm's length, and the same fallback line travels with it.
+// Presentation view: the code takes the room the dialog gives it so it is readable — and
+// scannable — at arm's length, and the same fallback line travels with it.
 .qr-dialog {
   display: flex;
   flex-direction: column;
@@ -239,10 +230,6 @@
 
 .qr-dialog__code {
   inline-size: min(100%, 18rem);
-
-  tui-icon {
-    font-size: 6rem;
-  }
 }
 
 // One column throughout: the card shares its column with the pass card, which stays narrow at

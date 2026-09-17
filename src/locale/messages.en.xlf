@@ -470,6 +470,10 @@
         <source>Código QR de tu reserva</source>
         <target>Your booking QR code</target>
       </trans-unit>
+      <trans-unit id="reservations.detail.pass.codeLabel" datatype="html">
+        <source>Código QR de tu reserva</source>
+        <target>Your booking QR code</target>
+      </trans-unit>
       <trans-unit id="reservations.detail.facts.title" datatype="html">
         <source>Detalles de la reserva</source>
         <target>Booking details</target>

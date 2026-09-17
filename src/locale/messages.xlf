@@ -1747,7 +1747,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">138,140</context>
+          <context context-type="linenumber">136,138</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservation.factLocation" datatype="html">
@@ -1758,7 +1758,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">149,151</context>
+          <context context-type="linenumber">147,149</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
@@ -1773,7 +1773,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">159,161</context>
+          <context context-type="linenumber">157,159</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservation.checkInWindow" datatype="html">
@@ -1784,7 +1784,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">163,165</context>
+          <context context-type="linenumber">161,163</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.done.code" datatype="html">
@@ -2005,7 +2005,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">134,137</context>
+          <context context-type="linenumber">132,135</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservation.factTime" datatype="html">
@@ -2024,7 +2024,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">145,146</context>
+          <context context-type="linenumber">143,144</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.hint" datatype="html">
@@ -2394,35 +2394,42 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">117,120</context>
+          <context context-type="linenumber">115,118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.rules.title" datatype="html">
         <source>Normas del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">179,181</context>
+          <context context-type="linenumber">177,179</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.notFound.title" datatype="html">
         <source>Reserva no encontrada</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">192,193</context>
+          <context context-type="linenumber">190,191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.notFound.description" datatype="html">
         <source>Puede que el enlace sea incorrecto o que la reserva ya no exista.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">194,197</context>
+          <context context-type="linenumber">192,195</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservations.detail.pass.codeLabel" datatype="html">
+        <source>Código QR de tu reserva</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.ts</context>
+          <context context-type="linenumber">102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.detail.pass.dialogTitle" datatype="html">
         <source>Código QR de tu reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.ts</context>
-          <context context-type="linenumber">105</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservations.filters.state.reserved" datatype="html">
@@ -2885,14 +2892,14 @@
         <source>Buscar estudiante o ID</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">25,28</context>
+          <context context-type="linenumber">29,32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.notifications" datatype="html">
         <source>Notificaciones</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">49,51</context>
+          <context context-type="linenumber">53,55</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
@@ -2903,14 +2910,14 @@
         <source>Ayuda</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">61,63</context>
+          <context context-type="linenumber">65,67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.accountMenu" datatype="html">
         <source>Tu cuenta</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-          <context context-type="linenumber">73,75</context>
+          <context context-type="linenumber">77,79</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>

@@ -83,7 +83,7 @@
       >
         <h2 id="pass-title" i18n="@@reservations.detail.pass.title">QR de Ingreso</h2>
 
-        <!-- A real `button`, not a click handler on the plate: keyboard, focus ring and role come
+        <!-- A real `button`, not a click handler on the code: keyboard, focus ring and role come
              with the element. The corner icon is what tells a person the code opens larger. -->
         <button
           type="button"
@@ -92,7 +92,7 @@
           i18n-aria-label="@@reservations.detail.pass.enlarge"
           aria-label="Ampliar el código QR"
         >
-          <tui-icon icon="@tui.qr-code" aria-hidden="true"></tui-icon>
+          <app-qr-code [value]="reservation.code" [label]="passLabel" />
           <tui-icon class="pass-code__zoom" icon="@tui.maximize-2" aria-hidden="true"></tui-icon>
         </button>
 
@@ -109,9 +109,7 @@
 
       <ng-template [(tuiDialog)]="qrOpen" [tuiDialogOptions]="qrDialogOptions">
         <div class="qr-dialog">
-          <div class="pass-code qr-dialog__code">
-            <tui-icon icon="@tui.qr-code" aria-hidden="true"></tui-icon>
-          </div>
+          <app-qr-code class="qr-dialog__code" [value]="reservation.code" [label]="passLabel" />
 
           <p class="qr-dialog__hint" i18n="@@reservations.detail.pass.fallback">
             Si no puedes escanear, muestra este código

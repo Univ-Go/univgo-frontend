@@ -98,6 +98,7 @@
             id="space-date"
             tuiInputDate
             name="date"
+            autocomplete="off"
             [min]="today"
             [ngModel]="date()"
             (ngModelChange)="setDate($event)"
@@ -111,6 +112,7 @@
             id="space-from"
             tuiInputTime
             name="from"
+            autocomplete="off"
             [ngModel]="from()"
             (ngModelChange)="from.set($event)"
           />

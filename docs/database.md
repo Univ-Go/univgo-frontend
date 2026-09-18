@@ -33,27 +33,31 @@ base está corrupta. No lo está: **`V2` borra y recrea** `space_types`, `spaces
 `reservations` y `reservation_guests` con claves `uuid`, que es lo que hay. Para saber qué hay de
 verdad, leer `V2` en adelante, no `V1`.
 
-Estado actual: **`v11`**, todas aplicadas con éxito.
+Estado actual: **`v13` aplicadas**; la **`V14` está escrita y todavía no ha corrido** — entra la
+próxima vez que alguien arranque el backend, y esta base es compartida.
 
-| Versión | Qué hizo | Cuándo |
-| ------- | -------- | ------ |
-| `1` | Baseline. **No ejecutada.** | 2026-07-28 |
-| `2` | Reconstruye espacios y reservas con PK `uuid`; añade `in_progress` y `expired` al enum de estado | 2026-07-31 |
-| `3` | RBAC: `roles`, `permissions`, `role_permissions`, `user_roles`. Elimina `users.role` | 2026-09-07 |
-| `4` | Siembra 13 permisos | 2026-09-07 |
-| `5` | Siembra espacios y horarios | 2026-09-07 |
-| `4.1` | Tipo de espacio con id fijo. **Aplicada fuera de orden** | 2026-09-16 |
-| `6` | `refresh_tokens` | 2026-09-16 |
-| `7` | `institution_config` | 2026-09-16 |
-| `8` | `spaces.under_maintenance` | 2026-09-16 |
-| `9` | Estado de reserva calculado: `checked_in_at`, `cancelled_at`, `cancelled_by`. Elimina `reservations.status` y `reservation_guests` | 2026-09-16 |
-| `10` | `users.email` | 2026-09-16 |
-| `11` | `spaces.location` y `space_types.category` | 2026-09-16 |
+| Versión | Qué hizo                                                                                                                               | Cuándo     |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `1`     | Baseline. **No ejecutada.**                                                                                                            | 2026-07-28 |
+| `2`     | Reconstruye espacios y reservas con PK `uuid`; añade `in_progress` y `expired` al enum de estado                                       | 2026-07-31 |
+| `3`     | RBAC: `roles`, `permissions`, `role_permissions`, `user_roles`. Elimina `users.role`                                                   | 2026-09-07 |
+| `4`     | Siembra 13 permisos                                                                                                                    | 2026-09-07 |
+| `5`     | Siembra espacios y horarios                                                                                                            | 2026-09-07 |
+| `4.1`   | Tipo de espacio con id fijo. **Aplicada fuera de orden**                                                                               | 2026-09-16 |
+| `6`     | `refresh_tokens`                                                                                                                       | 2026-09-16 |
+| `7`     | `institution_config`                                                                                                                   | 2026-09-16 |
+| `8`     | `spaces.under_maintenance`                                                                                                             | 2026-09-16 |
+| `9`     | Estado de reserva calculado: `checked_in_at`, `cancelled_at`, `cancelled_by`. Elimina `reservations.status` y `reservation_guests`     | 2026-09-16 |
+| `10`    | `users.email`                                                                                                                          | 2026-09-16 |
+| `11`    | `spaces.location` y `space_types.category`                                                                                             | 2026-09-16 |
+| `12`    | `users.school`                                                                                                                         | 2026-09-17 |
+| `13`    | Siembra la escuela de los dos usuarios de prueba                                                                                       | 2026-09-17 |
+| `14`    | `space_closures` y el enum `space_closure_reason_enum`; migra `spaces.under_maintenance` a un cierre sin fecha de fin. **Sin aplicar** | —          |
 
 **La `V4_1` se añadió al repo después de que la `V5` ya hubiera corrido.** Flyway rechaza por defecto
 aplicar algo por detrás de lo ya ejecutado, así que abortaba el arranque antes de migrar nada. Se
 resolvió con `spring.flyway.out-of-order: true` **temporal** en `application-local.yml`, retirado en
-cuanto se aplicó. Si vuelve a aparecer *«Detected resolved migration not applied to database»*, es
+cuanto se aplicó. Si vuelve a aparecer _«Detected resolved migration not applied to database»_, es
 esto otra vez: alguien intercaló una versión.
 
 ---
@@ -77,6 +81,11 @@ sitio**; la autorización es sólo por rol (`@PreAuthorize("hasRole('ADMIN')")`)
 **El estado de una reserva no se guarda**, se calcula del reloj a partir de `created_at`,
 `checked_in_at`, `cancelled_at` y los límites del bloque. Ver `booking-flow.md` §14.
 
+**`spaces.under_maintenance` queda huérfana con la `V14`.** El código ya no la lee ni la escribe: un
+espacio fuera de servicio es un cierre sin fecha de fin en `space_closures`. La columna sigue ahí a
+propósito —expand/contract sobre una base compartida— y se retira en una migración posterior, cuando
+esté claro que nada la mira.
+
 **La categoría de un espacio no está en `spaces`**, sino en `space_types.category`
 (`SPORTS` | `STUDY` | `LAB`, con `CHECK`). El tipo ya es la taxonomía: duplicarla en la fila del
 espacio permitiría que dos salas del mismo tipo se contradijeran. `spaces.location` sí es del
@@ -86,15 +95,15 @@ espacio, porque cada uno está en un sitio.
 
 ## 4. Datos
 
-| Tabla | Filas | Origen |
-| ----- | ----- | ------ |
-| `users` | 2 | Insertados a mano |
-| `roles` | 2 | `V3` |
-| `spaces` | 6 | `V5` |
-| `space_schedules` | 30 | `V5` |
-| `reservations` | 0 | — |
-| `institution_config` | 1 | `V7`: bloque 120 min, tolerancia 15, uso mínimo 75, 1 reserva por espacio y día |
-| `space_types` | 1 | `V4.1`: «Cancha deportiva», categoría `SPORTS` desde la `V11` |
+| Tabla                | Filas | Origen                                                                          |
+| -------------------- | ----- | ------------------------------------------------------------------------------- |
+| `users`              | 2     | Insertados a mano                                                               |
+| `roles`              | 2     | `V3`                                                                            |
+| `spaces`             | 6     | `V5`                                                                            |
+| `space_schedules`    | 30    | `V5`                                                                            |
+| `reservations`       | 0     | —                                                                               |
+| `institution_config` | 1     | `V7`: bloque 120 min, tolerancia 15, uso mínimo 75, 1 reserva por espacio y día |
+| `space_types`        | 1     | `V4.1`: «Cancha deportiva», categoría `SPORTS` desde la `V11`                   |
 
 Los 6 espacios tienen `location = 'Complejo Deportivo Central'`. Es un **marcador de posición**, no
 un dato real: hacía falta un valor determinista para poder imponer `NOT NULL` sobre filas anteriores
@@ -108,10 +117,10 @@ siembra horario, o se quita.
 
 ### Usuarios
 
-| Rol | Documento | Correo | Contraseña | Nombre |
-| --- | --------- | ------ | ---------- | ------ |
-| `STUDENT` | `1234567890` | `1234567890@univgo.edu` | `Contrasena123!` | John Edit |
-| `ADMIN` | `0987654321` | `0987654321@univgo.edu` | `Admin123!` | Daniel Ortiz |
+| Rol       | Documento    | Correo                  | Contraseña       | Nombre       |
+| --------- | ------------ | ----------------------- | ---------------- | ------------ |
+| `STUDENT` | `1234567890` | `1234567890@univgo.edu` | `Contrasena123!` | John Edit    |
+| `ADMIN`   | `0987654321` | `0987654321@univgo.edu` | `Admin123!`      | Daniel Ortiz |
 
 **Son credenciales de desarrollo sobre datos ficticios.** Ninguna sirve fuera de esta base, y aquí
 están para que nadie tenga que adivinarlas. Si esta base llega a tener datos reales, esta tabla sale

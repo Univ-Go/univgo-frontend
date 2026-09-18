@@ -49,7 +49,7 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
 
     .skip-link {
       position: absolute;
-      z-index: 3;
+      z-index: var(--univgo-layer-floating);
       margin: var(--univgo-space-s);
       padding: var(--univgo-space-s) var(--univgo-space-l);
       border-radius: var(--tui-radius-s);

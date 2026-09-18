@@ -1,6 +1,6 @@
 import { SPACE_CATEGORIES } from '../../spaces/domain/space';
 import type { Reservation } from './reservation';
-import { RESERVATION_STATUSES } from './reservation';
+import { RESERVATION_STATES } from './reservation';
 import type { ReservationFilter } from './reservation-catalog';
 import { findNextReservation, listReservations } from './reservation-catalog';
 
@@ -11,20 +11,26 @@ const WEDNESDAY = new Date(2026, 7, 19);
 function reservation(overrides: Partial<Reservation> = {}): Reservation {
   return {
     id: 'court-a',
+    code: 'a0f3c1d2',
+    spaceId: 'space-1',
     spaceName: 'Cancha de Básquetbol A',
     location: 'Complejo Deportivo Central',
-    date: MONDAY,
-    time: '14:00 – 16:00',
-    status: 'upcoming',
     category: 'sports',
-    rules: [],
+    date: MONDAY,
+    startMinutes: 840,
+    endMinutes: 960,
+    state: 'reserved',
+    checkInOpensAt: new Date(2026, 7, 17, 13, 45),
+    checkInClosesAt: new Date(2026, 7, 17, 14, 15),
+    cancelledBy: null,
+    closureReason: null,
     ...overrides,
   };
 }
 
 function filter(overrides: Partial<ReservationFilter> = {}): ReservationFilter {
   return {
-    statuses: new Set(RESERVATION_STATUSES),
+    states: new Set(RESERVATION_STATES),
     categories: new Set(SPACE_CATEGORIES),
     from: null,
     to: null,
@@ -34,18 +40,27 @@ function filter(overrides: Partial<ReservationFilter> = {}): ReservationFilter {
 
 describe('listReservations', () => {
   it('keeps every booking when nothing is narrowed down', () => {
-    const bookings = [reservation({ id: 'one' }), reservation({ id: 'two', status: 'past' })];
+    const bookings = [reservation({ id: 'one' }), reservation({ id: 'two', state: 'finished' })];
 
     expect(listReservations(bookings, filter())).toEqual(bookings);
   });
 
-  it('drops the bookings whose status was unticked', () => {
-    const upcoming = reservation({ id: 'upcoming', status: 'upcoming' });
-    const past = reservation({ id: 'past', status: 'past' });
+  it('drops the bookings whose state was unticked', () => {
+    const live = reservation({ id: 'live', state: 'reserved' });
+    const finished = reservation({ id: 'finished', state: 'finished' });
 
-    const listed = listReservations([upcoming, past], filter({ statuses: new Set(['past']) }));
+    const listed = listReservations([live, finished], filter({ states: new Set(['finished']) }));
 
-    expect(listed).toEqual([past]);
+    expect(listed).toEqual([finished]);
+  });
+
+  it('tells a booking the student gave up from one they let expire', () => {
+    const cancelled = reservation({ id: 'cancelled', state: 'cancelled' });
+    const expired = reservation({ id: 'expired', state: 'expired' });
+
+    const listed = listReservations([cancelled, expired], filter({ states: new Set(['expired']) }));
+
+    expect(listed).toEqual([expired]);
   });
 
   it('drops the bookings whose category was unticked', () => {
@@ -58,7 +73,7 @@ describe('listReservations', () => {
   });
 
   it('answers with nothing when every option of a filter is unticked', () => {
-    expect(listReservations([reservation()], filter({ statuses: new Set() }))).toEqual([]);
+    expect(listReservations([reservation()], filter({ states: new Set() }))).toEqual([]);
     expect(listReservations([reservation()], filter({ categories: new Set() }))).toEqual([]);
   });
 
@@ -72,7 +87,7 @@ describe('listReservations', () => {
       filter({ from: MONDAY, to: WEDNESDAY }),
     );
 
-    expect(listed).toEqual([first, last]);
+    expect(listed.map((entry) => entry.id)).toEqual(['first', 'last']);
   });
 
   it('compares days, not instants, at either end of the range', () => {
@@ -91,25 +106,71 @@ describe('listReservations', () => {
     expect(listReservations([monday, wednesday], filter({ to: TUESDAY }))).toEqual([monday]);
   });
 
-  it('preserves the order it was given', () => {
+  it('puts the bookings that still hold a plaza first, soonest at the top', () => {
+    const finished = reservation({ id: 'finished', date: MONDAY, state: 'finished' });
+    const later = reservation({ id: 'later', date: WEDNESDAY, state: 'reserved' });
+    const sooner = reservation({ id: 'sooner', date: TUESDAY, state: 'inProgress' });
+
+    const listed = listReservations([finished, later, sooner], filter());
+
+    expect(listed.map((entry) => entry.id)).toEqual(['sooner', 'later', 'finished']);
+  });
+
+  it('ranks the history the other way round, most recent first', () => {
+    const older = reservation({ id: 'older', date: MONDAY, state: 'finished' });
+    const newer = reservation({ id: 'newer', date: WEDNESDAY, state: 'cancelled' });
+
+    const listed = listReservations([older, newer], filter());
+
+    expect(listed.map((entry) => entry.id)).toEqual(['newer', 'older']);
+  });
+
+  it('separates two bookings on the same day by their hour', () => {
+    const morning = reservation({ id: 'morning', startMinutes: 480, endMinutes: 600 });
+    const afternoon = reservation({ id: 'afternoon', startMinutes: 840, endMinutes: 960 });
+
+    const listed = listReservations([afternoon, morning], filter());
+
+    expect(listed.map((entry) => entry.id)).toEqual(['morning', 'afternoon']);
+  });
+
+  it('does not reorder the list it was given', () => {
     const later = reservation({ id: 'later', date: WEDNESDAY });
     const sooner = reservation({ id: 'sooner', date: MONDAY });
+    const bookings = [later, sooner];
 
-    expect(listReservations([later, sooner], filter())).toEqual([later, sooner]);
+    listReservations(bookings, filter());
+
+    expect(bookings).toEqual([later, sooner]);
   });
 });
 
 describe('findNextReservation', () => {
-  it('picks the soonest booking that has not finished', () => {
-    const soonest = reservation({ id: 'soonest', date: TUESDAY, status: 'ongoing' });
-    const later = reservation({ id: 'later', date: WEDNESDAY, status: 'upcoming' });
-    const finished = reservation({ id: 'finished', date: MONDAY, status: 'past' });
+  it('picks the soonest booking that still holds a plaza', () => {
+    const soonest = reservation({ id: 'soonest', date: TUESDAY, state: 'inProgress' });
+    const later = reservation({ id: 'later', date: WEDNESDAY, state: 'reserved' });
+    const finished = reservation({ id: 'finished', date: MONDAY, state: 'finished' });
 
     expect(findNextReservation([later, finished, soonest])).toBe(soonest);
   });
 
-  it('answers with nothing when every booking has finished', () => {
-    expect(findNextReservation([reservation({ status: 'past' })])).toBeUndefined();
+  it('ignores the bookings that lost their plaza, whichever way they lost it', () => {
+    const expired = reservation({ id: 'expired', date: TUESDAY, state: 'expired' });
+    const cancelled = reservation({ id: 'cancelled', date: MONDAY, state: 'cancelled' });
+    const live = reservation({ id: 'live', date: WEDNESDAY, state: 'reserved' });
+
+    expect(findNextReservation([expired, cancelled, live])).toBe(live);
+  });
+
+  it('offers a suspended booking as the next one, since it still holds its plaza', () => {
+    const suspended = reservation({ id: 'suspended', date: MONDAY, state: 'suspended' });
+    const later = reservation({ id: 'later', date: WEDNESDAY, state: 'reserved' });
+
+    expect(findNextReservation([later, suspended])).toBe(suspended);
+  });
+
+  it('answers with nothing when every booking is over', () => {
+    expect(findNextReservation([reservation({ state: 'finished' })])).toBeUndefined();
   });
 
   it('answers with nothing when there are no bookings at all', () => {

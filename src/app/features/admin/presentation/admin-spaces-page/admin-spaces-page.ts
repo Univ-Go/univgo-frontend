@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MOCK_SPACE_PROFILES } from '../../infrastructure/mock-attendance';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { TuiButton } from '@taiga-ui/core';
+import { TuiSkeleton } from '@taiga-ui/kit';
+import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { AdminSpacesStore } from '../../application/admin-spaces.store';
 import { AdminSpaceCard } from '../admin-space-card/admin-space-card';
+
+/** Placeholder cards drawn while the catalogue loads: a screenful, not the whole page. */
+const SKELETON_CARDS = Array.from({ length: 3 }, (_, index) => index);
 
 /**
  * The panel's entry point (`docs/booking-flow.md` §11: an administrator manages several spaces, and
@@ -8,17 +15,28 @@ import { AdminSpaceCard } from '../admin-space-card/admin-space-card';
  * never a remembered last section — which keeps the grid a plain choice rather than a second kind of
  * navigation history to reason about.
  *
- * `MOCK_SPACE_PROFILES` resolves synchronously and is never empty, so there is no loading or empty
- * state to build here; both would simulate a failure mode a mock can't produce. Revisit once a real
- * port replaces it.
+ * The spaces are the campus's own, read through `AdminSpacesStore`, so the ids in the panel's URLs
+ * are the ones the check-in endpoint answers about.
  */
 @Component({
   selector: 'app-admin-spaces-page',
-  imports: [AdminSpaceCard],
+  imports: [AdminSpaceCard, EmptyState, TuiButton, TuiSkeleton],
   templateUrl: './admin-spaces-page.html',
   styleUrl: './admin-spaces-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminSpacesPage {
-  protected readonly spaces = MOCK_SPACE_PROFILES;
+  private readonly store = inject(AdminSpacesStore);
+
+  protected readonly spaces = rxResource({
+    stream: () => this.store.list(),
+    defaultValue: [],
+  });
+
+  protected readonly skeletonCards = SKELETON_CARDS;
+
+  protected retry(): void {
+    this.store.refresh();
+    this.spaces.reload();
+  }
 }

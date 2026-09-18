@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { type Observable, map } from 'rxjs';
 import { APP_CONFIG } from '../../../core/config/app-config';
+import { fromIsoDateTime, minutesFromIsoTime } from '../../../shared/time/api-time';
+import { toIsoDate } from '../../../shared/time/calendar-day';
+import { closureReasonFromName } from '../domain/closure-reason';
 import { BOOKING_DURATION_MINUTES, type Space, categoryFromName } from '../domain/space';
 import type { SpaceBlock } from '../domain/space-block';
 import { blockerOf } from '../domain/space-block';
@@ -14,6 +17,8 @@ interface SpaceCatalogDto {
   readonly category: string;
   readonly capacity: number;
   readonly underMaintenance: boolean;
+  readonly opensOnDate: boolean;
+  readonly closedOnDate: boolean;
   /** Start of every block that still has a plaza on the requested day, as `HH:mm:ss`. */
   readonly freeBlockStarts: readonly string[];
 }
@@ -26,19 +31,16 @@ interface BlockAvailabilityDto {
   readonly offered: boolean;
   readonly alreadyReservedByUserToday: boolean;
   readonly overlapsUserReservation: boolean;
-}
-
-const MINUTES_PER_HOUR = 60;
-
-function toMinutes(time: string): number {
-  const [hours, minutes] = time.split(':');
-
-  return Number(hours) * MINUTES_PER_HOUR + Number(minutes);
+  readonly closed: boolean;
+  readonly closureReason: string | null;
+  /** The check-in window the student would get by reserving this block right now. */
+  readonly previewCheckInOpensAt: string;
+  readonly previewCheckInClosesAt: string;
 }
 
 /**
  * The catalogue reports the blocks that can still be booked; the domain reads windows. One block is
- * one window of the institution's fixed length, which is what `docs/booking-flow.md` §13 means by
+ * one window of the institution's fixed length, which is what `docs/booking-flow.md` §14 means by
  * opening hours ceasing to be continuous ranges.
  */
 function toSpace(dto: SpaceCatalogDto, date: Date): Space {
@@ -49,36 +51,33 @@ function toSpace(dto: SpaceCatalogDto, date: Date): Space {
     category: categoryFromName(dto.category),
     capacity: dto.capacity,
     underMaintenance: dto.underMaintenance,
+    opensOnDate: dto.opensOnDate,
+    closedOnDate: dto.closedOnDate,
     freeSlots: dto.freeBlockStarts.map((start) => ({
       date,
-      from: toMinutes(start),
-      to: toMinutes(start) + BOOKING_DURATION_MINUTES,
+      from: minutesFromIsoTime(start),
+      to: minutesFromIsoTime(start) + BOOKING_DURATION_MINUTES,
     })),
   };
 }
 
 function toBlock(dto: BlockAvailabilityDto): SpaceBlock {
   return {
-    startMinutes: toMinutes(dto.start),
-    endMinutes: toMinutes(dto.end),
+    startMinutes: minutesFromIsoTime(dto.start),
+    endMinutes: minutesFromIsoTime(dto.end),
     capacity: dto.capacity,
     free: dto.free,
+    checkInOpensAt: fromIsoDateTime(dto.previewCheckInOpensAt),
+    checkInClosesAt: fromIsoDateTime(dto.previewCheckInClosesAt),
     blocker: blockerOf({
       offered: dto.offered,
       free: dto.free,
       alreadyBookedToday: dto.alreadyReservedByUserToday,
       overlapsAnother: dto.overlapsUserReservation,
+      closed: dto.closed,
     }),
+    closureReason: dto.closureReason ? closureReasonFromName(dto.closureReason) : null,
   };
-}
-
-/** The server reads a calendar day, so the date has to travel as the user's own, not as UTC. */
-function toIsoDate(date: Date): string {
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, '0'),
-    String(date.getDate()).padStart(2, '0'),
-  ].join('-');
 }
 
 @Injectable()

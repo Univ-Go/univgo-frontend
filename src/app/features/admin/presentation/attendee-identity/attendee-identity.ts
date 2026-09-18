@@ -7,7 +7,7 @@ const INITIALS = 2;
 
 /**
  * Level 3: who a row is about. The roster shows it twice — as a table cell on a desktop and as the
- * head of a card on a phone — so the initials, the name and the faculty are laid out once here
+ * head of a card on a phone — so the initials, the name and the school are laid out once here
  * rather than kept in step across two templates.
  */
 @Component({

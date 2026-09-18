@@ -30,3 +30,8 @@
 .reservations__item {
   display: flex;
 }
+
+.reservations__item--skeleton {
+  block-size: var(--univgo-card-placeholder-height);
+  border-radius: var(--tui-radius-l);
+}

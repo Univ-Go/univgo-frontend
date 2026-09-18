@@ -64,9 +64,9 @@ export const bookingSpaceGuard: CanActivateFn = (route) => {
  *
  * This has to be explicit because the draft outlives the visit: a route's `providers` injector is
  * created once and cached on the route config rather than destroyed on deactivation. Without it,
- * "Nueva reserva" would open with last week's space still marked, and — worse — the created code
- * would live on, so the review step would keep bouncing to the outcome screen of a booking the
- * user already finished.
+ * "Nueva reserva" would open with last week's space still marked, and — worse — the reservation
+ * created last time would live on, so the review step would keep bouncing to the outcome screen of
+ * a booking the user already finished.
  *
  * `router.url` is still the URL being left while a guard runs, which is what makes "did we come
  * from inside the flow" answerable here.
@@ -75,7 +75,7 @@ export const bookingRestartGuard: CanActivateFn = () => {
   const draft = inject(BookingDraftStore);
   const enteredFromOutside = !inject(Router).url.startsWith('/book');
 
-  if (enteredFromOutside || draft.reservationCode()) {
+  if (enteredFromOutside || draft.reservation()) {
     draft.reset();
   }
 
@@ -92,7 +92,7 @@ export const bookingScheduledGuard: CanActivateFn = (route) => {
 
 /** The outcome screen belongs to a reservation that was actually created in this session. */
 export const bookingCreatedGuard: CanActivateFn = () =>
-  inject(BookingDraftStore).reservationCode() ? true : inject(Router).createUrlTree(SPACE_STEP);
+  inject(BookingDraftStore).reservation() ? true : inject(Router).createUrlTree(SPACE_STEP);
 
 /**
  * Leaving the flow with a booking half made is worth one question — and only then: with nothing

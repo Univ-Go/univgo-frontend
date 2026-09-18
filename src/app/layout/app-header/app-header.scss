@@ -4,7 +4,7 @@
   display: block;
   position: sticky;
   inset-block-start: 0;
-  z-index: 2;
+  z-index: var(--univgo-layer-sticky);
   // Its own compositing layer: without it the browser re-rasterises the bar on every frame and
   // snaps it to device pixels a step behind the page, which reads as a one-pixel shiver.
   will-change: transform;

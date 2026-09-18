@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TuiAppearance } from '@taiga-ui/core';
 import { TuiProgressBar } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-import type { BlockOccupancy } from '../../domain/attendance';
+import type { BlockLoad } from '../../domain/attendance';
 
 /**
  * Level 3: how full the block is. The panel's first question — "is there room?" — answered as the
@@ -22,5 +22,5 @@ import type { BlockOccupancy } from '../../domain/attendance';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OccupancyCard {
-  public readonly occupancy = input.required<BlockOccupancy>();
+  public readonly occupancy = input.required<BlockLoad>();
 }

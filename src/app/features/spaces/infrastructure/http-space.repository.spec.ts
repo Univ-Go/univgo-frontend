@@ -19,6 +19,8 @@ const CATALOG_PAYLOAD = [
     category: 'SPORTS',
     capacity: 4,
     underMaintenance: false,
+    opensOnDate: true,
+    closedOnDate: false,
     freeBlockStarts: ['06:00:00', '14:00:00'],
   },
 ];
@@ -69,6 +71,8 @@ describe('HttpSpaceRepository', () => {
         category: 'sports',
         capacity: 4,
         underMaintenance: false,
+        opensOnDate: true,
+        closedOnDate: false,
         freeSlots: [
           { date: DATE, from: 360, to: 480 },
           { date: DATE, from: 840, to: 960 },
@@ -105,6 +109,10 @@ describe('HttpSpaceRepository', () => {
           offered: true,
           alreadyReservedByUserToday: false,
           overlapsUserReservation: false,
+          closed: false,
+          closureReason: null,
+          previewCheckInOpensAt: '2026-09-17T13:45:00',
+          previewCheckInClosesAt: '2026-09-17T14:15:00',
         },
         {
           start: '16:00:00',
@@ -114,12 +122,34 @@ describe('HttpSpaceRepository', () => {
           offered: false,
           alreadyReservedByUserToday: false,
           overlapsUserReservation: false,
+          closed: true,
+          closureReason: 'MAINTENANCE',
+          previewCheckInOpensAt: '2026-09-17T15:45:00',
+          previewCheckInClosesAt: '2026-09-17T16:15:00',
         },
       ]);
 
     expect(await blocks).toEqual([
-      { startMinutes: 840, endMinutes: 960, capacity: 4, free: 2, blocker: null },
-      { startMinutes: 960, endMinutes: 1080, capacity: 4, free: 0, blocker: 'full' },
+      {
+        startMinutes: 840,
+        endMinutes: 960,
+        capacity: 4,
+        free: 2,
+        checkInOpensAt: new Date(2026, 8, 17, 13, 45),
+        checkInClosesAt: new Date(2026, 8, 17, 14, 15),
+        blocker: null,
+        closureReason: null,
+      },
+      {
+        startMinutes: 960,
+        endMinutes: 1080,
+        capacity: 4,
+        free: 0,
+        checkInOpensAt: new Date(2026, 8, 17, 15, 45),
+        checkInClosesAt: new Date(2026, 8, 17, 16, 15),
+        blocker: 'closed',
+        closureReason: 'maintenance',
+      },
     ]);
   });
 });

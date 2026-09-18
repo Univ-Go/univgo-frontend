@@ -53,7 +53,7 @@ export class SpaceCard {
 
   protected readonly bookable = computed(() => this.listed().availability.kind === 'free');
 
-  protected readonly closed = computed(() => this.listed().availability.kind === 'maintenance');
+  protected readonly closed = computed(() => this.listed().availability.kind === 'closed');
 
   protected choose(): void {
     this.draft?.selectSpace(this.listed().space);

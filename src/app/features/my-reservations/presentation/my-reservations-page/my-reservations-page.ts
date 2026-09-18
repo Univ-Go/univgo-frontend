@@ -1,20 +1,27 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import type { TuiDayRange } from '@taiga-ui/cdk';
-import { TuiLink } from '@taiga-ui/core';
-import { TuiCalendarRange, TuiPagination } from '@taiga-ui/kit';
+import { TuiButton, TuiDialogService, TuiLink } from '@taiga-ui/core';
+import { TuiCalendarRange, TuiPagination, TuiSkeleton, TUI_CONFIRM } from '@taiga-ui/kit';
+import { defaultIfEmpty } from 'rxjs';
+import { NotificationService } from '../../../../core/notifications/notification.service';
 import { CheckboxFilter } from '../../../../shared/checkbox-filter/checkbox-filter';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import { FilterDropdown } from '../../../../shared/filter-dropdown/filter-dropdown';
 import type { SpaceCategory } from '../../../spaces/domain/space';
 import { SPACE_CATEGORIES } from '../../../spaces/domain/space';
-import type { ReservationStatus } from '../../domain/reservation';
-import { RESERVATION_STATUSES } from '../../domain/reservation';
+import type { Reservation, ReservationState } from '../../domain/reservation';
+import { RESERVATION_STATES } from '../../domain/reservation';
+import { ReservationRepository } from '../../domain/reservation.repository';
 import { listReservations } from '../../domain/reservation-catalog';
-import { MOCK_RESERVATIONS } from '../../infrastructure/mock-reservations';
 import { ReservationCard } from '../reservation-card/reservation-card';
-import { RESERVATION_CATEGORY_OPTIONS, RESERVATION_STATUS_OPTIONS } from '../reservation-filters';
+import { RESERVATION_CATEGORY_OPTIONS, RESERVATION_STATE_OPTIONS } from '../reservation-filters';
 
 const RESERVATIONS_PER_PAGE = 6;
+
+/** Placeholder cards drawn while the list loads: a screenful, not the whole page. */
+const SKELETON_CARDS = Array.from({ length: 3 }, (_, index) => index);
 
 function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet<T> {
   const next = new Set(set);
@@ -29,13 +36,15 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
 }
 
 /**
- * Visual mock: layout and component inventory are final, the data is not. `MOCK_RESERVATIONS` is
- * the feature's only hardcoded source, shared with the detail view so both read the same
- * reservation by id — it moves to a use case behind a domain port once the booking API exists.
- * Filtering runs as real logic over that sample, in `reservation-catalog.ts` and not here: which
- * bookings answer a question is a rule, the same way the space catalogue's is. The view owns the
- * controls, the paging and the empty state; rendering one reservation belongs to
- * `ReservationCard`.
+ * The student's own bookings, read from the server and narrowed in the browser: which ones answer
+ * the question is a rule and lives in `reservation-catalog.ts`, the same way the space catalogue's
+ * does. The view owns the controls, the paging and the empty states; rendering one booking belongs
+ * to `ReservationCard`.
+ *
+ * Cancelling is confirmed with a dialog rather than an alert because it is not reversible: the
+ * plaza goes back to the block the moment it happens. Afterwards the list is read again instead of
+ * being patched in place — the server decides every state from its own clock, so a list edited
+ * here would start disagreeing with it on the next tick.
  *
  * The date filter is a single `TuiCalendarRange` so a user picks days visually rather than typing
  * them: clicking one day twice (or once, then Escape) commits it as a single-day range, clicking
@@ -50,26 +59,41 @@ function toggle<T>(set: ReadonlySet<T>, value: T, checked: boolean): ReadonlySet
     EmptyState,
     FilterDropdown,
     ReservationCard,
+    RouterLink,
+    TuiButton,
     TuiCalendarRange,
     TuiLink,
     TuiPagination,
+    TuiSkeleton,
   ],
   templateUrl: './my-reservations-page.html',
   styleUrl: './my-reservations-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyReservationsPage {
-  protected readonly reservations = MOCK_RESERVATIONS;
+  private readonly repository = inject(ReservationRepository);
+  private readonly dialogs = inject(TuiDialogService);
+  private readonly notifications = inject(NotificationService);
 
-  protected readonly statusOptions = RESERVATION_STATUS_OPTIONS;
+  protected readonly reservations = rxResource({
+    stream: () => this.repository.mine(),
+    defaultValue: [],
+  });
+
+  protected readonly skeletonCards = SKELETON_CARDS;
+
+  /** The booking whose cancellation is in flight, so only its own card reports the wait. */
+  protected readonly cancellingId = signal<string | null>(null);
+
+  protected readonly stateOptions = RESERVATION_STATE_OPTIONS;
   protected readonly categoryOptions = RESERVATION_CATEGORY_OPTIONS;
 
-  protected readonly statusLabel = $localize`:@@reservations.filters.status.label:Estado`;
+  protected readonly stateLabel = $localize`:@@reservations.filters.state.label:Estado`;
   protected readonly categoryLabel = $localize`:@@reservations.filters.category.label:Tipo de espacio`;
   protected readonly dateLabel = $localize`:@@reservations.filters.date.label:Fecha`;
 
-  protected readonly selectedStatuses = signal<ReadonlySet<ReservationStatus>>(
-    new Set(RESERVATION_STATUSES),
+  protected readonly selectedStates = signal<ReadonlySet<ReservationState>>(
+    new Set(RESERVATION_STATES),
   );
 
   protected readonly selectedCategories = signal<ReadonlySet<SpaceCategory>>(
@@ -87,8 +111,8 @@ export class MyReservationsPage {
   protected readonly filteredReservations = computed(() => {
     const range = this.selectedRange();
 
-    return listReservations(this.reservations, {
-      statuses: this.selectedStatuses(),
+    return listReservations(this.reservations.value(), {
+      states: this.selectedStates(),
       categories: this.selectedCategories(),
       from: range?.from.toLocalNativeDate() ?? null,
       to: range?.to.toLocalNativeDate() ?? null,
@@ -105,8 +129,8 @@ export class MyReservationsPage {
     return this.filteredReservations().slice(start, start + RESERVATIONS_PER_PAGE);
   });
 
-  protected toggleStatus(status: ReservationStatus, checked: boolean): void {
-    this.selectedStatuses.update((current) => toggle(current, status, checked));
+  protected toggleState(state: ReservationState, checked: boolean): void {
+    this.selectedStates.update((current) => toggle(current, state, checked));
     this.pageIndex.set(0);
   }
 
@@ -118,5 +142,54 @@ export class MyReservationsPage {
   protected setSelectedRange(range: TuiDayRange | null): void {
     this.selectedRange.set(range);
     this.pageIndex.set(0);
+  }
+
+  /**
+   * `defaultIfEmpty` is not defensive noise: dismissing a Taiga dialog with Escape or the backdrop
+   * completes it without emitting, and dismissing the question means keeping the booking.
+   */
+  protected confirmCancel(reservation: Reservation): void {
+    if (this.cancellingId()) {
+      return;
+    }
+
+    this.dialogs
+      .open<boolean>(TUI_CONFIRM, {
+        size: 's',
+        label: $localize`:@@reservations.cancel.title:¿Cancelar esta reserva?`,
+        data: {
+          content: $localize`:@@reservations.cancel.content:La plaza volverá a estar disponible para otras personas y podrás reservar otro bloque hoy.`,
+          yes: $localize`:@@reservations.cancel.confirm:Cancelar la reserva`,
+          no: $localize`:@@reservations.cancel.keep:Conservarla`,
+          appearance: 'primary-destructive',
+        },
+      })
+      .pipe(defaultIfEmpty(false))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.cancel(reservation);
+        }
+      });
+  }
+
+  private cancel(reservation: Reservation): void {
+    this.cancellingId.set(reservation.id);
+
+    this.repository.cancel(reservation.id).subscribe({
+      next: () => {
+        this.cancellingId.set(null);
+        this.notifications.success(
+          $localize`:@@reservations.cancel.done.summary:Reserva cancelada`,
+          $localize`:@@reservations.cancel.done.detail:La plaza ya está disponible para otras personas.`,
+        );
+        this.reservations.reload();
+      },
+      // The failure is already announced by the interceptor; what is left is to stop showing a
+      // booking in a state the server just disagreed with.
+      error: () => {
+        this.cancellingId.set(null);
+        this.reservations.reload();
+      },
+    });
   }
 }

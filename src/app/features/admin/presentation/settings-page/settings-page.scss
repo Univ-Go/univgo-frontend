@@ -29,6 +29,19 @@
   font: var(--tui-typography-body-m);
 }
 
+.cancel-card {
+  h2 {
+    font: var(--tui-typography-heading-h6);
+  }
+}
+
+.cancel-card__hint {
+  margin: 0;
+  max-inline-size: 44rem;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
 // The form is the page's main task and gets the wider column; the stats and history follow it.
 .layout {
   display: grid;

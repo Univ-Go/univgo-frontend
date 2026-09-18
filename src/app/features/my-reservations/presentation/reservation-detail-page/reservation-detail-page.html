@@ -31,66 +31,98 @@
   </nav>
 </div>
 
-@if (reservation(); as reservation) {
+@if (resource.isLoading()) {
+  <div
+    class="detail__loading"
+    aria-busy="true"
+    i18n-aria-label="@@reservations.detail.loading"
+    aria-label="Cargando la reserva"
+  >
+    <span class="detail__loading-block" [tuiSkeleton]="true"></span>
+    <span class="detail__loading-block" [tuiSkeleton]="true"></span>
+  </div>
+} @else if (resource.error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@reservations.detail.error.heading"
+    heading="No pudimos cargar esta reserva"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="resource.reload()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (reservation(); as reservation) {
   <header class="detail__header">
     <div class="detail__identity">
       <h1 class="detail__name">{{ reservation.spaceName }}</h1>
     </div>
 
-    <app-reservation-status-badge [status]="reservation.status" size="l" />
+    <app-reservation-status-badge [state]="reservation.state" size="l" />
   </header>
 
-  <div class="detail__content">
+  <app-reservation-interruption-notice [reservation]="reservation" [explained]="true" />
+
+  <div class="detail__content" [class.detail__content--passless]="!showsPass()">
     <app-media-plate class="detail__media" [icon]="categoryIcon(reservation.category)" />
 
-    <section
-      tuiCardLarge
-      tuiSurface
-      tuiAppearance="floating"
-      class="pass-card"
-      aria-labelledby="pass-title"
-    >
-      <h2 id="pass-title" i18n="@@reservations.detail.pass.title">QR de Ingreso</h2>
-
-      <!-- A real `button`, not a click handler on the plate: keyboard, focus ring and role come
-           with the element. The corner icon is what tells a person the code opens larger. -->
-      <button
-        type="button"
-        class="pass-code pass-card__code"
-        (click)="qrOpen.set(true)"
-        i18n-aria-label="@@reservations.detail.pass.enlarge"
-        aria-label="Ampliar el código QR"
+    @if (showsPass()) {
+      <section
+        tuiCardLarge
+        tuiSurface
+        tuiAppearance="floating"
+        class="pass-card"
+        aria-labelledby="pass-title"
       >
-        <tui-icon icon="@tui.qr-code" aria-hidden="true"></tui-icon>
-        <tui-icon class="pass-code__zoom" icon="@tui.maximize-2" aria-hidden="true"></tui-icon>
-      </button>
+        <h2 id="pass-title" i18n="@@reservations.detail.pass.title">QR de Ingreso</h2>
 
-      <!-- The fallback code stays on screen instead of hiding behind a disclosure: it is needed
-           precisely when the scan just failed, and it is the only readable form of the pass. -->
-      <p class="pass-card__hint" i18n="@@reservations.detail.pass.fallback">
-        Si no puedes escanear, muestra este código
-      </p>
+        <!-- A real `button`, not a click handler on the code: keyboard, focus ring and role come
+             with the element. The corner icon is what tells a person the code opens larger. -->
+        <button
+          type="button"
+          class="pass-code pass-card__code"
+          (click)="qrOpen.set(true)"
+          i18n-aria-label="@@reservations.detail.pass.enlarge"
+          aria-label="Ampliar el código QR"
+        >
+          <app-qr-code [value]="reservation.code" [label]="passLabel" />
+          <tui-icon class="pass-code__zoom" icon="@tui.maximize-2" aria-hidden="true"></tui-icon>
+        </button>
 
-      <p class="pass-card__id">
-        <code>{{ reservation.id }}</code>
-      </p>
-    </section>
-
-    <ng-template [(tuiDialog)]="qrOpen" [tuiDialogOptions]="qrDialogOptions">
-      <div class="qr-dialog">
-        <div class="pass-code qr-dialog__code">
-          <tui-icon icon="@tui.qr-code" aria-hidden="true"></tui-icon>
-        </div>
-
-        <p class="qr-dialog__hint" i18n="@@reservations.detail.pass.fallback">
+        <!-- The fallback code stays on screen instead of hiding behind a disclosure: it is needed
+             precisely when the scan just failed, and it is the only readable form of the pass. -->
+        <p class="pass-card__hint" i18n="@@reservations.detail.pass.fallback">
           Si no puedes escanear, muestra este código
         </p>
 
-        <p class="qr-dialog__id">
-          <code>{{ reservation.id }}</code>
+        <p class="pass-card__id">
+          <code>{{ reservation.code }}</code>
         </p>
-      </div>
-    </ng-template>
+      </section>
+
+      <ng-template [(tuiDialog)]="qrOpen" [tuiDialogOptions]="qrDialogOptions">
+        <div class="qr-dialog">
+          <app-qr-code class="qr-dialog__code" [value]="reservation.code" [label]="passLabel" />
+
+          <p class="qr-dialog__hint" i18n="@@reservations.detail.pass.fallback">
+            Si no puedes escanear, muestra este código
+          </p>
+
+          <p class="qr-dialog__id">
+            <code>{{ reservation.code }}</code>
+          </p>
+        </div>
+      </ng-template>
+    }
 
     <section
       tuiCardLarge
@@ -111,7 +143,7 @@
         </div>
         <div class="fact">
           <dt i18n="@@reservation.factTime">Horario</dt>
-          <dd><tui-icon icon="@tui.clock" aria-hidden="true"></tui-icon>{{ reservation.time }}</dd>
+          <dd><tui-icon icon="@tui.clock" aria-hidden="true"></tui-icon>{{ range() }}</dd>
         </div>
         <div class="fact">
           <dt i18n="@@reservation.factLocation">Ubicación</dt>
@@ -119,6 +151,21 @@
             <tui-icon icon="@tui.map-pin" aria-hidden="true"></tui-icon>{{ reservation.location }}
           </dd>
         </div>
+        <!-- Reserving is not enough: the booking is kept by being scanned inside this window, and
+             lost by letting it pass (`docs/booking-flow.md` §6). It is only shown while it can
+             still be met. -->
+        @if (showsPass()) {
+          <div class="fact">
+            <dt i18n="@@reservation.factCheckIn">Check-in</dt>
+            <dd>
+              <tui-icon icon="@tui.scan-line" aria-hidden="true"></tui-icon
+              ><span i18n="@@reservation.checkInWindow"
+                >De {{ reservation.checkInOpensAt | date: 'HH:mm' }} a
+                {{ reservation.checkInClosesAt | date: 'HH:mm' }}</span
+              >
+            </dd>
+          </div>
+        }
       </dl>
     </section>
 
@@ -132,7 +179,7 @@
       <h2 id="rules-title" i18n="@@reservations.detail.rules.title">Normas del espacio</h2>
 
       <ul tuiList="m" class="rules-card__list">
-        @for (rule of reservation.rules; track rule) {
+        @for (rule of rules(); track rule) {
           <li>{{ rule }}</li>
         }
       </ul>

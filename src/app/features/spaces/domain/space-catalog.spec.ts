@@ -26,6 +26,8 @@ function space(overrides: Partial<Space> = {}): Space {
     category: 'sports',
     capacity: 20,
     underMaintenance: false,
+    opensOnDate: true,
+    closedOnDate: false,
     freeSlots: [slot(MONDAY, 8, 12), slot(MONDAY, 15, 18)],
     ...overrides,
   };
@@ -36,22 +38,27 @@ function filter(overrides: Partial<SpaceFilter> = {}): SpaceFilter {
 }
 
 describe('resolveAvailability', () => {
-  it('reports maintenance regardless of the free slots on record', () => {
-    const underMaintenance = space({ underMaintenance: true });
+  it('tells a shut space from a full one and from one that does not open that day', () => {
+    const closed = space({ closedOnDate: true, freeSlots: [] });
+    const full = space({ freeSlots: [] });
+    const notOpen = space({ opensOnDate: false, freeSlots: [] });
 
-    expect(resolveAvailability(underMaintenance, filter())).toEqual({ kind: 'maintenance' });
+    expect(resolveAvailability(closed, filter())).toEqual({ kind: 'closed' });
+    expect(resolveAvailability(full, filter())).toEqual({ kind: 'full' });
+    expect(resolveAvailability(notOpen, filter())).toEqual({ kind: 'notOpen' });
+  });
+
+  it('calls a space shut even on a day it would not have opened anyway', () => {
+    // Otherwise "no abre" hides that somebody closed it, which is a decision and not a timetable.
+    const closed = space({ opensOnDate: false, closedOnDate: true, freeSlots: [] });
+
+    expect(resolveAvailability(closed, filter())).toEqual({ kind: 'closed' });
   });
 
   it('reports the earliest slot of the day when no start time is requested', () => {
     expect(resolveAvailability(space(), filter())).toEqual({
       kind: 'free',
       slot: slot(MONDAY, 8, 12),
-    });
-  });
-
-  it('reports unavailable when the space has no slot on the requested day', () => {
-    expect(resolveAvailability(space(), filter({ date: TUESDAY }))).toEqual({
-      kind: 'unavailable',
     });
   });
 
@@ -93,7 +100,8 @@ describe('listSpaces', () => {
     id: 'closed',
     name: 'Aula cerrada',
     category: 'study',
-    underMaintenance: true,
+    closedOnDate: true,
+    freeSlots: [],
   });
 
   it('keeps only the requested category', () => {
@@ -127,7 +135,7 @@ describe('listSpaces', () => {
   it('keeps spaces with nothing left on a requested day when no time is given', () => {
     const listed = listSpaces([court], filter({ date: TUESDAY }));
 
-    expect(listed.map((entry) => entry.availability.kind)).toEqual(['unavailable']);
+    expect(listed.map((entry) => entry.availability.kind)).toEqual(['full']);
   });
 });
 

@@ -10,7 +10,7 @@
 </header>
 
 <div class="layout">
-  <app-closure-form [spaceId]="spaceId()" (closureCreated)="addClosure($event)" />
+  <app-closure-form [saving]="closing()" (closureRequested)="close($event)" />
 
   <div class="layout__side">
     <div class="stats">
@@ -33,6 +33,41 @@
       />
     </div>
 
-    <app-closure-history [closures]="spaceClosures()" />
+    <app-closure-history
+      [closures]="closures.value()"
+      [reverting]="revertingId()"
+      (reverted)="revert($event)"
+    />
   </div>
 </div>
+
+<!-- A closure suspends and can be undone; this cannot. They stay two controls because they are two
+     decisions (`docs/booking-flow.md` §12): announcing next week's closure must not empty today. -->
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="floating"
+  class="cancel-card"
+  aria-labelledby="cancel-title"
+>
+  <h2 id="cancel-title" i18n="@@admin.settings.cancelAll.heading">Cancelar reservas del espacio</h2>
+
+  <p class="cancel-card__hint" i18n="@@admin.settings.cancelAll.closureHint">
+    Cancela las reservas que aún no han terminado. A diferencia de un cierre, no se puede deshacer:
+    los estudiantes las verán canceladas y podrán reservar en otro sitio.
+  </p>
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="outline-destructive"
+    iconStart="@tui.calendar-x"
+    [disabled]="cancelling()"
+    (click)="confirmCancelAll()"
+  >
+    <tui-loader [loading]="cancelling()" [inheritColor]="true" [overlay]="true">
+      <span i18n="@@admin.settings.cancelAll.action">Cancelar las reservas del espacio</span>
+    </tui-loader>
+  </button>
+</section>

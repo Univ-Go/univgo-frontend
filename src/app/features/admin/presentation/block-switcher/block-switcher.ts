@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { TuiButton, TuiDataList, TuiDropdown } from '@taiga-ui/core';
-import type { CapacityBlock } from '../../domain/attendance';
+import type { AdminBlock } from '../../domain/attendance';
 
 let nextTriggerId = 0;
 
@@ -22,7 +22,7 @@ let nextTriggerId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlockSwitcher {
-  public readonly blocks = input.required<readonly CapacityBlock[]>();
+  public readonly blocks = input.required<readonly AdminBlock[]>();
   /** Epoch milliseconds rather than a `Date`: stable equality without a `TuiTime`-style comparator. */
   public readonly selectedStart = input.required<number>();
 

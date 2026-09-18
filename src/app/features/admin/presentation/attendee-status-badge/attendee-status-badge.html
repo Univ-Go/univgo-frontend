@@ -1,5 +1,5 @@
 @switch (status()) {
-  @case ('in_progress') {
+  @case ('inProgress') {
     <span
       tuiBadge
       appearance="positive"
@@ -21,7 +21,7 @@
       Pendiente
     </span>
   }
-  @case ('completed') {
+  @case ('finished') {
     <span
       tuiBadge
       appearance="neutral"
@@ -41,6 +41,17 @@
       i18n="@@admin.attendee.status.expired"
     >
       Expiró
+    </span>
+  }
+  @case ('suspended') {
+    <span
+      tuiBadge
+      appearance="info"
+      [size]="size()"
+      iconStart="@tui.circle-pause"
+      i18n="@@admin.attendee.status.suspended"
+    >
+      Suspendida
     </span>
   }
   @case ('cancelled') {

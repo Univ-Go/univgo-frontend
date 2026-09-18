@@ -60,6 +60,22 @@
         </p>
       </div>
 
+      <!-- The deadline belongs before the decision, not after it: a last-minute booking buys less
+           time and obliges the student to be there almost at once, and finding that out after
+           accepting would be a trap (`docs/booking-flow.md` §5). -->
+      @if (booking.lastMinute) {
+        <output class="summary-card__notice">
+          <tui-icon icon="@tui.triangle-alert" aria-hidden="true" />
+          <span>
+            <strong i18n="@@booking.review.lastMinute.title">Reserva de último minuto</strong>
+            <span i18n="@@booking.review.lastMinute.detail"
+              >El bloque ya empezó: debes presentarte antes de las
+              {{ booking.checkInClosesAt | date: 'HH:mm' }} o perderás la plaza.</span
+            >
+          </span>
+        </output>
+      }
+
       <button
         tuiButton
         type="button"
@@ -67,10 +83,12 @@
         appearance="primary"
         iconStart="@tui.calendar-check"
         class="summary-card__create"
+        [disabled]="creating()"
         (click)="create()"
-        i18n="@@booking.review.create"
       >
-        Crear reserva
+        <tui-loader [loading]="creating()" [inheritColor]="true" [overlay]="true">
+          <span i18n="@@booking.review.create">Crear reserva</span>
+        </tui-loader>
       </button>
     </section>
 

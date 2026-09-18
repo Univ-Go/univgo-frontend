@@ -7,13 +7,14 @@ import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
 import { ActionBarTheme } from '../../../../shared/action-bar-theme/action-bar-theme';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { OnScreen } from '../../../../shared/on-screen/on-screen';
+import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import {
   spaceCategoryIcon,
   spaceCategoryName,
   spaceCategoryRules,
 } from '../../../spaces/presentation/space-category';
 import { BookingDraftStore } from '../../application/booking-draft.store';
-import { formatBookingRange } from '../booking-time';
+
 import { BookingSlotPicker } from '../booking-slot-picker/booking-slot-picker';
 
 /**
@@ -68,7 +69,7 @@ export class BookingSchedulePage {
   protected readonly range = computed(() => {
     const booking = this.draft.booking();
 
-    return booking ? formatBookingRange(booking.startMinutes, booking.endMinutes) : null;
+    return booking ? formatTimeRange(booking.startMinutes, booking.endMinutes) : null;
   });
 
   /** Starts true so the shortcut can only ever appear once the button has reported for itself. */

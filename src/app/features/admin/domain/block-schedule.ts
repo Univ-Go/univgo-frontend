@@ -1,5 +1,5 @@
 import { addDays, startOfDay } from '../../../shared/time/calendar-day';
-import type { BlockOccupancy, CapacityBlock } from './attendance';
+import type { AdminBlock, BlockLoad } from './attendance';
 
 /**
  * Where a block sits relative to the clock. It is derived per block and never per day: at three in
@@ -12,7 +12,7 @@ import type { BlockOccupancy, CapacityBlock } from './attendance';
  */
 export type BlockPhase = 'upcoming' | 'live' | 'past';
 
-export function blockPhaseOf(block: CapacityBlock, now: Date): BlockPhase {
+export function blockPhaseOf(block: AdminBlock, now: Date): BlockPhase {
   if (now.getTime() < block.start.getTime()) {
     return 'upcoming';
   }
@@ -33,7 +33,7 @@ export const CRITICAL_LOAD_RATIO = 0.9;
 
 export type OccupancyLoad = 'low' | 'high' | 'critical';
 
-export function occupancyLoadOf(occupancy: BlockOccupancy): OccupancyLoad {
+export function occupancyLoadOf(occupancy: BlockLoad): OccupancyLoad {
   // A block with no capacity on record is unknown, not saturated — the same call `occupancyOf` makes
   // when it refuses to draw a full meter for a capacity nobody stated.
   if (occupancy.capacity <= 0) {
@@ -50,7 +50,7 @@ export function occupancyLoadOf(occupancy: BlockOccupancy): OccupancyLoad {
 /** How full a block is, as the three answers the desk actually gives to "¿queda sitio?". */
 export type FullnessBand = 'available' | 'nearlyFull' | 'full';
 
-export function fullnessBandOf(occupancy: BlockOccupancy): FullnessBand {
+export function fullnessBandOf(occupancy: BlockLoad): FullnessBand {
   if (occupancy.capacity <= 0) {
     return 'available';
   }
@@ -118,7 +118,7 @@ const MINUTES_PER_HOUR = 60;
  * `-` and not `:` because a colon in a path segment is legal but is escaped inconsistently between
  * `routerLink`'s array and string forms.
  */
-export function blockKeyOf(block: CapacityBlock): string {
+export function blockKeyOf(block: AdminBlock): string {
   const hours = String(block.start.getHours()).padStart(2, '0');
   const minutes = String(block.start.getMinutes()).padStart(2, '0');
 
@@ -147,9 +147,9 @@ export function parseBlockKey(
  * saying so.
  */
 export function findBlockByKey(
-  blocks: readonly CapacityBlock[],
+  blocks: readonly AdminBlock[],
   key: string | null | undefined,
-): CapacityBlock | undefined {
+): AdminBlock | undefined {
   const parsed = parseBlockKey(key);
 
   if (parsed === null) {

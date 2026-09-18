@@ -45,19 +45,29 @@ export interface Space {
   readonly location: string;
   readonly category: SpaceCategory;
   readonly capacity: number;
+  /** Shut right now, whatever day is being asked about: what the panel's switch reports. */
   readonly underMaintenance: boolean;
+  /** Whether the space runs any block on the requested day at all. */
+  readonly opensOnDate: boolean;
+  /** Whether every block it runs that day falls inside a closure. */
+  readonly closedOnDate: boolean;
   readonly freeSlots: readonly SpaceSlot[];
 }
 
 /**
  * What the catalogue can answer about a space for a given request. `later` carries the slot whose
  * start time the user is told about, so the view never has to search the slots again.
+ *
+ * The three ways of having nothing free are three answers and not one: a space that does not open
+ * that day is a timetable, a shut one is a decision somebody made, and a full one is other students
+ * having got there first. Only the last is worth coming back for later the same day.
  */
 export type SpaceAvailability =
   | { readonly kind: 'free'; readonly slot: SpaceSlot }
   | { readonly kind: 'later'; readonly slot: SpaceSlot }
-  | { readonly kind: 'unavailable' }
-  | { readonly kind: 'maintenance' };
+  | { readonly kind: 'full' }
+  | { readonly kind: 'closed' }
+  | { readonly kind: 'notOpen' };
 
 /**
  * The request the catalogue answers. `date` is always set — the catalogue is about availability, and

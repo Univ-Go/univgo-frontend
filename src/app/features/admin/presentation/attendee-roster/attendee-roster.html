@@ -5,8 +5,8 @@
     <app-checkbox-filter
       [label]="statusLabel"
       [options]="statusOptions"
-      [selected]="selectedStatuses()"
-      (toggled)="toggleStatus($event.value, $event.checked)"
+      [selected]="selectedStates()"
+      (toggled)="toggleState($event.value, $event.checked)"
     />
   </header>
 
@@ -15,17 +15,17 @@
       <!-- A five-column table on a phone is a table nobody can read. The same row, stacked: who the
            student is, what the desk needs to know about them, and what can be done about it. -->
       <ul class="cards">
-        @for (attendee of pagedAttendees(); track attendee.id) {
+        @for (attendee of pagedAttendees(); track attendee.document) {
           <li class="card">
             <div class="card__top">
               <app-attendee-identity [attendee]="attendee" />
-              <app-attendee-status-badge [status]="attendee.status" size="s" />
+              <app-attendee-status-badge [status]="attendee.state" size="s" />
             </div>
 
             <dl class="card__facts">
               <div class="fact">
-                <dt i18n="@@admin.roster.column.universityId">ID universitario</dt>
-                <dd>{{ attendee.universityId }}</dd>
+                <dt i18n="@@admin.roster.column.universityId">Documento</dt>
+                <dd>{{ attendee.document }}</dd>
               </div>
               <div class="fact">
                 <dt i18n="@@admin.roster.column.checkedInAt">Hora de entrada</dt>
@@ -40,18 +40,6 @@
                 </dd>
               </div>
             </dl>
-
-            @if (actionFor(attendee); as action) {
-              <button
-                tuiButton
-                type="button"
-                size="s"
-                [appearance]="action.appearance"
-                [iconStart]="action.icon"
-              >
-                {{ action.label }}
-              </button>
-            }
           </li>
         }
       </ul>
@@ -66,20 +54,19 @@
           <thead>
             <tr>
               <th tuiTh i18n="@@admin.roster.column.student">Estudiante</th>
-              <th tuiTh i18n="@@admin.roster.column.universityId">ID universitario</th>
+              <th tuiTh i18n="@@admin.roster.column.universityId">Documento</th>
               <th tuiTh i18n="@@admin.roster.column.checkedInAt">Hora de entrada</th>
               <th tuiTh i18n="@@admin.roster.column.status">Estado</th>
-              <th tuiTh class="cell--center" i18n="@@admin.roster.column.actions">Acciones</th>
             </tr>
           </thead>
 
           <tbody>
-            @for (attendee of pagedAttendees(); track attendee.id) {
+            @for (attendee of pagedAttendees(); track attendee.document) {
               <tr>
                 <td tuiTd>
                   <app-attendee-identity [attendee]="attendee" />
                 </td>
-                <td tuiTd class="cell--code">{{ attendee.universityId }}</td>
+                <td tuiTd class="cell--code">{{ attendee.document }}</td>
                 <td tuiTd class="cell--code">
                   @if (attendee.checkedInAt; as arrival) {
                     {{ arrival | date: 'shortTime' }}
@@ -90,23 +77,7 @@
                   }
                 </td>
                 <td tuiTd>
-                  <app-attendee-status-badge [status]="attendee.status" size="s" />
-                </td>
-                <td tuiTd class="cell--center">
-                  @if (actionFor(attendee); as action) {
-                    <!-- The name rides in the label: the column header does not reach a screen
-                         reader that jumped straight to the button. The hint repeats only the action,
-                         not the name, for a mouse user hovering a row they can already see. -->
-                    <button
-                      tuiIconButton
-                      type="button"
-                      size="s"
-                      [appearance]="action.appearance"
-                      [iconStart]="action.icon"
-                      [tuiHint]="action.label"
-                      [attr.aria-label]="action.label + ': ' + attendee.name"
-                    ></button>
-                  }
+                  <app-attendee-status-badge [status]="attendee.state" size="s" />
                 </td>
               </tr>
             }

@@ -1,5 +1,15 @@
 <header class="intro">
   <h1 i18n="@@admin.scan.title">Escáner</h1>
+
+  <!-- Which block a code is being checked against decides four of the six answers, so it is stated
+       rather than assumed. -->
+  @if (currentRange(); as range) {
+    <p class="intro__block" i18n="@@admin.scan.currentBlock">Bloque en curso: {{ range }}</p>
+  } @else {
+    <p class="intro__block" i18n="@@admin.scan.noCurrentBlock">
+      Ahora mismo no hay ningún bloque en curso en este espacio.
+    </p>
+  }
 </header>
 
 <div class="layout">
@@ -24,7 +34,7 @@
             name="code"
             autocomplete="off"
             i18n-placeholder="@@admin.scan.manualEntry.placeholder"
-            placeholder="Ej. UG-1234"
+            placeholder="Pega o escribe el código del estudiante"
             [ngModel]="manualCode()"
             (ngModelChange)="manualCode.set($event)"
             [disabled]="verifying()"

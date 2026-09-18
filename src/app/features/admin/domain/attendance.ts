@@ -1,45 +1,45 @@
-/**
- * The five states of a reservation, as `docs/booking-flow.md` §7 defines them. The panel is the only
- * surface that sees all of them at once: a student ever looks at one reservation, their own.
- */
-export type CheckInStatus = 'in_progress' | 'reserved' | 'completed' | 'expired' | 'cancelled';
-
-/** Declaration order is the order the roster's filter offers the statuses in. */
-export const CHECK_IN_STATUSES: readonly CheckInStatus[] = [
-  'in_progress',
-  'reserved',
-  'completed',
-  'expired',
-  'cancelled',
-];
+import type { ReservationState } from '../../my-reservations/domain/reservation';
+import type { ClosureReason } from '../../spaces/domain/closure-reason';
 
 /**
- * A student on the current block's list, as the administrator sees them.
+ * The states a block's roster can hold. The server lists the reservations that still count for the
+ * block, so a booking the student gave up never appears here — it is not a filter the panel forgot,
+ * it is that a cancelled reservation stopped being part of this block the moment it was cancelled
+ * (`CLAUDE.md` §22, invariant 1).
  *
- * `checkInClosesAt` is a backend-authoritative instant rather than something derived here: the
- * window's two ends come out of parameters the server owns, and a panel that recomputed them would
- * be a second opinion about when a seat is lost. The frontend only reads the clock against it.
+ * Declaration order is the order the roster's filter offers them in.
+ */
+export const ROSTER_STATES = [
+  'reserved',
+  'inProgress',
+  'finished',
+  'expired',
+  'suspended',
+] as const satisfies readonly ReservationState[];
+
+export type RosterState = (typeof ROSTER_STATES)[number];
+
+/**
+ * A student on the current block's list, as the administrator sees them: who they are, what they
+ * can show at the desk, and whether they are already inside.
+ *
+ * The document and the school are what the person at the door checks a face against — the same
+ * vocabulary the student's card carries. There is no check-in code here on purpose: a code is
+ * scanned, never read off a list, and the scanner is where a check-in happens.
  */
 export interface Attendee {
-  readonly id: string;
   readonly name: string;
-  readonly faculty: string;
-  readonly universityId: string;
-  readonly status: CheckInStatus;
-  /** The code the scanner reads, in the same `UG-1234` shape the student's own QR carries. */
-  readonly checkInCode: string;
+  readonly document: string;
+  readonly school: string;
+  readonly state: ReservationState;
   /** When the administrator scanned them in, or `null` while they have not arrived. */
   readonly checkedInAt: Date | null;
-  /** When their check-in window opens. `null` once the window no longer decides anything. */
-  readonly checkInOpensAt: Date | null;
-  /** When their check-in window closes. `null` once the window no longer decides anything. */
-  readonly checkInClosesAt: Date | null;
 }
 
 /**
- * A space the administrator is responsible for, with no block attached. Separate from
- * `CapacityBlock` because "which spaces can I switch to" and "what is happening at 14:00" are two
- * questions: answering the first with a block forces a time to be picked before a space is.
+ * A space the administrator is responsible for, with no block attached. Separate from `AdminBlock`
+ * because "which spaces can I switch to" and "what is happening at 14:00" are two questions:
+ * answering the first with a block forces a time to be picked before a space is.
  */
 export interface AdminSpace {
   readonly spaceId: string;
@@ -47,39 +47,63 @@ export interface AdminSpace {
   readonly capacity: number;
 }
 
-export interface CapacityBlock extends AdminSpace {
+/**
+ * One block of a space on one day, with the numbers the server counted. `occupied` and `free` are
+ * its answer and not a sum made here: a free seat is the absence of a reservation holding it at
+ * this instant, which only the server's clock can settle.
+ *
+ * `start` and `end` are instants on the day that was asked for, so everything that reads a block —
+ * its phase, its key in the URL, the switcher — compares dates rather than parsing clock strings.
+ */
+export interface AdminBlock {
   readonly start: Date;
   readonly end: Date;
-  readonly attendees: readonly Attendee[];
-}
-
-/**
- * What the block's numbers are, derived and never stored: a free seat is the absence of a
- * reservation holding it, not a counter something has to give back (`CLAUDE.md` §22, invariant 1).
- */
-export interface BlockOccupancy {
   readonly capacity: number;
   /** Seats a reservation is holding: waiting to check in, or already inside. */
   readonly occupied: number;
   readonly free: number;
+  /** The space is shut for this block, so its counts say nothing anybody can use (spec §12). */
+  readonly closed: boolean;
+  /** Set exactly when `closed` is, because that is the only case with a reason to give. */
+  readonly closureReason: ClosureReason | null;
+}
+
+/** One block with the people in it, which is the only reading that costs a request of its own. */
+export interface AdminBlockDetail extends AdminBlock {
+  readonly attendees: readonly Attendee[];
+}
+
+/** How full a block is. Everything here is the server's count, plus the ratio the meters draw. */
+export interface BlockLoad {
+  readonly capacity: number;
+  readonly occupied: number;
+  readonly free: number;
+  /** `occupied / capacity`, between 0 and 1. */
+  readonly ratio: number;
+}
+
+/**
+ * What the roster adds to the count: the same people, read by what they did rather than by whether
+ * they hold a seat. Only the block detail can answer it, which is why it is not part of `BlockLoad`
+ * — the day's list knows how full each block is and nothing about who turned up.
+ */
+export interface RosterTally {
   readonly inRoom: number;
   readonly pending: number;
-  /** `occupied / capacity`, between 0 and 1, for the meters that draw it. */
-  readonly ratio: number;
   /**
-   * How many of the block's reservations were actually used — checked in, whether or not the block
-   * has ended. The only counters that still say something once every seat has been released.
+   * How many of the block's reservations were used — checked in, whether or not the block has
+   * ended. The only counter that still says something once every seat has been released.
    */
   readonly attended: number;
   /**
-   * How many were lost to the clock. Cancellations are in neither counter on purpose: the student
-   * said they were not coming, and `docs/booking-flow.md` §7 rewards exactly that, so counting one
-   * as a no-show would report the opposite of what the flow encourages.
+   * How many were lost to the clock. Cancellations are in neither counter, and cannot be: the
+   * server does not list them, because the student said they were not coming and
+   * `docs/booking-flow.md` §7 rewards exactly that.
    */
   readonly missed: number;
 }
 
 export interface AttendeeFilter {
   readonly query: string | null;
-  readonly statuses: ReadonlySet<CheckInStatus>;
+  readonly states: ReadonlySet<ReservationState>;
 }

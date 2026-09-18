@@ -4,8 +4,10 @@
   <header class="card__header">
     <h3 class="card__name">{{ reservation().spaceName }}</h3>
 
-    <app-reservation-status-badge [status]="reservation().status" />
+    <app-reservation-status-badge [state]="reservation().state" />
   </header>
+
+  <app-reservation-interruption-notice [reservation]="reservation()" />
 
   <dl class="card__facts">
     <div class="fact">
@@ -16,32 +18,46 @@
     </div>
     <div class="fact">
       <dt i18n="@@reservation.factTime">Horario</dt>
-      <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ reservation().time }}</dd>
+      <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ range() }}</dd>
     </div>
   </dl>
 
-  <div class="card__actions">
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      appearance="outline-destructive"
-      iconStart="@tui.ban"
-      i18n="@@reservations.card.cancel"
-    >
-      Cancelar
-    </button>
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      appearance="accent"
-      iconStart="@tui.qr-code"
-      i18n="@@reservations.card.viewQr"
-    >
-      Ver QR
-    </button>
-  </div>
+  <!-- A booking that is over, expired or given up has nothing left to act on, so the bar is not
+       drawn with disabled buttons: the card is then a record, and an action it would refuse is a
+       promise the interface cannot keep. -->
+  @if (canCancel() || hasPass()) {
+    <div class="card__actions">
+      @if (canCancel()) {
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          appearance="outline-destructive"
+          iconStart="@tui.ban"
+          [disabled]="cancelling()"
+          (click)="cancelled.emit(reservation())"
+          i18n="@@reservations.card.cancel"
+        >
+          Cancelar
+        </button>
+      }
+
+      @if (hasPass()) {
+        <!-- The pass lives on the detail view, and the query string is what opens it straight
+             away: one dialog in the product rather than a second copy of it here. -->
+        <a
+          tuiButton
+          size="m"
+          appearance="accent"
+          iconStart="@tui.qr-code"
+          [routerLink]="['/reservations', reservation().id]"
+          [queryParams]="{ pass: 1 }"
+          i18n="@@reservations.card.viewQr"
+          >Ver QR</a
+        >
+      }
+    </div>
+  }
 
   <a
     tuiLink

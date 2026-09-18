@@ -1,244 +1,121 @@
-import type { Attendee, AttendeeFilter, CapacityBlock, CheckInStatus } from './attendance';
-import { CHECK_IN_STATUSES } from './attendance';
-import {
-  EXPIRY_WARNING_MINUTES,
-  countExpiringSoon,
-  listAttendees,
-  occupancyOf,
-} from './attendance-roster';
+import type { AdminBlock, Attendee, AttendeeFilter } from './attendance';
+import { ROSTER_STATES } from './attendance';
+import { blockLoadOf, listAttendees, rosterTallyOf } from './attendance-roster';
 
 const BLOCK_START = new Date(2026, 7, 20, 9, 0);
 const BLOCK_END = new Date(2026, 7, 20, 11, 0);
 
-const MS_PER_MINUTE = 60_000;
-
-function minutesFrom(instant: Date, minutes: number): Date {
-  return new Date(instant.getTime() + minutes * MS_PER_MINUTE);
-}
-
 function attendee(overrides: Partial<Attendee> = {}): Attendee {
   return {
-    id: 'student-1',
     name: 'Carlos Gómez',
-    faculty: 'Ingeniería',
-    universityId: 'U-203948',
-    status: 'reserved',
-    checkInCode: 'UG-0001',
+    document: '1234567890',
+    school: 'Ingeniería',
+    state: 'reserved',
     checkedInAt: null,
-    checkInOpensAt: minutesFrom(BLOCK_START, -15),
-    checkInClosesAt: minutesFrom(BLOCK_START, 15),
     ...overrides,
   };
 }
 
-function block(attendees: readonly Attendee[], capacity = 50): CapacityBlock {
+function block(overrides: Partial<AdminBlock> = {}): AdminBlock {
   return {
-    spaceId: 'court-basketball-a',
-    spaceName: 'Cancha de Básquetbol A',
     start: BLOCK_START,
     end: BLOCK_END,
-    capacity,
-    attendees,
+    capacity: 50,
+    occupied: 0,
+    free: 50,
+    closed: false,
+    closureReason: null,
+    ...overrides,
   };
 }
 
 function filter(overrides: Partial<AttendeeFilter> = {}): AttendeeFilter {
-  return {
-    query: null,
-    statuses: new Set(CHECK_IN_STATUSES),
-    ...overrides,
-  };
+  return { query: null, states: new Set(ROSTER_STATES), ...overrides };
 }
 
-function withStatus(status: CheckInStatus, id: string): Attendee {
-  return attendee({ id, status });
-}
-
-describe('occupancyOf', () => {
-  it('counts a seat as taken while a reservation is waiting or already inside', () => {
-    const occupancy = occupancyOf(
-      block([withStatus('reserved', 'a'), withStatus('in_progress', 'b')], 10),
-    );
-
-    expect(occupancy.pending).toBe(1);
-    expect(occupancy.inRoom).toBe(1);
-    expect(occupancy.occupied).toBe(2);
-    expect(occupancy.free).toBe(8);
+describe('blockLoadOf', () => {
+  it('reports the counts the server gave rather than recounting them', () => {
+    expect(blockLoadOf(block({ capacity: 50, occupied: 20, free: 30 }))).toEqual({
+      capacity: 50,
+      occupied: 20,
+      free: 30,
+      ratio: 0.4,
+    });
   });
 
-  it('frees the seat of a reservation that ended, expired or was cancelled', () => {
-    const occupancy = occupancyOf(
-      block(
-        [
-          withStatus('in_progress', 'a'),
-          withStatus('completed', 'b'),
-          withStatus('expired', 'c'),
-          withStatus('cancelled', 'd'),
-        ],
-        10,
-      ),
-    );
-
-    expect(occupancy.occupied).toBe(1);
-    expect(occupancy.free).toBe(9);
+  it('leaves the meter empty for a block with no capacity on record', () => {
+    expect(blockLoadOf(block({ capacity: 0, occupied: 0, free: 0 })).ratio).toBe(0);
   });
 
-  it('reports how full the block is as a fraction of its capacity', () => {
-    const attendees = Array.from({ length: 42 }, (_, index) =>
-      withStatus('in_progress', `student-${index}`),
-    );
-
-    expect(occupancyOf(block(attendees, 50)).ratio).toBeCloseTo(0.84);
-  });
-
-  it('never reports a negative number of free seats when a block is overbooked', () => {
-    const attendees = Array.from({ length: 4 }, (_, index) =>
-      withStatus('reserved', `student-${index}`),
-    );
-
-    const occupancy = occupancyOf(block(attendees, 2));
-
-    expect(occupancy.free).toBe(0);
-    expect(occupancy.ratio).toBe(1);
-  });
-
-  it('does not report a block of unknown capacity as full', () => {
-    expect(occupancyOf(block([withStatus('reserved', 'a')], 0)).ratio).toBe(0);
-  });
-
-  it('reports who used the block and who was lost to the clock once it has ended', () => {
-    const attendees = [
-      ...Array.from({ length: 7 }, (_, index) => withStatus('completed', `done-${index}`)),
-      ...Array.from({ length: 3 }, (_, index) => withStatus('expired', `late-${index}`)),
-    ];
-
-    const occupancy = occupancyOf(block(attendees, 10));
-
-    expect(occupancy.attended).toBe(7);
-    expect(occupancy.missed).toBe(3);
-    expect(occupancy.occupied).toBe(0);
-    expect(occupancy.free).toBe(10);
-  });
-
-  it('counts a reservation still inside the room as attended', () => {
-    expect(occupancyOf(block([withStatus('in_progress', 'a')], 10)).attended).toBe(1);
-  });
-
-  /**
-   * `docs/booking-flow.md` §7 separates cancelling from expiring precisely because one was announced
-   * and the other was not, and cancelling is the behaviour the flow rewards. Counting it as a
-   * no-show would report the opposite of what the institution wants to encourage.
-   */
-  it('counts a cancellation as neither attended nor missed', () => {
-    const occupancy = occupancyOf(block([withStatus('cancelled', 'a')], 10));
-
-    expect(occupancy.attended).toBe(0);
-    expect(occupancy.missed).toBe(0);
-  });
-
-  it('reports zeroes rather than NaN for a block nobody booked', () => {
-    const occupancy = occupancyOf(block([], 10));
-
-    expect(occupancy.attended).toBe(0);
-    expect(occupancy.missed).toBe(0);
-    expect(occupancy.ratio).toBe(0);
+  it('never draws a meter past full, whatever the numbers say', () => {
+    expect(blockLoadOf(block({ capacity: 10, occupied: 12, free: 0 })).ratio).toBe(1);
   });
 });
 
-describe('countExpiringSoon', () => {
-  const now = new Date(2026, 7, 20, 9, 10);
+describe('rosterTallyOf', () => {
+  it('counts who is inside, who is still expected, who used it and who lost it', () => {
+    const tally = rosterTallyOf([
+      attendee({ state: 'inProgress' }),
+      attendee({ state: 'inProgress' }),
+      attendee({ state: 'reserved' }),
+      attendee({ state: 'finished' }),
+      attendee({ state: 'expired' }),
+    ]);
 
-  it('counts the reservations whose check-in window closes within the warning window', () => {
-    const counted = countExpiringSoon(
-      block([
-        attendee({ id: 'a', checkInClosesAt: minutesFrom(now, 1) }),
-        attendee({ id: 'b', checkInClosesAt: minutesFrom(now, EXPIRY_WARNING_MINUTES) }),
-      ]),
-      now,
-    );
-
-    expect(counted).toBe(2);
+    expect(tally).toEqual({ inRoom: 2, pending: 1, attended: 3, missed: 1 });
   });
 
-  it('ignores a window that closes further away than the warning window', () => {
-    const counted = countExpiringSoon(
-      block([attendee({ id: 'a', checkInClosesAt: minutesFrom(now, EXPIRY_WARNING_MINUTES + 1) })]),
-      now,
-    );
-
-    expect(counted).toBe(0);
+  it('counts somebody still in the room as having attended, block unfinished or not', () => {
+    expect(rosterTallyOf([attendee({ state: 'inProgress' })]).attended).toBe(1);
   });
 
-  it('ignores a window that has already closed, because that is an outcome and not a warning', () => {
-    const counted = countExpiringSoon(
-      block([attendee({ id: 'a', checkInClosesAt: minutesFrom(now, -1) })]),
-      now,
-    );
-
-    expect(counted).toBe(0);
-  });
-
-  it('ignores anyone who is no longer waiting to be scanned', () => {
-    const counted = countExpiringSoon(
-      block([
-        attendee({ id: 'a', status: 'in_progress', checkInClosesAt: minutesFrom(now, 1) }),
-        attendee({ id: 'b', status: 'expired', checkInClosesAt: minutesFrom(now, 1) }),
-      ]),
-      now,
-    );
-
-    expect(counted).toBe(0);
+  it('answers with zeroes for a block nobody booked', () => {
+    expect(rosterTallyOf([])).toEqual({ inRoom: 0, pending: 0, attended: 0, missed: 0 });
   });
 });
 
 describe('listAttendees', () => {
-  it('puts the students still waiting to be scanned first', () => {
+  it('puts the people still to act on first, then sorts by name', () => {
     const listed = listAttendees(
       [
-        withStatus('cancelled', 'a'),
-        withStatus('in_progress', 'b'),
-        withStatus('reserved', 'c'),
-        withStatus('expired', 'd'),
+        attendee({ name: 'Zoe', state: 'finished' }),
+        attendee({ name: 'Ana', state: 'inProgress' }),
+        attendee({ name: 'Beto', state: 'reserved' }),
       ],
       filter(),
     );
 
-    expect(listed.map((entry) => entry.id)).toEqual(['c', 'b', 'd', 'a']);
+    expect(listed.map((entry) => entry.name)).toEqual(['Beto', 'Ana', 'Zoe']);
   });
 
-  it('finds a student by name, ignoring accents', () => {
+  it('drops the states the administrator unticked', () => {
     const listed = listAttendees(
-      [attendee({ id: 'a', name: 'María Rodríguez' }), attendee({ id: 'b', name: 'Javier López' })],
-      filter({ query: 'maria' }),
+      [attendee({ name: 'Ana', state: 'reserved' }), attendee({ name: 'Zoe', state: 'expired' })],
+      filter({ states: new Set(['expired']) }),
     );
 
-    expect(listed.map((entry) => entry.id)).toEqual(['a']);
+    expect(listed.map((entry) => entry.name)).toEqual(['Zoe']);
   });
 
-  it('finds a student by university id', () => {
-    const listed = listAttendees(
-      [
-        attendee({ id: 'a', universityId: 'U-203948' }),
-        attendee({ id: 'b', universityId: 'U-192837' }),
-      ],
-      filter({ query: 'u-192837' }),
+  it('finds somebody by name or by the document on their card', () => {
+    const roster = [
+      attendee({ name: 'Ana Ruiz', document: '111' }),
+      attendee({ name: 'Beto Díaz', document: '222' }),
+    ];
+
+    expect(listAttendees(roster, filter({ query: 'beto' })).map((entry) => entry.document)).toEqual(
+      ['222'],
     );
-
-    expect(listed.map((entry) => entry.id)).toEqual(['b']);
+    expect(listAttendees(roster, filter({ query: '111' })).map((entry) => entry.name)).toEqual([
+      'Ana Ruiz',
+    ]);
   });
 
-  it('keeps only the statuses that were asked for', () => {
-    const listed = listAttendees(
-      [withStatus('reserved', 'a'), withStatus('expired', 'b')],
-      filter({ statuses: new Set<CheckInStatus>(['expired']) }),
-    );
+  it('does not reorder the list it was given', () => {
+    const roster = [attendee({ name: 'Zoe' }), attendee({ name: 'Ana' })];
 
-    expect(listed.map((entry) => entry.id)).toEqual(['b']);
-  });
+    listAttendees(roster, filter());
 
-  it('comes back empty when no status is left to list', () => {
-    expect(
-      listAttendees([withStatus('reserved', 'a')], filter({ statuses: new Set<CheckInStatus>() })),
-    ).toEqual([]);
+    expect(roster.map((entry) => entry.name)).toEqual(['Zoe', 'Ana']);
   });
 });

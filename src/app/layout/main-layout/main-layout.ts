@@ -43,9 +43,20 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
       }
     }
 
+    // A view that raises a floating bar pins it to the viewport's bottom edge — which is where the
+    // footer sits once the page is scrolled to its end, so the bar lands on the legal links and a
+    // link under a bar cannot be clicked. The room each view reserves keeps its own last row clear
+    // while scrolling past; the end of the page is the shell's to leave, because the footer is.
+    //
+    // Matched with :has rather than with a flag passed down: which view raised a bar is the view's
+    // business, and a shell that had to be told would be one more thing to keep in step.
+    :host:has(tui-action-bar) app-footer {
+      padding-block-end: var(--univgo-action-bar-room);
+    }
+
     .skip-link {
       position: absolute;
-      z-index: 2;
+      z-index: var(--univgo-layer-sticky);
       margin: var(--univgo-space-s);
       padding: var(--univgo-space-s) var(--univgo-space-l);
       border-radius: var(--tui-radius-s);

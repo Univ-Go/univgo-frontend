@@ -6,7 +6,8 @@ import type { ClosureStatus } from '../../domain/space-closure';
 /**
  * Level 2: the flag a closure row carries. Reuses the same appearance-per-outcome mapping as
  * `AttendeeStatusBadge` — warning for what has not started, positive for what is happening now,
- * neutral for what is over — so "in effect" reads the same colour everywhere in the panel.
+ * neutral for what is over or undone — so "in effect" reads the same colour everywhere in the
+ * panel. The icon is what tells the two neutral ones apart.
  */
 @Component({
   selector: 'app-closure-status-badge',

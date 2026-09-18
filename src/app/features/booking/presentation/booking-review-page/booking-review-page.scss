@@ -123,6 +123,32 @@
   inline-size: 100%;
 }
 
+// Sits between the facts and the button because that is where it changes the decision. Warning
+// tokens, not the brand's crimson: this is a condition of the booking, not the action itself.
+.summary-card__notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  padding: var(--univgo-space-m);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-status-warning-pale);
+  color: var(--tui-text-primary);
+  font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    flex: none;
+    color: var(--tui-status-warning);
+    font-size: var(--univgo-icon-inline);
+  }
+
+  > span {
+    display: flex;
+    flex-direction: column;
+    gap: var(--univgo-space-xs);
+  }
+}
+
 .info-card__list {
   --tui-list-marker: var(--tui-background-accent-1);
 }

@@ -1,35 +1,71 @@
-@switch (status()) {
-  @case ('upcoming') {
+@switch (state()) {
+  @case ('reserved') {
     <span
       tuiBadge
       appearance="positive"
       [size]="size()"
       iconStart="@tui.circle-check"
-      i18n="@@reservations.card.status.upcoming"
+      i18n="@@reservations.card.status.reserved"
     >
-      Próxima
+      Reservada
     </span>
   }
-  @case ('ongoing') {
+  @case ('suspended') {
+    <span
+      tuiBadge
+      appearance="info"
+      [size]="size()"
+      iconStart="@tui.circle-pause"
+      i18n="@@reservations.card.status.suspended"
+    >
+      Suspendida
+    </span>
+  }
+  @case ('inProgress') {
     <span
       tuiBadge
       appearance="warning"
       [size]="size()"
       iconStart="@tui.loader-circle"
-      i18n="@@reservations.card.status.ongoing"
+      i18n="@@reservations.card.status.inProgress"
     >
       En curso
     </span>
   }
-  @case ('past') {
+  @case ('finished') {
     <span
       tuiBadge
       appearance="neutral"
       [size]="size()"
       iconStart="@tui.history"
-      i18n="@@reservations.card.status.past"
+      i18n="@@reservations.card.status.finished"
     >
-      Pasada
+      Finalizada
+    </span>
+  }
+  <!-- Expiring and cancelling end the same way for the space and differently for the student: one
+       happened to them, the other was their decision (`docs/booking-flow.md` §7). The badge is
+       where that difference is told, so neither the wording nor the icon is shared. -->
+  @case ('expired') {
+    <span
+      tuiBadge
+      appearance="negative"
+      [size]="size()"
+      iconStart="@tui.timer-off"
+      i18n="@@reservations.card.status.expired"
+    >
+      Expirada
+    </span>
+  }
+  @case ('cancelled') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.ban"
+      i18n="@@reservations.card.status.cancelled"
+    >
+      Cancelada
     </span>
   }
 }

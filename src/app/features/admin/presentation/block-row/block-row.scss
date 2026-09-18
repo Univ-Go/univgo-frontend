@@ -125,6 +125,12 @@
   }
 }
 
+.row__reason {
+  &::before {
+    content: ' · ';
+  }
+}
+
 .row__caption {
   margin: 0;
   color: var(--tui-text-tertiary);

@@ -7,9 +7,10 @@ import { TuiButton } from '@taiga-ui/core';
 import { TuiSkeleton } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiHeader, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import { SessionStore } from '../../../auth/application/session-store';
+import { ReservationRepository } from '../../../my-reservations/domain/reservation.repository';
 import { findNextReservation } from '../../../my-reservations/domain/reservation-catalog';
-import { MOCK_RESERVATIONS } from '../../../my-reservations/infrastructure/mock-reservations';
 import { ReservationStatusBadge } from '../../../my-reservations/presentation/reservation-status-badge/reservation-status-badge';
 import { SpaceRepository } from '../../../spaces/domain/space.repository';
 import { listSpaces } from '../../../spaces/domain/space-catalog';
@@ -52,12 +53,33 @@ const SKELETON_CARDS = Array.from({ length: FEATURED_SPACES }, (_, index) => ind
 export class HomePage {
   private readonly session = inject(SessionStore);
   private readonly spaces = inject(SpaceRepository);
+  private readonly reservations = inject(ReservationRepository);
 
   protected readonly userName = computed(() => this.session.user()?.firstName ?? '');
 
   protected readonly categoryIcon = spaceCategoryIcon;
 
-  protected readonly nextReservation = findNextReservation(MOCK_RESERVATIONS);
+  /**
+   * Home shows one booking, but the endpoint answers with all of them and which one is next is a
+   * rule the list view shares. Picking it here rather than asking for a dedicated endpoint keeps
+   * that rule in one place.
+   */
+  private readonly myReservations = rxResource({
+    stream: () => this.reservations.mine(),
+    defaultValue: [],
+  });
+
+  protected readonly loadingReservation = this.myReservations.isLoading;
+
+  protected readonly nextReservation = computed(() =>
+    findNextReservation(this.myReservations.value()),
+  );
+
+  protected readonly nextRange = computed(() => {
+    const reservation = this.nextReservation();
+
+    return reservation ? formatTimeRange(reservation.startMinutes, reservation.endMinutes) : '';
+  });
 
   /** Read once: home is opened and left, and a day that changed under the user would be noise. */
   private readonly today = new Date();

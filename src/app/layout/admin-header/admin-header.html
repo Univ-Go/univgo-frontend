@@ -12,7 +12,11 @@
   </a>
 
   @if (currentSpaceId(); as id) {
-    <app-space-switcher [spaces]="spaces" [selectedId]="id" (spaceSelected)="changeSpace($event)" />
+    <app-space-switcher
+      [spaces]="spaces()"
+      [selectedId]="id"
+      (spaceSelected)="changeSpace($event)"
+    />
   }
 
   <!-- Nothing to submit: the roster answers as the field changes. The handler is what keeps Enter

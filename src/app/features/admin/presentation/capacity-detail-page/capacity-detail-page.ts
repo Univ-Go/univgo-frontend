@@ -1,36 +1,39 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TuiItem } from '@taiga-ui/cdk';
 import { TuiButton, TuiLink } from '@taiga-ui/core';
-import { TuiBreadcrumbs } from '@taiga-ui/kit';
+import { TuiBreadcrumbs, TuiSkeleton } from '@taiga-ui/kit';
 import { APP_CONFIG } from '../../../../core/config/app-config';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import { parseIsoDate, startOfDay, toIsoDate } from '../../../../shared/time/calendar-day';
-import { countExpiringSoon, occupancyOf } from '../../domain/attendance-roster';
+import { AdminSpacesStore } from '../../application/admin-spaces.store';
+import { AdminBlockRepository } from '../../domain/admin-block.repository';
+import { blockLoadOf, rosterTallyOf } from '../../domain/attendance-roster';
 import {
   blockKeyOf,
   clampToNavigableRange,
   findBlockByKey,
   navigableDayRange,
 } from '../../domain/block-schedule';
-import { mockBlocksFor } from '../../infrastructure/mock-attendance';
 import { AttendeeRoster } from '../attendee-roster/attendee-roster';
 import { BlockSwitcher } from '../block-switcher/block-switcher';
 import { MetricCard } from '../metric-card/metric-card';
 import { OccupancyCard } from '../occupancy-card/occupancy-card';
 
 /**
- * Visual mock: layout and component inventory are final, the data is not.
- *
  * One block of the schedule, which is `docs/booking-flow.md` §11's "ver el bloque actual" — except
  * that the current block turned out not to be a special case, only the row the list opens by
  * default. The `BlockSwitcher` stays for the sideways move between adjacent blocks: somebody
  * comparing 14:00 with 16:00 should not have to go back up and come down again.
  *
- * Space, day and block all travel in the address — space and block as path segments, day in the
- * query string — so going back is dropping the last segment and everything else survives. Everything
- * is derived with `computed()` for the same reason the list is: the router re-emits inputs on this
- * instance when only the query changes.
+ * Two reads, and each answers something the other cannot. The day's blocks say which hours this
+ * space runs — which is what makes a typed or stale key answerable with "that block is not there"
+ * rather than with a room invented for it — and the block's own read brings the roster. The second
+ * only runs once the first has recognised the key.
+ *
+ * Space, day and block all travel in the address, so a block somebody is looking at is a link they
+ * can send.
  */
 @Component({
   selector: 'app-capacity-detail-page',
@@ -45,6 +48,7 @@ import { OccupancyCard } from '../occupancy-card/occupancy-card';
     TuiButton,
     TuiItem,
     TuiLink,
+    TuiSkeleton,
   ],
   templateUrl: './capacity-detail-page.html',
   styleUrl: './capacity-detail-page.scss',
@@ -59,6 +63,8 @@ export class CapacityDetailPage {
   public readonly query = input<string | null>(null);
 
   private readonly config = inject(APP_CONFIG);
+  private readonly spaces = inject(AdminSpacesStore);
+  private readonly repository = inject(AdminBlockRepository);
   private readonly router = inject(Router);
 
   /**
@@ -81,30 +87,61 @@ export class CapacityDetailPage {
 
   protected readonly dayParam = computed(() => toIsoDate(this.selectedDay()));
 
-  protected readonly blocksForDay = computed(() =>
-    mockBlocksFor(this.spaceId(), this.selectedDay(), this.now),
-  );
+  /** The space's name for the heading. The guard on `:spaceId` already filled this cache. */
+  private readonly space = rxResource({
+    params: () => this.spaceId(),
+    stream: ({ params }) => this.spaces.find(params),
+    defaultValue: null,
+  });
+
+  protected readonly spaceName = computed(() => this.space.value()?.spaceName ?? '');
+
+  protected readonly schedule = rxResource({
+    params: () => ({ spaceId: this.spaceId(), day: this.selectedDay().getTime() }),
+    stream: ({ params }) => this.repository.blocksOf(params.spaceId, new Date(params.day)),
+    defaultValue: [],
+  });
+
+  protected readonly blocksForDay = this.schedule.value;
 
   /** `undefined` rather than a fallback: a block that is not there is worth saying so about, and
    *  quietly opening a different hour would be a worse answer than an empty state. */
-  protected readonly current = computed(() => findBlockByKey(this.blocksForDay(), this.block()));
+  protected readonly scheduled = computed(() => findBlockByKey(this.blocksForDay(), this.block()));
 
-  protected readonly occupancy = computed(() => {
-    const block = this.current();
+  protected readonly detail = rxResource({
+    params: () => {
+      const block = this.scheduled();
 
-    return block ? occupancyOf(block) : null;
+      return block
+        ? {
+            spaceId: this.spaceId(),
+            day: this.selectedDay().getTime(),
+            start: block.start.getTime(),
+          }
+        : undefined;
+    },
+    stream: ({ params }) =>
+      this.repository.blockDetail(params.spaceId, new Date(params.day), new Date(params.start)),
+    defaultValue: null,
   });
 
-  protected readonly expiringSoon = computed(() => {
+  protected readonly current = this.detail.value;
+
+  protected readonly load = computed(() => {
     const block = this.current();
 
-    return block ? countExpiringSoon(block, this.now) : 0;
+    return block ? blockLoadOf(block) : null;
   });
 
-  /** No warning icon when there is nothing to warn about: "none" is good news, not an alert. */
-  protected readonly expiryIcon = computed(() =>
-    this.expiringSoon() > 0 ? '@tui.triangle-alert' : null,
-  );
+  protected readonly tally = computed(() => {
+    const block = this.current();
+
+    return block ? rosterTallyOf(block.attendees) : null;
+  });
+
+  protected readonly loading = computed(() => this.schedule.isLoading() || this.detail.isLoading());
+
+  protected readonly failed = computed(() => this.schedule.error() ?? this.detail.error());
 
   protected readonly listParams = computed(() => ({
     date: this.dayParam() === toIsoDate(startOfDay(this.now)) ? null : this.dayParam(),
@@ -121,5 +158,10 @@ export class CapacityDetailPage {
     void this.router.navigate(['/admin', this.spaceId(), 'blocks', blockKeyOf(target)], {
       queryParams: this.listParams(),
     });
+  }
+
+  protected retry(): void {
+    this.schedule.reload();
+    this.detail.reload();
   }
 }

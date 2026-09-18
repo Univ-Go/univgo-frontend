@@ -10,16 +10,16 @@
           <li class="card">
             <div class="card__top">
               <span class="card__date">
-                {{ closure.date | date: 'longDate' }}
-                @if (closure.scope === 'time_block') {
+                {{ closure.startsAt | date: 'longDate' }}
+                @if (closure.endsAt; as endsAt) {
                   <span class="card__time"
-                    >{{ closure.start | date: 'shortTime' }} –
-                    {{ closure.end | date: 'shortTime' }}</span
+                    >{{ closure.startsAt | date: 'shortTime' }} –
+                    {{ endsAt | date: 'shortTime' }}</span
                   >
-                } @else if (closure.scope === 'recurring') {
-                  <span class="card__time">{{ recurrenceSummary(closure) }}</span>
                 } @else {
-                  <span class="card__time" i18n="@@admin.closure.scope.fullDay">Día completo</span>
+                  <span class="card__time" i18n="@@admin.closure.span.indefinite"
+                    >Sin fecha de fin</span
+                  >
                 }
               </span>
               <app-closure-status-badge [status]="statusOf(closure)" size="s" />
@@ -30,11 +30,28 @@
                 <dt i18n="@@admin.closure.history.column.reason">Motivo</dt>
                 <dd>{{ reasonName(closure.reason) }}</dd>
               </div>
-              <div class="fact">
-                <dt i18n="@@admin.closure.history.column.authorizedBy">Autorizado por</dt>
-                <dd>{{ closure.authorizedBy }}</dd>
-              </div>
+              @if (closure.details; as details) {
+                <div class="fact">
+                  <dt i18n="@@admin.closure.history.column.details">Detalle</dt>
+                  <dd>{{ details }}</dd>
+                </div>
+              }
             </dl>
+
+            @if (revertible(closure)) {
+              <button
+                tuiButton
+                type="button"
+                size="s"
+                appearance="outline"
+                iconStart="@tui.rotate-ccw"
+                [disabled]="reverting() === closure.id"
+                (click)="reverted.emit(closure)"
+                i18n="@@admin.closure.history.revert"
+              >
+                Reabrir
+              </button>
+            }
           </li>
         }
       </ul>
@@ -45,8 +62,10 @@
             <tr>
               <th tuiTh i18n="@@admin.closure.history.column.dateTime">Fecha / horario</th>
               <th tuiTh i18n="@@admin.closure.history.column.reason">Motivo</th>
-              <th tuiTh i18n="@@admin.closure.history.column.authorizedBy">Autorizado por</th>
               <th tuiTh i18n="@@admin.closure.history.column.status">Estado</th>
+              <th tuiTh class="cell--center" i18n="@@admin.closure.history.column.actions">
+                Acciones
+              </th>
             </tr>
           </thead>
 
@@ -54,25 +73,40 @@
             @for (closure of pagedClosures(); track closure.id) {
               <tr>
                 <td tuiTd class="cell--code">
-                  {{ closure.date | date: 'longDate' }}
+                  {{ closure.startsAt | date: 'longDate' }}
                   <br />
-                  @if (closure.scope === 'time_block') {
+                  @if (closure.endsAt; as endsAt) {
                     <span class="cell--muted"
-                      >{{ closure.start | date: 'shortTime' }} –
-                      {{ closure.end | date: 'shortTime' }}</span
+                      >{{ closure.startsAt | date: 'shortTime' }} –
+                      {{ endsAt | date: 'shortTime' }}</span
                     >
-                  } @else if (closure.scope === 'recurring') {
-                    <span class="cell--muted">{{ recurrenceSummary(closure) }}</span>
                   } @else {
-                    <span class="cell--muted" i18n="@@admin.closure.scope.fullDay"
-                      >Día completo</span
+                    <span class="cell--muted" i18n="@@admin.closure.span.indefinite"
+                      >Sin fecha de fin</span
                     >
                   }
                 </td>
                 <td tuiTd>{{ reasonName(closure.reason) }}</td>
-                <td tuiTd>{{ closure.authorizedBy }}</td>
                 <td tuiTd>
                   <app-closure-status-badge [status]="statusOf(closure)" size="s" />
+                </td>
+                <td tuiTd class="cell--center">
+                  <!-- Reopening is not destructive — it hands the suspended reservations back — so
+                       it asks for no confirmation, unlike registering the closure itself. -->
+                  @if (revertible(closure)) {
+                    <button
+                      tuiButton
+                      type="button"
+                      size="s"
+                      appearance="outline"
+                      iconStart="@tui.rotate-ccw"
+                      [disabled]="reverting() === closure.id"
+                      (click)="reverted.emit(closure)"
+                      i18n="@@admin.closure.history.revert"
+                    >
+                      Reabrir
+                    </button>
+                  }
                 </td>
               </tr>
             }
@@ -92,7 +126,7 @@
 
   <footer class="history__footer">
     @let shown = pagedClosures().length;
-    @let total = listed().length;
+    @let total = closures().length;
 
     <p class="history__count">
       <span i18n="@@admin.roster.count">{total, plural,

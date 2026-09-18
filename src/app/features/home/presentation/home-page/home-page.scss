@@ -128,3 +128,11 @@ article.reservation[tuiCardLarge] {
 .reservation {
   @include cards.lift;
 }
+
+// The placeholder stands in for the card at its own height, so the section does not collapse and
+// then jump when the booking arrives.
+.reservation--skeleton {
+  margin: 0;
+  block-size: calc(var(--tui-height-l) + var(--univgo-space-2xl));
+  border-radius: var(--tui-radius-l);
+}

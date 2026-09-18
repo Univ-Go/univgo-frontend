@@ -64,7 +64,7 @@
            time and obliges the student to be there almost at once, and finding that out after
            accepting would be a trap (`docs/booking-flow.md` §5). -->
       @if (booking.lastMinute) {
-        <p class="summary-card__notice" role="status">
+        <output class="summary-card__notice">
           <tui-icon icon="@tui.triangle-alert" aria-hidden="true" />
           <span>
             <strong i18n="@@booking.review.lastMinute.title">Reserva de último minuto</strong>
@@ -73,7 +73,7 @@
               {{ booking.checkInClosesAt | date: 'HH:mm' }} o perderás la plaza.</span
             >
           </span>
-        </p>
+        </output>
       }
 
       <button

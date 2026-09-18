@@ -36,8 +36,9 @@ function chronologically(one: Reservation, other: Reservation): number {
  */
 function byRelevance(one: Reservation, other: Reservation): number {
   const live = Number(isActive(other)) - Number(isActive(one));
+  const order = chronologically(one, other);
 
-  return live || (isActive(one) ? chronologically(one, other) : chronologically(other, one));
+  return live || (isActive(one) ? order : -order);
 }
 
 /**

@@ -14,6 +14,7 @@ import { RESERVATION_STATES } from '../domain/reservation';
  */
 const STATE_LABELS: Readonly<Record<ReservationState, string>> = {
   reserved: $localize`:@@reservations.filters.state.reserved:Reservadas`,
+  suspended: $localize`:@@reservations.filters.state.suspended:Suspendidas`,
   inProgress: $localize`:@@reservations.filters.state.inProgress:En curso`,
   finished: $localize`:@@reservations.filters.state.finished:Finalizadas`,
   expired: $localize`:@@reservations.filters.state.expired:Expiradas`,

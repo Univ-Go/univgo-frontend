@@ -11,9 +11,10 @@ import {
   toIsoTime,
 } from '../../../shared/time/api-time';
 import { toIsoDate } from '../../../shared/time/calendar-day';
+import { closureReasonFromName } from '../../spaces/domain/closure-reason';
 import type { Space } from '../../spaces/domain/space';
 import { SpaceRepository } from '../../spaces/domain/space.repository';
-import type { Reservation, ReservationState } from '../domain/reservation';
+import type { Canceller, Reservation, ReservationState } from '../domain/reservation';
 import { type BookingRequest, ReservationRepository } from '../domain/reservation.repository';
 
 interface ReservationDto {
@@ -26,6 +27,8 @@ interface ReservationDto {
   readonly state: string;
   readonly checkInOpensAt: string;
   readonly checkInClosesAt: string;
+  readonly cancelledBy: string | null;
+  readonly closureReason: string | null;
 }
 
 /**
@@ -35,10 +38,16 @@ interface ReservationDto {
  */
 const STATES: Readonly<Record<string, ReservationState>> = {
   RESERVED: 'reserved',
+  SUSPENDED: 'suspended',
   IN_PROGRESS: 'inProgress',
   FINISHED: 'finished',
   EXPIRED: 'expired',
   CANCELLED: 'cancelled',
+};
+
+const CANCELLERS: Readonly<Record<string, Canceller>> = {
+  STUDENT: 'student',
+  ADMIN: 'admin',
 };
 
 /**
@@ -72,6 +81,8 @@ function toReservation(dto: ReservationDto, space: Space): Reservation {
     state: STATES[dto.state] ?? 'finished',
     checkInOpensAt: fromIsoDateTime(dto.checkInOpensAt),
     checkInClosesAt: fromIsoDateTime(dto.checkInClosesAt),
+    cancelledBy: dto.cancelledBy ? (CANCELLERS[dto.cancelledBy] ?? null) : null,
+    closureReason: dto.closureReason ? closureReasonFromName(dto.closureReason) : null,
   };
 }
 

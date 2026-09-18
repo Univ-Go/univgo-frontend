@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+// Nothing to say renders nothing, and an empty element would still take a gap in its parent's flow.
+:host:empty {
+  display: none;
+}

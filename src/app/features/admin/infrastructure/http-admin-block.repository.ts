@@ -37,6 +37,7 @@ interface BlockDetailDto extends BlockSummaryDto {
 /** The same vocabulary the student's own reservations arrive in, read the same way. */
 const STATES: Readonly<Record<string, ReservationState>> = {
   RESERVED: 'reserved',
+  SUSPENDED: 'suspended',
   IN_PROGRESS: 'inProgress',
   FINISHED: 'finished',
   EXPIRED: 'expired',

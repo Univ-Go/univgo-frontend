@@ -1706,6 +1706,46 @@
         <source> Código desconocido o reserva cancelada. </source>
         <target> Unknown code or cancelled reservation. </target>
       </trans-unit>
+      <trans-unit id="reservations.card.status.suspended" datatype="html">
+        <source> Suspendida </source>
+        <target> Suspended </target>
+      </trans-unit>
+      <trans-unit id="reservations.filters.state.suspended" datatype="html">
+        <source>Suspendidas</source>
+        <target>Suspended</target>
+      </trans-unit>
+      <trans-unit id="admin.attendee.status.suspended" datatype="html">
+        <source> Suspendida </source>
+        <target> Suspended </target>
+      </trans-unit>
+      <trans-unit id="admin.roster.filters.status.suspended" datatype="html">
+        <source>Suspendidas</source>
+        <target>Suspended</target>
+      </trans-unit>
+      <trans-unit id="reservations.interruption.suspended.title" datatype="html">
+        <source>El espacio está cerrado a esa hora</source>
+        <target>The space is closed at that time</target>
+      </trans-unit>
+      <trans-unit id="reservations.interruption.reason" datatype="html">
+        <source>Motivo: <x id="INTERPOLATION" equiv-text="{{ reason() }}"/></source>
+        <target>Reason: <x id="INTERPOLATION" equiv-text="{{ reason() }}"/></target>
+      </trans-unit>
+      <trans-unit id="reservations.interruption.suspended.description" datatype="html">
+        <source>Tu reserva conserva su plaza. Si el espacio reabre, vuelve tal cual estaba.</source>
+        <target>Your booking keeps its place. If the space reopens, it comes back just as it was.</target>
+      </trans-unit>
+      <trans-unit id="reservations.interruption.spaceClosed.title" datatype="html">
+        <source>Cancelada porque el espacio estuvo cerrado</source>
+        <target>Cancelled because the space was closed</target>
+      </trans-unit>
+      <trans-unit id="reservations.interruption.rebook" datatype="html">
+        <source>No cuenta como tu reserva del día: puedes volver a reservar.</source>
+        <target>It does not count as your booking for the day: you can book again.</target>
+      </trans-unit>
+      <trans-unit id="reservations.interruption.cancelledByAdmin.title" datatype="html">
+        <source>Cancelada por la administración del espacio</source>
+        <target>Cancelled by the space's administration</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

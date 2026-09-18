@@ -4,7 +4,7 @@ import { TuiBadge } from '@taiga-ui/kit';
 import type { ReservationState } from '../../../my-reservations/domain/reservation';
 
 /**
- * Level 2: the flag a student's row carries. It reads the reservation's own five states rather than
+ * Level 2: the flag a student's row carries. It reads the reservation's own states rather than
  * a panel-specific vocabulary, so the word on the administrator's screen and the word on the
  * student's cannot describe the same reservation differently.
  *

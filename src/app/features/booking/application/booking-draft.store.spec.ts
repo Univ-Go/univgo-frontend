@@ -22,6 +22,8 @@ const CREATED: Reservation = {
   state: 'reserved',
   checkInOpensAt: new Date(2026, 7, 17, 13, 45),
   checkInClosesAt: new Date(2026, 7, 17, 14, 15),
+  cancelledBy: null,
+  closureReason: null,
 };
 
 class FakeReservationRepository extends ReservationRepository {

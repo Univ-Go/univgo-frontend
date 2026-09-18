@@ -8,7 +8,8 @@ const STATE_RANK: Readonly<Record<ReservationState, number>> = {
   inProgress: 1,
   finished: 2,
   expired: 3,
-  cancelled: 4,
+  suspended: 4,
+  cancelled: 5,
 };
 
 /**

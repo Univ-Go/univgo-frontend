@@ -39,6 +39,8 @@ const RESERVATION_PAYLOAD = {
   createdAt: '2026-09-16T10:00:00',
   checkedInAt: null,
   cancelledAt: null,
+  cancelledBy: null,
+  closureReason: null,
   checkInOpensAt: '2026-09-17T13:45:00',
   checkInClosesAt: '2026-09-17T14:15:00',
 };
@@ -121,6 +123,8 @@ describe('HttpReservationRepository', () => {
       state: 'reserved',
       checkInOpensAt: new Date(2026, 8, 17, 13, 45),
       checkInClosesAt: new Date(2026, 8, 17, 14, 15),
+      cancelledBy: null,
+      closureReason: null,
     });
   });
 
@@ -150,6 +154,38 @@ describe('HttpReservationRepository', () => {
     ]);
 
     expect((await mine).map((entry) => entry.state)).toEqual(['expired', 'cancelled']);
+  });
+
+  it('says a booking is suspended, and which closure suspended it', async () => {
+    const mine = new Promise<readonly Reservation[]>((resolve) =>
+      repository.mine().subscribe(resolve),
+    );
+
+    controller
+      .expectOne(`${API_BASE_URL}/reservations/me`)
+      .flush([{ ...RESERVATION_PAYLOAD, state: 'SUSPENDED', closureReason: 'MAINTENANCE' }]);
+
+    const [reservation] = await mine;
+
+    expect(reservation.state).toBe('suspended');
+    expect(reservation.closureReason).toBe('maintenance');
+    expect(reservation.cancelledBy).toBeNull();
+  });
+
+  it('tells a booking the space cancelled from one the student gave up', async () => {
+    const mine = new Promise<readonly Reservation[]>((resolve) =>
+      repository.mine().subscribe(resolve),
+    );
+
+    controller.expectOne(`${API_BASE_URL}/reservations/me`).flush([
+      { ...RESERVATION_PAYLOAD, state: 'CANCELLED', cancelledBy: 'ADMIN', closureReason: 'OTHER' },
+      { ...RESERVATION_PAYLOAD, state: 'CANCELLED', cancelledBy: 'STUDENT' },
+    ]);
+
+    const [bySpace, byStudent] = await mine;
+
+    expect([bySpace.cancelledBy, bySpace.closureReason]).toEqual(['admin', 'other']);
+    expect([byStudent.cancelledBy, byStudent.closureReason]).toEqual(['student', null]);
   });
 
   it('answers with no booking at all for one that is missing, or belongs to somebody else', async () => {

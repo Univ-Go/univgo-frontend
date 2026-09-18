@@ -22,6 +22,8 @@ function reservation(overrides: Partial<Reservation> = {}): Reservation {
     state: 'reserved',
     checkInOpensAt: new Date(2026, 7, 17, 13, 45),
     checkInClosesAt: new Date(2026, 7, 17, 14, 15),
+    cancelledBy: null,
+    closureReason: null,
     ...overrides,
   };
 }
@@ -158,6 +160,13 @@ describe('findNextReservation', () => {
     const live = reservation({ id: 'live', date: WEDNESDAY, state: 'reserved' });
 
     expect(findNextReservation([expired, cancelled, live])).toBe(live);
+  });
+
+  it('offers a suspended booking as the next one, since it still holds its plaza', () => {
+    const suspended = reservation({ id: 'suspended', date: MONDAY, state: 'suspended' });
+    const later = reservation({ id: 'later', date: WEDNESDAY, state: 'reserved' });
+
+    expect(findNextReservation([later, suspended])).toBe(suspended);
   });
 
   it('answers with nothing when every booking is over', () => {

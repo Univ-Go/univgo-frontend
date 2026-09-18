@@ -10,6 +10,17 @@
       Reservada
     </span>
   }
+  @case ('suspended') {
+    <span
+      tuiBadge
+      appearance="info"
+      [size]="size()"
+      iconStart="@tui.circle-pause"
+      i18n="@@reservations.card.status.suspended"
+    >
+      Suspendida
+    </span>
+  }
   @case ('inProgress') {
     <span
       tuiBadge

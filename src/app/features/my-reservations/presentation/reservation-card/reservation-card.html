@@ -7,6 +7,8 @@
     <app-reservation-status-badge [state]="reservation().state" />
   </header>
 
+  <app-reservation-interruption-notice [reservation]="reservation()" />
+
   <dl class="card__facts">
     <div class="fact">
       <dt i18n="@@reservation.factDate">Fecha</dt>

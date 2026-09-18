@@ -16,6 +16,7 @@ const STATE_LABELS: Readonly<Record<RosterState, string>> = {
   inProgress: $localize`:@@admin.roster.filters.status.inProgress:En sala`,
   finished: $localize`:@@admin.roster.filters.status.completed:Finalizadas`,
   expired: $localize`:@@admin.roster.filters.status.expired:Expiradas`,
+  suspended: $localize`:@@admin.roster.filters.status.suspended:Suspendidas`,
 };
 
 export const ROSTER_STATE_OPTIONS: readonly CheckboxFilterOption<RosterState>[] = ROSTER_STATES.map(

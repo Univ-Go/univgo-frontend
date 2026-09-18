@@ -6,7 +6,8 @@ import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
-import { type Reservation, isActive, isCancellable } from '../../domain/reservation';
+import { type Reservation, hasUsablePass, isCancellable } from '../../domain/reservation';
+import { ReservationInterruptionNotice } from '../reservation-interruption-notice/reservation-interruption-notice';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
 
 /**
@@ -28,6 +29,7 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
   imports: [
     DatePipe,
     MediaPlate,
+    ReservationInterruptionNotice,
     ReservationStatusBadge,
     RouterLink,
     TuiAppearance,
@@ -57,5 +59,5 @@ export class ReservationCard {
 
   protected readonly canCancel = computed(() => isCancellable(this.reservation()));
 
-  protected readonly hasPass = computed(() => isActive(this.reservation()));
+  protected readonly hasPass = computed(() => hasUsablePass(this.reservation()));
 }

@@ -43,6 +43,17 @@
       Expiró
     </span>
   }
+  @case ('suspended') {
+    <span
+      tuiBadge
+      appearance="info"
+      [size]="size()"
+      iconStart="@tui.circle-pause"
+      i18n="@@admin.attendee.status.suspended"
+    >
+      Suspendida
+    </span>
+  }
   @case ('cancelled') {
     <span
       tuiBadge

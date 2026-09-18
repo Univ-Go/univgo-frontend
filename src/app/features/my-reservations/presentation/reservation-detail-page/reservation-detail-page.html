@@ -70,6 +70,8 @@
     <app-reservation-status-badge [state]="reservation.state" size="l" />
   </header>
 
+  <app-reservation-interruption-notice [reservation]="reservation" [explained]="true" />
+
   <div class="detail__content" [class.detail__content--passless]="!showsPass()">
     <app-media-plate class="detail__media" [icon]="categoryIcon(reservation.category)" />
 

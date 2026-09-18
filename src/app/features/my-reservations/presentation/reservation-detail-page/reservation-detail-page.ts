@@ -20,8 +20,9 @@ import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { QrCode } from '../../../../shared/qr-code/qr-code';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import { spaceCategoryIcon, spaceCategoryRules } from '../../../spaces/presentation/space-category';
-import { isActive } from '../../domain/reservation';
+import { hasUsablePass } from '../../domain/reservation';
 import { ReservationRepository } from '../../domain/reservation.repository';
+import { ReservationInterruptionNotice } from '../reservation-interruption-notice/reservation-interruption-notice';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
 
 /**
@@ -40,6 +41,7 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
     EmptyState,
     MediaPlate,
     QrCode,
+    ReservationInterruptionNotice,
     ReservationStatusBadge,
     RouterLink,
     TuiAppearance,
@@ -92,7 +94,7 @@ export class ReservationDetailPage {
   protected readonly showsPass = computed(() => {
     const reservation = this.reservation();
 
-    return reservation !== null && isActive(reservation);
+    return reservation !== null && hasUsablePass(reservation);
   });
 
   /**

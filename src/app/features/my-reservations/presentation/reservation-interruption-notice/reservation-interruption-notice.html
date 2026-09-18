@@ -1,0 +1,62 @@
+<!-- The reason is already a translated label, so it travels as itself rather than interpolated into
+     a sentence the translation would have to agree with. -->
+@switch (interruption()) {
+  @case ('suspended') {
+    <div
+      tuiNotification
+      appearance="info"
+      icon="@tui.circle-pause"
+      [size]="explained() ? 'm' : 's'"
+    >
+      <span tuiTitle>
+        <span i18n="@@reservations.interruption.suspended.title"
+          >El espacio está cerrado a esa hora</span
+        >
+        @if (reason()) {
+          <span tuiSubtitle i18n="@@reservations.interruption.reason">Motivo: {{ reason() }}</span>
+        }
+        @if (explained()) {
+          <span tuiSubtitle i18n="@@reservations.interruption.suspended.description"
+            >Tu reserva conserva su plaza. Si el espacio reabre, vuelve tal cual estaba.</span
+          >
+        }
+      </span>
+    </div>
+  }
+  @case ('spaceClosed') {
+    <div
+      tuiNotification
+      appearance="neutral"
+      icon="@tui.door-closed-locked"
+      [size]="explained() ? 'm' : 's'"
+    >
+      <span tuiTitle>
+        <span i18n="@@reservations.interruption.spaceClosed.title"
+          >Cancelada porque el espacio estuvo cerrado</span
+        >
+        @if (reason()) {
+          <span tuiSubtitle i18n="@@reservations.interruption.reason">Motivo: {{ reason() }}</span>
+        }
+        @if (explained()) {
+          <span tuiSubtitle i18n="@@reservations.interruption.rebook"
+            >No cuenta como tu reserva del día: puedes volver a reservar.</span
+          >
+        }
+      </span>
+    </div>
+  }
+  @case ('cancelledByAdmin') {
+    <div tuiNotification appearance="neutral" icon="@tui.ban" [size]="explained() ? 'm' : 's'">
+      <span tuiTitle>
+        <span i18n="@@reservations.interruption.cancelledByAdmin.title"
+          >Cancelada por la administración del espacio</span
+        >
+        @if (explained()) {
+          <span tuiSubtitle i18n="@@reservations.interruption.rebook"
+            >No cuenta como tu reserva del día: puedes volver a reservar.</span
+          >
+        }
+      </span>
+    </div>
+  }
+}

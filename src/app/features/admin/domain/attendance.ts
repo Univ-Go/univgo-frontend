@@ -14,6 +14,7 @@ export const ROSTER_STATES = [
   'inProgress',
   'finished',
   'expired',
+  'suspended',
 ] as const satisfies readonly ReservationState[];
 
 export type RosterState = (typeof ROSTER_STATES)[number];

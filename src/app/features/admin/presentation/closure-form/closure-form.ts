@@ -19,7 +19,7 @@ import {
   TuiTextarea,
 } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-import type { ClosureReason } from '../../domain/space-closure';
+import type { ClosureReason } from '../../../spaces/domain/closure-reason';
 import type { ClosureRequest } from '../../domain/space-closure.repository';
 import { CLOSURE_REASON_OPTIONS, closureReasonName } from '../closure-reason';
 

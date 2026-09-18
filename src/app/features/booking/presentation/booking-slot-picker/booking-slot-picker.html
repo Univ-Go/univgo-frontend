@@ -84,6 +84,14 @@
                   other {{{offered.free}} plazas}
                 }</span>
               }
+              @case ('closed') {
+                <span tuiSubtitle i18n="@@booking.schedule.closed">cerrado</span>
+                <!-- The reason is already a translated label, so it travels as itself rather than
+                     interpolated into a sentence the translation would have to agree with. -->
+                @if (offered.closureReason) {
+                  <span tuiSubtitle>{{ offered.closureReason }}</span>
+                }
+              }
               @case ('full') {
                 <span tuiSubtitle i18n="@@booking.schedule.full">completo</span>
               }

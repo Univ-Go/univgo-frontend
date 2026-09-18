@@ -898,6 +898,10 @@
         <source>ya no da tiempo</source>
         <target>not enough time left</target>
       </trans-unit>
+      <trans-unit id="booking.schedule.closed" datatype="html">
+        <source>cerrado</source>
+        <target>closed</target>
+      </trans-unit>
       <trans-unit id="booking.schedule.loading" datatype="html">
         <source>Cargando los bloques del día</source>
         <target>Loading the day's blocks</target>
@@ -1410,23 +1414,23 @@
         <source>Los cierres que registres para este espacio aparecerán aquí.</source>
         <target>Closures you register for this space will appear here.</target>
       </trans-unit>
-      <trans-unit id="admin.closure.reason.maintenance" datatype="html">
+      <trans-unit id="closure.reason.maintenance" datatype="html">
         <source>Mantenimiento</source>
         <target>Maintenance</target>
       </trans-unit>
-      <trans-unit id="admin.closure.reason.technicalIncident" datatype="html">
+      <trans-unit id="closure.reason.technicalIncident" datatype="html">
         <source>Incidencia técnica</source>
         <target>Technical incident</target>
       </trans-unit>
-      <trans-unit id="admin.closure.reason.institutionalEvent" datatype="html">
+      <trans-unit id="closure.reason.institutionalEvent" datatype="html">
         <source>Evento institucional</source>
         <target>Institutional event</target>
       </trans-unit>
-      <trans-unit id="admin.closure.reason.externalUse" datatype="html">
+      <trans-unit id="closure.reason.externalUse" datatype="html">
         <source>Uso reservado a terceros</source>
         <target>Reserved for third-party use</target>
       </trans-unit>
-      <trans-unit id="admin.closure.reason.other" datatype="html">
+      <trans-unit id="closure.reason.other" datatype="html">
         <source>Otro</source>
         <target>Other</target>
       </trans-unit>

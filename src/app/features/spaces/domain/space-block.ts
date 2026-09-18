@@ -1,9 +1,12 @@
+import type { ClosureReason } from './closure-reason';
+
 /**
  * Why a block cannot be picked. A block that is merely missing from the grid tells the student
- * nothing, and `docs/booking-flow.md` §10 asks for the opposite: a full block is shown as full, and
- * one blocked by a booking the student already has says which.
+ * nothing, and `docs/booking-flow.md` §10 asks for the opposite: a full block is shown as full, one
+ * blocked by a booking the student already has says which, and one in a space that is shut says so
+ * with its reason.
  */
-export type BlockBlocker = 'full' | 'alreadyBooked' | 'overlaps' | 'tooLate';
+export type BlockBlocker = 'closed' | 'full' | 'alreadyBooked' | 'overlaps' | 'tooLate';
 
 /**
  * One two-hour block of a space on a given day, as the server resolved it for this student. Minutes
@@ -23,6 +26,8 @@ export interface SpaceBlock {
   readonly checkInOpensAt: Date;
   readonly checkInClosesAt: Date;
   readonly blocker: BlockBlocker | null;
+  /** Set exactly when the blocker is `closed`, which is the only case that has a reason to give. */
+  readonly closureReason: ClosureReason | null;
 }
 
 /**
@@ -48,6 +53,7 @@ export interface BlockVerdict {
   readonly free: number;
   readonly alreadyBookedToday: boolean;
   readonly overlapsAnother: boolean;
+  readonly closed: boolean;
 }
 
 /**
@@ -61,6 +67,12 @@ export interface BlockVerdict {
 export function blockerOf(verdict: BlockVerdict): BlockBlocker | null {
   if (verdict.offered) {
     return null;
+  }
+
+  // First because it is the one the student can do nothing about, and because every other reading
+  // would be a lie: a shut space is not full, and its hours have not passed.
+  if (verdict.closed) {
+    return 'closed';
   }
 
   if (verdict.alreadyBookedToday) {

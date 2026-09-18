@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TuiButton, TuiTitle } from '@taiga-ui/core';
 import { TuiBlock, TuiSkeleton } from '@taiga-ui/kit';
 import { formatTimeOfDay } from '../../../../shared/time/time-of-day';
+import { closureReasonName } from '../../../spaces/presentation/closure-reason';
 import type { Space } from '../../../spaces/domain/space';
 import type { BlockBlocker, SpaceBlock } from '../../../spaces/domain/space-block';
 import { SpaceRepository } from '../../../spaces/domain/space.repository';
@@ -43,6 +44,8 @@ interface OfferedBlock {
   readonly available: boolean;
   readonly free: number;
   readonly blocker: BlockBlocker | null;
+  /** Why the space is shut, already in the reader's own words. Empty for every other blocker. */
+  readonly closureReason: string;
   readonly label: string;
   readonly end: string;
 }
@@ -113,6 +116,7 @@ export class BookingSlotPicker {
       available: block.blocker === null,
       free: block.free,
       blocker: block.blocker,
+      closureReason: closureReasonName(block.closureReason),
       label: formatTimeOfDay(block.startMinutes),
       end: formatTimeOfDay(block.endMinutes),
     })),

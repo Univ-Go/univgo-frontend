@@ -12,6 +12,7 @@ function block(overrides: Partial<SpaceBlock> = {}): SpaceBlock {
     checkInOpensAt: new Date(2026, 7, 17, 13, 45),
     checkInClosesAt: new Date(2026, 7, 17, 14, 15),
     blocker: null,
+    closureReason: null,
     ...overrides,
   };
 }
@@ -22,6 +23,7 @@ function verdict(overrides: Partial<BlockVerdict> = {}): BlockVerdict {
     free: 5,
     alreadyBookedToday: false,
     overlapsAnother: false,
+    closed: false,
     ...overrides,
   };
 }
@@ -29,6 +31,11 @@ function verdict(overrides: Partial<BlockVerdict> = {}): BlockVerdict {
 describe('blockerOf', () => {
   it('has nothing to explain about a block that is on offer', () => {
     expect(blockerOf(verdict({ offered: true }))).toBeNull();
+  });
+
+  it('says the space is shut before anything else, because nothing else is true of it', () => {
+    // Not full — a closed space has every seat — and its hours have not passed either.
+    expect(blockerOf(verdict({ closed: true, free: 0, alreadyBookedToday: true }))).toBe('closed');
   });
 
   it('reports a block with no plazas left as full', () => {

@@ -1,22 +1,12 @@
-import type { ClosureReason } from '../domain/space-closure';
-import { CLOSURE_REASONS } from '../domain/space-closure';
+import type { ClosureReason } from '../../spaces/domain/closure-reason';
+import { CLOSURE_REASONS } from '../../spaces/domain/closure-reason';
+import { closureReasonName } from '../../spaces/presentation/closure-reason';
 
 /**
- * How a reason reads on screen: the select's options and the history table's cells both need the
- * word, so it lives once here rather than beside each template. A `Record` over the domain's own
- * union, so a reason added there breaks the build here until it has a label.
+ * The reasons as the panel's select offers them. The word itself is the space's, not the panel's —
+ * the student reads it too, on the block they cannot take — so it comes from there.
  */
-const REASON_LABELS: Readonly<Record<ClosureReason, string>> = {
-  maintenance: $localize`:@@admin.closure.reason.maintenance:Mantenimiento`,
-  technical_incident: $localize`:@@admin.closure.reason.technicalIncident:Incidencia técnica`,
-  institutional_event: $localize`:@@admin.closure.reason.institutionalEvent:Evento institucional`,
-  external_use: $localize`:@@admin.closure.reason.externalUse:Uso reservado a terceros`,
-  other: $localize`:@@admin.closure.reason.other:Otro`,
-};
-
 export const CLOSURE_REASON_OPTIONS: readonly { value: ClosureReason; label: string }[] =
-  CLOSURE_REASONS.map((value) => ({ value, label: REASON_LABELS[value] }));
+  CLOSURE_REASONS.map((value) => ({ value, label: closureReasonName(value) }));
 
-export function closureReasonName(reason: ClosureReason | null): string {
-  return reason === null ? '' : REASON_LABELS[reason];
-}
+export { closureReasonName };

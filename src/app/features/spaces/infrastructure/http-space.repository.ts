@@ -4,6 +4,7 @@ import { type Observable, map } from 'rxjs';
 import { APP_CONFIG } from '../../../core/config/app-config';
 import { fromIsoDateTime, minutesFromIsoTime } from '../../../shared/time/api-time';
 import { toIsoDate } from '../../../shared/time/calendar-day';
+import { closureReasonFromName } from '../domain/closure-reason';
 import { BOOKING_DURATION_MINUTES, type Space, categoryFromName } from '../domain/space';
 import type { SpaceBlock } from '../domain/space-block';
 import { blockerOf } from '../domain/space-block';
@@ -28,6 +29,8 @@ interface BlockAvailabilityDto {
   readonly offered: boolean;
   readonly alreadyReservedByUserToday: boolean;
   readonly overlapsUserReservation: boolean;
+  readonly closed: boolean;
+  readonly closureReason: string | null;
   /** The check-in window the student would get by reserving this block right now. */
   readonly previewCheckInOpensAt: string;
   readonly previewCheckInClosesAt: string;
@@ -67,7 +70,9 @@ function toBlock(dto: BlockAvailabilityDto): SpaceBlock {
       free: dto.free,
       alreadyBookedToday: dto.alreadyReservedByUserToday,
       overlapsAnother: dto.overlapsUserReservation,
+      closed: dto.closed,
     }),
+    closureReason: dto.closureReason ? closureReasonFromName(dto.closureReason) : null,
   };
 }
 

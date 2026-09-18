@@ -1,4 +1,5 @@
-import type { ClosureReason, SpaceClosure } from './space-closure';
+import type { ClosureReason } from '../../spaces/domain/closure-reason';
+import type { SpaceClosure } from './space-closure';
 
 /** The largest instant `Date` can hold — what "no end date" means when a period has to be compared. */
 const INDEFINITE = new Date(8640000000000000);

@@ -1,5 +1,6 @@
 import type { Observable } from 'rxjs';
-import type { ClosureReason, SpaceClosure } from './space-closure';
+import type { ClosureReason } from '../../spaces/domain/closure-reason';
+import type { SpaceClosure } from './space-closure';
 
 /**
  * What the panel registers when a space stops operating. `endsAt` null is a closure with no end

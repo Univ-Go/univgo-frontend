@@ -1,3 +1,5 @@
+import type { ClosureReason } from '../../spaces/domain/closure-reason';
+
 /**
  * A stretch of time a space is not operating, as `docs/booking-flow.md` §12 defines it: maintenance,
  * an incident, an institutional event, a loan to somebody outside.
@@ -6,17 +8,6 @@
  * cannot be used, and reverting hands them back. That is what makes it undoable, and it is why
  * clearing a space's reservations stays a separate, explicit action.
  */
-export type ClosureReason =
-  'maintenance' | 'technical_incident' | 'institutional_event' | 'external_use' | 'other';
-
-/** Declaration order is the order the reason select offers them in. */
-export const CLOSURE_REASONS: readonly ClosureReason[] = [
-  'maintenance',
-  'technical_incident',
-  'institutional_event',
-  'external_use',
-  'other',
-];
 
 /**
  * `endsAt` is `null` for a closure with no end date — the shape the panel's "out of service" switch

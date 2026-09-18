@@ -10,6 +10,13 @@
   NODE_VERSION = "24.19.0"
   PNPM_VERSION = "11.22.0"
 
+# Uploaded space photos live on Neon's object storage, signed and unresized: the backend hands out
+# full camera-resolution JPEGs (multi-megapixel, several hundred KB) with no Cache-Control. The
+# Netlify Image CDN resizes and caches them at the edge instead — MediaPlate routes through
+# /.netlify/images?url=...&w=... rather than fetching this host directly.
+[images]
+  remote_images = ['https://br-royal-salad-ayqu7ltd\.storage\.c-5\.us-east-2\.aws\.neon\.tech/.*']
+
 # The API is proxied under the site's own origin so the session cookies are first-party.
 # netlify.app and onrender.com are separate sites, and Safari (every browser on iOS) blocks
 # cross-site cookies regardless of SameSite=None. Must stay first: the catch-all below would win.

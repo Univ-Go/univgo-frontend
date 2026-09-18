@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, signal } from '@angular/core';
 import { TuiIcon } from '@taiga-ui/core';
+import { TuiSkeleton } from '@taiga-ui/kit';
 
 /**
  * Level 1: the brand plate that stands in for a space photograph until real images exist. The
@@ -14,14 +15,22 @@ import { TuiIcon } from '@taiga-ui/core';
  * Anything projected into it lands over the plate's far corner, which is where the catalogue puts
  * the availability pill: it is the first thing the eye looks for when scanning a shelf.
  *
- * `imageUrl` is what "the day the photographs arrive" turned into: a space with one still renders
- * the brand gradient underneath (the image can be slow, transparent, or fail to load — the plate
- * never turns blank), and paints the photograph over it. `alt=""` is deliberate: the space name
- * already sits next to the plate as text, so the image is decorative to a screen reader.
+ * `imageUrl` is what "the day the photographs arrive" turned into. A photo is never shown mid-load:
+ * the plate holds a skeleton until the browser has it fully decoded, then swaps straight to the
+ * finished image with no transition — the alternative, letting the brand gradient show through
+ * while the image streams in, read as a red flash popping into a photo. `alt=""` is deliberate: the
+ * space name already sits next to the plate as text, so the image is decorative to a screen reader.
+ *
+ * Uploaded photos arrive as full camera-resolution files (multi-megapixel, several hundred KB) with
+ * no cache header — the upload pipeline has no resizing step yet. Rather than ship that weight to a
+ * thumbnail, `imageUrl` is routed through the Netlify Image CDN (`/.netlify/images?url=...&w=...`),
+ * which resizes and caches it at the edge; `width` is how large the host actually renders it. Local
+ * dev has no Image CDN to answer that path, so a 404 there falls back to the original URL once —
+ * slower, but the same behaviour the app had before this existed, not a broken plate.
  */
 @Component({
   selector: 'app-media-plate',
-  imports: [TuiIcon],
+  imports: [TuiIcon, TuiSkeleton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host {
@@ -52,6 +61,10 @@ import { TuiIcon } from '@taiga-ui/core';
       object-fit: cover;
     }
 
+    .photo--pending {
+      visibility: hidden;
+    }
+
     .mark {
       color: var(--univgo-on-brand-surface);
       font-size: var(--media-plate-mark-size);
@@ -70,7 +83,19 @@ import { TuiIcon } from '@taiga-ui/core';
   `,
   template: `
     @if (imageUrl(); as src) {
-      <img class="photo" [src]="src" alt="" loading="lazy" decoding="async" />
+      @if (!loaded()) {
+        <div class="photo" [tuiSkeleton]="true"></div>
+      }
+      <img
+        class="photo"
+        [class.photo--pending]="!loaded()"
+        [src]="displayUrl()"
+        alt=""
+        loading="lazy"
+        decoding="async"
+        (load)="onLoad()"
+        (error)="onError()"
+      />
     } @else {
       <tui-icon class="mark" [icon]="icon()" aria-hidden="true" />
     }
@@ -83,4 +108,49 @@ import { TuiIcon } from '@taiga-ui/core';
 export class MediaPlate {
   public readonly icon = input.required<string>();
   public readonly imageUrl = input<string | null>(null);
+  /** The largest CSS pixel size this host ever renders the photo at; a card and a banner differ. */
+  public readonly width = input(640);
+
+  protected readonly loadedSrc = signal<string | null>(null);
+  private readonly proxyFailed = signal(false);
+
+  protected readonly displayUrl = computed(() => {
+    const src = this.imageUrl();
+
+    if (!src) {
+      return null;
+    }
+
+    if (this.proxyFailed()) {
+      return src;
+    }
+
+    const params = new URLSearchParams({ url: src, w: String(this.width()) });
+
+    return `/.netlify/images?${params}`;
+  });
+
+  protected readonly loaded = computed(() => this.loadedSrc() === this.displayUrl());
+
+  constructor() {
+    effect(() => {
+      this.imageUrl();
+      this.proxyFailed.set(false);
+      this.loadedSrc.set(null);
+    });
+  }
+
+  protected onLoad(): void {
+    this.loadedSrc.set(this.displayUrl());
+  }
+
+  protected onError(): void {
+    if (this.proxyFailed()) {
+      this.loadedSrc.set(this.displayUrl());
+
+      return;
+    }
+
+    this.proxyFailed.set(true);
+  }
 }

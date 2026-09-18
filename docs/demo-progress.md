@@ -97,13 +97,12 @@ por eso su fila ya no dibuja un medidor a cero: dice que terminó y manda al det
 consta quién se presentó. El listado tampoco ofrece ya un botón de «registrar entrada»: el servidor
 hace check-in con un código, y una lista de nombres no lo tiene.
 
-**El espacio se puede retirar del servicio, y sus reservas cancelarse.** `PUT
-/admin/spaces/{id}/maintenance` y `POST /admin/spaces/{id}/reservations/cancel-all`, que son las dos
-cosas que `booking-flow.md` §10 y §11 piden y las dos únicas que el servidor sabe hacer con un
-espacio. Están separadas a propósito: anunciar el cierre de la semana que viene no debe vaciar hoy,
-y devolver un espacio al servicio no tiene nada que deshacer. El interruptor no guarda el estado —lo
-relee del catálogo después de escribir— así que una escritura fallida deja el control enseñando lo
-que es verdad, no lo que se pidió.
+**Las reservas de un espacio se pueden cancelar.** `POST /admin/spaces/{id}/reservations/cancel-all`,
+que es lo que `booking-flow.md` §11 pide. Está separado de cerrar a propósito: un cierre suspende y
+se deshace, cancelar no, y anunciar el cierre de la semana que viene no debe vaciar hoy. El antiguo
+interruptor de «fuera de servicio» se retiró del panel: era un cierre sin fecha de fin, y el
+formulario de cierres ya lo ofrece. `PUT /admin/spaces/{id}/maintenance` sigue en el backend, sin
+nadie que lo llame.
 
 **Cerrar un espacio, y reabrirlo.** El formulario registra un cierre —día completo, un tramo, o sin
 fecha de fin— y el historial lo lista con su estado y un botón para reabrir. Un cierre **suspende**:
@@ -251,9 +250,10 @@ convertido en un cierre sin fecha de fin. Queda el rastro:
 - **La reserva cancelada a mano por un administrador no dice por qué.** `cancelledBy` sí llega; el
   motivo sólo existe cuando la cancelación viene de un cierre, que es el único sitio donde alguien
   lo escribió.
-- **El frontend todavía no enseña la suspensión.** El estado `suspended` y el `closureReason`
-  llegan en la respuesta, pero «Mis reservas» no tiene aún ni el badge ni la explicación, y el
-  escáner no sabe pintar el veredicto «cerrado».
+- **El escáner no sabe pintar el veredicto «cerrado».** «Mis reservas» ya enseña la suspensión
+  —badge `Suspendida`, motivo del cierre y qué pasa si reabre— y distingue la reserva que canceló
+  el espacio, con su motivo, de la que canceló el estudiante; el roster del panel también lista las
+  suspendidas. Falta el veredicto del escáner.
 
 ### 4.7 Fuera de foco, anotado a propósito
 
@@ -273,8 +273,8 @@ Lo que queda son remates, no funcionalidad que falte:
 
 1. **Arrancar el backend para que corra la `V14`** —crea `space_closures` y migra el mantenimiento—
    y comprobar el ciclo contra la base: cerrar, ver la reserva suspendida, reabrir y verla volver.
-2. **Enseñar la suspensión en el móvil**: el estado `suspended` y el motivo ya llegan en la
-   respuesta, pero «Mis reservas» todavía no los pinta, ni el escáner el veredicto «cerrado».
+2. **Pintar el veredicto «cerrado» en el escáner**: «Mis reservas» ya enseña la suspensión y
+   quién canceló; el escáner todavía no distingue un espacio cerrado.
 3. **Retirar `spaces.under_maintenance`** con una migración, cuando esté claro que nada la mira.
 
 De la deuda, lo que conviene no dejar para después: **4.4** (los datos, porque es lo que se ve en

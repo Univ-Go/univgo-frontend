@@ -337,8 +337,9 @@ Hoy hay dos mecanismos para decir que un espacio no está disponible: el boolean
 `spaces.under_maintenance` y —a partir de aquí— los cierres. Dos mecanismos para lo mismo se
 separan solos: ya pasa, el mantenimiento oculta los bloques al estudiante pero no al panel.
 
-El interruptor de «fuera de servicio» del panel pasa a crear un cierre **sin fecha de fin**, y
-apagarlo lo revierte. Un solo concepto, una sola forma de consultarlo.
+Dejar un espacio fuera de servicio es registrar un cierre **sin fecha de fin**, y devolverlo es
+reabrirlo desde el historial. El panel no tiene un interruptor aparte: sería un segundo control para
+lo mismo. Un solo concepto, una sola forma de consultarlo.
 
 ### Qué ve cada uno
 

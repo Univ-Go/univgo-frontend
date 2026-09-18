@@ -12,6 +12,8 @@ function block(hours: number): AdminBlock {
     capacity: 10,
     occupied: 4,
     free: 6,
+    closed: false,
+    closureReason: null,
   };
 }
 

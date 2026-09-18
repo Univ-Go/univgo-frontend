@@ -12,6 +12,7 @@ import {
   fullnessBandOf,
   occupancyLoadOf,
 } from '../../domain/block-schedule';
+import { closureReasonName } from '../../../spaces/presentation/closure-reason';
 import { BLOCK_PHASE_LABELS } from '../block-phase-copy';
 import { BlockStatusBadge } from '../block-status-badge/block-status-badge';
 
@@ -63,10 +64,14 @@ export class BlockRow {
    * answer, one click away.
    */
   protected readonly load = computed(() =>
-    this.phase() === 'past' ? null : occupancyLoadOf(this.occupancy()),
+    this.phase() === 'past' || this.block().closed ? null : occupancyLoadOf(this.occupancy()),
   );
 
   protected readonly key = computed(() => blockKeyOf(this.block()));
 
   protected readonly capacityLabel = computed(() => BLOCK_PHASE_LABELS[this.phase()]);
+
+  /** A shut block reports why instead of an aforo nobody can use: a block shown as available
+   *  invites counting on places that do not exist. */
+  protected readonly closureReason = computed(() => closureReasonName(this.block().closureReason));
 }

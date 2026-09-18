@@ -53,6 +53,8 @@ const UNKNOWN_SPACE: Space = {
   category: 'sports',
   capacity: 0,
   underMaintenance: false,
+  opensOnDate: false,
+  closedOnDate: false,
   freeSlots: [],
 };
 

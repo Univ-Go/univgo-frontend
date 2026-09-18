@@ -610,13 +610,17 @@
         <source> Libre desde <x id="INTERPOLATION" equiv-text="{{ nextTime() }}"/> </source>
         <target> Free from <x id="INTERPOLATION" equiv-text="{{ nextTime() }}"/> </target>
       </trans-unit>
-      <trans-unit id="spaces.availability.unavailable" datatype="html">
-        <source> Sin horarios </source>
-        <target> No slots </target>
+      <trans-unit id="spaces.availability.full" datatype="html">
+        <source> Completo </source>
+        <target> Full </target>
       </trans-unit>
-      <trans-unit id="spaces.availability.maintenance" datatype="html">
-        <source> En mantenimiento </source>
-        <target> Under maintenance </target>
+      <trans-unit id="spaces.availability.closed" datatype="html">
+        <source> Cerrado </source>
+        <target> Closed </target>
+      </trans-unit>
+      <trans-unit id="spaces.availability.notOpen" datatype="html">
+        <source> No abre este día </source>
+        <target> Not open this day </target>
       </trans-unit>
       <trans-unit id="spaces.card.capacity" datatype="html">
         <source>Capacidad</source>
@@ -1190,6 +1194,10 @@
         <source> En curso </source>
         <target> In progress </target>
       </trans-unit>
+      <trans-unit id="admin.blocks.row.closed" datatype="html">
+        <source>Cerrado</source>
+        <target>Closed</target>
+      </trans-unit>
       <trans-unit id="admin.blocks.row.details" datatype="html">
         <source>Ver detalles</source>
         <target>View details</target>
@@ -1209,6 +1217,10 @@
       <trans-unit id="admin.blocks.capacity.past" datatype="html">
         <source>Asistencia</source>
         <target>Attendance</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.caption.closed" datatype="html">
+        <source>El espacio está cerrado a esta hora.</source>
+        <target>The space is closed at this time.</target>
       </trans-unit>
       <trans-unit id="admin.blocks.caption.past" datatype="html">
         <source> El bloque terminó. Consulta quién se presentó en su detalle. </source>

@@ -19,6 +19,8 @@ const CATALOG_PAYLOAD = [
     category: 'SPORTS',
     capacity: 4,
     underMaintenance: false,
+    opensOnDate: true,
+    closedOnDate: false,
     freeBlockStarts: ['06:00:00', '14:00:00'],
   },
 ];
@@ -69,6 +71,8 @@ describe('HttpSpaceRepository', () => {
         category: 'sports',
         capacity: 4,
         underMaintenance: false,
+        opensOnDate: true,
+        closedOnDate: false,
         freeSlots: [
           { date: DATE, from: 360, to: 480 },
           { date: DATE, from: 840, to: 960 },

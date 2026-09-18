@@ -1,4 +1,5 @@
 import type { ReservationState } from '../../my-reservations/domain/reservation';
+import type { ClosureReason } from '../../spaces/domain/closure-reason';
 
 /**
  * The states a block's roster can hold. The server lists the reservations that still count for the
@@ -62,6 +63,10 @@ export interface AdminBlock {
   /** Seats a reservation is holding: waiting to check in, or already inside. */
   readonly occupied: number;
   readonly free: number;
+  /** The space is shut for this block, so its counts say nothing anybody can use (spec §12). */
+  readonly closed: boolean;
+  /** Set exactly when `closed` is, because that is the only case with a reason to give. */
+  readonly closureReason: ClosureReason | null;
 }
 
 /** One block with the people in it, which is the only reading that costs a request of its own. */

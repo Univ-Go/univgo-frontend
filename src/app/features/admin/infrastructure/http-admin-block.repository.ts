@@ -8,6 +8,7 @@ import { fromIsoDateTime, minutesFromIsoTime, toIsoTime } from '../../../shared/
 import { toIsoDate } from '../../../shared/time/calendar-day';
 import { minutesOfDay } from '../../../shared/time/time-of-day';
 import type { ReservationState } from '../../my-reservations/domain/reservation';
+import { closureReasonFromName } from '../../spaces/domain/closure-reason';
 import { AdminBlockRepository } from '../domain/admin-block.repository';
 import type { AdminBlock, AdminBlockDetail, Attendee } from '../domain/attendance';
 
@@ -17,6 +18,8 @@ interface BlockSummaryDto {
   readonly capacity: number;
   readonly occupied: number;
   readonly free: number;
+  readonly closed: boolean;
+  readonly closureReason: string | null;
 }
 
 interface OccupantDto {
@@ -63,6 +66,8 @@ function toBlock(dto: BlockSummaryDto, day: Date): AdminBlock {
     capacity: dto.capacity,
     occupied: dto.occupied,
     free: dto.free,
+    closed: dto.closed,
+    closureReason: dto.closureReason ? closureReasonFromName(dto.closureReason) : null,
   };
 }
 

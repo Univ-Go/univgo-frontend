@@ -17,12 +17,19 @@
     <p class="row__capacity">
       <tui-icon icon="@tui.users" [attr.aria-hidden]="true" />
       <span>{{ capacityLabel() }}</span>
-      @if (phase() !== 'past') {
+      @if (phase() !== 'past' && !block().closed) {
         <span class="row__count">{{ occupancy().occupied }} / {{ occupancy().capacity }}</span>
       }
     </p>
 
-    @if (phase() === 'past') {
+    @if (block().closed) {
+      <p class="row__caption">
+        <span i18n="@@admin.blocks.caption.closed">El espacio está cerrado a esta hora.</span>
+        @if (closureReason(); as reason) {
+          <span class="row__reason">{{ reason }}</span>
+        }
+      </p>
+    } @else if (phase() === 'past') {
       <p class="row__caption" i18n="@@admin.blocks.caption.past">
         El bloque terminó. Consulta quién se presentó en su detalle.
       </p>
@@ -47,7 +54,16 @@
   </div>
 
   <div class="row__flags">
-    @if (phase() === 'live') {
+    @if (block().closed) {
+      <span
+        tuiBadge
+        appearance="negative"
+        size="s"
+        iconStart="@tui.lock"
+        i18n="@@admin.blocks.row.closed"
+        >Cerrado</span
+      >
+    } @else if (phase() === 'live') {
       <span
         tuiBadge
         appearance="info"

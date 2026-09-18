@@ -17,6 +17,8 @@ interface SpaceCatalogDto {
   readonly category: string;
   readonly capacity: number;
   readonly underMaintenance: boolean;
+  readonly opensOnDate: boolean;
+  readonly closedOnDate: boolean;
   /** Start of every block that still has a plaza on the requested day, as `HH:mm:ss`. */
   readonly freeBlockStarts: readonly string[];
 }
@@ -49,6 +51,8 @@ function toSpace(dto: SpaceCatalogDto, date: Date): Space {
     category: categoryFromName(dto.category),
     capacity: dto.capacity,
     underMaintenance: dto.underMaintenance,
+    opensOnDate: dto.opensOnDate,
+    closedOnDate: dto.closedOnDate,
     freeSlots: dto.freeBlockStarts.map((start) => ({
       date,
       from: minutesFromIsoTime(start),

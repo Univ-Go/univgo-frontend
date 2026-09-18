@@ -21,26 +21,40 @@
       Libre desde {{ nextTime() }}
     </span>
   }
-  @case ('unavailable') {
+  <!-- Three ways of having nothing free, and they are not the same news: one is other students
+       having got there first, one is a decision somebody made, and one is the timetable. The icons
+       are plain shapes on purpose — at badge size a detailed glyph is a smudge. -->
+  @case ('full') {
     <span
       tuiBadge
       appearance="neutral"
       [size]="size()"
-      iconStart="@tui.calendar-x"
-      i18n="@@spaces.availability.unavailable"
+      iconStart="@tui.users"
+      i18n="@@spaces.availability.full"
     >
-      Sin horarios
+      Completo
     </span>
   }
-  @case ('maintenance') {
+  @case ('closed') {
     <span
       tuiBadge
       appearance="negative"
       [size]="size()"
-      iconStart="@tui.triangle-alert"
-      i18n="@@spaces.availability.maintenance"
+      iconStart="@tui.lock"
+      i18n="@@spaces.availability.closed"
     >
-      En mantenimiento
+      Cerrado
+    </span>
+  }
+  @case ('notOpen') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.ban"
+      i18n="@@spaces.availability.notOpen"
+    >
+      No abre este día
     </span>
   }
 }

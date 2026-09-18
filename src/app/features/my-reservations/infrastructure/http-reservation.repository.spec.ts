@@ -22,6 +22,8 @@ const COURT: Space = {
   category: 'sports',
   capacity: 4,
   underMaintenance: false,
+  opensOnDate: true,
+  closedOnDate: false,
   freeSlots: [],
 };
 

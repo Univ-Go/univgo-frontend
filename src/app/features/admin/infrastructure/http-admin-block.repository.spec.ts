@@ -50,8 +50,24 @@ describe('HttpAdminBlockRepository', () => {
 
     expect(request.request.params.get('date')).toBe('2026-09-17');
     request.flush([
-      { start: '14:00:00', end: '16:00:00', capacity: 10, occupied: 4, free: 6 },
-      { start: '16:00:00', end: '18:00:00', capacity: 10, occupied: 0, free: 10 },
+      {
+        start: '14:00:00',
+        end: '16:00:00',
+        capacity: 10,
+        occupied: 4,
+        free: 6,
+        closed: false,
+        closureReason: null,
+      },
+      {
+        start: '16:00:00',
+        end: '18:00:00',
+        capacity: 10,
+        occupied: 0,
+        free: 10,
+        closed: true,
+        closureReason: 'MAINTENANCE',
+      },
     ]);
 
     expect(await blocks).toEqual([
@@ -61,6 +77,8 @@ describe('HttpAdminBlockRepository', () => {
         capacity: 10,
         occupied: 4,
         free: 6,
+        closed: false,
+        closureReason: null,
       },
       {
         start: new Date(2026, 8, 17, 16, 0),
@@ -68,6 +86,8 @@ describe('HttpAdminBlockRepository', () => {
         capacity: 10,
         occupied: 0,
         free: 10,
+        closed: true,
+        closureReason: 'maintenance',
       },
     ]);
   });
@@ -88,6 +108,8 @@ describe('HttpAdminBlockRepository', () => {
       capacity: 10,
       occupied: 2,
       free: 8,
+      closed: false,
+      closureReason: null,
       roster: [
         {
           studentName: 'John Edit',

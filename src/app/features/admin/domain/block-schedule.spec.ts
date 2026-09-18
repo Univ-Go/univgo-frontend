@@ -21,6 +21,8 @@ function block(start: Date, overrides: Partial<AdminBlock> = {}): AdminBlock {
     capacity: 30,
     occupied: 0,
     free: 30,
+    closed: false,
+    closureReason: null,
     start,
     end: new Date(start.getTime() + BLOCK_MINUTES * MS_PER_MINUTE),
     ...overrides,

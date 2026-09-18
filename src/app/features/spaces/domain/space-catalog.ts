@@ -12,8 +12,9 @@ import { BOOKING_DURATION_MINUTES, SPACE_CATEGORIES } from './space';
 const AVAILABILITY_RANK: Readonly<Record<SpaceAvailability['kind'], number>> = {
   free: 0,
   later: 1,
-  unavailable: 2,
-  maintenance: 3,
+  full: 2,
+  closed: 3,
+  notOpen: 4,
 };
 
 function isSameDay(one: Date, other: Date): boolean {
@@ -37,15 +38,17 @@ function slotsOn(space: Space, date: Date): readonly SpaceSlot[] {
  * answers.
  */
 export function resolveAvailability(space: Space, filter: SpaceFilter): SpaceAvailability {
-  if (space.underMaintenance) {
-    return { kind: 'maintenance' };
-  }
-
   const slots = slotsOn(space, filter.date);
   const [earliest] = slots;
 
   if (!earliest) {
-    return { kind: 'unavailable' };
+    // Order matters: a space that is shut is shut whether or not it had hours that day, and saying
+    // "no abre" about one somebody closed this morning hides who decided it.
+    if (space.closedOnDate) {
+      return { kind: 'closed' };
+    }
+
+    return space.opensOnDate ? { kind: 'full' } : { kind: 'notOpen' };
   }
 
   if (filter.from === null) {

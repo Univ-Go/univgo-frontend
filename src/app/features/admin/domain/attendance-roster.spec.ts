@@ -23,6 +23,8 @@ function block(overrides: Partial<AdminBlock> = {}): AdminBlock {
     capacity: 50,
     occupied: 0,
     free: 50,
+    closed: false,
+    closureReason: null,
     ...overrides,
   };
 }

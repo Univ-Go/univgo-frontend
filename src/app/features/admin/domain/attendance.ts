@@ -45,8 +45,6 @@ export interface AdminSpace {
   readonly spaceId: string;
   readonly spaceName: string;
   readonly capacity: number;
-  /** Out of service: it offers no blocks, and the panel is where that is turned on and off. */
-  readonly underMaintenance: boolean;
 }
 
 /**

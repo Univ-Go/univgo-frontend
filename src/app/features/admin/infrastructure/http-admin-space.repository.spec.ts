@@ -29,23 +29,6 @@ describe('HttpAdminSpaceRepository', () => {
 
   afterEach(() => controller.verify());
 
-  it('takes a space out of service, and puts it back, through the same flag', () => {
-    repository.setMaintenance(SPACE_ID, true).subscribe();
-
-    const closing = controller.expectOne(`${API_BASE_URL}/admin/spaces/${SPACE_ID}/maintenance`);
-
-    expect(closing.request.method).toBe('PUT');
-    expect(closing.request.body).toEqual({ underMaintenance: true });
-    closing.flush(null);
-
-    repository.setMaintenance(SPACE_ID, false).subscribe();
-
-    const opening = controller.expectOne(`${API_BASE_URL}/admin/spaces/${SPACE_ID}/maintenance`);
-
-    expect(opening.request.body).toEqual({ underMaintenance: false });
-    opening.flush(null);
-  });
-
   it('answers how many bookings stopped holding a place', async () => {
     const cancelled = new Promise<number>((resolve) =>
       repository.cancelAllReservations(SPACE_ID).subscribe(resolve),

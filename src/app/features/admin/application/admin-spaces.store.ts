@@ -9,7 +9,6 @@ function toAdminSpace(space: Space): AdminSpace {
     spaceId: space.id,
     spaceName: space.name,
     capacity: space.capacity,
-    underMaintenance: space.underMaintenance,
   };
 }
 
@@ -20,9 +19,8 @@ function toAdminSpace(space: Space): AdminSpace {
  *
  * Held for the session because three separate places ask for it — the grid, the shell's switcher
  * and the guard on `:spaceId` — and a directory of spaces does not change while somebody scans at a
- * door. What can change is a space's maintenance flag, which the panel itself sets, so `refresh()`
- * exists for that and nothing else. A failed read drops the cache, otherwise the error would be
- * replayed to every later caller and no retry could ever succeed.
+ * door, so `refresh()` exists only for a retry. A failed read drops the cache, otherwise the error
+ * would be replayed to every later caller and no retry could ever succeed.
  */
 @Injectable({ providedIn: 'root' })
 export class AdminSpacesStore {

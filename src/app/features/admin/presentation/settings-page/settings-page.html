@@ -9,61 +9,6 @@
   </div>
 </header>
 
-<!-- The two things the server can actually do about a space, and the reason they are one card and
-     two actions: taking it out of service stops it offering blocks, but the reservations it already
-     had are still somebody's afternoon until they are cancelled. -->
-<section
-  tuiCardLarge
-  tuiSurface
-  tuiAppearance="floating"
-  class="availability-card"
-  aria-labelledby="availability-title"
->
-  <h2 id="availability-title" i18n="@@admin.settings.service.title">Disponibilidad del espacio</h2>
-
-  @if (space.isLoading()) {
-    <p class="availability-card__placeholder" [tuiSkeleton]="true" aria-hidden="true"></p>
-  } @else {
-    <label class="availability-card__switch">
-      <input
-        type="checkbox"
-        tuiSwitch
-        [showIcons]="true"
-        [disabled]="switching()"
-        [ngModel]="underMaintenance()"
-        (ngModelChange)="setMaintenance($event)"
-      />
-      <span class="availability-card__switch-text">
-        <span i18n="@@admin.settings.service.maintenanceLabel">Fuera de servicio</span>
-        <span class="availability-card__hint" i18n="@@admin.settings.service.maintenanceHint"
-          >Mientras esté activado, el espacio no ofrece bloques a los estudiantes.</span
-        >
-      </span>
-    </label>
-
-    <div class="availability-card__action">
-      <p class="availability-card__hint" i18n="@@admin.settings.cancelAll.hint">
-        Cancelar las reservas que ya existen es una acción aparte: no ocurre al dejar el espacio
-        fuera de servicio, y no se puede deshacer.
-      </p>
-
-      <button
-        tuiButton
-        type="button"
-        size="m"
-        appearance="outline-destructive"
-        iconStart="@tui.calendar-x"
-        [disabled]="cancelling()"
-        (click)="confirmCancelAll()"
-      >
-        <tui-loader [loading]="cancelling()" [inheritColor]="true" [overlay]="true">
-          <span i18n="@@admin.settings.cancelAll.action">Cancelar las reservas del espacio</span>
-        </tui-loader>
-      </button>
-    </div>
-  }
-</section>
-
 <div class="layout">
   <app-closure-form [saving]="closing()" (closureRequested)="close($event)" />
 
@@ -95,3 +40,34 @@
     />
   </div>
 </div>
+
+<!-- A closure suspends and can be undone; this cannot. They stay two controls because they are two
+     decisions (`docs/booking-flow.md` §12): announcing next week's closure must not empty today. -->
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="floating"
+  class="cancel-card"
+  aria-labelledby="cancel-title"
+>
+  <h2 id="cancel-title" i18n="@@admin.settings.cancelAll.heading">Cancelar reservas del espacio</h2>
+
+  <p class="cancel-card__hint" i18n="@@admin.settings.cancelAll.closureHint">
+    Cancela las reservas que aún no han terminado. A diferencia de un cierre, no se puede deshacer:
+    los estudiantes las verán canceladas y podrán reservar en otro sitio.
+  </p>
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="outline-destructive"
+    iconStart="@tui.calendar-x"
+    [disabled]="cancelling()"
+    (click)="confirmCancelAll()"
+  >
+    <tui-loader [loading]="cancelling()" [inheritColor]="true" [overlay]="true">
+      <span i18n="@@admin.settings.cancelAll.action">Cancelar las reservas del espacio</span>
+    </tui-loader>
+  </button>
+</section>

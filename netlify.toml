@@ -10,6 +10,15 @@
   NODE_VERSION = "24.19.0"
   PNPM_VERSION = "11.22.0"
 
+# The API is proxied under the site's own origin so the session cookies are first-party.
+# netlify.app and onrender.com are separate sites, and Safari (every browser on iOS) blocks
+# cross-site cookies regardless of SameSite=None. Must stay first: the catch-all below would win.
+[[redirects]]
+  from = "/api/*"
+  to = "https://univgo-backend.onrender.com/:splat"
+  status = 200
+  force = true
+
 # The publish root holds no index.html: every entry point is inside a locale
 # directory, and the locale is chosen from the browser's Accept-Language header
 # with Spanish as the fallback.

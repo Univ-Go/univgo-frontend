@@ -11,7 +11,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { TuiAppearance, TuiButton, TuiInput, TuiLoader } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-import { formatTimeRange } from '../../../../shared/time/time-of-day';
+import { formatTimeRange, minutesOfDay } from '../../../../shared/time/time-of-day';
 import { AdminBlockRepository, blockInProgress } from '../../domain/admin-block.repository';
 import type { ScanResult } from '../../domain/check-in-scan';
 import { CheckInScanner } from '../../domain/check-in.scanner';
@@ -23,9 +23,10 @@ import { QrCamera } from '../qr-camera/qr-camera';
  * única"). It always checks against the space's block in progress right now — never a picker —
  * because a scan only ever means "let this person in right now" (§9).
  *
- * That block travels with the scan so the server can answer "su reserva es de otro bloque" instead
- * of judging the code against its own window alone. Outside opening hours there is no block, and
- * the scan still goes through: the reservation's own window is then the only thing that decides.
+ * The space and — when there is one — the block in progress travel with the scan. The server checks
+ * the space first, so a code booked for another room is refused here instead of being checked into
+ * a roster for a place its owner is not in. Outside opening hours there is no block, and the scan
+ * still goes through: the reservation's own window is then the only thing left to decide.
  *
  * The camera and the manual field feed the same verification path, so a code typed by hand gets
  * exactly the same six answers a decoded one would. `lastCameraCode` exists only to stop a QR still
@@ -80,7 +81,7 @@ export class ScanPage {
   protected readonly currentRange = computed(() => {
     const block = this.currentBlock();
 
-    return block ? formatTimeRange(block.startMinutes, block.endMinutes) : null;
+    return block ? formatTimeRange(minutesOfDay(block.start), minutesOfDay(block.end)) : null;
   });
 
   constructor() {
@@ -121,8 +122,9 @@ export class ScanPage {
     this.scanner
       .scan({
         code,
-        startMinutes: block?.startMinutes ?? null,
-        endMinutes: block?.endMinutes ?? null,
+        spaceId: this.spaceId(),
+        startMinutes: block ? minutesOfDay(block.start) : null,
+        endMinutes: block ? minutesOfDay(block.end) : null,
       })
       .subscribe({
         next: (result) => {

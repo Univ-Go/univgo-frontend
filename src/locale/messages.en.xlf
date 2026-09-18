@@ -970,17 +970,13 @@
         <source>Expiradas</source>
         <target>Expired</target>
       </trans-unit>
-      <trans-unit id="admin.roster.filters.status.cancelled" datatype="html">
-        <source>Canceladas</source>
-        <target>Cancelled</target>
-      </trans-unit>
       <trans-unit id="admin.roster.title" datatype="html">
         <source>Lista de estudiantes</source>
         <target>Student list</target>
       </trans-unit>
       <trans-unit id="admin.roster.column.universityId" datatype="html">
-        <source>ID universitario</source>
-        <target>University ID</target>
+        <source>Documento</source>
+        <target>Document</target>
       </trans-unit>
       <trans-unit id="admin.roster.column.checkedInAt" datatype="html">
         <source>Hora de entrada</source>
@@ -998,10 +994,6 @@
         <source>Estado</source>
         <target>Status</target>
       </trans-unit>
-      <trans-unit id="admin.roster.column.actions" datatype="html">
-        <source>Acciones</source>
-        <target>Actions</target>
-      </trans-unit>
       <trans-unit id="admin.roster.empty.heading" datatype="html">
         <source>No hay estudiantes con estos filtros</source>
         <target>No students match these filters</target>
@@ -1013,10 +1005,6 @@
       <trans-unit id="admin.roster.count" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {Mostrando <x id="INTERPOLATION"/> de 1 registro} other {Mostrando <x id="INTERPOLATION"/> de <x id="INTERPOLATION_1"/> registros}}</source>
         <target>{VAR_PLURAL, plural, =1 {Showing <x id="INTERPOLATION"/> of 1 record} other {Showing <x id="INTERPOLATION"/> of <x id="INTERPOLATION_1"/> records}}</target>
-      </trans-unit>
-      <trans-unit id="admin.roster.action.checkIn" datatype="html">
-        <source>Registrar entrada</source>
-        <target>Check in</target>
       </trans-unit>
       <trans-unit id="admin.roster.filters.status.label" datatype="html">
         <source>Estado</source>
@@ -1054,25 +1042,21 @@
         <source>Cambiar de bloque horario</source>
         <target>Switch time block</target>
       </trans-unit>
-      <trans-unit id="admin.capacity.manualCheckIn" datatype="html">
-        <source>Reservar</source>
-        <target>Book</target>
-      </trans-unit>
       <trans-unit id="admin.capacity.inRoom.title" datatype="html">
         <source>En sala</source>
         <target>In the room</target>
       </trans-unit>
       <trans-unit id="admin.capacity.inRoom.hint" datatype="html">
-        <source>de <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> plazas ocupadas</source>
-        <target>of <x id="INTERPOLATION"/> seats occupied</target>
+        <source>de <x id="INTERPOLATION" equiv-text="{{ load.occupied }}"/> plazas ocupadas</source>
+        <target>of <x id="INTERPOLATION" equiv-text="{{ load.occupied }}"/> seats taken</target>
       </trans-unit>
       <trans-unit id="admin.capacity.pending.title" datatype="html">
         <source>Pendientes</source>
         <target>Pending</target>
       </trans-unit>
       <trans-unit id="admin.capacity.pending.hint" datatype="html">
-        <source>{VAR_PLURAL, plural, =0 {ninguna a punto de expirar} =1 {1 reserva a punto de expirar} other {<x id="INTERPOLATION"/> reservas a punto de expirar}}</source>
-        <target>{VAR_PLURAL, plural, =0 {none about to expire} =1 {1 booking about to expire} other {<x id="INTERPOLATION"/> bookings about to expire}}</target>
+        <source>todavía sin registrar su entrada</source>
+        <target>not checked in yet</target>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.title" datatype="html">
         <source>Aforo total</source>
@@ -1222,17 +1206,29 @@
         <source>Asistencia</source>
         <target>Attendance</target>
       </trans-unit>
-      <trans-unit id="admin.blocks.caption.upcoming" datatype="html">
-        <source> <x id="INTERPOLATION"/> reservas confirmadas · <x id="INTERPOLATION_1"/> libres </source>
-        <target> <x id="INTERPOLATION"/> bookings confirmed · <x id="INTERPOLATION_1"/> free </target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.caption.live" datatype="html">
-        <source> <x id="INTERPOLATION"/> en sala · <x id="INTERPOLATION_1"/> pendientes de check-in </source>
-        <target> <x id="INTERPOLATION"/> in the room · <x id="INTERPOLATION_1"/> awaiting check-in </target>
-      </trans-unit>
       <trans-unit id="admin.blocks.caption.past" datatype="html">
-        <source>{VAR_PLURAL, plural, =0 {Todos se presentaron} =1 {1 no se presentó} other {<x id="INTERPOLATION"/> no se presentaron}}</source>
-        <target>{VAR_PLURAL, plural, =0 {Everyone turned up} =1 {1 no-show} other {<x id="INTERPOLATION"/> no-shows}}</target>
+        <source> El bloque terminó. Consulta quién se presentó en su detalle. </source>
+        <target> The block is over. Its detail says who turned up. </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.caption.booked" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> reservas confirmadas · <x id="INTERPOLATION_1" equiv-text="{{ occupancy().free }}"/> libres </source>
+        <target> <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> bookings confirmed · <x id="INTERPOLATION_1" equiv-text="{{ occupancy().free }}"/> free </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.loading" datatype="html">
+        <source>Cargando los bloques del día</source>
+        <target>Loading the day's blocks</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.error.heading" datatype="html">
+        <source>No pudimos cargar los bloques</source>
+        <target>We couldn't load the blocks</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.loading" datatype="html">
+        <source>Cargando el bloque</source>
+        <target>Loading the block</target>
+      </trans-unit>
+      <trans-unit id="admin.capacity.error.heading" datatype="html">
+        <source>No pudimos cargar este bloque</source>
+        <target>We couldn't load this block</target>
       </trans-unit>
       <trans-unit id="admin.blocks.band.available" datatype="html">
         <source> Disponible </source>

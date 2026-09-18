@@ -2,12 +2,13 @@ import type { Observable } from 'rxjs';
 import type { ScanResult } from './check-in-scan';
 
 /**
- * A code read at the door, and the block the administrator is checking people into. The block is
- * what lets the answer be "su reserva es de otro bloque" instead of a flat refusal; without it the
- * server can only judge the reservation against its own window.
+ * A code read at the door: which door, and which block that door is running right now. The space is
+ * what the server checks the reservation against first — a code booked for another room must never
+ * validate here — and the block is what turns "not this hour" into an answer instead of a refusal.
  */
 export interface ScanRequest {
   readonly code: string;
+  readonly spaceId: string;
   readonly startMinutes: number | null;
   readonly endMinutes: number | null;
 }

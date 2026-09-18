@@ -1,4 +1,4 @@
-import type { BlockOccupancy, CapacityBlock } from './attendance';
+import type { AdminBlock, BlockLoad } from './attendance';
 import {
   blockKeyOf,
   blockPhaseOf,
@@ -16,28 +16,23 @@ import {
 const BLOCK_MINUTES = 120;
 const MS_PER_MINUTE = 60_000;
 
-function block(start: Date, overrides: Partial<CapacityBlock> = {}): CapacityBlock {
+function block(start: Date, overrides: Partial<AdminBlock> = {}): AdminBlock {
   return {
-    spaceId: 'court-basketball-a',
-    spaceName: 'Cancha de Básquetbol A',
     capacity: 30,
+    occupied: 0,
+    free: 30,
     start,
     end: new Date(start.getTime() + BLOCK_MINUTES * MS_PER_MINUTE),
-    attendees: [],
     ...overrides,
   };
 }
 
-function occupancy(overrides: Partial<BlockOccupancy> = {}): BlockOccupancy {
+function occupancy(overrides: Partial<BlockLoad> = {}): BlockLoad {
   return {
     capacity: 10,
     occupied: 0,
     free: 10,
-    inRoom: 0,
-    pending: 0,
     ratio: 0,
-    attended: 0,
-    missed: 0,
     ...overrides,
   };
 }

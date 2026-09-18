@@ -26,7 +26,38 @@
   <time [attr.datetime]="dayParam()">{{ selectedDay() | date: 'fullDate' }}</time>
 </p>
 
-@if (blocks().length > 0) {
+@if (schedule.isLoading()) {
+  <ul
+    class="schedule"
+    aria-busy="true"
+    i18n-aria-label="@@admin.blocks.loading"
+    aria-label="Cargando los bloques del día"
+  >
+    @for (row of skeletonRows; track row) {
+      <li class="schedule__placeholder" [tuiSkeleton]="true"></li>
+    }
+  </ul>
+} @else if (schedule.error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.blocks.error.heading"
+    heading="No pudimos cargar los bloques"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="schedule.reload()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (blocks().length > 0) {
   <ul class="schedule" i18n-aria-label="@@admin.blocks.list.label" aria-label="Bloques del día">
     @for (block of blocks(); track block.start.getTime()) {
       <li>

@@ -65,27 +65,6 @@
   background: var(--tui-text-tertiary);
 }
 
-// Clears the tab bar the same way MainLayout's footer does — its height plus the safe-area inset it
-// already reserves for itself, plus one gap on top so the two never touch. `appearance="primary"`
-// already fills the button at every size, so only position and elevation change here.
-@media (width < bp.$desktop) {
-  .manual-check-in {
-    position: fixed;
-    z-index: 3;
-    inset-inline-end: var(--univgo-layout-gutter);
-    inset-block-end: calc(
-      var(--univgo-tab-bar-height) + env(safe-area-inset-bottom) + var(--univgo-space-l)
-    );
-    box-shadow: var(--tui-shadow-medium);
-  }
-
-  // AdminLayout already leaves room for the tab bar itself; this stacks on top of that so the
-  // roster's own footer — pagination included — can still scroll clear of the FAB floating above it.
-  :host {
-    padding-block-end: calc(var(--tui-height-m) + var(--univgo-space-l));
-  }
-}
-
 // Occupancy is the headline stat; "en sala" and "pendientes" are its own breakdown. At tablet there
 // is not enough rail width to give that breakdown its own column without cramming a hairline one, so
 // both stay in the mobile shape — hero on top, the pair two-across underneath. Desktop has room for
@@ -127,4 +106,16 @@
   @media (width >= bp.$desktop) {
     display: contents;
   }
+}
+
+// The structure before the data, like every other view that waits on the server.
+.detail__loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.detail__loading-block {
+  block-size: var(--univgo-card-placeholder-height);
+  border-radius: var(--tui-radius-l);
 }

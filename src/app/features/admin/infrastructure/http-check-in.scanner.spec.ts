@@ -42,17 +42,18 @@ describe('HttpCheckInScanner', () => {
 
   function scan(startMinutes: number | null = 840, endMinutes: number | null = 960) {
     const result = new Promise<ScanResult>((resolve) =>
-      scanner.scan({ code: 'a0f3', startMinutes, endMinutes }).subscribe(resolve),
+      scanner.scan({ code: 'a0f3', spaceId: 'f2e1', startMinutes, endMinutes }).subscribe(resolve),
     );
 
     return { result, request: controller.expectOne(SCAN_URL) };
   }
 
-  it('sends the block the administrator is checking people into', () => {
+  it('sends the door and the block the administrator is checking people into', () => {
     const { request } = scan();
 
     expect(request.request.body).toEqual({
       code: 'a0f3',
+      spaceId: 'f2e1',
       expectedBlockStart: '14:00:00',
       expectedBlockEnd: '16:00:00',
     });
@@ -64,6 +65,7 @@ describe('HttpCheckInScanner', () => {
 
     expect(request.request.body).toEqual({
       code: 'a0f3',
+      spaceId: 'f2e1',
       expectedBlockStart: null,
       expectedBlockEnd: null,
     });

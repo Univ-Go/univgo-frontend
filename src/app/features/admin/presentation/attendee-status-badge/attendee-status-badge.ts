@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { TuiSizeS, TuiSizeXL } from '@taiga-ui/core/types';
 import { TuiBadge } from '@taiga-ui/kit';
-import type { CheckInStatus } from '../../domain/attendance';
+import type { ReservationState } from '../../../my-reservations/domain/reservation';
 
 /**
  * Level 2: the flag a student's row carries. It reads the reservation's own five states rather than
@@ -18,6 +18,6 @@ import type { CheckInStatus } from '../../domain/attendance';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttendeeStatusBadge {
-  public readonly status = input.required<CheckInStatus>();
+  public readonly status = input.required<ReservationState>();
   public readonly size = input<TuiSizeS | TuiSizeXL>('m');
 }

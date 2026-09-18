@@ -59,3 +59,10 @@
   padding: 0;
   list-style: none;
 }
+
+// The structure before the data, like every other view that waits on the server: rows at the height
+// they will have, so the list does not reflow when the day arrives.
+.schedule__placeholder {
+  block-size: var(--tui-height-l);
+  border-radius: var(--tui-radius-l);
+}

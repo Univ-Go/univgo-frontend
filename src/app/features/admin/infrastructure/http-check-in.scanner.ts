@@ -67,6 +67,9 @@ function toResult(dto: ScanResponseDto): ScanResult {
  * Every scan answers with a verdict and the status 200, failures included: the contract is a
  * decision at the door, not an error to handle. What can still fail is the request itself, and that
  * surfaces the usual way.
+ *
+ * The space is required: the server answers `OTHER_BLOCK` for a reservation booked elsewhere, which
+ * is why that verdict's hours are the reservation's own rather than this door's.
  */
 @Injectable()
 export class HttpCheckInScanner extends CheckInScanner {
@@ -77,6 +80,7 @@ export class HttpCheckInScanner extends CheckInScanner {
     return this.http
       .post<ScanResponseDto>(this.url, {
         code: request.code,
+        spaceId: request.spaceId,
         expectedBlockStart: request.startMinutes === null ? null : toIsoTime(request.startMinutes),
         expectedBlockEnd: request.endMinutes === null ? null : toIsoTime(request.endMinutes),
       })

@@ -1,22 +1,23 @@
 import type { Observable } from 'rxjs';
-import { minutesOfDay } from '../../../shared/time/time-of-day';
+import type { AdminBlock, AdminBlockDetail } from './attendance';
 
 /**
- * One block of a space on a given day, as the panel reads it: the numbers and nothing else. Who is
- * in it is the block detail's answer, and asking for it here would make a list of seven rows a list
- * of seven rosters.
+ * The day's blocks, and one of them in full. They are two reads because they cost differently: the
+ * list is the space's own counts, and the roster is a name, a document and a school per person. A
+ * list that carried every roster would be seven of those to draw seven rows.
  */
-export interface AdminBlock {
-  readonly startMinutes: number;
-  readonly endMinutes: number;
-  readonly capacity: number;
-  /** Seats a reservation is holding: waiting to check in, or already inside. */
-  readonly occupied: number;
-  readonly free: number;
-}
-
 export abstract class AdminBlockRepository {
   abstract blocksOf(spaceId: string, date: Date): Observable<readonly AdminBlock[]>;
+
+  /**
+   * `null` for a block the space does not run that day — a key carried over from another space, or
+   * a day this one does not open — which is an answer rather than a failure.
+   */
+  abstract blockDetail(
+    spaceId: string,
+    date: Date,
+    start: Date,
+  ): Observable<AdminBlockDetail | null>;
 }
 
 /**
@@ -25,7 +26,7 @@ export abstract class AdminBlockRepository {
  * nearest block they did not book.
  */
 export function blockInProgress(blocks: readonly AdminBlock[], now: Date): AdminBlock | undefined {
-  const minutes = minutesOfDay(now);
-
-  return blocks.find((block) => minutes >= block.startMinutes && minutes < block.endMinutes);
+  return blocks.find(
+    (block) => now.getTime() >= block.start.getTime() && now.getTime() < block.end.getTime(),
+  );
 }

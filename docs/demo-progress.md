@@ -28,13 +28,13 @@ Los pasos son los de `booking-flow.md` §5 y §11.
 | Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                                     |
 | Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante                      |
 | Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso                    |
-| Panel: bloques del día y su detalle | Maqueta  | Espacio real, ocupantes inventados; deuda 4.7                        |
+| Panel: bloques del día y su detalle | **Real** | `GET /admin/spaces/{id}/blocks` y `/blocks/{hora}`                   |
 | Panel: cierres y mantenimiento      | Mixto    | Mantenimiento y cancelación masiva reales; el registro de cierres no |
 
 **El backend está completo para todo el flujo.** Lo que falta es cablear el frontend: de los catorce
 endpoints que publica para las reservas —sin contar los de sesión ni los de usuarios— hoy se llaman
-diez. Los cuatro que quedan son el detalle de un bloque, el listado de reservas del administrador y
-las dos mitades de la configuración de la institución.
+once. Los tres que quedan son el listado de reservas del administrador y las dos mitades de la
+configuración de la institución, que ninguna vista pide todavía.
 
 ---
 
@@ -87,6 +87,16 @@ veredictos vienen del servidor: es quien tiene el reloj, la tolerancia y la escr
 un escaneo en check-in. La lógica que el frontend tenía para decidirlos (`evaluateCheckInScan`) se
 retiró: era una segunda opinión sobre algo que no le corresponde.
 
+**Los bloques del día y su detalle son los del servidor.** La lista lee `GET
+/admin/spaces/{id}/blocks` —aforo, ocupadas y libres por bloque— y el detalle añade el listado de
+quién lo ocupa: nombre, documento, escuela, estado y hora de entrada. Son dos lecturas porque
+cuestan distinto: una lista de siete filas no necesita siete listados de personas.
+
+Un bloque terminado deja de tener plazas ocupadas —eso es «liberar una plaza es una consecuencia»— y
+por eso su fila ya no dibuja un medidor a cero: dice que terminó y manda al detalle, que es donde
+consta quién se presentó. El listado tampoco ofrece ya un botón de «registrar entrada»: el servidor
+hace check-in con un código, y una lista de nombres no lo tiene.
+
 **El espacio se puede retirar del servicio, y sus reservas cancelarse.** `PUT
 /admin/spaces/{id}/maintenance` y `POST /admin/spaces/{id}/reservations/cancel-all`, que son las dos
 cosas que `booking-flow.md` §10 y §11 piden y las dos únicas que el servidor sabe hacer con un
@@ -114,27 +124,25 @@ decide el reloj del servidor.
   mitades de la pregunta —si queda sitio y desde qué hora— con un solo valor en vez de dos que pueden
   desmentirse.
 - **`GET /spaces` acepta `?date=`**. Antes siempre respondía sobre hoy.
+- **El escaneo exige `spaceId`** y responde «otro bloque» si la reserva es de otro espacio. Antes
+  buscaba sólo por código, así que un QR de otro espacio se daba por bueno en la puerta equivocada.
+- **`V12`/`V13`: `users.school`**, y el listado de un bloque devuelve **documento y escuela** además
+  del nombre. Sin eso, quien está en la puerta no podía contrastar el carné con la lista.
 
 ---
 
 ## 3. Lo que sigue siendo maqueta
 
-Dos ficheros, los dos del panel, y cada uno dice a quién sostiene:
+Un fichero, y dice a quién sostiene:
 
-| Fichero                                   | Sostiene                                                    |
-| ----------------------------------------- | ----------------------------------------------------------- |
-| `admin/infrastructure/mock-attendance.ts` | Quién ocupa cada bloque: el listado y su detalle            |
-| `admin/infrastructure/mock-closures.ts`   | El registro de cierres: formulario, historial e indicadores |
+| Fichero                                 | Sostiene                                                    |
+| --------------------------------------- | ----------------------------------------------------------- |
+| `admin/infrastructure/mock-closures.ts` | El registro de cierres: formulario, historial e indicadores |
 
 **El registro de cierres no tiene API que lo sostenga.** El formulario guarda alcance, motivo,
 recurrencia y quién lo autorizó, y el servidor guarda un booleano por espacio. No es cableado
 pendiente: es una funcionalidad que el backend no tiene. O crece una tabla de cierres, o esa mitad
 de la vista se retira y se queda con el interruptor y la cancelación, que ya son reales.
-
-**Lo que queda inventado del panel son las personas, no los espacios.** Los bloques que dibujan la
-consulta del día y su detalle se generan sobre el espacio real —su id, su nombre y su aforo vienen
-del catálogo— y lo que se fabrica es quién está dentro. Cablearlo tiene una decisión de producto
-delante, y está en la deuda 4.7.
 
 **El lado del estudiante ya no tiene ninguno.** El pase enseña el `qrCodeData` real de la reserva,
 como código y como QR, y el escáner del panel lo comprueba contra el servidor: el ciclo se cierra
@@ -212,9 +220,15 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
   ideal es un código corto y legible generado por el backend** —del estilo `UG-4F7K`, sin vocales
   para que no forme palabras ni se confunda `O` con `0`— único por reserva y con el UUID detrás si
   hace falta. Es un cambio de backend: el frontend ya sólo enseña lo que el servidor emite.
-- **Los códigos inventados del panel ya no se cruzan con los reales.** El escáner comprueba contra
-  el servidor, así que los `UG-1234` que el listado de un bloque sigue fabricando no valen para
-  nada: escanear uno responde «no existe», que es la verdad. Se van con la deuda 4.7.
+- **«Otro bloque» dice dos cosas a la vez.** El servidor contesta el mismo veredicto cuando la
+  reserva es de otra hora y cuando es de otro espacio, así que el panel no puede distinguirlas y su
+  mensaje se queda en la hora de la reserva. Un veredicto propio para «otro espacio» —o el id del
+  espacio en la respuesta— dejaría decir «esa reserva es de la cancha 2».
+- **La lista del día no puede contar la asistencia de un bloque pasado.** El resumen cuenta plazas
+  ocupadas _ahora_, y un bloque terminado no ocupa ninguna, así que la fila remite al detalle. Si el
+  resumen llevara «asistieron» y «no se presentaron», la lista volvería a decirlo de un vistazo.
+- **Abrir un bloque cuesta dos peticiones**: la lista del día —que es lo que valida la hora de la
+  URL y alimenta el selector— y el detalle con su listado.
 - **El filtro «disponible a las» cambió de significado.** Ofrece horas cada media hora, pero ahora
   los bloques son fijos: pedir las 14:30 nunca encaja con el bloque de 14:00 y siempre responde «más
   tarde». Es correcto, y el control sugiere lo contrario. Debería ofrecer los inicios de bloque.
@@ -224,32 +238,7 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
 - **Mobile no se ha probado en un viewport real.** Las vistas se construyeron responsive, pero la
   comprobación sigue pendiente desde el bootstrap.
 
-### 4.6 El escaneo no comprueba el espacio
-
-`POST /admin/checkin/scan` busca la reserva **por el código y nada más**. El espacio que el
-administrador tiene abierto no viaja en la petición y el servidor no lo mira: un código de otro
-espacio, con su bloque a la misma hora, se da por bueno y queda con check-in hecho donde no era.
-
-Lo único que hoy lo acota es el bloque: el panel manda `expectedBlockStart` / `expectedBlockEnd` del
-bloque en curso, así que una reserva de otra hora responde «otro bloque». A la misma hora, en otro
-espacio, no hay nada que lo distinga.
-
-El arreglo es del backend —aceptar el `spaceId` y contestar que la reserva es de otro espacio— y es
-pequeño. Se anota aquí, y no se disimula en el frontend: comprobarlo en el navegador sería una regla
-de negocio en el sitio donde `CLAUDE.md` §12 dice que no vale ponerla.
-
-### 4.7 El listado de un bloque enseña más de lo que el servidor sabe
-
-La consulta de bloques y su detalle muestran, por cada persona: nombre, facultad, documento, código
-de check-in, estado y horas de su ventana. `GET /admin/spaces/{id}/blocks/{start}` devuelve
-**nombre, estado y hora de entrada**, y nada más.
-
-Son dos caminos y hay que elegir antes de cablearlo: o el backend publica lo que falta —facultad y
-documento salen de `users`, el código es el `qr_code_data` que ya tiene— o el panel se queda con las
-tres columnas que el servidor sí contesta y pierde el buscador por documento. No es trabajo de
-cableado, es una decisión de producto.
-
-### 4.8 Fuera de foco, anotado a propósito
+### 4.6 Fuera de foco, anotado a propósito
 
 Seguridad (`CLAUDE.md` §12) sigue fuera de foco salvo sus tres invariantes, que se mantienen. Los
 trece permisos de `role_permissions` siguen sembrados y sin comprobarse: la autorización es sólo por
@@ -259,16 +248,14 @@ rol. Y no hay tests de componente ni end-to-end, que es lo acordado hasta que el
 
 ## 5. Por dónde seguir
 
-El orden no es de gusto: cada paso desbloquea al siguiente. Lo que estaba primero —crear la reserva,
-el lado del estudiante, el pase con su QR, el selector de espacios del panel y el escáner— está
-hecho: **una reserva creada en el móvil se conserva enseñando su QR en el mostrador**. Lo que queda
-es el panel, y las dos deudas que lo bloquean las está atendiendo el backend.
+**El flujo está cableado de punta a punta**: una reserva creada en el móvil se conserva enseñando su
+QR en el mostrador, y el panel la ve aparecer en el listado del bloque con el documento y la escuela
+de quien entró.
 
-1. **La consulta de bloques y su detalle**, en cuanto la 4.7 esté resuelta en el backend.
-2. **Decidir qué pasa con el registro de cierres**: o el backend crece una tabla, o la vista se
-   queda con el interruptor y la cancelación masiva, que ya funcionan.
+1. **Decidir qué pasa con el registro de cierres**: o el backend crece una tabla, o la vista se
+   queda con el interruptor y la cancelación masiva, que ya funcionan. Es lo único del panel que
+   sigue siendo maqueta.
 
-La **4.6** (que el escaneo compruebe el espacio) y la **4.7** (lo que el detalle de un bloque puede
-enseñar) están en manos del backend. De lo que queda en este lado, lo que conviene no dejar para
-después: **4.2** (los parámetros duplicados, porque cada vista nueva que los lea multiplica el
-problema) y **4.4** (los datos, porque es lo que se ve en una demostración).
+De la deuda, lo que conviene no dejar para después: **4.4** (los datos, porque es lo que se ve en
+una demostración) y **4.2** (los parámetros duplicados, porque cada vista nueva que los lea
+multiplica el problema).

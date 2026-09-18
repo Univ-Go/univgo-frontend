@@ -17,42 +17,32 @@
     <p class="row__capacity">
       <tui-icon icon="@tui.users" [attr.aria-hidden]="true" />
       <span>{{ capacityLabel() }}</span>
-      <span class="row__count">{{ shown() }} / {{ total() }}</span>
+      @if (phase() !== 'past') {
+        <span class="row__count">{{ occupancy().occupied }} / {{ occupancy().capacity }}</span>
+      }
     </p>
 
-    <!-- The count above says the same number in words, so the meter adds nothing for a screen
-         reader and is hidden from it rather than read out twice — the same call `OccupancyCard`
-         makes about its own. -->
-    <progress
-      tuiProgressBar
-      size="m"
-      class="row__bar"
-      aria-hidden="true"
-      [attr.data-load]="load()"
-      [value]="ratio()"
-      [max]="1"
-    ></progress>
+    @if (phase() === 'past') {
+      <p class="row__caption" i18n="@@admin.blocks.caption.past">
+        El bloque terminó. Consulta quién se presentó en su detalle.
+      </p>
+    } @else {
+      <!-- The count above says the same number in words, so the meter adds nothing for a screen
+           reader and is hidden from it rather than read out twice — the same call `OccupancyCard`
+           makes about its own. -->
+      <progress
+        tuiProgressBar
+        size="m"
+        class="row__bar"
+        aria-hidden="true"
+        [attr.data-load]="load()"
+        [value]="occupancy().ratio"
+        [max]="1"
+      ></progress>
 
-    @switch (phase()) {
-      @case ('upcoming') {
-        <p class="row__caption" i18n="@@admin.blocks.caption.upcoming">
-          {{ occupancy().occupied }} reservas confirmadas · {{ occupancy().free }} libres
-        </p>
-      }
-      @case ('live') {
-        <p class="row__caption" i18n="@@admin.blocks.caption.live">
-          {{ occupancy().inRoom }} en sala · {{ occupancy().pending }} pendientes de check-in
-        </p>
-      }
-      @case ('past') {
-        <p class="row__caption">
-          <span i18n="@@admin.blocks.caption.past">{occupancy().missed, plural,
-            =0 {Todos se presentaron}
-            =1 {1 no se presentó}
-            other {{{occupancy().missed}} no se presentaron}
-          }</span>
-        </p>
-      }
+      <p class="row__caption" i18n="@@admin.blocks.caption.booked">
+        {{ occupancy().occupied }} reservas confirmadas · {{ occupancy().free }} libres
+      </p>
     }
   </div>
 

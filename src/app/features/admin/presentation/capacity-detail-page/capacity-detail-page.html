@@ -35,7 +35,37 @@
   </nav>
 </div>
 
-@if (current(); as block) {
+@if (loading()) {
+  <div
+    class="detail__loading"
+    aria-busy="true"
+    i18n-aria-label="@@admin.capacity.loading"
+    aria-label="Cargando el bloque"
+  >
+    <span class="detail__loading-block" [tuiSkeleton]="true"></span>
+    <span class="detail__loading-block" [tuiSkeleton]="true"></span>
+  </div>
+} @else if (failed()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.capacity.error.heading"
+    heading="No pudimos cargar este bloque"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="retry()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (current(); as block) {
   <header class="intro">
     <div class="intro__text">
       <h1 i18n="@@admin.capacity.title">Aforo</h1>
@@ -49,66 +79,46 @@
           (blockSelected)="selectBlock($event)"
         />
         <span class="intro__dot" aria-hidden="true"></span>
-        <span>{{ block.spaceName }}</span>
+        <span>{{ spaceName() }}</span>
       </p>
     </div>
-
-    <!-- Letting an administrator wave someone in whose reservation expired is the open question of
-         `docs/booking-flow.md` §11: it needs a decision from the university before it does anything,
-         so the control is here and inert, like every other action in the mocked views. -->
-    <!-- Below desktop it leaves the header row entirely and floats over the content instead: `.intro`
-         wrapping it onto its own line already pushed it far from the controls it acts on, and a corner
-         FAB is the reachable shape that shows up. Same control either way — CSS repositions it, the
-         label and fill stay identical at every size. -->
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      appearance="primary"
-      iconStart="@tui.user-plus"
-      class="manual-check-in"
-      i18n="@@admin.capacity.manualCheckIn"
-    >
-      Reservar
-    </button>
   </header>
 
-  @if (occupancy(); as occupancy) {
+  @if (load(); as load) {
     <div class="summary">
-      <app-occupancy-card class="summary__hero" [occupancy]="occupancy" />
+      <app-occupancy-card class="summary__hero" [occupancy]="load" />
 
-      <div class="summary__chips">
-        <app-metric-card
-          align="center"
-          iconSize="l"
-          icon="@tui.circle-check"
-          tone="positive"
-          i18n-heading="@@admin.capacity.inRoom.title"
-          heading="En sala"
-          [value]="occupancy.inRoom"
-        >
-          <ng-container i18n="@@admin.capacity.inRoom.hint"
-            >de {{ occupancy.occupied }} plazas ocupadas</ng-container
+      @if (tally(); as tally) {
+        <div class="summary__chips">
+          <app-metric-card
+            align="center"
+            iconSize="l"
+            icon="@tui.circle-check"
+            tone="positive"
+            i18n-heading="@@admin.capacity.inRoom.title"
+            heading="En sala"
+            [value]="tally.inRoom"
           >
-        </app-metric-card>
+            <ng-container i18n="@@admin.capacity.inRoom.hint"
+              >de {{ load.occupied }} plazas ocupadas</ng-container
+            >
+          </app-metric-card>
 
-        <app-metric-card
-          align="center"
-          iconSize="l"
-          icon="@tui.hourglass"
-          tone="warning"
-          i18n-heading="@@admin.capacity.pending.title"
-          heading="Pendientes"
-          [value]="occupancy.pending"
-          [hintIcon]="expiryIcon()"
-        >
-          <ng-container i18n="@@admin.capacity.pending.hint">{expiringSoon(), plural,
-            =0 {ninguna a punto de expirar}
-            =1 {1 reserva a punto de expirar}
-            other {{{expiringSoon()}} reservas a punto de expirar}
-          }</ng-container>
-        </app-metric-card>
-      </div>
+          <app-metric-card
+            align="center"
+            iconSize="l"
+            icon="@tui.hourglass"
+            tone="warning"
+            i18n-heading="@@admin.capacity.pending.title"
+            heading="Pendientes"
+            [value]="tally.pending"
+          >
+            <ng-container i18n="@@admin.capacity.pending.hint"
+              >todavía sin registrar su entrada</ng-container
+            >
+          </app-metric-card>
+        </div>
+      }
     </div>
   }
 

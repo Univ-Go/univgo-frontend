@@ -53,6 +53,12 @@ export class BookingReviewPage {
     return booking ? spaceCategoryIcon(booking.space.category) : '';
   });
 
+  protected readonly coverImage = computed(() => {
+    const booking = this.booking();
+
+    return booking?.space.images[0] ?? null;
+  });
+
   protected readonly rules = computed(() => {
     const booking = this.booking();
 

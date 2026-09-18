@@ -25,7 +25,7 @@ const COURT: Space = {
   opensOnDate: true,
   closedOnDate: false,
   freeSlots: [],
-  images: [],
+  images: ['https://cdn.univgo.test/court-a.jpg'],
 };
 
 const RESERVATION_PAYLOAD = {
@@ -118,6 +118,7 @@ describe('HttpReservationRepository', () => {
       spaceName: 'Cancha de Tenis de Campo A',
       location: 'Complejo Deportivo Central',
       category: 'sports',
+      images: ['https://cdn.univgo.test/court-a.jpg'],
       date: new Date(2026, 8, 17),
       startMinutes: 840,
       endMinutes: 960,
@@ -141,6 +142,7 @@ describe('HttpReservationRepository', () => {
     const [reservation] = await mine;
 
     expect(reservation.spaceName).toBe('Cancha de Tenis de Campo A');
+    expect(reservation.images).toEqual(['https://cdn.univgo.test/court-a.jpg']);
     expect(reservation.state).toBe('inProgress');
   });
 

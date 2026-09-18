@@ -4,7 +4,7 @@
   display: block;
   position: sticky;
   inset-block-start: 0;
-  z-index: 2;
+  z-index: var(--univgo-layer-sticky);
   // Its own compositing layer, for the same reason the application bar has one: without it the
   // browser re-rasterises the bar a step behind the page and it reads as a one-pixel shiver.
   will-change: transform;

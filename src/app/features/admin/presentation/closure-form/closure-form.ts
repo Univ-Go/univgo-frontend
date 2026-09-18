@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,28 +9,19 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
-import { TuiAppearance, TuiButton, TuiDataList, TuiIcon } from '@taiga-ui/core';
+import { TuiAppearance, TuiButton, TuiDataList, TuiIcon, TuiLoader } from '@taiga-ui/core';
 import {
   TuiBlock,
   TuiConfirmService,
   TuiInputDate,
   TuiInputTime,
   TuiSelect,
-  TuiSwitch,
   TuiTextarea,
 } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-import { NotificationService } from '../../../../core/notifications/notification.service';
-import { SessionStore } from '../../../auth/application/session-store';
-import { fullName } from '../../../auth/domain/session';
-import type {
-  ClosureReason,
-  ClosureRecurrence,
-  ClosureScope,
-  SpaceClosure,
-} from '../../domain/space-closure';
+import type { ClosureReason } from '../../domain/space-closure';
+import type { ClosureRequest } from '../../domain/space-closure.repository';
 import { CLOSURE_REASON_OPTIONS, closureReasonName } from '../closure-reason';
-import { WEEKDAY_OPTIONS } from '../closure-weekday';
 
 let nextFormId = 0;
 
@@ -45,6 +35,12 @@ const START_CLOSING_HOUR = 18;
 const END_OPENING_HOUR = 8;
 const END_CLOSING_HOUR = 20;
 
+/**
+ * How long the closure lasts, which is the one question the form asks that the API does not have a
+ * field for: it takes two instants, and these are the three shapes a person actually registers.
+ */
+type ClosureSpan = 'full_day' | 'time_block' | 'indefinite';
+
 function combine(day: TuiDay, time: TuiTime): Date {
   const date = day.toLocalNativeDate();
 
@@ -54,8 +50,8 @@ function combine(day: TuiDay, time: TuiTime): Date {
 }
 
 /**
- * Offering the closable half-hours beats asking someone to type one, same reasoning as
- * `bookableTimes` in `SpacesPage`.
+ * Offering the closable hours beats asking someone to type one, same reasoning as `bookableTimes`
+ * in `SpacesPage`.
  */
 function closureTimeOptions(openingHour: number, closingHour: number): readonly TuiTime[] {
   const span = (closingHour - openingHour) * MINUTES_PER_HOUR;
@@ -68,20 +64,22 @@ function closureTimeOptions(openingHour: number, closingHour: number): readonly 
 }
 
 /**
- * Level 3: registers a new closure for the selected space. `docs/booking-flow.md` §11 asks the panel
- * to be able to cancel a space's reservations "para mantenimiento imprevisto, cierre anticipado o
- * incidencias" — unlike scanning a check-in, that is a local decision with nothing to validate
- * against a real reservation record, so the form writes straight into the page's own closure list
- * rather than staying inert like the roster's check-in action.
+ * Level 3: registers a closure of the selected space (`docs/booking-flow.md` §12). The form only
+ * composes the request; sending it and telling the history about it belong to the page, which is
+ * what owns both.
  *
- * Confirmation is a Taiga dialog rather than the mockup's static warning line: cancelling every
- * active reservation in the period and notifying students is exactly the kind of consequence
- * `CLAUDE.md` §7 asks to gate behind an explicit confirmation, not a sentence read in passing.
+ * Confirmation is a Taiga dialog rather than a warning line read in passing, because a closure does
+ * take a block away from whoever had booked it. What it says is what actually happens: those
+ * reservations are suspended and come back if the closure is reverted — nothing is cancelled, and
+ * clearing them is a separate action on the card above.
+ *
+ * Recurrence is deliberately not here. A weekly slot is a schedule, not an incident, and §12 leaves
+ * it out: evaluating repetition rules on every availability read is the highest cost in the section
+ * for its least frequent case.
  */
 @Component({
   selector: 'app-closure-form',
   imports: [
-    DatePipe,
     FormsModule,
     TuiAppearance,
     TuiBlock,
@@ -91,9 +89,9 @@ function closureTimeOptions(openingHour: number, closingHour: number): readonly 
     TuiIcon,
     TuiInputDate,
     TuiInputTime,
+    TuiLoader,
     TuiSelect,
     TuiSurface,
-    TuiSwitch,
     TuiTextarea,
   ],
   templateUrl: './closure-form.html',
@@ -105,24 +103,16 @@ function closureTimeOptions(openingHour: number, closingHour: number): readonly 
   providers: [TuiConfirmService],
 })
 export class ClosureForm {
-  public readonly spaceId = input.required<string>();
+  /** True while the page is sending the closure, so the form cannot register it twice. */
+  public readonly saving = input(false);
 
-  public readonly closureCreated = output<SpaceClosure>();
+  public readonly closureRequested = output<ClosureRequest>();
 
   private readonly confirm = inject(TuiConfirmService);
-  private readonly notifications = inject(NotificationService);
-  private readonly session = inject(SessionStore);
-
-  /** Who authorised a closure is part of its record, so it is read from the session, not typed. */
-  private readonly authorizedBy = computed(() => {
-    const user = this.session.user();
-    return user ? fullName(user) : '';
-  });
 
   protected readonly formId = `closure-form-${nextFormId++}`;
   protected readonly reasonOptions = CLOSURE_REASON_OPTIONS;
   protected readonly reasonName = closureReasonName;
-  protected readonly weekdayOptions = WEEKDAY_OPTIONS;
   protected readonly startTimeOptions = closureTimeOptions(START_OPENING_HOUR, START_CLOSING_HOUR);
   protected readonly endTimeOptions = closureTimeOptions(END_OPENING_HOUR, END_CLOSING_HOUR);
 
@@ -130,18 +120,14 @@ export class ClosureForm {
   protected readonly today = TuiDay.currentLocal();
 
   protected readonly date = signal<TuiDay | null>(null);
-  protected readonly scope = signal<ClosureScope>('full_day');
+  protected readonly span = signal<ClosureSpan>('full_day');
   protected readonly startTime = signal<TuiTime | null>(null);
   protected readonly endTime = signal<TuiTime | null>(null);
-  protected readonly weekdays = signal<readonly number[]>([]);
-  /** A club's weekly slot has no natural end date, so a standing arrangement is the default. */
-  protected readonly indefinite = signal(true);
-  protected readonly until = signal<TuiDay | null>(null);
   protected readonly reason = signal<ClosureReason | null>(null);
   protected readonly details = signal('');
 
   private readonly timeRangeValid = computed(() => {
-    if (this.scope() === 'full_day') {
+    if (this.span() !== 'time_block') {
       return true;
     }
 
@@ -155,24 +141,12 @@ export class ClosureForm {
     );
   });
 
-  private readonly recurrenceValid = computed(() => {
-    if (this.scope() !== 'recurring') {
-      return true;
-    }
-
-    return this.weekdays().length > 0 && (this.indefinite() || this.until() !== null);
-  });
-
   protected readonly formValid = computed(
-    () =>
-      this.date() !== null &&
-      this.reason() !== null &&
-      this.timeRangeValid() &&
-      this.recurrenceValid(),
+    () => this.date() !== null && this.reason() !== null && this.timeRangeValid(),
   );
 
-  protected setScope(scope: ClosureScope): void {
-    this.scope.set(scope);
+  protected setSpan(span: ClosureSpan): void {
+    this.span.set(span);
   }
 
   /** `TuiTime` has no `equals`, and two instances for the same hour are never `===`. */
@@ -184,17 +158,11 @@ export class ClosureForm {
     return option.toAbsoluteMilliseconds() === this.endTime()?.toAbsoluteMilliseconds();
   }
 
-  protected toggleWeekday(value: number): void {
-    this.weekdays.update((current) =>
-      current.includes(value) ? current.filter((day) => day !== value) : [...current, value],
-    );
-  }
-
   protected submit(): void {
     const day = this.date();
     const reason = this.reason();
 
-    if (day === null || reason === null) {
+    if (day === null || reason === null || this.saving()) {
       return;
     }
 
@@ -203,7 +171,7 @@ export class ClosureForm {
         label: $localize`:@@admin.closure.confirm.title:Confirmar cierre del espacio`,
         size: 's',
         data: {
-          content: $localize`:@@admin.closure.confirm.body:Se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. Esta acción no se puede deshacer.`,
+          content: $localize`:@@admin.closure.confirm.body:El espacio dejará de ofrecer los bloques de ese periodo. Las reservas que ya existan quedarán suspendidas: conservan su plaza y vuelven si reabres el espacio.`,
           yes: $localize`:@@admin.closure.confirm.yes:Cerrar espacio`,
           no: $localize`:@@admin.closure.confirm.no:Cancelar`,
           appearance: 'negative',
@@ -211,55 +179,47 @@ export class ClosureForm {
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.createClosure(day, reason);
+          this.closureRequested.emit(this.requestFrom(day, reason));
+          this.resetForm();
         }
       });
   }
 
-  private createClosure(day: TuiDay, reason: ClosureReason): void {
-    const scope = this.scope();
+  /**
+   * The three spans as the two instants the server takes. A full day is the day itself, midnight to
+   * midnight; a span with no end date leaves `endsAt` empty and holds until somebody reverts it.
+   */
+  private requestFrom(day: TuiDay, reason: ClosureReason): ClosureRequest {
+    const startOfDay = day.toLocalNativeDate();
     const start = this.startTime();
     const end = this.endTime();
+    const details = this.details().trim();
 
-    const recurrence: ClosureRecurrence | null =
-      scope === 'recurring' && start !== null && end !== null
-        ? {
-            weekdays: this.weekdays(),
-            startTime: combine(day, start),
-            endTime: combine(day, end),
-            until: this.indefinite() ? null : (this.until()?.toLocalNativeDate() ?? null),
-          }
-        : null;
-
-    this.closureCreated.emit({
-      id: `closure-${Date.now()}`,
-      spaceId: this.spaceId(),
-      scope,
-      date: day.toLocalNativeDate(),
-      start: scope === 'time_block' && start !== null ? combine(day, start) : null,
-      end: scope === 'time_block' && end !== null ? combine(day, end) : null,
-      recurrence,
+    return {
+      startsAt: this.span() === 'time_block' && start !== null ? combine(day, start) : startOfDay,
+      endsAt: this.endOf(day, end),
       reason,
-      details: this.details().trim().length > 0 ? this.details().trim() : null,
-      authorizedBy: this.authorizedBy(),
-    });
+      details: details.length > 0 ? details : null,
+    };
+  }
 
-    this.notifications.success(
-      $localize`:@@admin.closure.created.summary:Espacio cerrado`,
-      $localize`:@@admin.closure.created.detail:Las reservas del periodo se cancelaron y se notificó a los estudiantes.`,
-    );
+  private endOf(day: TuiDay, end: TuiTime | null): Date | null {
+    if (this.span() === 'indefinite') {
+      return null;
+    }
 
-    this.resetForm();
+    if (this.span() === 'time_block' && end !== null) {
+      return combine(day, end);
+    }
+
+    return day.append({ day: 1 }).toLocalNativeDate();
   }
 
   private resetForm(): void {
     this.date.set(null);
-    this.scope.set('full_day');
+    this.span.set('full_day');
     this.startTime.set(null);
     this.endTime.set(null);
-    this.weekdays.set([]);
-    this.indefinite.set(true);
-    this.until.set(null);
     this.reason.set(null);
     this.details.set('');
   }

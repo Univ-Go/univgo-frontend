@@ -12,9 +12,11 @@ import { APP_CONFIG } from './core/config/app-config';
 import { defaultAppConfig } from './core/config/default-app-config';
 import { AdminBlockRepository } from './features/admin/domain/admin-block.repository';
 import { AdminSpaceRepository } from './features/admin/domain/admin-space.repository';
+import { SpaceClosureRepository } from './features/admin/domain/space-closure.repository';
 import { CheckInScanner } from './features/admin/domain/check-in.scanner';
 import { HttpAdminBlockRepository } from './features/admin/infrastructure/http-admin-block.repository';
 import { HttpAdminSpaceRepository } from './features/admin/infrastructure/http-admin-space.repository';
+import { HttpSpaceClosureRepository } from './features/admin/infrastructure/http-space-closure.repository';
 import { HttpCheckInScanner } from './features/admin/infrastructure/http-check-in.scanner';
 import { AuthRepository } from './features/auth/domain/auth.repository';
 import { HttpAuthRepository } from './features/auth/infrastructure/http-auth.repository';
@@ -66,6 +68,7 @@ export const appConfig: ApplicationConfig = {
     { provide: CheckInScanner, useClass: HttpCheckInScanner },
     { provide: AdminBlockRepository, useClass: HttpAdminBlockRepository },
     { provide: AdminSpaceRepository, useClass: HttpAdminSpaceRepository },
+    { provide: SpaceClosureRepository, useClass: HttpSpaceClosureRepository },
     { provide: Logger, useClass: ConsoleLogger },
     { provide: TitleStrategy, useClass: PageMetadataStrategy },
   ],

@@ -1314,10 +1314,6 @@
         <source>Fecha de cierre</source>
         <target>Closure date</target>
       </trans-unit>
-      <trans-unit id="admin.closure.form.recurring.from" datatype="html">
-        <source>Comienza el</source>
-        <target>Starts on</target>
-      </trans-unit>
       <trans-unit id="admin.closure.form.scope" datatype="html">
         <source>Alcance del cierre</source>
         <target>Closure scope</target>
@@ -1330,10 +1326,6 @@
         <source>Bloque específico</source>
         <target>Specific time block</target>
       </trans-unit>
-      <trans-unit id="admin.closure.form.scope.recurring" datatype="html">
-        <source>Bloque recurrente</source>
-        <target>Recurring block</target>
-      </trans-unit>
       <trans-unit id="admin.closure.form.timeFrom" datatype="html">
         <source>Desde</source>
         <target>From</target>
@@ -1341,18 +1333,6 @@
       <trans-unit id="admin.closure.form.timeTo" datatype="html">
         <source>Hasta</source>
         <target>To</target>
-      </trans-unit>
-      <trans-unit id="admin.closure.form.recurring.weekdays" datatype="html">
-        <source>Se repite los</source>
-        <target>Repeats on</target>
-      </trans-unit>
-      <trans-unit id="admin.closure.form.recurring.indefinite" datatype="html">
-        <source>Sin fecha de fin</source>
-        <target>No end date</target>
-      </trans-unit>
-      <trans-unit id="admin.closure.form.recurring.until" datatype="html">
-        <source>Finaliza el</source>
-        <target>Ends on</target>
       </trans-unit>
       <trans-unit id="admin.closure.form.reason" datatype="html">
         <source>Motivo</source>
@@ -1371,24 +1351,24 @@
         <target>Details about the closure…</target>
       </trans-unit>
       <trans-unit id="admin.closure.form.notice.title" datatype="html">
-        <source>Notificación automática</source>
-        <target>Automatic notification</target>
+        <source>Qué pasa con las reservas</source>
+        <target>What happens to the bookings</target>
       </trans-unit>
       <trans-unit id="admin.closure.form.notice.body" datatype="html">
-        <source> Al confirmar, se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. </source>
-        <target> Confirming will cancel every active booking in this period and immediately notify the affected students by university email. </target>
+        <source> Las reservas que ya existan en ese periodo quedarán suspendidas: conservan su plaza, no expiran y vuelven si reabres el espacio. Cancelarlas es otra acción, y esa no se deshace. </source>
+        <target> The bookings already inside that window are suspended: they keep their place, do not expire, and come back if you reopen the space. Cancelling them is a separate action, and that one cannot be undone. </target>
       </trans-unit>
       <trans-unit id="admin.closure.form.submit" datatype="html">
-        <source> Cerrar espacio y cancelar reservas </source>
-        <target> Close space and cancel bookings </target>
+        <source> Cerrar el espacio </source>
+        <target> Close the space </target>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.title" datatype="html">
         <source>Confirmar cierre del espacio</source>
         <target>Confirm space closure</target>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.body" datatype="html">
-        <source>Se cancelarán todas las reservas activas en este periodo y se notificará de inmediato a los estudiantes afectados vía correo institucional. Esta acción no se puede deshacer.</source>
-        <target>Every active booking in this period will be cancelled and the affected students will be notified immediately by university email. This action cannot be undone.</target>
+        <source>El espacio dejará de ofrecer los bloques de ese periodo. Las reservas que ya existan quedarán suspendidas: conservan su plaza y vuelven si reabres el espacio.</source>
+        <target>The space stops offering the blocks in that window. The bookings already inside it are suspended: they keep their place and come back if you reopen the space.</target>
       </trans-unit>
       <trans-unit id="admin.closure.confirm.yes" datatype="html">
         <source>Cerrar espacio</source>
@@ -1403,36 +1383,20 @@
         <target>Space closed</target>
       </trans-unit>
       <trans-unit id="admin.closure.created.detail" datatype="html">
-        <source>Las reservas del periodo se cancelaron y se notificó a los estudiantes.</source>
-        <target>Bookings in the period were cancelled and students were notified.</target>
+        <source>Las reservas de ese periodo quedan suspendidas y vuelven si lo reabres.</source>
+        <target>The bookings in that window are suspended, and come back if you reopen it.</target>
       </trans-unit>
       <trans-unit id="admin.closure.history.title" datatype="html">
         <source>Historial de cierres</source>
         <target>Closure history</target>
       </trans-unit>
-      <trans-unit id="admin.closure.scope.fullDay" datatype="html">
-        <source>Día completo</source>
-        <target>Full day</target>
-      </trans-unit>
       <trans-unit id="admin.closure.history.column.reason" datatype="html">
         <source>Motivo</source>
         <target>Reason</target>
       </trans-unit>
-      <trans-unit id="admin.closure.history.column.authorizedBy" datatype="html">
-        <source>Autorizado por</source>
-        <target>Authorized by</target>
-      </trans-unit>
       <trans-unit id="admin.closure.history.column.dateTime" datatype="html">
         <source>Fecha / horario</source>
         <target>Date / time</target>
-      </trans-unit>
-      <trans-unit id="admin.closure.history.recurring.range" datatype="html">
-        <source><x id="DAYS" equiv-text="days"/>, <x id="START" equiv-text="start"/> – <x id="END" equiv-text="end"/></source>
-        <target><x id="DAYS" equiv-text="days"/>, <x id="START" equiv-text="start"/> – <x id="END" equiv-text="end"/></target>
-      </trans-unit>
-      <trans-unit id="admin.closure.history.recurring.until" datatype="html">
-        <source>hasta <x id="UNTIL" equiv-text="until"/></source>
-        <target>until <x id="UNTIL" equiv-text="until"/></target>
       </trans-unit>
       <trans-unit id="admin.closure.history.column.status" datatype="html">
         <source>Estado</source>
@@ -1477,6 +1441,38 @@
       <trans-unit id="admin.closure.status.completed" datatype="html">
         <source> Finalizado </source>
         <target> Completed </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.status.reverted" datatype="html">
+        <source> Revertido </source>
+        <target> Reopened </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.span.indefinite" datatype="html">
+        <source>Sin fecha de fin</source>
+        <target>No end date</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.form.scope.indefinite" datatype="html">
+        <source>Sin fecha de fin</source>
+        <target>No end date</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.column.details" datatype="html">
+        <source>Detalle</source>
+        <target>Detail</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.column.actions" datatype="html">
+        <source> Acciones </source>
+        <target> Actions </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.history.revert" datatype="html">
+        <source> Reabrir </source>
+        <target> Reopen </target>
+      </trans-unit>
+      <trans-unit id="admin.closure.reverted.summary" datatype="html">
+        <source>Espacio reabierto</source>
+        <target>Space reopened</target>
+      </trans-unit>
+      <trans-unit id="admin.closure.reverted.detail" datatype="html">
+        <source>Las reservas que estaban suspendidas vuelven a estar en pie.</source>
+        <target>The bookings that were suspended stand again.</target>
       </trans-unit>
       <trans-unit id="admin.settings.title" datatype="html">
         <source>Configuración y cancelación de espacio</source>

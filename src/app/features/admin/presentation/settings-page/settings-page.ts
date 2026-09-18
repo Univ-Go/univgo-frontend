@@ -10,7 +10,8 @@ import { AdminSpacesStore } from '../../application/admin-spaces.store';
 import { AdminSpaceRepository } from '../../domain/admin-space.repository';
 import type { SpaceClosure } from '../../domain/space-closure';
 import { closuresThisMonth, mostFrequentReasonThisMonth } from '../../domain/space-closure-catalog';
-import { MOCK_CLOSURES } from '../../infrastructure/mock-closures';
+import type { ClosureRequest } from '../../domain/space-closure.repository';
+import { SpaceClosureRepository } from '../../domain/space-closure.repository';
 import { ClosureForm } from '../closure-form/closure-form';
 import { ClosureHistory } from '../closure-history/closure-history';
 import { closureReasonName } from '../closure-reason';
@@ -26,10 +27,9 @@ import { MetricCard } from '../metric-card/metric-card';
  * had. They are two actions rather than one because announcing next week's closure should not empty
  * today, and because a space can be handed back without anything to undo.
  *
- * The closure record below them — scope, reason, recurrence, history — is still a visual mock:
- * there is no closures API, and the server keeps a single flag per space. It stays until that
- * exists or until the product drops it; what it must not do is look like it were recording
- * anything.
+ * Below them, the closure record: a window, a reason, and the way back from it. A closure suspends
+ * rather than cancels (`docs/booking-flow.md` §12), which is what makes reopening possible, and
+ * that is why it is not the same control as clearing the space's reservations.
  */
 @Component({
   selector: 'app-settings-page',
@@ -55,6 +55,7 @@ export class SettingsPage {
 
   private readonly spaces = inject(AdminSpacesStore);
   private readonly repository = inject(AdminSpaceRepository);
+  private readonly closureRepository = inject(SpaceClosureRepository);
   private readonly dialogs = inject(TuiDialogService);
   private readonly notifications = inject(NotificationService);
 
@@ -70,27 +71,74 @@ export class SettingsPage {
 
   protected readonly switching = signal(false);
   protected readonly cancelling = signal(false);
+  protected readonly closing = signal(false);
+  protected readonly revertingId = signal<string | null>(null);
 
-  protected readonly closures = signal<readonly SpaceClosure[]>(MOCK_CLOSURES);
-
-  protected readonly spaceClosures = computed(() =>
-    this.closures().filter((closure) => closure.spaceId === this.spaceId()),
-  );
+  protected readonly closures = rxResource({
+    params: () => this.spaceId(),
+    stream: ({ params }) => this.closureRepository.closuresOf(params),
+    defaultValue: [],
+  });
 
   protected readonly closuresThisMonthCount = computed(() =>
-    closuresThisMonth(this.spaceClosures(), new Date()),
+    closuresThisMonth(this.closures.value(), new Date()),
   );
 
   protected readonly frequentReasonLabel = computed(() => {
-    const reason = mostFrequentReasonThisMonth(this.spaceClosures(), new Date());
+    const reason = mostFrequentReasonThisMonth(this.closures.value(), new Date());
 
     return reason === null
       ? $localize`:@@admin.closure.stats.noReason:Sin cierres`
       : closureReasonName(reason);
   });
 
-  protected addClosure(closure: SpaceClosure): void {
-    this.closures.update((current) => [closure, ...current]);
+  /**
+   * A closure changes what the catalogue answers about this space, so the cached directory is
+   * dropped with it: otherwise the switch above would keep showing the space as open.
+   */
+  protected close(request: ClosureRequest): void {
+    if (this.closing()) {
+      return;
+    }
+
+    this.closing.set(true);
+
+    this.closureRepository.close(this.spaceId(), request).subscribe({
+      next: () => {
+        this.closing.set(false);
+        this.refreshClosures();
+        this.notifications.success(
+          $localize`:@@admin.closure.created.summary:Espacio cerrado`,
+          $localize`:@@admin.closure.created.detail:Las reservas de ese periodo quedan suspendidas y vuelven si lo reabres.`,
+        );
+      },
+      error: () => this.closing.set(false),
+    });
+  }
+
+  protected revert(closure: SpaceClosure): void {
+    if (this.revertingId()) {
+      return;
+    }
+
+    this.revertingId.set(closure.id);
+
+    this.closureRepository.revert(this.spaceId(), closure.id).subscribe({
+      next: () => {
+        this.revertingId.set(null);
+        this.refreshClosures();
+        this.notifications.success(
+          $localize`:@@admin.closure.reverted.summary:Espacio reabierto`,
+          $localize`:@@admin.closure.reverted.detail:Las reservas que estaban suspendidas vuelven a estar en pie.`,
+        );
+      },
+      error: () => this.revertingId.set(null),
+    });
+  }
+
+  private refreshClosures(): void {
+    this.closures.reload();
+    this.refreshSpace();
   }
 
   /**

@@ -65,7 +65,7 @@
 </section>
 
 <div class="layout">
-  <app-closure-form [spaceId]="spaceId()" (closureCreated)="addClosure($event)" />
+  <app-closure-form [saving]="closing()" (closureRequested)="close($event)" />
 
   <div class="layout__side">
     <div class="stats">
@@ -88,6 +88,10 @@
       />
     </div>
 
-    <app-closure-history [closures]="spaceClosures()" />
+    <app-closure-history
+      [closures]="closures.value()"
+      [reverting]="revertingId()"
+      (reverted)="revert($event)"
+    />
   </div>
 </div>

@@ -21,7 +21,7 @@
       En curso
     </span>
   }
-  @case ('completed') {
+  @case ('finished') {
     <span
       tuiBadge
       appearance="neutral"
@@ -30,6 +30,19 @@
       i18n="@@admin.closure.status.completed"
     >
       Finalizado
+    </span>
+  }
+  <!-- Reverted is not "finished": somebody reopened the space, and the reservations it had
+       suspended went back to their owners. -->
+  @case ('reverted') {
+    <span
+      tuiBadge
+      appearance="neutral"
+      [size]="size()"
+      iconStart="@tui.rotate-ccw"
+      i18n="@@admin.closure.status.reverted"
+    >
+      Revertido
     </span>
   }
 }

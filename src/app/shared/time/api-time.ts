@@ -1,4 +1,5 @@
-import { parseIsoDate } from './calendar-day';
+import { parseIsoDate, toIsoDate } from './calendar-day';
+import { minutesOfDay } from './time-of-day';
 
 /**
  * The wire formats the API speaks in, translated once. The server works in the institution's own
@@ -39,6 +40,11 @@ export function minutesFromIsoTime(value: string): number {
 
 export function toIsoTime(minutes: number): string {
   return `${pad(Math.floor(minutes / MINUTES_PER_HOUR))}:${pad(minutes % MINUTES_PER_HOUR)}:00`;
+}
+
+/** The other direction: an instant as the server's own zoneless local time. */
+export function toIsoDateTime(instant: Date): string {
+  return `${toIsoDate(instant)}T${toIsoTime(minutesOfDay(instant))}`;
 }
 
 /** `2026-09-17T13:45:00`, which JavaScript reads as local time exactly because it carries no zone. */

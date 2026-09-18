@@ -7,15 +7,9 @@
   </header>
 
   <tui-textfield tuiTextfieldSize="m">
-    @if (scope() === 'recurring') {
-      <label tuiLabel [for]="formId + '-date'" i18n="@@admin.closure.form.recurring.from"
-        >Comienza el</label
-      >
-    } @else {
-      <label tuiLabel [for]="formId + '-date'" i18n="@@admin.closure.form.date"
-        >Fecha de cierre</label
-      >
-    }
+    <label tuiLabel [for]="formId + '-date'" i18n="@@admin.closure.form.date"
+      >Fecha de cierre</label
+    >
     <input
       [id]="formId + '-date'"
       tuiInputDate
@@ -36,8 +30,8 @@
         type="radio"
         tuiBlock
         name="scope"
-        [ngModel]="scope()"
-        (ngModelChange)="setScope($event)"
+        [ngModel]="span()"
+        (ngModelChange)="setSpan($event)"
         [value]="'full_day'"
       />
       <tui-icon icon="@tui.calendar" />
@@ -49,29 +43,31 @@
         type="radio"
         tuiBlock
         name="scope"
-        [ngModel]="scope()"
-        (ngModelChange)="setScope($event)"
+        [ngModel]="span()"
+        (ngModelChange)="setSpan($event)"
         [value]="'time_block'"
       />
       <tui-icon icon="@tui.clock" />
       <span i18n="@@admin.closure.form.scope.timeBlock">Bloque específico</span>
     </label>
 
+    <!-- The honest shape for an incident nobody can date the end of: it holds until the space is
+         handed back, which is the same closure the "out of service" switch creates. -->
     <label appearance="" tuiBlock class="scope__option">
       <input
         type="radio"
         tuiBlock
         name="scope"
-        [ngModel]="scope()"
-        (ngModelChange)="setScope($event)"
-        [value]="'recurring'"
+        [ngModel]="span()"
+        (ngModelChange)="setSpan($event)"
+        [value]="'indefinite'"
       />
-      <tui-icon icon="@tui.repeat" />
-      <span i18n="@@admin.closure.form.scope.recurring">Bloque recurrente</span>
+      <tui-icon icon="@tui.calendar-off" />
+      <span i18n="@@admin.closure.form.scope.indefinite">Sin fecha de fin</span>
     </label>
   </fieldset>
 
-  @if (scope() === 'time_block' || scope() === 'recurring') {
+  @if (span() === 'time_block') {
     <div class="time-range">
       <tui-textfield tuiTextfieldSize="m">
         <label tuiLabel [for]="formId + '-start'" i18n="@@admin.closure.form.timeFrom">Desde</label>
@@ -123,61 +119,6 @@
     </div>
   }
 
-  @if (scope() === 'recurring') {
-    <fieldset class="weekdays">
-      <legend i18n="@@admin.closure.form.recurring.weekdays">Se repite los</legend>
-
-      <div class="weekdays__grid">
-        @for (day of weekdayOptions; track day.value) {
-          <label tuiBlock="s" class="weekday">
-            <input
-              tuiBlock
-              type="checkbox"
-              [id]="formId + '-weekday-' + day.value"
-              [name]="'weekday-' + day.value"
-              [attr.aria-label]="day.referenceDate | date: 'EEEE'"
-              [ngModel]="weekdays().includes(day.value)"
-              (ngModelChange)="toggleWeekday(day.value)"
-            />
-            <span class="weekday__label" aria-hidden="true">{{ day.referenceDate | date: 'EEEEE' }}</span>
-          </label>
-        }
-      </div>
-    </fieldset>
-
-    <div class="recurrence-until">
-      <label class="recurrence-until__toggle" [for]="formId + '-indefinite'">
-        <input
-          type="checkbox"
-          tuiSwitch
-          [id]="formId + '-indefinite'"
-          name="indefinite"
-          [ngModel]="indefinite()"
-          (ngModelChange)="indefinite.set($event)"
-        />
-        <span i18n="@@admin.closure.form.recurring.indefinite">Sin fecha de fin</span>
-      </label>
-
-      @if (!indefinite()) {
-        <tui-textfield tuiTextfieldSize="m" class="recurrence-until__date">
-          <label tuiLabel [for]="formId + '-until'" i18n="@@admin.closure.form.recurring.until"
-            >Finaliza el</label
-          >
-          <input
-            [id]="formId + '-until'"
-            tuiInputDate
-            name="until"
-            autocomplete="off"
-            [min]="date() ?? today"
-            [ngModel]="until()"
-            (ngModelChange)="until.set($event)"
-          />
-          <tui-calendar *tuiDropdown />
-        </tui-textfield>
-      }
-    </div>
-  }
-
   <tui-textfield tuiTextfieldSize="m" [stringify]="reasonName">
     <label tuiLabel [for]="formId + '-reason'" i18n="@@admin.closure.form.reason">Motivo</label>
     <input
@@ -221,10 +162,12 @@
   <div tuiSurface tuiAppearance="warning" class="notice">
     <tui-icon icon="@tui.triangle-alert" aria-hidden="true" />
     <div>
-      <p class="notice__title" i18n="@@admin.closure.form.notice.title">Notificación automática</p>
+      <p class="notice__title" i18n="@@admin.closure.form.notice.title">
+        Qué pasa con las reservas
+      </p>
       <p class="notice__body" i18n="@@admin.closure.form.notice.body">
-        Al confirmar, se cancelarán todas las reservas activas en este periodo y se notificará de
-        inmediato a los estudiantes afectados vía correo institucional.
+        Las reservas que ya existan en ese periodo quedarán suspendidas: conservan su plaza, no
+        expiran y vuelven si reabres el espacio. Cancelarlas es otra acción, y esa no se deshace.
       </p>
     </div>
   </div>
@@ -236,9 +179,10 @@
     appearance="primary"
     class="form__submit"
     iconEnd="@tui.arrow-right"
-    [disabled]="!formValid()"
-    i18n="@@admin.closure.form.submit"
+    [disabled]="!formValid() || saving()"
   >
-    Cerrar espacio y cancelar reservas
+    <tui-loader [loading]="saving()" [inheritColor]="true" [overlay]="true">
+      <span i18n="@@admin.closure.form.submit">Cerrar el espacio</span>
+    </tui-loader>
   </button>
 </form>

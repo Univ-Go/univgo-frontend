@@ -17,23 +17,23 @@ Este fichero no repite ninguno de los dos: sólo dice por dónde va la implement
 
 Los pasos son los de `booking-flow.md` §5 y §11.
 
-| Paso                                | Estado   | Qué lo sostiene                                                      |
-| ----------------------------------- | -------- | -------------------------------------------------------------------- |
-| Iniciar sesión                      | **Real** | `POST /auth/login`, cookies, refresco y guards                       |
-| Catálogo de espacios                | **Real** | `GET /spaces?date=`                                                  |
-| Elegir día y bloque                 | **Real** | `GET /spaces/{id}/availability?date=`                                |
-| Confirmar la reserva                | **Real** | `POST /reservations`, con el aviso de último minuto                  |
-| Ver el código de acceso             | **Real** | El código del servidor, dibujado como QR escaneable                  |
-| Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`                    |
-| Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                                     |
-| Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante                      |
-| Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso                    |
-| Panel: bloques del día y su detalle | **Real** | `GET /admin/spaces/{id}/blocks` y `/blocks/{hora}`                   |
-| Panel: cierres y mantenimiento      | Mixto    | Mantenimiento y cancelación masiva reales; el registro de cierres no |
+| Paso                                | Estado   | Qué lo sostiene                                      |
+| ----------------------------------- | -------- | ---------------------------------------------------- |
+| Iniciar sesión                      | **Real** | `POST /auth/login`, cookies, refresco y guards       |
+| Catálogo de espacios                | **Real** | `GET /spaces?date=`                                  |
+| Elegir día y bloque                 | **Real** | `GET /spaces/{id}/availability?date=`                |
+| Confirmar la reserva                | **Real** | `POST /reservations`, con el aviso de último minuto  |
+| Ver el código de acceso             | **Real** | El código del servidor, dibujado como QR escaneable  |
+| Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`    |
+| Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                     |
+| Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante      |
+| Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso    |
+| Panel: bloques del día y su detalle | **Real** | `GET /admin/spaces/{id}/blocks` y `/blocks/{hora}`   |
+| Panel: cierres y mantenimiento      | **Real** | `GET/POST /admin/spaces/{id}/closures` y su `revert` |
 
 **El backend está completo para todo el flujo.** Lo que falta es cablear el frontend: de los catorce
 endpoints que publica para las reservas —sin contar los de sesión ni los de usuarios— hoy se llaman
-once. Los tres que quedan son el listado de reservas del administrador y las dos mitades de la
+catorce. Los tres que quedan son el listado de reservas del administrador y las dos mitades de la
 configuración de la institución, que ninguna vista pide todavía.
 
 ---
@@ -105,6 +105,11 @@ y devolver un espacio al servicio no tiene nada que deshacer. El interruptor no 
 relee del catálogo después de escribir— así que una escritura fallida deja el control enseñando lo
 que es verdad, no lo que se pidió.
 
+**Cerrar un espacio, y reabrirlo.** El formulario registra un cierre —día completo, un tramo, o sin
+fecha de fin— y el historial lo lista con su estado y un botón para reabrir. Un cierre **suspende**:
+las reservas de dentro conservan su plaza, no expiran y vuelven al revertirlo, que es lo que hace
+posible deshacerlo. La recurrencia se retiró del formulario: `booking-flow.md` §12 la deja fuera.
+
 **El pase es escaneable.** El QR se genera en el navegador a partir del `qrCodeData` de la reserva
 con `qrcode-generator` (~10 kB, sin dependencias), dibujado como un solo `path` SVG que escala del
 tamaño de la tarjeta al del diálogo sin una segunda copia. Es la única pareja de colores del
@@ -133,16 +138,11 @@ decide el reloj del servidor.
 
 ## 3. Lo que sigue siendo maqueta
 
-Un fichero, y dice a quién sostiene:
+**Nada.** Las dos vistas que quedaban —el registro de cierres y el listado de un bloque— hablan con
+el servidor, y los tres ficheros de datos inventados que tenía el panel están borrados.
 
-| Fichero                                 | Sostiene                                                    |
-| --------------------------------------- | ----------------------------------------------------------- |
-| `admin/infrastructure/mock-closures.ts` | El registro de cierres: formulario, historial e indicadores |
-
-**El registro de cierres no tiene API que lo sostenga.** El formulario guarda alcance, motivo,
-recurrencia y quién lo autorizó, y el servidor guarda un booleano por espacio. No es cableado
-pendiente: es una funcionalidad que el backend no tiene. O crece una tabla de cierres, o esa mitad
-de la vista se retira y se queda con el interruptor y la cancelación, que ya son reales.
+Lo único que el producto enseña y el backend no sostiene es el **motivo de cancelación** cuando la
+canceló un administrador a mano: la respuesta lo trae sólo si la cancelación vino de un cierre.
 
 **El lado del estudiante ya no tiene ninguno.** El pase enseña el `qrCodeData` real de la reserva,
 como código y como QR, y el escáner del panel lo comprueba contra el servidor: el ciclo se cierra
@@ -238,25 +238,22 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
 - **Mobile no se ha probado en un viewport real.** Las vistas se construyeron responsive, pero la
   comprobación sigue pendiente desde el bootstrap.
 
-### 4.6 Tres agujeros que el cierre de espacios destapa
+### 4.6 Lo que el cierre de espacios dejó pendiente
 
-`booking-flow.md` §12 define ahora qué es cerrar un espacio y qué pasa con las reservas que caen
-dentro. Dos de estas tres cosas no esperan a eso: fallan hoy.
+`booking-flow.md` §12 está implementado en los dos lados: `space_closures`, el estado `suspended`,
+el veredicto «cerrado» del escáner, `cancelledBy` en la respuesta y el interruptor de mantenimiento
+convertido en un cierre sin fecha de fin. Queda el rastro:
 
-**El panel no sabe que un espacio está fuera de servicio.** `GetSpaceDayBlocksService` no mira
-`under_maintenance`, así que con el interruptor puesto el catálogo del estudiante deja de ofrecer
-bloques y la consulta del panel los sigue mostrando disponibles, con su aforo y todo. Es el fallo más
-visible de los tres: invita a contar con plazas que no existen.
-
-**El estudiante no sabe quién canceló su reserva, ni por qué.** `reservations.cancelled_by` existe
-desde la `V9` y se rellena bien —`STUDENT` cuando cancela él, `ADMIN` cuando el panel cancela en
-bloque—, pero `ReservationResponse` no lo devuelve. Una cancelación suya y una de la universidad se
-leen igual: «Cancelada» y nada más. El motivo no existe en ninguna parte todavía; llega con el
-cierre, que es lo único que puede aportarlo.
-
-**El cierre de un espacio no se registra.** La mitad de `/admin/:id/settings` que lo pide sigue
-siendo maqueta, y ahora tiene especificación: §12 dice que un cierre **suspende y no cancela**,
-porque si cancelara no habría vuelta atrás que dar.
+- **La `V14` no se ha ejecutado.** Corre la próxima vez que alguien arranque el backend, y migra los
+  espacios con `under_maintenance = true` a un cierre indefinido. La base es compartida.
+- **`spaces.under_maintenance` queda huérfana.** El código ya no la lee ni la escribe; se retira en
+  una migración posterior, cuando esté claro que nada la mira.
+- **La reserva cancelada a mano por un administrador no dice por qué.** `cancelledBy` sí llega; el
+  motivo sólo existe cuando la cancelación viene de un cierre, que es el único sitio donde alguien
+  lo escribió.
+- **El frontend todavía no enseña la suspensión.** El estado `suspended` y el `closureReason`
+  llegan en la respuesta, pero «Mis reservas» no tiene aún ni el badge ni la explicación, y el
+  escáner no sabe pintar el veredicto «cerrado».
 
 ### 4.7 Fuera de foco, anotado a propósito
 
@@ -268,29 +265,17 @@ rol. Y no hay tests de componente ni end-to-end, que es lo acordado hasta que el
 
 ## 5. Por dónde seguir
 
-**El flujo está cableado de punta a punta**: una reserva creada en el móvil se conserva enseñando su
-QR en el mostrador, y el panel la ve aparecer en el listado del bloque con el documento y la escuela
-de quien entró. Lo que queda no es cableado, es funcionalidad que el backend todavía no tiene.
+**El flujo está cableado de punta a punta**, y el panel también: una reserva creada en el móvil se
+conserva enseñando su QR en el mostrador, el panel la ve en el listado del bloque, y cerrar el
+espacio la suspende sin destruirla.
 
-**El cierre de espacios**, que es lo que queda, y está decidido: un cierre suspende y se puede
-revertir (`booking-flow.md` §12). Lo que el frontend necesita del backend para cablearlo, en el
-orden en que desbloquea:
+Lo que queda son remates, no funcionalidad que falte:
 
-1. **`cancelledBy` en `ReservationResponse`** —y `cancellationReason` cuando exista— para que la
-   reserva cancelada diga quién la canceló. La columna ya está; es exponerla.
-2. **`closed` y su motivo en el resumen de un bloque**, y que el resumen deje de ignorar
-   `under_maintenance`. Sin esto la consulta del panel miente aunque no haya cierres.
-3. **`space_closures`** y sus endpoints: listar, crear y revertir. Un cierre es espacio, desde
-   cuándo, hasta cuándo —vacío si es indefinido—, motivo, detalle, quién lo registró y cuándo se
-   revirtió.
-4. **El estado `suspended`** en la reserva y el veredicto **«cerrado»** en el escaneo. Es lo que
-   evita que una reserva expire por una puerta que estaba cerrada.
-5. **El interruptor de mantenimiento pasa a ser un cierre sin fecha de fin**, y el booleano
-   desaparece. Mientras convivan los dos, seguirán diciendo cosas distintas.
-
-Del lado del frontend, cuando eso exista: el formulario de cierres cablea contra 3, el historial
-muestra los revertidos, la fila del bloque se marca cerrada con 2, y la reserva del estudiante
-explica su cancelación con 1. La recurrencia del formulario se retira: §12 la deja fuera.
+1. **Arrancar el backend para que corra la `V14`** —crea `space_closures` y migra el mantenimiento—
+   y comprobar el ciclo contra la base: cerrar, ver la reserva suspendida, reabrir y verla volver.
+2. **Enseñar la suspensión en el móvil**: el estado `suspended` y el motivo ya llegan en la
+   respuesta, pero «Mis reservas» todavía no los pinta, ni el escáner el veredicto «cerrado».
+3. **Retirar `spaces.under_maintenance`** con una migración, cuando esté claro que nada la mira.
 
 De la deuda, lo que conviene no dejar para después: **4.4** (los datos, porque es lo que se ve en
 una demostración) y **4.2** (los parámetros duplicados, porque cada vista nueva que los lea

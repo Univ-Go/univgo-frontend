@@ -37,6 +37,7 @@ export interface Reservation {
   readonly spaceName: string;
   readonly location: string;
   readonly category: SpaceCategory;
+  readonly images: readonly string[];
   readonly date: Date;
   readonly startMinutes: number;
   readonly endMinutes: number;

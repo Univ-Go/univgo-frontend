@@ -16,6 +16,7 @@ function reservation(overrides: Partial<Reservation> = {}): Reservation {
     spaceName: 'Cancha de Básquetbol A',
     location: 'Complejo Deportivo Central',
     category: 'sports',
+    images: [],
     date: MONDAY,
     startMinutes: 840,
     endMinutes: 960,

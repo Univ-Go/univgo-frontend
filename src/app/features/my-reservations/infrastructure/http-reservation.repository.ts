@@ -76,6 +76,7 @@ function toReservation(dto: ReservationDto, space: Space): Reservation {
     spaceName: space.name,
     location: space.location,
     category: space.category,
+    images: space.images,
     date: fromIsoDate(dto.reservationDate),
     startMinutes: minutesFromIsoTime(dto.blockStart),
     endMinutes: minutesFromIsoTime(dto.blockEnd),

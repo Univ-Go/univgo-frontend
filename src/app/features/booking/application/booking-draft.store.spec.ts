@@ -16,6 +16,7 @@ const CREATED: Reservation = {
   spaceName: 'Cancha A',
   location: 'Complejo Deportivo',
   category: 'sports',
+  images: [],
   date: new Date(2026, 7, 17),
   startMinutes: 840,
   endMinutes: 960,

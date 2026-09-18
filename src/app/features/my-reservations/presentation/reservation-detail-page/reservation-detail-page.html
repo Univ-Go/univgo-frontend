@@ -73,7 +73,12 @@
   <app-reservation-interruption-notice [reservation]="reservation" [explained]="true" />
 
   <div class="detail__content" [class.detail__content--passless]="!showsPass()">
-    <app-media-plate class="detail__media" [icon]="categoryIcon(reservation.category)" />
+    <app-media-plate
+      class="detail__media"
+      [icon]="categoryIcon(reservation.category)"
+      [imageUrl]="reservation.images[0]"
+      [width]="960"
+    />
 
     @if (showsPass()) {
       <section

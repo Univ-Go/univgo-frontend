@@ -10,7 +10,12 @@
 
   <div class="schedule__content">
     <div class="schedule__about">
-      <app-media-plate class="schedule__media" [icon]="icon()" />
+      <app-media-plate
+        class="schedule__media"
+        [icon]="icon()"
+        [imageUrl]="space.images[0]"
+        [width]="960"
+      />
 
       <!-- `tuiChip` draws its icon through the icons directive, not as a child element: a nested
            `tui-icon` would sit on top of the label instead of beside it. -->

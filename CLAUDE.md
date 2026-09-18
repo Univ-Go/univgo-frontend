@@ -892,7 +892,7 @@ Un bloque **ya empezado se sigue ofreciendo** mientras cumpla la primera. Eso es
    deriva de ahí la presentación (cuenta atrás, habilitar el botón, pasar a expirada a su hora).
 
 **No hay confirmación previa, ni lista de espera, ni recordatorios.** Los tres exigen notificar al
-usuario fuera de la aplicación y hoy no hay canal. Están en `docs/booking-flow.md` §12 con el
+usuario fuera de la aplicación y hoy no hay canal. Están en `docs/booking-flow.md` §13 con el
 motivo, para no volver a proponerlos sin resolver antes esa carencia.
 
 ---

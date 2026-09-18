@@ -232,7 +232,8 @@ tiempo de usarlas de verdad.
 | Llega tarde, cuando su reserva ya expiró          | El escaneo falla y le dice que expiró. No puede volver a reservar ese espacio hoy. Ver §11. |
 | Intenta entrar antes de que abra el check-in      | El escaneo indica que aún es pronto y a partir de qué hora es válido.                       |
 | Enseña un código ya usado                         | El escaneo indica que esa reserva ya está en curso, con la hora del check-in.               |
-| El espacio está en mantenimiento                  | No ofrece bloques. Las reservas existentes deben cancelarse desde el panel.                 |
+| El espacio está cerrado a esa hora                | No ofrece esos bloques. Ver §12.                                                            |
+| Su reserva cae dentro de un cierre                | Queda suspendida: no expira, no se puede usar, y vuelve si el cierre se revierte. Ver §12.  |
 | El QR no escanea                                  | El estudiante enseña el código en texto y el administrador lo introduce a mano.             |
 
 ---
@@ -251,6 +252,7 @@ esperando:
 - **Expirada** — venció a las 14:15.
 - **Ya usada** — entró a las 13:52.
 - **Otro bloque** — su reserva es de 16:00 a 18:00.
+- **Cerrado** — el espacio no está operando a esta hora.
 - **No existe** — código desconocido o cancelado.
 
 **Consultar los bloques de un día.** Todos los bloques de un espacio para un día, uno debajo de
@@ -271,7 +273,9 @@ avisó, y §7 premia justamente eso. El denominador es quien se esperaba, no el 
 y la lista de estudiantes con su estado. Es lo que permite responder «¿queda sitio?» sin escanear
 nada. El bloque en curso no es un caso aparte: es una fila más de la lista, marcada como tal.
 
-**Cancelar reservas de un espacio.** Para mantenimiento imprevisto, cierre anticipado o incidencias.
+**Cerrar un espacio, y volver a abrirlo.** Para mantenimiento imprevisto, cierre anticipado o
+incidencias. Es lo que §12 define, y no es lo mismo que cancelar: cancelar las reservas de un
+espacio es una segunda acción, explícita y sin vuelta atrás.
 
 **Un administrador gestiona varios espacios.** Todo lo anterior está siempre situado en uno: el
 escáner comprueba contra el bloque en curso de un espacio concreto, y la lista muestra el día de un
@@ -292,7 +296,77 @@ natural — conviene decidirlo con la universidad antes de construir el panel.
 
 ---
 
-## 12. Fuera de alcance
+## 12. Cierres de un espacio
+
+Un espacio deja de operar: mantenimiento imprevisto, una avería, un acto institucional, un préstamo
+a alguien de fuera. El panel tiene que poder registrarlo, y —esto es lo que decide el diseño—
+**tiene que poder deshacerlo**.
+
+### Un cierre suspende; no cancela
+
+Un cierre es un hecho sobre **el espacio**, con un rango de tiempo y un motivo. Mientras dura:
+
+- el espacio **no ofrece** los bloques que caen dentro;
+- las reservas que ya existían quedan **suspendidas**: no se pueden usar, no se puede hacer check-in
+  contra ellas, y **no expiran** —el reloj no puede quitarle la plaza a quien no podía venir—;
+- siguen **ocupando su plaza**, que es justo lo que permite devolverlas. Como el espacio no ofrece
+  esos bloques, esa plaza retenida no le quita el sitio a nadie.
+
+Revertir el cierre las devuelve tal cual estaban: su plaza, su código y su ventana de check-in, que
+se recalcula del reloj como siempre (§13).
+
+**Por qué no cancelar.** Porque entonces no habría vuelta atrás que dar. A quien se le canceló ya se
+le dijo que perdió la plaza, ya recuperó su reserva del día (§7) y puede haber reservado en otro
+sitio; restaurarla lo dejaría con dos reservas a la misma hora. La reversibilidad sólo existe si
+cerrar no destruye nada.
+
+**Cancelar sigue estando, aparte.** El panel conserva su acción de cancelar las reservas del
+espacio, explícita y sin deshacer. Son dos cosas distintas y se decide una por una: un cierre
+anunciado para la semana que viene no debe vaciar hoy, y uno de ahora mismo puede querer vaciarse o
+no según lo que haya pasado.
+
+### Si el bloque termina con el cierre puesto
+
+La reserva **no expira**: expirar es no haber aparecido, y aquí la puerta estaba cerrada. Termina
+como **cancelada por el espacio**, con el motivo del cierre, y **devuelve la reserva del día**. El
+estudiante puede volver a reservar donde sea, incluido ese espacio cuando reabra.
+
+### El mantenimiento es un cierre sin fecha de fin
+
+Hoy hay dos mecanismos para decir que un espacio no está disponible: el booleano
+`spaces.under_maintenance` y —a partir de aquí— los cierres. Dos mecanismos para lo mismo se
+separan solos: ya pasa, el mantenimiento oculta los bloques al estudiante pero no al panel.
+
+El interruptor de «fuera de servicio» del panel pasa a crear un cierre **sin fecha de fin**, y
+apagarlo lo revierte. Un solo concepto, una sola forma de consultarlo.
+
+### Qué ve cada uno
+
+**El estudiante**, en su reserva: que está suspendida y por qué —«El espacio está cerrado por
+mantenimiento a esa hora»—, sin tener que adivinarlo de un bloque que desapareció del catálogo. Y
+cuando el cierre la termina: **quién la canceló y por qué**. Es información que hoy no llega: la
+reserva dice «cancelada» y nada más, así que una que canceló la universidad y una que canceló él se
+leen igual.
+
+**El administrador**, en la consulta de bloques: el bloque marcado como **cerrado**, con su motivo,
+en lugar de un aforo que ya no significa nada. Un bloque cerrado que se muestra disponible es peor
+que no mostrar nada, porque invita a contar con plazas que no existen.
+
+### El registro
+
+Un cierre guarda: el espacio, desde cuándo, hasta cuándo —vacío si es indefinido—, el motivo, un
+detalle opcional, quién lo registró y cuándo se revirtió, si se revirtió. El historial es el
+registro de los cierres, revertidos incluidos: saber que un espacio se cerró tres veces este mes y
+se reabrió dos es parte de lo que el panel existe para responder.
+
+**La recurrencia queda fuera por ahora.** Un cierre semanal fijo —el club que usa la cancha los
+martes— no es una incidencia, es un horario, y el sitio donde encaja es el horario del espacio, no
+el registro de cierres. Meterlo aquí obligaría a evaluar reglas de repetición en cada consulta de
+disponibilidad, que es el coste más alto de esta sección para el caso menos frecuente.
+
+---
+
+## 13. Fuera de alcance
 
 Decisiones tomadas a conciencia, no olvidos. Casi todas cuelgan de lo mismo: **hoy no hay forma de
 notificar a un estudiante** fuera de la propia aplicación.
@@ -308,7 +382,7 @@ notificar a un estudiante** fuera de la propia aplicación.
 
 ---
 
-## 13. Notas técnicas
+## 14. Notas técnicas
 
 **El estado se calcula, no se guarda.** `expired` y `completed` no las provoca nadie: son el
 resultado de comparar el reloj con dos marcas de tiempo. Se calculan con una función pura a la que

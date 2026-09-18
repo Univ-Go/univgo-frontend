@@ -16,7 +16,7 @@ export interface BookingDraft {
 /**
  * A draft with every question answered, which is the only shape the confirmation step can render.
  * The hours and the check-in window are the server's own answer about the chosen block, carried
- * through rather than recomputed: `docs/booking-flow.md` §13 puts that clock on the server.
+ * through rather than recomputed: `docs/booking-flow.md` §14 puts that clock on the server.
  */
 export interface ScheduledBooking {
   readonly space: Space;

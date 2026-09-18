@@ -192,7 +192,7 @@ y no es verdad.
 
 Es anterior a este trabajo y no lo arregla ningún cambio de test: el servicio lee
 `LocalDateTime.now()` por su cuenta. El arreglo es inyectarle un `Clock`, como pide
-`booking-flow.md` §13 —«el ahora es un parámetro»— que hoy sólo se cumple en
+`booking-flow.md` §14 —«el ahora es un parámetro»— que hoy sólo se cumple en
 `ReservationTimingCalculator`.
 
 ### 4.4 Datos que hacen parecer roto lo que funciona
@@ -238,7 +238,27 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
 - **Mobile no se ha probado en un viewport real.** Las vistas se construyeron responsive, pero la
   comprobación sigue pendiente desde el bootstrap.
 
-### 4.6 Fuera de foco, anotado a propósito
+### 4.6 Tres agujeros que el cierre de espacios destapa
+
+`booking-flow.md` §12 define ahora qué es cerrar un espacio y qué pasa con las reservas que caen
+dentro. Dos de estas tres cosas no esperan a eso: fallan hoy.
+
+**El panel no sabe que un espacio está fuera de servicio.** `GetSpaceDayBlocksService` no mira
+`under_maintenance`, así que con el interruptor puesto el catálogo del estudiante deja de ofrecer
+bloques y la consulta del panel los sigue mostrando disponibles, con su aforo y todo. Es el fallo más
+visible de los tres: invita a contar con plazas que no existen.
+
+**El estudiante no sabe quién canceló su reserva, ni por qué.** `reservations.cancelled_by` existe
+desde la `V9` y se rellena bien —`STUDENT` cuando cancela él, `ADMIN` cuando el panel cancela en
+bloque—, pero `ReservationResponse` no lo devuelve. Una cancelación suya y una de la universidad se
+leen igual: «Cancelada» y nada más. El motivo no existe en ninguna parte todavía; llega con el
+cierre, que es lo único que puede aportarlo.
+
+**El cierre de un espacio no se registra.** La mitad de `/admin/:id/settings` que lo pide sigue
+siendo maqueta, y ahora tiene especificación: §12 dice que un cierre **suspende y no cancela**,
+porque si cancelara no habría vuelta atrás que dar.
+
+### 4.7 Fuera de foco, anotado a propósito
 
 Seguridad (`CLAUDE.md` §12) sigue fuera de foco salvo sus tres invariantes, que se mantienen. Los
 trece permisos de `role_permissions` siguen sembrados y sin comprobarse: la autorización es sólo por
@@ -250,11 +270,27 @@ rol. Y no hay tests de componente ni end-to-end, que es lo acordado hasta que el
 
 **El flujo está cableado de punta a punta**: una reserva creada en el móvil se conserva enseñando su
 QR en el mostrador, y el panel la ve aparecer en el listado del bloque con el documento y la escuela
-de quien entró.
+de quien entró. Lo que queda no es cableado, es funcionalidad que el backend todavía no tiene.
 
-1. **Decidir qué pasa con el registro de cierres**: o el backend crece una tabla, o la vista se
-   queda con el interruptor y la cancelación masiva, que ya funcionan. Es lo único del panel que
-   sigue siendo maqueta.
+**El cierre de espacios**, que es lo que queda, y está decidido: un cierre suspende y se puede
+revertir (`booking-flow.md` §12). Lo que el frontend necesita del backend para cablearlo, en el
+orden en que desbloquea:
+
+1. **`cancelledBy` en `ReservationResponse`** —y `cancellationReason` cuando exista— para que la
+   reserva cancelada diga quién la canceló. La columna ya está; es exponerla.
+2. **`closed` y su motivo en el resumen de un bloque**, y que el resumen deje de ignorar
+   `under_maintenance`. Sin esto la consulta del panel miente aunque no haya cierres.
+3. **`space_closures`** y sus endpoints: listar, crear y revertir. Un cierre es espacio, desde
+   cuándo, hasta cuándo —vacío si es indefinido—, motivo, detalle, quién lo registró y cuándo se
+   revirtió.
+4. **El estado `suspended`** en la reserva y el veredicto **«cerrado»** en el escaneo. Es lo que
+   evita que una reserva expire por una puerta que estaba cerrada.
+5. **El interruptor de mantenimiento pasa a ser un cierre sin fecha de fin**, y el booleano
+   desaparece. Mientras convivan los dos, seguirán diciendo cosas distintas.
+
+Del lado del frontend, cuando eso exista: el formulario de cierres cablea contra 3, el historial
+muestra los revertidos, la fila del bloque se marca cerrada con 2, y la reserva del estudiante
+explica su cancelación con 1. La recurrencia del formulario se retira: §12 la deja fuera.
 
 De la deuda, lo que conviene no dejar para después: **4.4** (los datos, porque es lo que se ve en
 una demostración) y **4.2** (los parámetros duplicados, porque cada vista nueva que los lea

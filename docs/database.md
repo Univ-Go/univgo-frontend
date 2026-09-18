@@ -75,7 +75,7 @@ plaza (`booking-flow.md` §2).
 sitio**; la autorización es sólo por rol (`@PreAuthorize("hasRole('ADMIN')")`).
 
 **El estado de una reserva no se guarda**, se calcula del reloj a partir de `created_at`,
-`checked_in_at`, `cancelled_at` y los límites del bloque. Ver `booking-flow.md` §13.
+`checked_in_at`, `cancelled_at` y los límites del bloque. Ver `booking-flow.md` §14.
 
 **La categoría de un espacio no está en `spaces`**, sino en `space_types.category`
 (`SPORTS` | `STUDY` | `LAB`, con `CHECK`). El tipo ya es la taxonomía: duplicarla en la fila del

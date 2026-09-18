@@ -56,7 +56,7 @@ interface OfferedBlock {
  * The day's blocks are read from the server rather than derived here, because what makes a block
  * available is not opening hours: it is how many plazas are left, what else this student has
  * booked, and how much of the block remains. Only the server knows the first two, and only its
- * clock can be trusted for the third (`docs/booking-flow.md` §13).
+ * clock can be trusted for the third (`docs/booking-flow.md` §14).
  *
  * Which is also why no day in the strip claims to have room: that answer costs one request per day
  * and would go stale immediately. A day is a question the student asks, and the grid answers it.

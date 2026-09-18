@@ -35,7 +35,7 @@ interface BlockAvailabilityDto {
 
 /**
  * The catalogue reports the blocks that can still be booked; the domain reads windows. One block is
- * one window of the institution's fixed length, which is what `docs/booking-flow.md` §13 means by
+ * one window of the institution's fixed length, which is what `docs/booking-flow.md` §14 means by
  * opening hours ceasing to be continuous ranges.
  */
 function toSpace(dto: SpaceCatalogDto, date: Date): Space {

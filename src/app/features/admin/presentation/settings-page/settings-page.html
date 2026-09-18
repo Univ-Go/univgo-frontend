@@ -16,15 +16,15 @@
   tuiCardLarge
   tuiSurface
   tuiAppearance="floating"
-  class="service-card"
-  aria-labelledby="service-title"
+  class="availability-card"
+  aria-labelledby="availability-title"
 >
-  <h2 id="service-title" i18n="@@admin.settings.service.title">Disponibilidad del espacio</h2>
+  <h2 id="availability-title" i18n="@@admin.settings.service.title">Disponibilidad del espacio</h2>
 
   @if (space.isLoading()) {
-    <p class="service-card__placeholder" [tuiSkeleton]="true" aria-hidden="true"></p>
+    <p class="availability-card__placeholder" [tuiSkeleton]="true" aria-hidden="true"></p>
   } @else {
-    <label class="service-card__switch">
+    <label class="availability-card__switch">
       <input
         type="checkbox"
         tuiSwitch
@@ -33,16 +33,16 @@
         [ngModel]="underMaintenance()"
         (ngModelChange)="setMaintenance($event)"
       />
-      <span class="service-card__switch-text">
+      <span class="availability-card__switch-text">
         <span i18n="@@admin.settings.service.maintenanceLabel">Fuera de servicio</span>
-        <span class="service-card__hint" i18n="@@admin.settings.service.maintenanceHint"
+        <span class="availability-card__hint" i18n="@@admin.settings.service.maintenanceHint"
           >Mientras esté activado, el espacio no ofrece bloques a los estudiantes.</span
         >
       </span>
     </label>
 
-    <div class="service-card__action">
-      <p class="service-card__hint" i18n="@@admin.settings.cancelAll.hint">
+    <div class="availability-card__action">
+      <p class="availability-card__hint" i18n="@@admin.settings.cancelAll.hint">
         Cancelar las reservas que ya existen es una acción aparte: no ocurre al dejar el espacio
         fuera de servicio, y no se puede deshacer.
       </p>

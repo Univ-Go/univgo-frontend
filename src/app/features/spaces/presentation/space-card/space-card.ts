@@ -51,6 +51,8 @@ export class SpaceCard {
 
   protected readonly icon = computed(() => spaceCategoryIcon(this.listed().space.category));
 
+  protected readonly coverImage = computed(() => this.listed().space.images[0] ?? null);
+
   protected readonly bookable = computed(() => this.listed().availability.kind === 'free');
 
   protected readonly closed = computed(() => this.listed().availability.kind === 'closed');

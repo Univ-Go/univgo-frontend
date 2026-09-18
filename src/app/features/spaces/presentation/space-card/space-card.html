@@ -7,7 +7,7 @@
   class="card"
   [class.card--chosen]="chosen()"
 >
-  <app-media-plate [icon]="icon()">
+  <app-media-plate [icon]="icon()" [imageUrl]="coverImage()">
     <app-space-availability-badge [availability]="listed().availability" />
   </app-media-plate>
 

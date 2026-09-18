@@ -21,6 +21,11 @@ interface SpaceCatalogDto {
   readonly closedOnDate: boolean;
   /** Start of every block that still has a plaza on the requested day, as `HH:mm:ss`. */
   readonly freeBlockStarts: readonly string[];
+  /**
+   * Absent until the backend fills it in for a space (manually uploaded, no upload endpoint yet):
+   * mapped to `[]` rather than trusting the field is always there.
+   */
+  readonly images?: readonly string[];
 }
 
 interface BlockAvailabilityDto {
@@ -58,6 +63,7 @@ function toSpace(dto: SpaceCatalogDto, date: Date): Space {
       from: minutesFromIsoTime(start),
       to: minutesFromIsoTime(start) + BOOKING_DURATION_MINUTES,
     })),
+    images: dto.images ?? [],
   };
 }
 

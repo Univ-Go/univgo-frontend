@@ -14,6 +14,7 @@ const COURT: Space = {
   opensOnDate: true,
   closedOnDate: false,
   freeSlots: [],
+  images: [],
 };
 
 /** 14:00–16:00 with the check-in window of a booking made well in advance. */

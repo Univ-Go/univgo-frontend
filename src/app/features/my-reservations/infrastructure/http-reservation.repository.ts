@@ -65,6 +65,7 @@ const UNKNOWN_SPACE: Space = {
   opensOnDate: false,
   closedOnDate: false,
   freeSlots: [],
+  images: [],
 };
 
 function toReservation(dto: ReservationDto, space: Space): Reservation {

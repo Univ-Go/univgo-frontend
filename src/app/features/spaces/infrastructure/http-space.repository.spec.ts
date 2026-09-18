@@ -77,6 +77,7 @@ describe('HttpSpaceRepository', () => {
           { date: DATE, from: 360, to: 480 },
           { date: DATE, from: 840, to: 960 },
         ],
+        images: [],
       },
     ]);
   });

@@ -13,6 +13,11 @@ import { TuiIcon } from '@taiga-ui/core';
  *
  * Anything projected into it lands over the plate's far corner, which is where the catalogue puts
  * the availability pill: it is the first thing the eye looks for when scanning a shelf.
+ *
+ * `imageUrl` is what "the day the photographs arrive" turned into: a space with one still renders
+ * the brand gradient underneath (the image can be slow, transparent, or fail to load — the plate
+ * never turns blank), and paints the photograph over it. `alt=""` is deliberate: the space name
+ * already sits next to the plate as text, so the image is decorative to a screen reader.
  */
 @Component({
   selector: 'app-media-plate',
@@ -30,12 +35,21 @@ import { TuiIcon } from '@taiga-ui/core';
       position: relative;
       justify-content: var(--media-plate-justify);
       align-items: var(--media-plate-align);
+      overflow: hidden;
       padding: var(--univgo-space-s);
       border-radius: var(--media-plate-radius);
       background:
         radial-gradient(circle at 30% 20%, rgb(255 255 255 / 14%), transparent 55%),
         var(--univgo-brand-surface);
       aspect-ratio: var(--media-plate-ratio);
+    }
+
+    .photo {
+      position: absolute;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
     }
 
     .mark {
@@ -55,7 +69,11 @@ import { TuiIcon } from '@taiga-ui/core';
     }
   `,
   template: `
-    <tui-icon class="mark" [icon]="icon()" aria-hidden="true" />
+    @if (imageUrl(); as src) {
+      <img class="photo" [src]="src" alt="" loading="lazy" decoding="async" />
+    } @else {
+      <tui-icon class="mark" [icon]="icon()" aria-hidden="true" />
+    }
 
     <div class="overlay">
       <ng-content />
@@ -64,4 +82,5 @@ import { TuiIcon } from '@taiga-ui/core';
 })
 export class MediaPlate {
   public readonly icon = input.required<string>();
+  public readonly imageUrl = input<string | null>(null);
 }

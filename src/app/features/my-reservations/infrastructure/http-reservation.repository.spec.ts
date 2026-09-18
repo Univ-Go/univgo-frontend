@@ -25,6 +25,7 @@ const COURT: Space = {
   opensOnDate: true,
   closedOnDate: false,
   freeSlots: [],
+  images: [],
 };
 
 const RESERVATION_PAYLOAD = {

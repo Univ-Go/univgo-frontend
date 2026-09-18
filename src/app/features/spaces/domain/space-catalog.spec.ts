@@ -29,6 +29,7 @@ function space(overrides: Partial<Space> = {}): Space {
     opensOnDate: true,
     closedOnDate: false,
     freeSlots: [slot(MONDAY, 8, 12), slot(MONDAY, 15, 18)],
+    images: [],
     ...overrides,
   };
 }

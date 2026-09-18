@@ -52,6 +52,8 @@ export interface Space {
   /** Whether every block it runs that day falls inside a closure. */
   readonly closedOnDate: boolean;
   readonly freeSlots: readonly SpaceSlot[];
+  /** Ordered by the backend; the first is the cover shown wherever a space gets one image. */
+  readonly images: readonly string[];
 }
 
 /**

@@ -59,6 +59,7 @@ function space(overrides: Partial<Space> = {}): Space {
     opensOnDate: true,
     closedOnDate: false,
     freeSlots: [],
+    images: [],
     ...overrides,
   };
 }

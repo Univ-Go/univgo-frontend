@@ -71,7 +71,11 @@ export class LoginPage {
     this.session.signIn(this.form.getRawValue()).subscribe({
       next: () => {
         const redirect = this.route.snapshot.queryParamMap.get('redirect');
-        void this.router.navigateByUrl(redirect ?? this.session.landingPath());
+        // A guard can bounce the navigation straight back here — a session the browser refused to
+        // keep fails its first check — and this component then outlives the sign-in it started.
+        void this.router
+          .navigateByUrl(redirect ?? this.session.landingPath())
+          .finally(() => this.submitting.set(false));
       },
       error: () => {
         this.submitting.set(false);

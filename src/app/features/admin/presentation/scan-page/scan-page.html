@@ -67,9 +67,26 @@
     tuiSurface
     tuiAppearance="outline"
     class="card result-column"
-    aria-label="Resultado del escaneo"
-    i18n-aria-label="@@admin.scan.result.label"
+    [attr.aria-label]="resultLabel"
   >
     <app-check-in-result [result]="result()" />
   </aside>
 </div>
+
+<ng-template [(tuiDialog)]="resultOpen" [tuiDialogOptions]="resultDialogOptions">
+  <div class="result-dialog">
+    <app-check-in-result [result]="result()" />
+
+    <button
+      tuiButton
+      type="button"
+      appearance="primary"
+      size="l"
+      iconStart="@tui.scan-qr-code"
+      (click)="resultOpen.set(false)"
+      i18n="@@admin.scan.result.next"
+    >
+      Escanear siguiente
+    </button>
+  </div>
+</ng-template>

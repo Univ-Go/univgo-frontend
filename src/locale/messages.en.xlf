@@ -1614,6 +1614,10 @@
         <source>Resultado del escaneo</source>
         <target>Scan result</target>
       </trans-unit>
+      <trans-unit id="admin.scan.result.next" datatype="html">
+        <source> Escanear siguiente </source>
+        <target> Scan the next one </target>
+      </trans-unit>
       <trans-unit id="admin.scan.result.idle.heading" datatype="html">
         <source>Esperando código</source>
         <target>Waiting for a code</target>

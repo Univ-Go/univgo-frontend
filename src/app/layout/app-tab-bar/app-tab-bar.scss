@@ -59,6 +59,16 @@
   }
 }
 
+// A destination that needs a space chosen before it means anything: the markup already renders it
+// as a disabled button instead of a link, but with no style of its own it read exactly like a live
+// tab, cursor included. Dimmed to the same value Taiga gives every other disabled control, so the
+// panel's bar says the same thing its sidebar already did at desktop width.
+.tab:disabled {
+  color: var(--tui-text-tertiary);
+  cursor: default;
+  opacity: var(--tui-disabled-opacity);
+}
+
 // Not colour alone: the active tab also carries the filled icon weight of a heavier label, so it
 // reads without seeing hue.
 .tab--active {
@@ -83,13 +93,4 @@
   box-shadow:
     0 0 0 0.375rem var(--tui-background-base),
     var(--tui-shadow-small);
-
-  // Taiga dims every disabled [tuiAppearance] to --tui-disabled-opacity; the admin variant's centre
-  // action is disabled only because its flow does not exist yet, not because it is unavailable the
-  // way a greyed-out control usually means, so it keeps the full brand colour either way. The
-  // `:disabled` qualifier and `!important` are not decoration: Taiga's own rule targets
-  // `:disabled:not([data-state])`, one selector heavier than a plain class can outrank on its own.
-  &:disabled {
-    opacity: 1 !important;
-  }
 }

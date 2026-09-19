@@ -740,7 +740,7 @@
       </trans-unit>
       <trans-unit id="booking.done.pageDescription" datatype="html">
         <source>Tu reserva se creó correctamente. Consulta el código y el horario, o revisa todas tus reservas.</source>
-        <target>Your booking was created. Check its code and time, or review all your reservations.</target>
+        <target>Your booking was created. Check its code and time, or review all your bookings.</target>
       </trans-unit>
       <trans-unit id="booking.schedule.pageTitle" datatype="html">
         <source>Elige fecha y hora</source>
@@ -772,7 +772,7 @@
       </trans-unit>
       <trans-unit id="booking.done.lead" datatype="html">
         <source> Ya está guardada en Mis reservas, donde puedes consultarla o cancelarla. </source>
-        <target> It is saved in My reservations, where you can check it or cancel it. </target>
+        <target> It is saved in My bookings, where you can check it or cancel it. </target>
       </trans-unit>
       <trans-unit id="booking.done.code" datatype="html">
         <source>Código</source>
@@ -780,7 +780,7 @@
       </trans-unit>
       <trans-unit id="booking.done.viewReservations" datatype="html">
         <source>Ver mis reservas</source>
-        <target>View my reservations</target>
+        <target>View my bookings</target>
       </trans-unit>
       <trans-unit id="booking.done.backHome" datatype="html">
         <source>Volver al inicio</source>
@@ -816,7 +816,7 @@
       </trans-unit>
       <trans-unit id="booking.review.lead" datatype="html">
         <source> Comprueba que todo esté correcto. Podrás cancelar la reserva desde Mis reservas. </source>
-        <target> Check that everything is right. You can cancel the booking from My reservations. </target>
+        <target> Check that everything is right. You can cancel the booking from My bookings. </target>
       </trans-unit>
       <trans-unit id="booking.review.summaryTitle" datatype="html">
         <source>Resumen de la reserva</source>

@@ -28,6 +28,11 @@
   align-items: center;
 }
 
+// The isotype is the phone's mark; from tablet up there is room for the wordmark.
+.bar__logo app-brand-isotype {
+  display: none;
+}
+
 // From here up the aside is a column and signs the panel itself. Hidden rather than duplicated:
 // two wordmarks would be two entries in the accessibility tree for one product.
 @media (width >= bp.$desktop) {
@@ -75,8 +80,6 @@
     padding-inline: var(--univgo-space-l);
   }
 
-  // Small enough that the mark and the whole row of controls share one line on a phone: wrapped
-  // onto two, the bar takes a third of the screen before the panel says anything.
   .bar__logo app-brand-logo {
     --brand-logo-height: 1.75rem;
   }
@@ -85,5 +88,37 @@
     flex-basis: 100%;
     max-inline-size: none;
     order: 1;
+  }
+}
+
+// The phone's shape: the mark and the whole row of controls on the first line, the switcher on the
+// second and the search — where a view asks for it — on the third.
+//
+// The switcher gets a line rather than a share of one because it cannot fit in the first: Taiga's
+// button sets `flex-shrink: 0` and the trigger needs some 12rem to name a space, which would put
+// the row past 500px. Trying anyway is what broke the bar onto three ragged rows, each aligned
+// differently. It is a threshold and not the wrap flexbox does by itself because flexbox wraps the
+// *last* item on a line, and the one that has to come down is in the middle.
+//
+// The mark drops to the isotype for the same arithmetic: the wordmark is three times as wide, and
+// with four controls beside it the first line does not fit a 320px screen either.
+@media (width < bp.$tablet) {
+  .bar__logo app-brand-logo {
+    display: none;
+  }
+
+  .bar__logo app-brand-isotype {
+    --brand-isotype-size: 1.75rem;
+
+    display: inline-flex;
+  }
+
+  app-space-switcher {
+    flex-basis: 100%;
+    order: 1;
+  }
+
+  .bar__search {
+    order: 2;
   }
 }

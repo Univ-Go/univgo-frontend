@@ -1,7 +1,10 @@
 <header class="bar">
-  <!-- One wordmark on screen at a time: the aside signs the panel where it is a column, so the bar
-       hides this one from that width up. The stylesheet decides, not a signal — the aside changes
-       shape in CSS, and a second opinion in TypeScript would need the same number written twice. -->
+  <!-- One mark on screen at a time: the aside signs the panel where it is a column, so the bar
+       hides this one from that width up, and on a phone the wordmark gives way to the isotype —
+       four controls and a full wordmark do not share a 320px line. Both are in the markup and the
+       stylesheet picks: the aside already changes shape in CSS, and a second opinion in TypeScript
+       would need the same number written twice. The link carries the accessible name either way,
+       so the artwork underneath is free to be decorative. -->
   <a
     class="bar__logo"
     routerLink="/admin/spaces"
@@ -9,12 +12,16 @@
     aria-label="Volver a espacios"
   >
     <app-brand-logo />
+    <app-brand-isotype />
   </a>
 
   @if (currentSpaceId(); as id) {
+    <!-- A line of its own on a phone: Taiga's button does not shrink, so beside the mark and the
+         controls it was what broke the bar onto three rows. -->
     <app-space-switcher
       [spaces]="spaces()"
       [selectedId]="id"
+      [fullWidth]="compact()"
       (spaceSelected)="changeSpace($event)"
     />
   }
@@ -40,20 +47,9 @@
     </form>
   }
 
+  <!-- No notification bell: neither shell has anything behind one, and the room it took is what
+       lets the utilities and the account stay in the bar at every width. -->
   <div class="bar__actions">
-    <tui-badged-content>
-      <tui-badge-notification tuiSlot="top" size="s" />
-      <button
-        tuiIconButton
-        type="button"
-        appearance="flat"
-        size="s"
-        iconStart="@tui.bell"
-        i18n-aria-label="@@navigation.notifications"
-        aria-label="Notificaciones"
-      ></button>
-    </tui-badged-content>
-
     <button
       tuiIconButton
       type="button"

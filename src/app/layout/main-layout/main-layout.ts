@@ -36,10 +36,15 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
     }
 
     // The tab bar floats over the page through tablet, so the shell leaves it room: without this the
-    // footer, and the last thing on every view, end up underneath it.
+    // footer, and the last thing on every view, end up underneath it. The quick action floats above
+    // the bar in the same corner, so the room clears both — otherwise the end of the page finishes
+    // under a button.
     @media (width < bp.$desktop) {
       app-footer {
-        padding-block-end: calc(var(--univgo-tab-bar-height) + env(safe-area-inset-bottom));
+        padding-block-end: calc(
+          var(--univgo-tab-bar-height) + var(--univgo-quick-action-size) + var(--univgo-space-l) +
+            env(safe-area-inset-bottom)
+        );
       }
     }
 

@@ -274,10 +274,6 @@
         <source>Mis Reservas</source>
         <target>My bookings</target>
       </trans-unit>
-      <trans-unit id="navigation.notifications" datatype="html">
-        <source>Notificaciones</source>
-        <target>Notifications</target>
-      </trans-unit>
       <trans-unit id="navigation.profile" datatype="html">
         <source>Tu perfil</source>
         <target>Your profile</target>
@@ -946,13 +942,9 @@
         <source> Cancelar </source>
         <target> Cancel </target>
       </trans-unit>
-      <trans-unit id="navigation.account" datatype="html">
-        <source>Cuenta</source>
-        <target>Account</target>
-      </trans-unit>
       <trans-unit id="navigation.newReservation" datatype="html">
-        <source>Nueva reserva</source>
-        <target>New reservation</target>
+        <source>Reservar</source>
+        <target>Book</target>
       </trans-unit>
       <trans-unit id="spaces.filters.query" datatype="html">
         <source>Buscar por nombre o ubicación</source>
@@ -1297,10 +1289,6 @@
       <trans-unit id="admin.nav.label" datatype="html">
         <source>Secciones del panel</source>
         <target>Panel sections</target>
-      </trans-unit>
-      <trans-unit id="admin.nav.manualBooking" datatype="html">
-        <source>Reservar por un estudiante</source>
-        <target>Book on a student's behalf</target>
       </trans-unit>
       <trans-unit id="admin.header.backToSpaces" datatype="html">
         <source>Volver a espacios</source>

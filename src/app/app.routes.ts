@@ -64,6 +64,11 @@ export const routes: Routes = [
       },
       {
         path: 'book',
+        // The shell's quick action is a shortcut into this flow, so it has nothing to offer once
+        // somebody is inside it. Declared here rather than matched on the path by `AppTabBar`,
+        // which would make the shell know what a booking URL looks like — the same arrangement
+        // `PageMetadataStrategy` and the panel's search box already use.
+        data: { quickAction: false },
         loadChildren: () =>
           import('./features/booking/booking.routes').then((m) => m.BOOKING_ROUTES),
       },

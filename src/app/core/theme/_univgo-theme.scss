@@ -347,6 +347,11 @@ $shadow-tint: 65, 0, 5;
   // value rather than three that drift.
   --univgo-tab-bar-height: 3.75rem;
 
+  // The quick action that floats over the bottom-right corner. Aliased rather than written out:
+  // the button is a Taiga `l` button, and the room the shell leaves under a page so its end does
+  // not finish underneath it has to be that same height, whatever the library calls it.
+  --univgo-quick-action-size: var(--tui-height-l);
+
   // Room a view leaves at its foot while a floating action bar hangs over it. On a phone the bar
   // stacks above the tab bar, so the room has to clear both. Every view that can raise a bar reads
   // this instead of rebuilding the same sum.

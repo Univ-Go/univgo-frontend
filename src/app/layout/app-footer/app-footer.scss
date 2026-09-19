@@ -1,6 +1,10 @@
 @use 'breakpoints' as bp;
 
-.footer {
+// The surface is the host's, not the inner element's: the shell reserves room under the footer for
+// what floats over the bottom edge, and padding on the host only reads as part of the footer if the
+// footer is what paints it. Put on the inner element, that room showed as a strip of page colour.
+:host {
+  display: block;
   border-block-start: 1px solid var(--tui-border-normal);
   background: var(--tui-background-elevation-1);
 }

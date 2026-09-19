@@ -18,6 +18,15 @@ button {
   inline-size: 100%;
 }
 
+// Taiga's button clips its overflow but never marks it: a space named past the trigger's width lost
+// its last characters with nothing to say so. The name is its own element because the button is a
+// flex container, and `text-overflow` does not reach an anonymous text run inside one.
+.trigger__name {
+  overflow: hidden;
+  min-inline-size: 0;
+  text-overflow: ellipsis;
+}
+
 // Set off from the spaces above it, the same way the account menu separates its sign-out action
 // from the items above: leaving the picker is a different kind of choice than picking within it.
 .panel__all {

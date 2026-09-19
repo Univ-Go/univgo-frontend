@@ -3,14 +3,15 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import type { ActivatedRouteSnapshot } from '@angular/router';
-import { TuiButton, TuiDropdown, TuiInput } from '@taiga-ui/core';
-import { TuiAvatar, TuiBadgeNotification, TuiBadgedContent } from '@taiga-ui/kit';
+import { TUI_BREAKPOINT, TuiButton, TuiDropdown, TuiInput } from '@taiga-ui/core';
+import { TuiAvatar } from '@taiga-ui/kit';
 import { filter, map, startWith } from 'rxjs';
 import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
 import { AdminSpacesStore } from '../../features/admin/application/admin-spaces.store';
 import { withSpaceId } from '../../features/admin/domain/admin-navigation';
 import { SpaceSwitcher } from '../../features/admin/presentation/space-switcher/space-switcher';
 import { SessionStore } from '../../features/auth/application/session-store';
+import { BrandIsotype } from '../../shared/brand/brand-isotype';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
@@ -57,6 +58,7 @@ function deepest(root: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
   selector: 'app-admin-header',
   imports: [
     AccountMenu,
+    BrandIsotype,
     BrandLogo,
     FormsModule,
     LanguageSelector,
@@ -64,8 +66,6 @@ function deepest(root: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
     SpaceSwitcher,
     ThemeToggle,
     TuiAvatar,
-    TuiBadgeNotification,
-    TuiBadgedContent,
     TuiButton,
     TuiDropdown,
     TuiInput,
@@ -79,6 +79,17 @@ export class AdminHeader {
   private readonly route = inject(ActivatedRoute);
 
   private readonly session = inject(SessionStore);
+
+  private readonly breakpoint = inject(TUI_BREAKPOINT);
+
+  /**
+   * On a phone the switcher takes a line of its own. Taiga's button sets `flex-shrink: 0` and the
+   * trigger needs around 12rem to name a space, so the first row would have to be some 525px wide
+   * to hold it beside the mark and the controls — more than any phone has. The fold is a threshold
+   * rather than the wrap flexbox would do by itself, because flexbox wraps the *last* item on the
+   * line and what has to come down here is the one in the middle.
+   */
+  protected readonly compact = computed(() => this.breakpoint() === 'mobile');
 
   protected readonly initials = computed(() => this.session.user()?.firstName.slice(0, 1) ?? '');
 

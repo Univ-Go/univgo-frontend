@@ -10,7 +10,7 @@
   [(tuiDropdownOpen)]="open"
   [attr.aria-label]="switcherLabel + ': ' + current()?.spaceName"
 >
-  {{ current()?.spaceName }}
+  <span class="trigger__name">{{ current()?.spaceName }}</span>
 </button>
 
 <ng-template #panel>

@@ -7,6 +7,9 @@ import type { AuthenticatedUser } from '../domain/session';
 import { HttpAuthRepository } from './http-auth.repository';
 
 const API_BASE_URL = 'http://localhost:3000';
+// Deliberately not a path under `API_BASE_URL`: the session endpoints are proxied apart from the
+// rest of the API so that the refresh cookie, scoped to `Path=/auth`, reaches them.
+const AUTH_BASE_URL = '/auth';
 
 const SESSION_PAYLOAD = {
   id: 'f2e1',
@@ -26,7 +29,10 @@ describe('HttpAuthRepository', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: APP_CONFIG, useValue: { apiBaseUrl: API_BASE_URL } as AppConfig },
+        {
+          provide: APP_CONFIG,
+          useValue: { apiBaseUrl: API_BASE_URL, authBaseUrl: AUTH_BASE_URL } as AppConfig,
+        },
         { provide: AuthRepository, useClass: HttpAuthRepository },
       ],
     });
@@ -42,7 +48,7 @@ describe('HttpAuthRepository', () => {
       repository.signIn({ identifier: '1234567890', password: 'secret' }).subscribe(resolve),
     );
 
-    const request = controller.expectOne(`${API_BASE_URL}/auth/login`);
+    const request = controller.expectOne(`${AUTH_BASE_URL}/login`);
     request.flush(SESSION_PAYLOAD);
 
     expect(await user).toEqual({
@@ -60,7 +66,7 @@ describe('HttpAuthRepository', () => {
       repository.currentUser().subscribe(resolve),
     );
 
-    controller.expectOne(`${API_BASE_URL}/auth/me`).flush({ ...SESSION_PAYLOAD, roles: ['ADMIN'] });
+    controller.expectOne(`${AUTH_BASE_URL}/me`).flush({ ...SESSION_PAYLOAD, roles: ['ADMIN'] });
 
     expect((await user).role).toBe('admin');
   });
@@ -69,7 +75,7 @@ describe('HttpAuthRepository', () => {
     repository.renew().subscribe();
     repository.signOut().subscribe();
 
-    expect(controller.expectOne(`${API_BASE_URL}/auth/refresh`).request.body).toBeNull();
-    expect(controller.expectOne(`${API_BASE_URL}/auth/logout`).request.body).toBeNull();
+    expect(controller.expectOne(`${AUTH_BASE_URL}/refresh`).request.body).toBeNull();
+    expect(controller.expectOne(`${AUTH_BASE_URL}/logout`).request.body).toBeNull();
   });
 });

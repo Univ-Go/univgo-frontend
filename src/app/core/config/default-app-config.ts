@@ -10,6 +10,7 @@ export const defaultAppConfig: AppConfig = {
   tenantId: 'default',
   organizationName: 'Universidad UnivGo',
   apiBaseUrl: environment.apiBaseUrl,
+  authBaseUrl: environment.authBaseUrl,
   capacityHistoryDays: 7,
   capacityPlanningDays: 7,
 };

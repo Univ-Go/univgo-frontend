@@ -8,7 +8,11 @@ import { APP_CONFIG, type AppConfig } from '../config/app-config';
 import { authInterceptor } from './auth.interceptor';
 
 const API_BASE_URL = 'http://localhost:3000';
+// The session endpoints are proxied apart from the rest of the API, so they are not under
+// `API_BASE_URL` and the interceptor has to recognise both bases.
+const AUTH_BASE_URL = '/auth';
 const PROTECTED_URL = `${API_BASE_URL}/reservations/me`;
+const REFRESH_URL = `${AUTH_BASE_URL}/refresh`;
 
 const USER: AuthenticatedUser = {
   id: 'f2e1',
@@ -35,7 +39,10 @@ describe('authInterceptor', () => {
       providers: [
         provideHttpClient(withInterceptors([authInterceptor])),
         provideHttpClientTesting(),
-        { provide: APP_CONFIG, useValue: { apiBaseUrl: API_BASE_URL } as AppConfig },
+        {
+          provide: APP_CONFIG,
+          useValue: { apiBaseUrl: API_BASE_URL, authBaseUrl: AUTH_BASE_URL } as AppConfig,
+        },
         { provide: SessionStore, useValue: { renew, expire } },
       ],
     });
@@ -55,6 +62,12 @@ describe('authInterceptor', () => {
     http.get(PROTECTED_URL).subscribe();
 
     expect(controller.expectOne(PROTECTED_URL).request.withCredentials).toBe(true);
+  });
+
+  it('sends cookies with the session endpoints, which sit outside the API base', () => {
+    http.post(REFRESH_URL, null).subscribe();
+
+    expect(controller.expectOne(REFRESH_URL).request.withCredentials).toBe(true);
   });
 
   it('leaves requests to other origins untouched', () => {
@@ -89,12 +102,10 @@ describe('authInterceptor', () => {
 
   it('never renews on the endpoints that mint the session, which would call itself', async () => {
     const failure = new Promise<unknown>((resolve) =>
-      http.post(`${API_BASE_URL}/auth/refresh`, null).subscribe({ error: resolve }),
+      http.post(REFRESH_URL, null).subscribe({ error: resolve }),
     );
 
-    controller
-      .expectOne(`${API_BASE_URL}/auth/refresh`)
-      .flush(null, { status: 401, statusText: 'Unauthorized' });
+    controller.expectOne(REFRESH_URL).flush(null, { status: 401, statusText: 'Unauthorized' });
 
     await failure;
     expect(renew).not.toHaveBeenCalled();

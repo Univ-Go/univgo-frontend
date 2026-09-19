@@ -29,7 +29,7 @@ function toAuthenticatedUser(dto: SessionDto): AuthenticatedUser {
 @Injectable()
 export class HttpAuthRepository extends AuthRepository {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${inject(APP_CONFIG).apiBaseUrl}/auth`;
+  private readonly baseUrl = inject(APP_CONFIG).authBaseUrl;
 
   /**
    * Every failure here is reported by its caller: sign-in renders it beside the form, and an

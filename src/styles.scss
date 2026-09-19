@@ -111,6 +111,17 @@ tui-dropdown[data-appearance='tab-bar'] {
   background: var(--tui-background-neutral-1);
 }
 
+// Taiga lays the confirm dialog's two buttons in a row and only lets them grow inside
+// `tui-root._mobile`, a class it sets from the user agent. Everywhere else the pair keeps its
+// content width against the 22rem of a size `s` dialog, and two explicit labels — which every
+// destructive confirm here has, because "Sí/No" does not say what is about to happen — overflow it.
+// The row then wraps, and the footer's `flex-wrap: wrap-reverse` leaves one button ragged on each
+// line. Letting them grow is the library's own answer to this; it just never reaches a desktop.
+// Stacked they also read in the right order: the action first, the way out right under it.
+tui-dialog .t-buttons .t-button {
+  flex: 1 0 auto;
+}
+
 // Taiga draws focus for its own components; this covers the product's native elements.
 :focus-visible {
   outline: var(--tui-stroke-width) solid var(--tui-border-focus);

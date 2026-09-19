@@ -814,8 +814,24 @@ Cómo quedó montada la librería, que es lo que no conviene volver a deducir:
 - **`less` es dependencia de desarrollo** por ese `.less`: sin ella el build falla con "Unable to
   load the less stylesheet preprocessor". No es una vuelta a LESS como lenguaje de estilos.
 - **Iconos.** Se copian de `node_modules/@taiga-ui/icons/src` a `assets/taiga-ui/icons`, que es
-  donde `TUI_ASSETS_PATH` los busca por defecto. Se copia el paquete entero y una vez por locale;
-  si algún día pesa, es un candidato claro a recortar.
+  donde `TUI_ASSETS_PATH` los busca por defecto. **El glob de `angular.json` enumera los iconos uno
+  a uno**, no copia el paquete entero: eran 4.280 SVG por locale, 34 MB de deploy, para los ~97 que
+  el producto usa. Taiga documenta otras dos vías —`tuiIconsProvider` (los mete como data URI en el
+  bundle de JS) y `tuiIconResolverProvider`—; ninguna aplica aquí, porque meterlos en el bundle
+  cambia carga perezosa por peso inicial y además exigiría importar SVG como texto, que el builder
+  de Angular no hace.
+
+  La lista incluye dos grupos: los que el código nombra y los que **la librería dibuja por su
+  cuenta** (la equis del textfield, las flechas del calendario, el cierre de la alerta). Los
+  segundos no se deducen leyendo `src/`. `src/taiga-icon-assets.spec.ts` recalcula ambos conjuntos
+  —escanea `src/` y los `fesm2022/*.mjs` de Taiga— y falla si el glob se queda corto: sin ese test
+  un icono nuevo, o un upgrade de la librería, se rompería sólo en producción y en silencio. Es la
+  condición que hace mantenible la lista, no un extra. **Al subir la versión de Taiga, ejecutar los
+  tests y ampliar el glob con lo que señalen.**
+
+  Por eso `@types/node` es dependencia de desarrollo y `tsconfig.spec.json` incluye `"node"` en
+  `types`: ese test lee ficheros del disco.
+
 - **Idioma de la librería.** `provideTaigaLanguage()` elige el paquete de `@taiga-ui/i18n` según
   `LOCALE_ID`, es decir, según el locale con el que se compiló la build. No puede desincronizarse.
 - **Alertas.** `NotificationService` habla con `TuiNotificationService`. En Taiga 5 no hay un

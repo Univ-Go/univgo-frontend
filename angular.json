@@ -55,7 +55,7 @@
                 "output": "brand"
               },
               {
-                "glob": "**/*",
+                "glob": "{arrow-left,arrow-right,ban,bell,book-open,calendar,calendar-check,calendar-clock,calendar-days,calendar-off,calendar-plus,calendar-search,calendar-x,check,chevron-down,chevron-left,chevron-right,chevrons-up-down,chevron-up,circle-alert,circle-check,circle-help,circle-pause,circle-plus,circle-slash,circle-user-round,circle-x,clock,code,copy,door-closed,door-closed-locked,electron,ellipsis,expand,eye,eye-off,file,filter,filter-x,flask-conical,grip-vertical,heart,heart-filled,history,hourglass,house,id-card,info,keyboard,layout-grid,link,loader-circle,lock,log-in,log-out,map-pin,map-pin-off,maximize-2,menu,minimize,minus,mir,moon,pencil,plus,qr-code,radio,refresh-cw,repeat,rotate-ccw,rotate-ccw-square,scan-line,scan-qr-code,search,search-x,settings,shield-check,shrink,sliders-horizontal,star,sun,switch-camera,timer-off,trash,triangle-alert,user,user-check,user-plus,users,user-x,video-off,visa,volleyball,wifi-off,wrench,x}.svg",
                 "input": "node_modules/@taiga-ui/icons/src",
                 "output": "assets/taiga-ui/icons"
               }

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": "dist/univgo-frontend/browser",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "accept-language", "value": "en.*" }],
+      "destination": "/en/",
+      "permanent": false
+    },
+    { "source": "/", "destination": "/es/", "permanent": false },
+    { "source": "/:locale(es|en)", "destination": "/:locale/", "permanent": false },
+    {
+      "source": "/:path((?!api(?:/|$)|_vercel(?:/|$)|es(?:/|$)|en(?:/|$)).*)",
+      "destination": "/es/:path",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://univgo-backend.onrender.com/:path*" },
+    { "source": "/es/:path*", "destination": "/es/index.html" },
+    { "source": "/en/:path*", "destination": "/en/index.html" }
+  ],
+  "images": {
+    "sizes": [640, 960],
+    "qualities": [75],
+    "formats": ["image/webp"],
+    "minimumCacheTTL": 3300,
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "*.storage.c-5.us-east-2.aws.neon.tech"
+      }
+    ]
+  },
+  "headers": [
+    {
+      "source": "/:locale(es|en)/index.html",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/:locale(es|en)/fonts/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/:locale(es|en)/assets/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/:locale(es|en)/images/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+    }
+  ]
+}

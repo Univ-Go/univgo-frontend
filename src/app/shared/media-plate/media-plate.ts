@@ -23,10 +23,15 @@ import { TuiSkeleton } from '@taiga-ui/kit';
  *
  * Uploaded photos arrive as full camera-resolution files (multi-megapixel, several hundred KB) with
  * no cache header — the upload pipeline has no resizing step yet. Rather than ship that weight to a
- * thumbnail, `imageUrl` is routed through the Netlify Image CDN (`/.netlify/images?url=...&w=...`),
- * which resizes and caches it at the edge; `width` is how large the host actually renders it. Local
- * dev has no Image CDN to answer that path, so a 404 there falls back to the original URL once —
- * slower, but the same behaviour the app had before this existed, not a broken plate.
+ * thumbnail, `imageUrl` is routed through the platform's image optimizer
+ * (`/_vercel/image?url=...&w=...&q=...`), which resizes and caches it at the edge; `width` is how
+ * large the host actually renders it. Local dev has no optimizer to answer that path, so a failure
+ * there falls back to the original URL once — slower, but the same behaviour the app had before
+ * this existed, not a broken plate.
+ *
+ * `width` must be one of the sizes declared in `vercel.json`; an unlisted one is rejected outright
+ * rather than resized to the nearest. The fallback would hide that, so the two lists are kept in
+ * step deliberately.
  */
 @Component({
   selector: 'app-media-plate',
@@ -125,9 +130,9 @@ export class MediaPlate {
       return src;
     }
 
-    const params = new URLSearchParams({ url: src, w: String(this.width()) });
+    const params = new URLSearchParams({ url: src, w: String(this.width()), q: '75' });
 
-    return `/.netlify/images?${params}`;
+    return `/_vercel/image?${params}`;
   });
 
   protected readonly loaded = computed(() => this.loadedSrc() === this.displayUrl());

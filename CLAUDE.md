@@ -861,10 +861,75 @@ partir de él y `TUI_DARK_MODE` lee `prefers-color-scheme`. No lo retires. jsdom
 otras APIs del navegador (`ResizeObserver`, `IntersectionObserver`) que Taiga sí use:
 `src/test-setup.ts` es el sitio donde añadirlas.
 
+### Despliegue: Vercel
+
+Todo el despliegue vive en **`vercel.json`**. Se migró desde Netlify porque su facturación por
+créditos cobra **cada deploy de producción** —20 deploys se llevaron el 98 % de la bolsa mensual,
+mientras que todo el tráfico del mes costó el 1,2 %—; en el plan Hobby de Vercel los deploys no se
+facturan así.
+
+Lo que no se deduce leyendo el fichero:
+
+- **El orden de rutas es distinto al de Netlify y es la trampa principal.** Vercel evalúa
+  `headers` → `redirects` → ficheros estáticos → `rewrites`. Netlify evaluaba ficheros estáticos
+  primero y los redirects después, con `force` para saltárselo. Consecuencia: el proxy de `/api`
+  es un `rewrite`, así que corre **al final**, y el catch-all que manda todo a `/es/` correría
+  antes. Por eso su `source` lleva el lookahead `(?!api(?:/|$)|_vercel(?:/|$)|es(?:/|$)|en(?:/|$))`.
+  **Si se quita, todas las llamadas a la API se van en 302 a `/es/api/...` y la sesión deja de
+  existir.** Los sufijos `(?:/|$)` importan: sin ellos una ruta como `/enroll` entraría en la
+  exclusión de `en`.
+- **Los redirects ganan a los ficheros estáticos**, al revés que en Netlify. Hoy la raíz del output
+  sólo contiene `es/` y `en/`, así que no hay nada que atropellar; si algún día se añade un fichero
+  suelto en la raíz (`robots.txt`, `sitemap.xml`), hay que excluirlo también en ese lookahead.
+- **La detección de idioma está degradada a propósito.** Netlify parseaba `Accept-Language` con
+  q-values; Vercel sólo hace regex sobre la cabecera. `"value": "en.*"` significa "el primer idioma
+  declarado es inglés". Un `es;q=0.8,en;q=0.9` cae a español. Es una regresión aceptada, no un
+  descuido.
+- **pnpm**: el lockfile es `9.0` y Vercel infiere pnpm 9 de ahí, ignorando el `packageManager`.
+  Pero `pnpm-workspace.yaml` usa `allowBuilds`, que es de pnpm 11. Hay que fijar
+  **`ENABLE_EXPERIMENTAL_COREPACK=1`** como variable de entorno del proyecto, o `onlyBuiltDependencies: []`
+  —la defensa de cadena de suministro descrita arriba— queda en terreno incierto.
+- **Node** se fija a **24.x** en Project Settings. `engines` es un rango OR de tres ramas y no
+  conviene depender de cómo lo interprete el proveedor.
+
+#### El proxy de `/api` y las cookies en iOS
+
+Es la razón de que `apiBaseUrl` sea `/api` y no una URL absoluta. El navegador nunca habla con
+`onrender.com`: pide al propio origen, Vercel hace el fetch upstream y devuelve `Set-Cookie` tal
+cual, así que para el navegador la cookie es **first-party** y Safari —o sea, todo iOS— no tiene
+nada que bloquear. Lo que sostiene eso: el backend **no** debe mandar `Domain=` en la cookie (sería
+descartada por no coincidir con el dominio que sirve), ni redirigir a su propio dominio dentro del
+flujo de auth. Con el proxy, `SameSite=Lax` basta y es más robusto que `None`.
+
+#### El optimizador de imágenes tiene una trampa sin resolver
+
+`MediaPlate` rutea las fotos por `/_vercel/image`, el equivalente del Image CDN de Netlify que había
+antes. Funciona, pero **las URLs del backend son presigned de S3 y rotan cada 55 minutos**
+(`PRESIGN_DURATION` 60 min con caché de 55 en `S3SpaceImageRepositoryAdapter`). El optimizador
+cachea por URL de origen, así que **cada rotación es un miss y una transformación nueva facturada**:
+con el plan Hobby, unas pocas fotos bastan para agotar la cuota mensual. `minimumCacheTTL` está en
+3300 s para aprovechar la ventana completa, pero eso no evita el miss al rotar.
+
+La solución no está en el frontend: **el backend debe redimensionar al subir**, o servir una
+derivada con URL estable. Mientras tanto, si la cuota se dispara, la mitigación es una línea —
+devolver `src` sin pasar por el optimizador en `displayUrl()`— y el resultado es exactamente el
+comportamiento que la aplicación ya tenía.
+
+Dato relacionado: el `netlify.toml` anterior **nunca tuvo bloque `[images]` con `remote_images`**,
+que Netlify exige para orígenes remotos. Es muy probable que el Image CDN llevara todo el tiempo
+rechazando estas URLs y que el componente estuviera cayendo siempre al fallback — es decir, que la
+optimización nunca llegó a funcionar en producción.
+
 ### Pendiente de verificar
 
 La experiencia **mobile en un viewport real** no se ha comprobado todavía. No hay vistas que probar:
 toca contemplarla al construirlas, no después.
+
+El `vercel.json` **no se ha probado contra el router real de Vercel**: los patrones de `source` son
+`path-to-regexp` y sólo se han razonado. Lo primero que hay que comprobar en el primer preview
+deploy, en este orden: que `/api/auth/login` responde y **deja la cookie** (no que redirige), que
+`/` reparte a `/es/` y `/en/`, que un enlace profundo como `/es/spaces/x` sirve la SPA, y que una
+foto cargada por `/_vercel/image` devuelve una imagen y no un 400 por `w` no declarado.
 
 ---
 

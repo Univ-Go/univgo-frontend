@@ -33,6 +33,11 @@
   align-items: center;
 }
 
+// The isotype is the phone's mark; from tablet up there is room for the wordmark.
+.logo app-brand-isotype {
+  display: none;
+}
+
 .nav {
   display: flex;
   justify-content: center;
@@ -95,5 +100,19 @@
   // of the same navigation would be two entries in the accessibility tree.
   .nav {
     display: none;
+  }
+}
+
+// The mark drops to the isotype where the utilities and the account share its line: the wordmark is
+// three times as wide and the row does not fit a 320px screen with it. Same swap as the panel's bar.
+@media (width < bp.$tablet) {
+  .logo app-brand-logo {
+    display: none;
+  }
+
+  .logo app-brand-isotype {
+    --brand-isotype-size: 1.75rem;
+
+    display: inline-flex;
   }
 }

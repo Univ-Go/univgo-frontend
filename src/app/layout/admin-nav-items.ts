@@ -35,7 +35,7 @@ export const ADMIN_NAV_MATCH_OPTIONS: IsActiveMatchOptions = {
 export interface AdminNavItem {
   readonly icon: string;
   readonly label: string;
-  /** A shorter form for the bottom bar's five-way split, where "Gestión de aforo" would wrap. */
+  /** A shorter form for the bottom bar's narrow columns, where "Consulta de bloques" would wrap. */
   readonly compactLabel?: string;
   readonly link: string | null;
 }

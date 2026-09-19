@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { TUI_BREAKPOINT, TuiButton, TuiDropdown, TuiLink } from '@taiga-ui/core';
-import { TuiAvatar, TuiBadgedContent, TuiBadgeNotification } from '@taiga-ui/kit';
+import { TuiDropdown, TuiLink } from '@taiga-ui/core';
+import { TuiAvatar } from '@taiga-ui/kit';
 import { SessionStore } from '../../features/auth/application/session-store';
+import { BrandIsotype } from '../../shared/brand/brand-isotype';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
@@ -19,18 +20,21 @@ import { AccountMenu } from '../account-menu/account-menu';
  *
  * Only routes that exist are links: a `routerLink` to a missing route fails the whole navigation,
  * so a nav item stays a plain button until its view ships.
+ *
+ * On a phone the destinations move to the tab bar, within reach of the thumb, but the utilities and
+ * the account stay here. They used to travel down with them, which left the same control reachable
+ * from two surfaces depending on the width; keeping them in one place is also what makes both
+ * shells the same shape, since the panel's bottom bar never had an account tab to put them in.
  */
 @Component({
   selector: 'app-header',
   imports: [
     AccountMenu,
+    BrandIsotype,
     BrandLogo,
     RouterLink,
     RouterLinkActive,
     TuiAvatar,
-    TuiBadgeNotification,
-    TuiBadgedContent,
-    TuiButton,
     TuiDropdown,
     TuiLink,
     LanguageSelector,
@@ -41,16 +45,7 @@ import { AccountMenu } from '../account-menu/account-menu';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppHeader {
-  private readonly breakpoint = inject(TUI_BREAKPOINT);
-
   private readonly session = inject(SessionStore);
-
-  /**
-   * On a phone the navigation, the utilities and the account belong to the tab bar, which puts them
-   * within reach of the thumb; the top bar keeps only the brand and the notifications. Rendering
-   * each control in exactly one place keeps them out of the accessibility tree twice.
-   */
-  protected readonly compact = computed(() => this.breakpoint() === 'mobile');
 
   /**
    * The catalogue carries its filter in the query string, so `exact` alone would drop the highlight

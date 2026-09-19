@@ -1,6 +1,10 @@
 <header class="header">
+  <!-- The wordmark gives way to the isotype on a phone: with the utilities and the account beside
+       it, a mark three times as wide does not share a 320px line. Both are in the markup and the
+       stylesheet picks, the same swap the panel's bar makes. -->
   <a class="logo" routerLink="/home">
     <app-brand-logo />
+    <app-brand-isotype />
   </a>
 
   <nav class="nav" i18n-aria-label="@@navigation.mainLabel" aria-label="Navegación principal">
@@ -33,41 +37,26 @@
     >
   </nav>
 
+  <!-- No notification bell: there is nothing behind one, and the room it took is what lets the
+       utilities and the account stay here at every width instead of moving into the tab bar on a
+       phone. The bar below is destinations only, the same shape the panel's is. -->
   <div class="actions">
-    <!-- Notifications stay in the bar at every size: a pending alert nobody can see is pointless. -->
-    <tui-badged-content>
-      <tui-badge-notification tuiSlot="top" size="s" />
-      <button
-        tuiIconButton
-        type="button"
-        appearance="flat"
-        size="s"
-        iconStart="@tui.bell"
-        i18n-aria-label="@@navigation.notifications"
-        aria-label="Notificaciones"
-      ></button>
-    </tui-badged-content>
+    <app-language-selector />
+    <app-theme-toggle />
 
-    <!-- On a phone the utilities and the account live in the tab bar, within reach of the thumb;
-         rendering each control in exactly one place keeps it out of the accessibility tree twice. -->
-    @if (!compact()) {
-      <app-language-selector />
-      <app-theme-toggle />
-
-      <button
-        tuiAvatar
-        type="button"
-        size="m"
-        appearance="primary"
-        class="profile"
-        i18n-aria-label="@@navigation.accountMenu"
-        aria-label="Tu cuenta"
-        [tuiDropdown]="accountMenu"
-        [(tuiDropdownOpen)]="menuOpen"
-      >
-        {{ initials() }}
-      </button>
-    }
+    <button
+      tuiAvatar
+      type="button"
+      size="m"
+      appearance="primary"
+      class="profile"
+      i18n-aria-label="@@navigation.accountMenu"
+      aria-label="Tu cuenta"
+      [tuiDropdown]="accountMenu"
+      [(tuiDropdownOpen)]="menuOpen"
+    >
+      {{ initials() }}
+    </button>
   </div>
 </header>
 

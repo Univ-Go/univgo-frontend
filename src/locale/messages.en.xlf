@@ -883,7 +883,7 @@
         <target>until <x id="INTERPOLATION" equiv-text="{{ hour.end }}"/></target>
       </trans-unit>
       <trans-unit id="booking.schedule.freePlaces" datatype="html">
-        <source>{VAR_PLURAL, plural, =1 {1 plaza} other {<x id="INTERPOLATION"/> plazas}}</source>
+        <source>{VAR_PLURAL, plural, =1 {1 cupo} other {<x id="INTERPOLATION"/> cupos}}</source>
         <target>{VAR_PLURAL, plural, =1 {1 space left} other {<x id="INTERPOLATION"/> spaces left}}</target>
       </trans-unit>
       <trans-unit id="booking.schedule.full" datatype="html">
@@ -1055,7 +1055,7 @@
         <target>In the room</target>
       </trans-unit>
       <trans-unit id="admin.capacity.inRoom.hint" datatype="html">
-        <source>de <x id="INTERPOLATION" equiv-text="{{ load.occupied }}"/> plazas ocupadas</source>
+        <source>de <x id="INTERPOLATION" equiv-text="{{ load.occupied }}"/> cupos ocupados</source>
         <target>of <x id="INTERPOLATION" equiv-text="{{ load.occupied }}"/> seats taken</target>
       </trans-unit>
       <trans-unit id="admin.capacity.pending.title" datatype="html">
@@ -1523,7 +1523,7 @@
         <target>Bookings cancelled</target>
       </trans-unit>
       <trans-unit id="admin.settings.cancelAll.doneDetail" datatype="html">
-        <source>Plazas liberadas: <x id="count" equiv-text="cancelled"/></source>
+        <source>Cupos liberados: <x id="count" equiv-text="cancelled"/></source>
         <target>Places freed: <x id="count" equiv-text="cancelled"/></target>
       </trans-unit>
       <trans-unit id="admin.closure.stats.thisMonth" datatype="html">

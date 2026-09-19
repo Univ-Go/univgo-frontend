@@ -143,7 +143,7 @@ export class SettingsPage {
         this.cancelling.set(false);
         this.notifications.success(
           $localize`:@@admin.settings.cancelAll.done:Reservas canceladas`,
-          $localize`:@@admin.settings.cancelAll.doneDetail:Plazas liberadas: ${cancelled}:count:`,
+          $localize`:@@admin.settings.cancelAll.doneDetail:Cupos liberados: ${cancelled}:count:`,
         );
       },
       error: () => this.cancelling.set(false),

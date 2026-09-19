@@ -14,13 +14,14 @@
     { "source": "/", "destination": "/es/", "permanent": false },
     { "source": "/:locale(es|en)", "destination": "/:locale/", "permanent": false },
     {
-      "source": "/:path((?!api(?:/|$)|_vercel(?:/|$)|es(?:/|$)|en(?:/|$)).*)",
+      "source": "/:path((?!api(?:/|$)|auth(?:/|$)|_vercel(?:/|$)|es(?:/|$)|en(?:/|$)).*)",
       "destination": "/es/:path",
       "permanent": false
     }
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://univgo-backend.onrender.com/:path*" },
+    { "source": "/auth/:path*", "destination": "https://univgo-backend.onrender.com/auth/:path*" },
     { "source": "/es/:path*", "destination": "/es/index.html" },
     { "source": "/en/:path*", "destination": "/en/index.html" }
   ],

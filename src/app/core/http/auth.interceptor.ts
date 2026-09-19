@@ -19,9 +19,9 @@ const SESSION_ENDPOINTS = ['/auth/login', '/auth/refresh', '/auth/logout'];
  * would be guessing from the device clock.
  */
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
-  const apiBaseUrl = inject(APP_CONFIG).apiBaseUrl;
+  const { apiBaseUrl, authBaseUrl } = inject(APP_CONFIG);
 
-  if (!request.url.startsWith(apiBaseUrl)) {
+  if (!request.url.startsWith(apiBaseUrl) && !request.url.startsWith(authBaseUrl)) {
     return next(request);
   }
 

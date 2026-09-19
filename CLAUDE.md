@@ -901,6 +901,21 @@ nada que bloquear. Lo que sostiene eso: el backend **no** debe mandar `Domain=` 
 descartada por no coincidir con el dominio que sirve), ni redirigir a su propio dominio dentro del
 flujo de auth. Con el proxy, `SameSite=Lax` basta y es más robusto que `None`.
 
+**El proxy no puede cambiar el prefijo de una ruta cuyo cookie lleva `Path`.** El rewrite de `/api`
+**quita** el prefijo (`/api/:path*` → backend `/:path*`), y el backend acota la cookie de refresco a
+`Path=/auth` (verificado contra producción: `univgo_session` sale con `Path=/` y `univgo_refresh`
+con `Path=/auth`, ambas `Secure; HttpOnly; SameSite=None`, sin `Domain=`). El navegador la guardaba
+—por eso aparecía en la respuesta— pero no la enviaba nunca a `/api/auth/refresh`, así que el
+refresco devolvía 401 y la sesión moría a los 15 minutos del token de acceso.
+
+Por eso **`/auth` se monta en la raíz del origen y conservando el prefijo**
+(`/auth/:path*` → backend `/auth/:path*`), con su propia entrada en `APP_CONFIG.authBaseUrl`, y por
+eso `auth` está en el lookahead del catch-all de idioma junto a `api` — sin eso, `/auth/refresh` se
+iría en 302 a `/es/auth/refresh`. La regla general: **cualquier ruta del backend que ponga `Path` en
+una cookie debe viajar por el proxy con su prefijo intacto**. Si el backend algún día deja la cookie
+en `Path=/`, esta separación deja de ser necesaria, pero mientras la acote no hay arreglo posible
+desde el lado del navegador.
+
 #### El optimizador de imágenes tiene una trampa sin resolver
 
 `MediaPlate` rutea las fotos por `/_vercel/image`, el equivalente del Image CDN de Netlify que había
@@ -927,9 +942,10 @@ toca contemplarla al construirlas, no después.
 
 El `vercel.json` **no se ha probado contra el router real de Vercel**: los patrones de `source` son
 `path-to-regexp` y sólo se han razonado. Lo primero que hay que comprobar en el primer preview
-deploy, en este orden: que `/api/auth/login` responde y **deja la cookie** (no que redirige), que
-`/` reparte a `/es/` y `/en/`, que un enlace profundo como `/es/spaces/x` sirve la SPA, y que una
-foto cargada por `/_vercel/image` devuelve una imagen y no un 400 por `w` no declarado.
+deploy, en este orden: que `/auth/login` responde y **deja las dos cookies** (no que redirige), que
+`/auth/refresh` devuelve 200 —es lo que demuestra que la de refresco viaja—, que `/` reparte a
+`/es/` y `/en/`, que un enlace profundo como `/es/spaces/x` sirve la SPA, y que una foto cargada por
+`/_vercel/image` devuelve una imagen y no un 400 por `w` no declarado.
 
 ---
 

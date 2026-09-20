@@ -202,10 +202,6 @@
         <source>Próxima reserva</source>
         <target>Next booking</target>
       </trans-unit>
-      <trans-unit id="home.nextReservation.loading" datatype="html">
-        <source>Cargando tu próxima reserva</source>
-        <target>Loading your next booking</target>
-      </trans-unit>
       <trans-unit id="reservation.factTime" datatype="html">
         <source>Horario</source>
         <target>Time</target>

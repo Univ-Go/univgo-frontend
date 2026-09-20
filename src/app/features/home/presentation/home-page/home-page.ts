@@ -71,8 +71,6 @@ export class HomePage {
     defaultValue: [],
   });
 
-  protected readonly loadingReservation = this.myReservations.isLoading;
-
   protected readonly nextReservation = computed(() =>
     findNextReservation(this.myReservations.value()),
   );

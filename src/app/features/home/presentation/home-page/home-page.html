@@ -19,10 +19,15 @@
   </a>
 </section>
 
-<!-- Nothing to say when there is nothing booked: an empty card would only repeat the action
-     the greeting already offers, and the section reads as a promise the view cannot keep. The
-     way in is the greeting's button, and on a phone the shell's own floating one. -->
-@if (loadingReservation() || nextReservation()) {
+<!-- Nothing to say when there is nothing booked: an empty card would only repeat the action the
+     greeting already offers, and the way in is that button — on a phone, the shell's floating one
+     too.
+
+     Nothing to say while loading either, which is why there is no skeleton here. A skeleton is a
+     promise of content, and whether this section has any cannot be known until the answer lands:
+     reserving the room and then taking it back is a worse first frame than the section arriving a
+     moment late. -->
+@if (nextReservation(); as reservation) {
   <section class="section" aria-labelledby="next-reservation">
     <header tuiHeader class="section__header">
       <h2 id="next-reservation" tuiTitle i18n="@@home.nextReservation">Próxima reserva</h2>
@@ -30,51 +35,41 @@
 
     <!-- The status belongs to the booking, not to the section: it rides on the card, in the same
          badge every other view uses, so "Próxima" cannot become "Confirmada" on one screen only. -->
-    @if (loadingReservation()) {
-      <p
-        class="reservation reservation--skeleton"
-        [tuiSkeleton]="true"
-        aria-busy="true"
-        i18n-aria-label="@@home.nextReservation.loading"
-        aria-label="Cargando tu próxima reserva"
-      ></p>
-    } @else if (nextReservation(); as reservation) {
-      <article tuiCardLarge tuiSurface tuiAppearance="floating" class="reservation">
-        <span class="reservation__icon" aria-hidden="true">
-          <tui-icon [icon]="categoryIcon(reservation.category)" />
-        </span>
+    <article tuiCardLarge tuiSurface tuiAppearance="floating" class="reservation">
+      <span class="reservation__icon" aria-hidden="true">
+        <tui-icon [icon]="categoryIcon(reservation.category)" />
+      </span>
 
-        <div class="reservation__identity">
-          <h3 class="reservation__name">{{ reservation.spaceName }}</h3>
-          <p class="reservation__location">{{ reservation.location }}</p>
+      <div class="reservation__identity">
+        <h3 class="reservation__name">{{ reservation.spaceName }}</h3>
+        <p class="reservation__location">{{ reservation.location }}</p>
+      </div>
+
+      <app-reservation-status-badge [state]="reservation.state" />
+
+      <dl class="reservation__facts">
+        <div class="fact">
+          <dt i18n="@@reservation.factTime">Horario</dt>
+          <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ nextRange() }}</dd>
         </div>
+        <div class="fact">
+          <dt i18n="@@reservation.factDate">Fecha</dt>
+          <dd>
+            <tui-icon icon="@tui.calendar" aria-hidden="true" />{{
+              reservation.date | date: 'd MMM'
+            }}
+          </dd>
+        </div>
+      </dl>
 
-        <app-reservation-status-badge [state]="reservation.state" />
-
-        <dl class="reservation__facts">
-          <div class="fact">
-            <dt i18n="@@reservation.factTime">Horario</dt>
-            <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ nextRange() }}</dd>
-          </div>
-          <div class="fact">
-            <dt i18n="@@reservation.factDate">Fecha</dt>
-            <dd>
-              <tui-icon icon="@tui.calendar" aria-hidden="true" />{{
-                reservation.date | date: 'd MMM'
-              }}
-            </dd>
-          </div>
-        </dl>
-
-        <a
-          tuiLink
-          [routerLink]="['/reservations', reservation.id]"
-          iconEnd="@tui.arrow-right"
-          i18n="@@common.viewDetails"
-          >Ver detalles</a
-        >
-      </article>
-    }
+      <a
+        tuiLink
+        [routerLink]="['/reservations', reservation.id]"
+        iconEnd="@tui.arrow-right"
+        i18n="@@common.viewDetails"
+        >Ver detalles</a
+      >
+    </article>
   </section>
 }
 

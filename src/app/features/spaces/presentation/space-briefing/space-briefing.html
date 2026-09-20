@@ -1,0 +1,18 @@
+@if (description(); as description) {
+  <section aria-labelledby="space-about-title">
+    <h2 id="space-about-title" i18n="@@spaces.about.title">Sobre el espacio</h2>
+    <p class="briefing__text">{{ description }}</p>
+  </section>
+}
+
+@if (rules().length) {
+  <section aria-labelledby="space-rules-title">
+    <h2 id="space-rules-title" i18n="@@spaces.rules.title">Normas del espacio</h2>
+
+    <ul tuiList="m" class="briefing__list">
+      @for (rule of rules(); track rule) {
+        <li>{{ rule }}</li>
+      }
+    </ul>
+  </section>
+}

@@ -62,8 +62,7 @@
   }
 }
 
-.summary-card,
-.info-card {
+.summary-card {
   h2 {
     font: var(--tui-typography-heading-h6);
   }
@@ -147,8 +146,4 @@
     flex-direction: column;
     gap: var(--univgo-space-xs);
   }
-}
-
-.info-card__list {
-  --tui-list-marker: var(--tui-background-accent-1);
 }

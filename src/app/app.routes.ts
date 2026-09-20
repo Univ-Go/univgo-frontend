@@ -63,6 +63,19 @@ export const routes: Routes = [
         },
       },
       {
+        // After `spaces` so the list keeps its own path, and with the id as a parameter because a
+        // space's page is an address a student can share.
+        path: 'spaces/:id',
+        loadComponent: () =>
+          import('./features/spaces/presentation/space-detail-page/space-detail-page').then(
+            (m) => m.SpaceDetailPage,
+          ),
+        title: $localize`:@@spaces.detail.pageTitle:Detalle del espacio`,
+        data: {
+          description: $localize`:@@spaces.detail.pageDescription:Consulta las fotos, el aforo, el uso y las normas del espacio antes de reservarlo.`,
+        },
+      },
+      {
         path: 'book',
         // The shell's quick action is a shortcut into this flow, so it has nothing to offer once
         // somebody is inside it. Declared here rather than matched on the path by `AppTabBar`,

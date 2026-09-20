@@ -486,10 +486,6 @@
         <source>De <x id="INTERPOLATION" equiv-text="{{ reservation.checkInOpensAt | date: &apos;HH:mm&apos; }}"/> a <x id="INTERPOLATION_1" equiv-text="{{ reservation.checkInClosesAt | date: &apos;HH:mm&apos; }}"/></source>
         <target>From <x id="INTERPOLATION" equiv-text="{{ reservation.checkInOpensAt | date: &apos;HH:mm&apos; }}"/> to <x id="INTERPOLATION_1" equiv-text="{{ reservation.checkInClosesAt | date: &apos;HH:mm&apos; }}"/></target>
       </trans-unit>
-      <trans-unit id="reservations.detail.rules.title" datatype="html">
-        <source>Normas del espacio</source>
-        <target>Space rules</target>
-      </trans-unit>
       <trans-unit id="reservations.detail.notFound.title" datatype="html">
         <source>Reserva no encontrada</source>
         <target>Booking not found</target>
@@ -506,45 +502,69 @@
         <source>No pudimos cargar esta reserva</source>
         <target>We couldn't load this booking</target>
       </trans-unit>
-      <trans-unit id="reservations.rules.sports.gear" datatype="html">
-        <source>Usa calzado deportivo adecuado para la superficie de la cancha.</source>
-        <target>Wear sports shoes suited to the court surface.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.sports.capacity" datatype="html">
-        <source>Máximo 10 personas por reserva.</source>
-        <target>Maximum 10 people per booking.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.sports.late" datatype="html">
-        <source>Si llegas con más de 10 minutos de retraso, la reserva se libera.</source>
-        <target>If you arrive more than 10 minutes late, the booking is released.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.study.volume" datatype="html">
-        <source>Mantén un volumen bajo para no interrumpir a otros grupos.</source>
-        <target>Keep your voice down so you don't disturb other groups.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.study.food" datatype="html">
-        <source>No se permite comida ni bebida dentro de la sala.</source>
-        <target>Food and drinks are not allowed inside the room.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.study.tidy" datatype="html">
-        <source>Deja el mobiliario en su posición original al terminar.</source>
-        <target>Leave the furniture in its original position when you finish.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.lab.protection" datatype="html">
-        <source>Usa bata y gafas de protección durante toda la sesión.</source>
-        <target>Wear a lab coat and safety glasses for the whole session.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.lab.supervision" datatype="html">
-        <source>No manipules equipos sin la supervisión indicada.</source>
-        <target>Do not operate equipment without the required supervision.</target>
-      </trans-unit>
-      <trans-unit id="reservations.rules.lab.incident" datatype="html">
-        <source>Reporta cualquier incidente al encargado del laboratorio de inmediato.</source>
-        <target>Report any incident to the lab supervisor immediately.</target>
-      </trans-unit>
       <trans-unit id="navigation.spaces" datatype="html">
         <source>Espacios</source>
         <target>Spaces</target>
+      </trans-unit>
+      <trans-unit id="spaces.about.title" datatype="html">
+        <source>Sobre el espacio</source>
+        <target>About this space</target>
+      </trans-unit>
+      <trans-unit id="spaces.rules.title" datatype="html">
+        <source>Normas del espacio</source>
+        <target>Space rules</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.pageTitle" datatype="html">
+        <source>Detalle del espacio</source>
+        <target>Space details</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.pageDescription" datatype="html">
+        <source>Consulta las fotos, el aforo, el uso y las normas del espacio antes de reservarlo.</source>
+        <target>See the photos, capacity, purpose and rules of the space before booking it.</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.gallery.previous" datatype="html">
+        <source>Foto anterior</source>
+        <target>Previous photo</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.gallery.next" datatype="html">
+        <source>Foto siguiente</source>
+        <target>Next photo</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.action.title" datatype="html">
+        <source>¿Te interesa este espacio?</source>
+        <target>Interested in this space?</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.action.freeToday" datatype="html">
+        <source>Bloques libres hoy</source>
+        <target>Free blocks today</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.action.noneToday" datatype="html">
+        <source>Hoy no queda nada libre. Mira los horarios y elige el día que te sirva.</source>
+        <target>Nothing is free today. Check the timetable and pick a day that suits you.</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.action.blockLength" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {Cada reserva ocupa un bloque de 1 hora.} other {Cada reserva ocupa un bloque de <x id="INTERPOLATION"/> horas.}}</source>
+        <target>{VAR_PLURAL, plural, =1 {Every booking takes a 1-hour block.} other {Every booking takes a <x id="INTERPOLATION"/>-hour block.}}</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.loading" datatype="html">
+        <source>Cargando el espacio</source>
+        <target>Loading the space</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.error.heading" datatype="html">
+        <source>No pudimos cargar este espacio</source>
+        <target>We could not load this space</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.notFound.title" datatype="html">
+        <source>Espacio no encontrado</source>
+        <target>Space not found</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.notFound.description" datatype="html">
+        <source>Puede que el enlace sea incorrecto o que el espacio ya no esté disponible.</source>
+        <target>The link may be wrong, or the space may no longer be available.</target>
+      </trans-unit>
+      <trans-unit id="spaces.detail.backToList" datatype="html">
+        <source>Ver todos los espacios</source>
+        <target>See every space</target>
       </trans-unit>
       <trans-unit id="spaces.pageTitle" datatype="html">
         <source>Espacios</source>
@@ -849,10 +869,6 @@
       <trans-unit id="booking.review.taken.detail" datatype="html">
         <source>Puede que se haya llenado o que ya no dé tiempo. Elige otro bloque para continuar.</source>
         <target>It may have filled up, or there may no longer be enough time left. Pick another block to continue.</target>
-      </trans-unit>
-      <trans-unit id="booking.info.title" datatype="html">
-        <source>Información importante</source>
-        <target>Important information</target>
       </trans-unit>
       <trans-unit id="booking.review.changeSpaceLabel" datatype="html">
         <source>Cambiar el espacio</source>

@@ -1,0 +1,240 @@
+<div class="page-nav">
+  <a
+    tuiButton
+    type="button"
+    appearance="flat"
+    size="m"
+    iconStart="@tui.arrow-left"
+    routerLink="/spaces"
+    i18n="@@common.back"
+    >Volver</a
+  >
+
+  <!-- `tui-breadcrumbs` renders a plain flex container, so the landmark and its accessible name are
+       ours to provide. It also sets `white-space: nowrap`, which on a phone would overflow the
+       layout gutter, and the back button already carries the same parent, so it starts at tablet. -->
+  <nav
+    class="page-nav__trail"
+    i18n-aria-label="@@navigation.breadcrumbLabel"
+    aria-label="Ruta de navegación"
+  >
+    <tui-breadcrumbs>
+      <a *tuiItem tuiLink routerLink="/spaces" i18n="@@spaces.pageTitle">Espacios</a>
+      <span *tuiItem class="page-nav__current" aria-current="page">{{ space()?.name ?? '' }}</span>
+    </tui-breadcrumbs>
+  </nav>
+</div>
+
+@if (resource.isLoading()) {
+  <div
+    class="detail__loading"
+    aria-busy="true"
+    i18n-aria-label="@@spaces.detail.loading"
+    aria-label="Cargando el espacio"
+  >
+    <span class="detail__loading-media" [tuiSkeleton]="true"></span>
+    <span class="detail__loading-block" [tuiSkeleton]="true"></span>
+  </div>
+} @else if (resource.error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@spaces.detail.error.heading"
+    heading="No pudimos cargar este espacio"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="resource.reload()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (space(); as space) {
+  <article class="detail">
+    <header class="detail__header">
+      <div class="detail__identity">
+        <h1 class="detail__name">{{ space.name }}</h1>
+        <p class="detail__location">
+          <tui-icon icon="@tui.map-pin" aria-hidden="true" />{{ space.location }}
+        </p>
+      </div>
+
+      <!-- `tuiChip` draws its icon through the icons directive, not as a child element: a nested
+           `tui-icon` would sit on top of the label instead of beside it. -->
+      <ul class="detail__tags">
+        <li>
+          <span tuiChip appearance="outline" size="m" iconStart="@tui.users">
+            <span i18n="@@spaces.card.capacityValue">{space.capacity, plural,
+              =1 {1 persona}
+              other {{{space.capacity}} personas}
+            }</span>
+          </span>
+        </li>
+        <li>
+          <span tuiChip appearance="outline" size="m" [iconStart]="icon()">
+            {{ categoryName(space.category) }}
+          </span>
+        </li>
+      </ul>
+    </header>
+
+    <div class="detail__content">
+      <div class="detail__gallery">
+        <!-- One photograph, or none, is not a carousel: the controls would be there to move
+             between a picture and itself. The plate is the same one the card shows, so the brand
+             placeholder covers the "no photographs yet" case without a second design. -->
+        @if (space.images.length > 1) {
+          <!-- `tui-carousel` reads a single `tuiItem` template and renders it three times — the
+               slide before, the current one and the next — handing each the index it stands for,
+               so a loop of templates would draw the first photograph on every slide.
+
+               The arrows call the component rather than writing the index: the reel is a
+               scroll-snap container whose index follows the scrolling, so setting the index from
+               outside would move the number and leave the photograph where it was. `min` and
+               `max` default to infinity, and they are what stop it scrolling past the album. -->
+          <div class="gallery__frame">
+            <tui-carousel
+              #carousel
+              class="gallery__reel"
+              [min]="0"
+              [max]="space.images.length - 1"
+              [(index)]="slide"
+            >
+              <app-media-plate
+                *tuiItem="let position"
+                class="gallery__slide"
+                [icon]="icon()"
+                [imageUrl]="space.images[position]"
+                [width]="960"
+              >
+                @if (availability(); as availability) {
+                  <app-space-availability-badge [availability]="availability" />
+                }
+              </app-media-plate>
+            </tui-carousel>
+
+            <button
+              tuiIconButton
+              type="button"
+              size="m"
+              appearance="floating"
+              iconStart="@tui.chevron-left"
+              class="gallery__nav gallery__nav--previous"
+              [disabled]="slide() === 0"
+              i18n-aria-label="@@spaces.detail.gallery.previous"
+              aria-label="Foto anterior"
+              (click)="carousel.prev()"
+            ></button>
+
+            <button
+              tuiIconButton
+              type="button"
+              size="m"
+              appearance="floating"
+              iconStart="@tui.chevron-right"
+              class="gallery__nav gallery__nav--next"
+              [disabled]="slide() === space.images.length - 1"
+              i18n-aria-label="@@spaces.detail.gallery.next"
+              aria-label="Foto siguiente"
+              (click)="carousel.next()"
+            ></button>
+
+            <!-- Display only: how many photographs there are and which one is showing. Moving
+                 between them is the arrows' job, and the reel answers to a swipe on its own.
+                 Inside the picture rather than under it, so the gallery is the photograph and
+                 nothing else, and its height answers to the panel beside it. -->
+            <div class="gallery__pager">
+              <tui-pager [count]="space.images.length" [index]="slide()" />
+            </div>
+          </div>
+        } @else {
+          <app-media-plate
+            class="gallery__slide"
+            [icon]="icon()"
+            [imageUrl]="space.images[0]"
+            [width]="960"
+          >
+            @if (availability(); as availability) {
+              <app-space-availability-badge [availability]="availability" />
+            }
+          </app-media-plate>
+        }
+      </div>
+
+      <div tuiCardLarge tuiSurface tuiAppearance="outline-grayscale" class="detail__briefing">
+        <app-space-briefing [description]="space.description" [rules]="space.rules" />
+      </div>
+
+      <div tuiCardLarge tuiSurface tuiAppearance="floating" class="detail__action">
+        <h2 i18n="@@spaces.detail.action.title">¿Te interesa este espacio?</h2>
+
+        <!-- The middle takes whatever height the card has over its contents and centres what it
+             holds: the question stays at the top edge and the footnote at the bottom, while the
+             answer and the button travel together, which is how they are read. -->
+        <div class="detail__action-body">
+          <!-- Today's own answer, not a slogan: the blocks that still have room are what decides
+               whether somebody walks over now or picks another day, and the catalogue already read
+               them for this date. -->
+          @if (freeToday().length) {
+            <div class="detail__slots">
+              <p class="detail__slots-title" i18n="@@spaces.detail.action.freeToday">
+                Bloques libres hoy
+              </p>
+              <ul class="detail__slots-list">
+                @for (slot of freeToday(); track slot) {
+                  <li>
+                    <span tuiChip appearance="outline" size="s">{{ slot }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          } @else {
+            <p class="detail__action-hint" i18n="@@spaces.detail.action.noneToday">
+              Hoy no queda nada libre. Mira los horarios y elige el día que te sirva.
+            </p>
+          }
+
+          @if (availability(); as availability) {
+            <app-space-book-action [spaceId]="space.id" [availability]="availability" size="l" />
+          }
+        </div>
+
+        <!-- The sentence lives inside the plural rather than a number spliced into it, and the ICU
+             fills its element whole: an ICU that shares a message with stray text or whitespace is
+             extracted as a nested one, under an id generated from its own text, which is not the
+             stable id this project requires. The span is what keeps the opening tag short enough
+             that the formatter leaves the `{` where it is. -->
+        <p class="detail__action-note">
+          <span i18n="@@spaces.detail.action.blockLength">{bookingHours, plural,
+            =1 {Cada reserva ocupa un bloque de 1 hora.}
+            other {Cada reserva ocupa un bloque de {{bookingHours}} horas.}
+          }</span>
+        </p>
+      </div>
+    </div>
+  </article>
+} @else {
+  <app-empty-state
+    icon="@tui.search-x"
+    i18n-heading="@@spaces.detail.notFound.title"
+    heading="Espacio no encontrado"
+    i18n-description="@@spaces.detail.notFound.description"
+    description="Puede que el enlace sea incorrecto o que el espacio ya no esté disponible."
+  >
+    <a
+      tuiButton
+      size="m"
+      appearance="outline"
+      routerLink="/spaces"
+      i18n="@@spaces.detail.backToList"
+    >
+      Ver todos los espacios
+    </a>
+  </app-empty-state>
+}

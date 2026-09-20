@@ -2,12 +2,13 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon, TuiLink, TuiLoader } from '@taiga-ui/core';
-import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
+import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { createAppError, isAppError } from '../../../../core/errors/app-error';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
-import { spaceCategoryIcon, spaceCategoryRules } from '../../../spaces/presentation/space-category';
+import { SpaceBriefing } from '../../../spaces/presentation/space-briefing/space-briefing';
+import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import { BookingDraftStore } from '../../application/booking-draft.store';
 
 /**
@@ -24,12 +25,12 @@ import { BookingDraftStore } from '../../application/booking-draft.store';
     DatePipe,
     MediaPlate,
     RouterLink,
+    SpaceBriefing,
     TuiAppearance,
     TuiButton,
     TuiCardLarge,
     TuiIcon,
     TuiLink,
-    TuiList,
     TuiLoader,
     TuiSurface,
   ],
@@ -57,12 +58,6 @@ export class BookingReviewPage {
     const booking = this.booking();
 
     return booking?.space.images[0] ?? null;
-  });
-
-  protected readonly rules = computed(() => {
-    const booking = this.booking();
-
-    return booking ? spaceCategoryRules(booking.space.category) : [];
   });
 
   protected readonly range = computed(() => {

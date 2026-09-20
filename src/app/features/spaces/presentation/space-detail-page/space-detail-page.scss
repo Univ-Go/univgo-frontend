@@ -1,0 +1,299 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+// The back button is the action and the trail is the orientation, so they share one row: same
+// affordance, two levels of commitment.
+.page-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+.page-nav__trail {
+  display: none;
+}
+
+.page-nav__current {
+  color: var(--tui-text-primary);
+}
+
+@media (min-width: bp.$tablet) {
+  .page-nav__trail {
+    display: block;
+  }
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-2xl);
+}
+
+// Who the space is on the left, what it is on the right, one row. They wrap to two on a phone,
+// where a name and a row of chips cannot share a line without one of them being cramped.
+.detail__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--univgo-space-m);
+}
+
+.detail__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.detail__name {
+  margin: 0;
+  // A long room name must not push the page wider than its gutter.
+  overflow-wrap: anywhere;
+}
+
+.detail__location {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+
+  tui-icon {
+    flex: none;
+    color: var(--tui-text-tertiary);
+    font-size: var(--univgo-icon-inline);
+  }
+}
+
+.detail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-s);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Mobile-first: photographs, then what the space is and its rules, then the action — reading order
+// before deciding order. From desktop up the action moves beside the gallery, where it is in view
+// without scrolling past the whole briefing.
+.detail__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--univgo-space-l);
+}
+
+@media (min-width: bp.$desktop) {
+  .detail__content {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+
+  .detail__gallery {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .detail__action {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .detail__briefing {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  // The panel runs the height of the photographs rather than floating at the top of an empty
+  // column: `tuiCardLarge` spends the extra room the way the library intends, settling the button
+  // and the footnote at the bottom edge.
+  .detail__gallery,
+  .detail__action {
+    align-self: stretch;
+  }
+}
+
+.detail__gallery {
+  display: flex;
+  flex-direction: column;
+}
+
+// `tui-carousel` measures its own height from the tallest slide, and a plate's height comes from
+// its aspect ratio, so the reel needs no height of its own.
+.gallery__slide {
+  --media-plate-radius: var(--tui-radius-l);
+  --media-plate-mark-size: 4rem;
+
+  inline-size: 100%;
+}
+
+// The frame is what the arrows are positioned against: the reel itself scrolls, so an arrow
+// anchored to it would travel with the photographs.
+.gallery__frame {
+  position: relative;
+}
+
+// One pixel of slack, and the carousel does not work without it.
+//
+// `tui-carousel` moves its index from an `IntersectionObserver` with `threshold: 1` watching a
+// 2px marker pinned to the trailing edge of the last slide, with the carousel itself as the root.
+// Scrolled to the end, that marker's edge and the root's edge fall on the very same line, so a
+// fractional layout width leaves the ratio at 0.99… and the observer never fires: the photographs
+// move and the index does not. The library's own workaround is gated on a fractional
+// `devicePixelRatio`, which is why this only showed up at 1920x1080 unzoomed and never in the
+// device toolbar.
+//
+// The padding widens the root's box past the slides' own, so the marker clears it. `min-inline-size`
+// on a slide resolves against the content box, so each photograph loses that same pixel and nothing
+// else moves. Revisit on a Taiga upgrade: unchanged as of 5.24.0.
+.gallery__reel {
+  padding-inline-end: 1px;
+
+  // `tui-carousel` measures the slide on screen and writes that height onto itself as an inline
+  // `max-block-size`, so it can animate between slides of unequal height. It re-measures only when
+  // the slide changes, so after a resize the photograph stays clamped to the height it had at the
+  // old width until somebody pages through it.
+  //
+  // Every slide here is one aspect ratio, so the cap buys nothing — the carousel starts with it
+  // unset and lays out correctly. `!important` is what an inline style takes.
+  max-block-size: none !important;
+}
+
+// Over the photograph rather than beside it, so the picture keeps the full width on a phone.
+//
+// The `floating` appearance is what makes it a disc that survives a photograph: an opaque
+// elevation, and a hover that changes only the shadow. `secondary` looked right until the pointer
+// touched it — its hover is `--tui-background-neutral-1-hover`, a 10% wash that let the picture
+// straight through and left the glyph floating on its own.
+.gallery__nav {
+  position: absolute;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+// The brand colour, which is also what marks the rules' bullets and the chosen card: a glyph on a
+// disc over a photograph has to read as a control, not as part of the picture. The two attribute
+// selectors are what outrank the appearance, whose styles are injected after ours; the surface and
+// the shadow are left to it.
+.gallery__nav[tuiAppearance][data-appearance] {
+  border-radius: 100%;
+  color: var(--tui-background-accent-1);
+
+  &:disabled {
+    color: var(--tui-text-tertiary);
+  }
+}
+
+.gallery__nav--previous {
+  inset-inline-start: var(--univgo-space-s);
+}
+
+.gallery__nav--next {
+  inset-inline-end: var(--univgo-space-s);
+}
+
+// Centred along the bottom edge of the picture, on a pill of the same surface as the arrows so
+// the dots read against any photograph.
+.gallery__pager {
+  position: absolute;
+  inset-block-end: var(--univgo-space-s);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  padding: var(--univgo-space-xs) var(--univgo-space-s);
+  border-radius: var(--tui-radius-xl);
+  background: var(--tui-background-elevation-1);
+  box-shadow: var(--tui-shadow-small);
+}
+
+// Centred across the panel, which reads as one column of its own beside a photograph that fills
+// its half. The alignment goes on the pieces rather than on the card: `tuiCardLarge` sets
+// `text-align: start` on itself, and outranking that would mean matching its attribute selectors
+// for no gain.
+//
+// `styles.scss` maps `h2` to the page-level heading, which dwarfs anything inside a card.
+.detail__action {
+  h2 {
+    margin: 0;
+    font: var(--tui-typography-heading-h6);
+    text-align: center;
+  }
+}
+
+// Vertical justification inside a card taller than its contents: the question at the top edge,
+// the footnote at the bottom, and the answer and the button centred in what is left.
+//
+// The growing middle is what does it. `tuiCardLarge` settles a card's last child with
+// `margin-block-start: auto`, and once this box has absorbed the free space that margin has
+// nothing left to push with — so the footnote stays put without overriding the library.
+.detail__action-body {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+// The one thing that stays full width: a button narrowed to its own label reads as a link, and
+// this is the page's single action.
+.detail__action-body app-space-book-action {
+  align-self: stretch;
+}
+
+.detail__action-hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  text-align: center;
+}
+
+.detail__slots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--univgo-space-s);
+}
+
+.detail__slots-title {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.detail__slots-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detail__action-note {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+  text-align: center;
+}
+
+.detail__loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.detail__loading-media {
+  border-radius: var(--tui-radius-l);
+  aspect-ratio: 16 / 9;
+}
+
+.detail__loading-block {
+  border-radius: var(--tui-radius-m);
+  block-size: var(--univgo-space-3xl);
+}

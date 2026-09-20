@@ -174,21 +174,9 @@
       </dl>
     </section>
 
-    <section
-      tuiCardLarge
-      tuiSurface
-      tuiAppearance="outline-grayscale"
-      class="rules-card"
-      aria-labelledby="rules-title"
-    >
-      <h2 id="rules-title" i18n="@@reservations.detail.rules.title">Normas del espacio</h2>
-
-      <ul tuiList="m" class="rules-card__list">
-        @for (rule of rules(); track rule) {
-          <li>{{ rule }}</li>
-        }
-      </ul>
-    </section>
+    <div tuiCardLarge tuiSurface tuiAppearance="outline-grayscale" class="rules-card">
+      <app-space-briefing [rules]="reservation.rules" />
+    </div>
   </div>
 } @else {
   <app-empty-state

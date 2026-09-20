@@ -5,6 +5,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { TuiButton, TuiIcon } from '@taiga-ui/core';
 import { filter, map, startWith } from 'rxjs';
 import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
+import { ShellChrome, reportShellInset } from '../../shared/shell-chrome/shell-chrome';
 import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
 
 /**
@@ -60,6 +61,18 @@ function allowsQuickAction(root: ActivatedRouteSnapshot): boolean {
 })
 export class AppTabBar {
   private readonly router = inject(Router);
+  private readonly chrome = inject(ShellChrome);
+
+  /**
+   * Withdrawn while the view offers the same action in its own content: the shortcut exists to
+   * bring that control back within reach, so it has nothing to add while the control is on screen.
+   */
+  protected readonly anchored = this.chrome.quickActionInView;
+
+  constructor() {
+    // The bar floats over the page, so what it covers is not viewport a view can count on.
+    reportShellInset(this.chrome.insetBlockEnd);
+  }
 
   public readonly admin = input(false, { transform: booleanAttribute });
 

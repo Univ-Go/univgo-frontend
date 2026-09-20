@@ -7,6 +7,7 @@ import { SessionStore } from '../../features/auth/application/session-store';
 import { BrandIsotype } from '../../shared/brand/brand-isotype';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
+import { ShellChrome, reportShellInset } from '../../shared/shell-chrome/shell-chrome';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { AccountMenu } from '../account-menu/account-menu';
 
@@ -46,6 +47,12 @@ import { AccountMenu } from '../account-menu/account-menu';
 })
 export class AppHeader {
   private readonly session = inject(SessionStore);
+
+  constructor() {
+    // The bar is sticky, so it covers the top of the page: a view that measures whether one of its
+    // controls is still within reach has to take the strip off the viewport it counts.
+    reportShellInset(inject(ShellChrome).insetBlockStart);
+  }
 
   /**
    * The catalogue carries its filter in the query string, so `exact` alone would drop the highlight

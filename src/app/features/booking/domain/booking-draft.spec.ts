@@ -15,6 +15,8 @@ const COURT: Space = {
   closedOnDate: false,
   freeSlots: [],
   images: [],
+  description: 'Cancha de fútbol 7 en grama sintética.',
+  rules: ['Usa guayos de grama sintética.'],
 };
 
 /** 14:00–16:00 with the check-in window of a booking made well in advance. */

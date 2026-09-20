@@ -3,16 +3,13 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Router } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon } from '@taiga-ui/core';
 import { TuiActionBar, TuiChip } from '@taiga-ui/kit';
-import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
+import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { ActionBarTheme } from '../../../../shared/action-bar-theme/action-bar-theme';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { OnScreen } from '../../../../shared/on-screen/on-screen';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
-import {
-  spaceCategoryIcon,
-  spaceCategoryName,
-  spaceCategoryRules,
-} from '../../../spaces/presentation/space-category';
+import { SpaceBriefing } from '../../../spaces/presentation/space-briefing/space-briefing';
+import { spaceCategoryIcon, spaceCategoryName } from '../../../spaces/presentation/space-category';
 import { BookingDraftStore } from '../../application/booking-draft.store';
 
 import { BookingSlotPicker } from '../booking-slot-picker/booking-slot-picker';
@@ -31,6 +28,7 @@ import { BookingSlotPicker } from '../booking-slot-picker/booking-slot-picker';
   imports: [
     ActionBarTheme,
     BookingSlotPicker,
+    SpaceBriefing,
     DatePipe,
     MediaPlate,
     OnScreen,
@@ -40,7 +38,6 @@ import { BookingSlotPicker } from '../booking-slot-picker/booking-slot-picker';
     TuiCardLarge,
     TuiChip,
     TuiIcon,
-    TuiList,
     TuiSurface,
   ],
   templateUrl: './booking-schedule-page.html',
@@ -58,12 +55,6 @@ export class BookingSchedulePage {
     const space = this.draft.space();
 
     return space ? spaceCategoryIcon(space.category) : '';
-  });
-
-  protected readonly rules = computed(() => {
-    const space = this.draft.space();
-
-    return space ? spaceCategoryRules(space.category) : [];
   });
 
   protected readonly range = computed(() => {

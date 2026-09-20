@@ -5,6 +5,7 @@ import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { BookingDraftStore } from '../../../booking/application/booking-draft.store';
 import type { ListedSpace } from '../../domain/space';
+import { SpaceBookAction } from '../space-book-action/space-book-action';
 import { spaceCategoryIcon } from '../space-category';
 import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availability-badge';
 
@@ -15,9 +16,10 @@ import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availa
  *
  * The card is also what tells the catalogue apart from step one of the booking flow, and it does so
  * without the catalogue knowing: the draft store is provided by the `/book` route, so injecting it
- * optionally answers "am I inside the flow?". Outside it, booking is a link that leaves for the
- * schedule step. Inside it, the same button marks the card instead, and the flow's own bar is what
- * moves forward — so a person can compare two spaces without losing the one they had picked.
+ * optionally answers "am I inside the flow?". Outside it, the card opens the space and booking is a
+ * link that leaves for the schedule step. Inside it, the same button marks the card instead, and
+ * the flow's own bar is what moves forward — so a person can compare two spaces without losing the
+ * one they had picked.
  */
 @Component({
   selector: 'app-space-card',
@@ -25,6 +27,7 @@ import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availa
     MediaPlate,
     RouterLink,
     SpaceAvailabilityBadge,
+    SpaceBookAction,
     TuiAppearance,
     TuiButton,
     TuiCardLarge,
@@ -55,7 +58,10 @@ export class SpaceCard {
 
   protected readonly bookable = computed(() => this.listed().availability.kind === 'free');
 
-  protected readonly closed = computed(() => this.listed().availability.kind === 'closed');
+  /** `null` inside the booking flow, where the card is something to pick rather than to open. */
+  protected readonly detailLink = computed(() =>
+    this.choosing ? null : ['/spaces', this.listed().space.id],
+  );
 
   protected choose(): void {
     this.draft?.selectSpace(this.listed().space);

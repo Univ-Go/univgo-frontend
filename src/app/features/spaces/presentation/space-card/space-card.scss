@@ -7,6 +7,7 @@
 
 .card {
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: var(--univgo-space-m);
   inline-size: 100%;
@@ -40,6 +41,26 @@
   font: var(--tui-typography-ui-l);
   // A long room name must not push the card wider than its grid track.
   overflow-wrap: anywhere;
+}
+
+// The heading's link covers the card, so the whole card opens the space while the accessible name
+// and the focus ring stay on the heading itself. Everything the card offers besides reading it —
+// the booking action — is lifted back above the overlay by `.card__action`, so it keeps its own
+// hit area; nesting it inside the link instead would be invalid and unreachable by keyboard.
+.card__link {
+  color: inherit;
+  text-decoration: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 // Label over value rather than side by side: the cards sit in a narrow grid track, where a
@@ -77,7 +98,9 @@
 }
 
 // Pinned to the bottom so cards of unequal text length still line their actions up across a row.
+// `position` is what keeps it above the heading link's overlay.
 .card__action {
+  position: relative;
   margin-block-start: auto;
   align-self: stretch;
 }

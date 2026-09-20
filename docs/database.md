@@ -4,7 +4,7 @@ Retrato de la base que sirve al backend (`../univgo-backend`). Existe porque su 
 migraciones **no** se deduce leyendo `db/migration`: la base es anterior a Flyway y arrastra
 decisiones que cuestan medio día de redescubrir.
 
-**Última verificación: 2026-09-16.** Todo lo de aquí se comprobó consultando la base, no leyendo el
+**Última verificación: 2026-09-19.** Todo lo de aquí se comprobó consultando la base, no leyendo el
 código. `CLAUDE.md` §23 obliga a actualizar este fichero cuando el esquema o los datos cambien.
 
 ---
@@ -33,26 +33,28 @@ base está corrupta. No lo está: **`V2` borra y recrea** `space_types`, `spaces
 `reservations` y `reservation_guests` con claves `uuid`, que es lo que hay. Para saber qué hay de
 verdad, leer `V2` en adelante, no `V1`.
 
-Estado actual: **`v13` aplicadas**; la **`V14` está escrita y todavía no ha corrido** — entra la
-próxima vez que alguien arranque el backend, y esta base es compartida.
+Estado actual: **hasta la `V17`, todas aplicadas.**
 
-| Versión | Qué hizo                                                                                                                               | Cuándo     |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `1`     | Baseline. **No ejecutada.**                                                                                                            | 2026-07-28 |
-| `2`     | Reconstruye espacios y reservas con PK `uuid`; añade `in_progress` y `expired` al enum de estado                                       | 2026-07-31 |
-| `3`     | RBAC: `roles`, `permissions`, `role_permissions`, `user_roles`. Elimina `users.role`                                                   | 2026-09-07 |
-| `4`     | Siembra 13 permisos                                                                                                                    | 2026-09-07 |
-| `5`     | Siembra espacios y horarios                                                                                                            | 2026-09-07 |
-| `4.1`   | Tipo de espacio con id fijo. **Aplicada fuera de orden**                                                                               | 2026-09-16 |
-| `6`     | `refresh_tokens`                                                                                                                       | 2026-09-16 |
-| `7`     | `institution_config`                                                                                                                   | 2026-09-16 |
-| `8`     | `spaces.under_maintenance`                                                                                                             | 2026-09-16 |
-| `9`     | Estado de reserva calculado: `checked_in_at`, `cancelled_at`, `cancelled_by`. Elimina `reservations.status` y `reservation_guests`     | 2026-09-16 |
-| `10`    | `users.email`                                                                                                                          | 2026-09-16 |
-| `11`    | `spaces.location` y `space_types.category`                                                                                             | 2026-09-16 |
-| `12`    | `users.school`                                                                                                                         | 2026-09-17 |
-| `13`    | Siembra la escuela de los dos usuarios de prueba                                                                                       | 2026-09-17 |
-| `14`    | `space_closures` y el enum `space_closure_reason_enum`; migra `spaces.under_maintenance` a un cierre sin fecha de fin. **Sin aplicar** | —          |
+| Versión | Qué hizo                                                                                                                           | Cuándo     |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `1`     | Baseline. **No ejecutada.**                                                                                                        | 2026-07-28 |
+| `2`     | Reconstruye espacios y reservas con PK `uuid`; añade `in_progress` y `expired` al enum de estado                                   | 2026-07-31 |
+| `3`     | RBAC: `roles`, `permissions`, `role_permissions`, `user_roles`. Elimina `users.role`                                               | 2026-09-07 |
+| `4`     | Siembra 13 permisos                                                                                                                | 2026-09-07 |
+| `5`     | Siembra espacios y horarios                                                                                                        | 2026-09-07 |
+| `4.1`   | Tipo de espacio con id fijo. **Aplicada fuera de orden**                                                                           | 2026-09-16 |
+| `6`     | `refresh_tokens`                                                                                                                   | 2026-09-16 |
+| `7`     | `institution_config`                                                                                                               | 2026-09-16 |
+| `8`     | `spaces.under_maintenance`                                                                                                         | 2026-09-16 |
+| `9`     | Estado de reserva calculado: `checked_in_at`, `cancelled_at`, `cancelled_by`. Elimina `reservations.status` y `reservation_guests` | 2026-09-16 |
+| `10`    | `users.email`                                                                                                                      | 2026-09-16 |
+| `11`    | `spaces.location` y `space_types.category`                                                                                         | 2026-09-16 |
+| `12`    | `users.school`                                                                                                                     | 2026-09-17 |
+| `13`    | Siembra la escuela de los dos usuarios de prueba                                                                                   | 2026-09-17 |
+| `14`    | `space_closures` y el enum `space_closure_reason_enum`; migra `spaces.under_maintenance` a un cierre sin fecha de fin              | 2026-09-18 |
+| `15`    | Siembra el horario semanal del Gimnasio, que la `V5` se había saltado                                                              | 2026-09-18 |
+| `16`    | Borra horarios duplicados y añade `UNIQUE (space_id, day_of_week, start_time, end_time)`                                           | 2026-09-19 |
+| `17`    | `spaces.description` y `spaces.rules`; siembra el texto de los 6 espacios                                                          | 2026-09-19 |
 
 **La `V4_1` se añadió al repo después de que la `V5` ya hubiera corrido.** Flyway rechaza por defecto
 aplicar algo por detrás de lo ya ejecutado, así que abortaba el arranque antes de migrar nada. Se
@@ -65,8 +67,8 @@ esto otra vez: alguien intercaló una versión.
 ## 3. Tablas
 
 `users` · `roles` · `permissions` · `role_permissions` · `user_roles` · `refresh_tokens` ·
-`space_types` · `spaces` · `space_schedules` · `reservations` · `institution_config` ·
-`flyway_schema_history`
+`space_types` · `spaces` · `space_schedules` · `space_closures` · `reservations` ·
+`institution_config` · `flyway_schema_history`
 
 Todas las claves primarias son `uuid` con `gen_random_uuid()`, salvo `institution_config`, que es una
 fila única con `id SMALLINT` fijo a 1.
@@ -80,6 +82,17 @@ sitio**; la autorización es sólo por rol (`@PreAuthorize("hasRole('ADMIN')")`)
 
 **El estado de una reserva no se guarda**, se calcula del reloj a partir de `created_at`,
 `checked_in_at`, `cancelled_at` y los límites del bloque. Ver `booking-flow.md` §14.
+
+**La descripción y las normas son del espacio, no de su categoría.** `spaces.description` es
+`TEXT NOT NULL` y `spaces.rules` es `TEXT[] NOT NULL DEFAULT '{}'` (`V17`). Las normas son una
+columna de array y no una tabla: una norma no tiene identidad propia ni se consulta por sí sola, su
+orden es el de lectura y el CRUD futuro reescribirá la lista entera. Un array vacío es un espacio
+cuyas normas nadie ha escrito todavía, y las vistas lo leen como «sin sección», no como un fallo.
+
+**`space_schedules` no admite dos ventanas idénticas** desde la `V16`: un espacio no abre dos veces
+el mismo día a la misma hora. La restricción existe porque sí llegó a pasar, y no era cosmético —
+`BlockGenerator` recorre las filas del día una a una, así que la ventana duplicada del Gimnasio
+generaba cada bloque dos veces y el catálogo ofrecía sus horas por pares.
 
 **`spaces.under_maintenance` queda huérfana con la `V14`.** El código ya no la lee ni la escribe: un
 espacio fuera de servicio es un cierre sin fecha de fin en `space_closures`. La columna sigue ahí a
@@ -99,21 +112,29 @@ espacio, porque cada uno está en un sitio.
 | -------------------- | ----- | ------------------------------------------------------------------------------- |
 | `users`              | 2     | Insertados a mano                                                               |
 | `roles`              | 2     | `V3`                                                                            |
-| `spaces`             | 6     | `V5`                                                                            |
-| `space_schedules`    | 30    | `V5`                                                                            |
-| `reservations`       | 0     | —                                                                               |
+| `spaces`             | 6     | `V5`, más el Gimnasio que ya existía antes                                      |
+| `space_schedules`    | 36    | `V5` (cinco canchas) y `V15` (Gimnasio), 6 días por espacio                     |
+| `space_closures`     | 2     | `V14`, migrados desde `under_maintenance`                                       |
+| `reservations`       | 10    | Uso real de desarrollo                                                          |
+| `refresh_tokens`     | 84    | Uso real de desarrollo                                                          |
 | `institution_config` | 1     | `V7`: bloque 120 min, tolerancia 15, uso mínimo 75, 1 reserva por espacio y día |
-| `space_types`        | 1     | `V4.1`: «Cancha deportiva», categoría `SPORTS` desde la `V11`                   |
+| `space_types`        | 2     | `V4.1` «Deportivo»; «Academico» se añadió a mano                                |
 
 Los 6 espacios tienen `location = 'Complejo Deportivo Central'`. Es un **marcador de posición**, no
 un dato real: hacía falta un valor determinista para poder imponer `NOT NULL` sobre filas anteriores
 a la columna, igual que pasó con `users.email` en la `V10`. Las ubicaciones de verdad hay que
 pedirlas a la universidad.
 
-**«Gimnasio de Pesas» no tiene ni una fila en `space_schedules`.** Es el espacio que ya existía
-antes de la `V5`, que sólo sembró horarios para los cinco suyos. Sin horario no hay bloques, así que
-el catálogo lo lista siempre sin plazas —correcto según el modelo, pero parece un fallo. O se le
-siembra horario, o se quita.
+Las descripciones y las normas de los 6 espacios son **texto de relleno** sembrado por la `V17`,
+igual que `location`: describen lo que el nombre del espacio sugiere, no lo que la universidad dice
+de él. El texto de verdad hay que pedírselo, y entrará por el CRUD de administración cuando exista.
+
+**`space_types` tiene una fila «Academico» con categoría `SPORTS`.** Se añadió a mano y ningún
+espacio la usa. O la categoría está mal y hay que corregirla antes de colgarle un espacio, o la fila
+sobra.
+
+**El espacio se llama «Gimnasio», no «Gimnasio de Pesas».** Es el que ya existía antes de la `V5`,
+que sólo sembró horarios para los cinco suyos; la `V15` le puso el suyo.
 
 ### Usuarios
 
@@ -156,8 +177,13 @@ from users u
   left join user_roles ur on ur.user_id = u.id
   left join roles r on r.id = ur.role_id;
 
-select s.name, s.location, s.capacity, s.under_maintenance, t.name as type, t.category
+select s.name, s.location, s.capacity, t.category,
+       left(s.description, 60) as description, array_length(s.rules, 1) as rules
 from spaces s join space_types t on t.id = s.space_type_id order by s.name;
+
+select s.name, count(*) as windows
+from space_schedules sc join spaces s on s.id = sc.space_id
+group by 1 order by 1;
 
 select (select count(*) from spaces) as spaces,
        (select count(*) from space_schedules) as schedules,
@@ -173,4 +199,7 @@ select (select count(*) from spaces) as spaces,
   comprobar, o se retira: una tabla que promete autorización y no la aplica engaña al que la lee.
 - **Sin cuentas de prueba por Flyway.** Los dos usuarios se insertaron a mano, así que una base nueva
   no los tiene. Una migración `R__` repetible o un seed idempotente lo arreglaría.
+- **La `V15` no corre sobre una base nueva.** Siembra el horario del Gimnasio contra un `uuid`
+  literal que sólo existe en esta base; en una recién creada la clave ajena no encuentra el espacio
+  y la migración falla. Habría que crear el espacio en la propia migración o acotarla a que exista.
 - **Esta base no tiene copia de seguridad propia** más allá de lo que ofrezca Neon.

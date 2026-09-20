@@ -17,6 +17,7 @@ const CREATED: Reservation = {
   location: 'Complejo Deportivo',
   category: 'sports',
   images: [],
+  rules: [],
   date: new Date(2026, 7, 17),
   startMinutes: 840,
   endMinutes: 960,
@@ -61,6 +62,8 @@ function space(overrides: Partial<Space> = {}): Space {
     closedOnDate: false,
     freeSlots: [],
     images: [],
+    description: 'Cancha al aire libre.',
+    rules: [],
     ...overrides,
   };
 }

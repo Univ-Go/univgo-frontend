@@ -12,7 +12,17 @@
   </app-media-plate>
 
   <div class="card__body">
-    <h3 class="card__name">{{ space.name }}</h3>
+    <h3 class="card__name">
+      <!-- Outside the booking flow the whole card opens the space, and the link inside the heading
+           is what makes that reachable by keyboard and announceable by name — the overlay in the
+           stylesheet only extends its hit area. Inside the flow there is no link: the card's job
+           there is to be picked, and a second destination would compete with it. -->
+      @if (detailLink(); as link) {
+        <a class="card__link" [routerLink]="link">{{ space.name }}</a>
+      } @else {
+        {{ space.name }}
+      }
+    </h3>
 
     <dl class="card__facts">
       <div class="fact">
@@ -47,43 +57,11 @@
     >
       {{ chosen() ? chosenLabel : chooseLabel }}
     </button>
-  } @else if (bookable()) {
-    <a
-      tuiButton
-      [routerLink]="['/book', space.id, 'when']"
-      size="m"
-      appearance="primary"
-      iconEnd="@tui.arrow-right"
-      class="card__action"
-      i18n="@@spaces.card.book"
-    >
-      Reservar
-    </a>
-  } @else if (closed()) {
-    <button
-      tuiButton
-      type="button"
-      size="m"
-      appearance="outline"
-      class="card__action"
-      disabled
-      i18n="@@spaces.card.unavailable"
-    >
-      No disponible
-    </button>
   } @else {
-    <!-- Nothing free today is not nothing to offer: the schedule step is where the other days are,
-         so this goes to the same place "Reservar" does and only promises less. -->
-    <a
-      tuiButton
-      [routerLink]="['/book', space.id, 'when']"
-      size="m"
-      appearance="outline"
-      iconStart="@tui.calendar-search"
+    <app-space-book-action
       class="card__action"
-      i18n="@@spaces.card.viewSchedule"
-    >
-      Ver horarios
-    </a>
+      [spaceId]="space.id"
+      [availability]="listed().availability"
+    />
   }
 </article>

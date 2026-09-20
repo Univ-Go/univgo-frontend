@@ -97,20 +97,8 @@
       </button>
     </section>
 
-    <section
-      tuiCardLarge
-      tuiSurface
-      tuiAppearance="outline-grayscale"
-      class="info-card"
-      aria-labelledby="info-title"
-    >
-      <h2 id="info-title" i18n="@@booking.info.title">Información importante</h2>
-
-      <ul tuiList="m" class="info-card__list">
-        @for (rule of rules(); track rule) {
-          <li>{{ rule }}</li>
-        }
-      </ul>
-    </section>
+    <div tuiCardLarge tuiSurface tuiAppearance="outline-grayscale" class="info-card">
+      <app-space-briefing [description]="booking.space.description" [rules]="booking.space.rules" />
+    </div>
   </div>
 }

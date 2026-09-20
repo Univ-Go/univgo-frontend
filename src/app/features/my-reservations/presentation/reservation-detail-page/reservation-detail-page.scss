@@ -140,8 +140,7 @@
 // page-level 32–40px heading, which at card level dwarfs the content it labels. The smallest
 // heading step keeps the outline intact and reads as a hierarchy — 20px against 16px of body.
 .pass-card,
-.facts-card,
-.rules-card {
+.facts-card {
   h2 {
     font: var(--tui-typography-heading-h6);
   }
@@ -256,10 +255,4 @@
   tui-icon {
     font-size: var(--univgo-icon-inline);
   }
-}
-
-// `tuiList` owns the markers, the indent and the vertical rhythm; the only thing left to decide is
-// the marker colour, which the directive reads from this variable.
-.rules-card__list {
-  --tui-list-marker: var(--tui-background-accent-1);
 }

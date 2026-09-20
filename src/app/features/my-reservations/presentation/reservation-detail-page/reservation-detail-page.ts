@@ -14,12 +14,13 @@ import { TuiItem } from '@taiga-ui/cdk';
 import { TuiAppearance, TuiButton, TuiDialog, TuiIcon, TuiLink } from '@taiga-ui/core';
 import type { TuiDialogOptions } from '@taiga-ui/core';
 import { TuiBreadcrumbs, TuiSkeleton } from '@taiga-ui/kit';
-import { TuiCardLarge, TuiList, TuiSurface } from '@taiga-ui/layout';
+import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { QrCode } from '../../../../shared/qr-code/qr-code';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
-import { spaceCategoryIcon, spaceCategoryRules } from '../../../spaces/presentation/space-category';
+import { SpaceBriefing } from '../../../spaces/presentation/space-briefing/space-briefing';
+import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import { hasUsablePass } from '../../domain/reservation';
 import { ReservationRepository } from '../../domain/reservation.repository';
 import { ReservationInterruptionNotice } from '../reservation-interruption-notice/reservation-interruption-notice';
@@ -44,6 +45,7 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
     ReservationInterruptionNotice,
     ReservationStatusBadge,
     RouterLink,
+    SpaceBriefing,
     TuiAppearance,
     TuiBreadcrumbs,
     TuiButton,
@@ -52,7 +54,6 @@ import { ReservationStatusBadge } from '../reservation-status-badge/reservation-
     TuiIcon,
     TuiItem,
     TuiLink,
-    TuiList,
     TuiSkeleton,
     TuiSurface,
   ],
@@ -82,12 +83,6 @@ export class ReservationDetailPage {
     const reservation = this.reservation();
 
     return reservation ? formatTimeRange(reservation.startMinutes, reservation.endMinutes) : '';
-  });
-
-  protected readonly rules = computed(() => {
-    const reservation = this.reservation();
-
-    return reservation ? spaceCategoryRules(reservation.category) : [];
   });
 
   /** A pass that can no longer be scanned is history, so the check-in window goes with it. */

@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+// `styles.scss` maps `h2` to the page-level heading, which dwarfs anything set inside a card.
+h2 {
+  margin: 0;
+  font: var(--tui-typography-heading-h6);
+}
+
+.briefing__text {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-font);
+  // An administrator writes these in a textarea, so the paragraph breaks they typed are meaningful.
+  white-space: pre-line;
+}
+
+// `tuiList` owns the markers, the indent and the vertical rhythm; only the marker colour is left
+// to decide, and the directive reads it from this variable.
+.briefing__list {
+  --tui-list-marker: var(--tui-background-accent-1);
+}

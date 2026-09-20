@@ -89,8 +89,7 @@
 
 // `tuiCardLarge` owns the vertical rhythm between title and body; only the title's own scale is
 // ours to set, since `styles.scss` maps `h2` to the page-level heading, which dwarfs card content.
-.booking-card,
-.info-card {
+.booking-card {
   h2 {
     font: var(--tui-typography-heading-h6);
   }
@@ -141,12 +140,6 @@
 
 .booking-card__continue {
   inline-size: 100%;
-}
-
-// `tuiList` owns the markers, the indent and the vertical rhythm; only the marker colour is left
-// to decide, and the directive reads it from this variable.
-.info-card__list {
-  --tui-list-marker: var(--tui-background-accent-1);
 }
 
 // The shortcut floats over the page, so the rules card gets room to clear it — only while it is

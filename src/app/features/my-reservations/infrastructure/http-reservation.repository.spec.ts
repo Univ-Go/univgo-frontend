@@ -26,6 +26,8 @@ const COURT: Space = {
   closedOnDate: false,
   freeSlots: [],
   images: ['https://cdn.univgo.test/court-a.jpg'],
+  description: 'Cancha de tenis de campo en superficie dura.',
+  rules: ['Usa calzado de tenis de suela lisa.'],
 };
 
 const RESERVATION_PAYLOAD = {
@@ -119,6 +121,7 @@ describe('HttpReservationRepository', () => {
       location: 'Complejo Deportivo Central',
       category: 'sports',
       images: ['https://cdn.univgo.test/court-a.jpg'],
+      rules: ['Usa calzado de tenis de suela lisa.'],
       date: new Date(2026, 8, 17),
       startMinutes: 840,
       endMinutes: 960,

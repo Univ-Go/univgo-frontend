@@ -11,6 +11,12 @@
 
 html {
   block-size: 100%;
+  // Chrome on Android scales up the computed `font-size` of text blocks on its own, and leaves
+  // every length alone: the whole design system is `rem`, so control heights, paddings and icons
+  // stay put while their label grows out of them. Anchoring the adjustment hands the scaling back
+  // to page zoom, which grows the box along with the text.
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {

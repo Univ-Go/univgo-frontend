@@ -2,9 +2,9 @@ import { withSpaceId } from './admin-navigation';
 
 describe('withSpaceId', () => {
   it('swaps the space segment right after /admin/', () => {
-    expect(withSpaceId('/admin/court-basketball-a/scan', 'court-basketball-a', 'study-room-b')).toBe(
-      '/admin/study-room-b/scan',
-    );
+    expect(
+      withSpaceId('/admin/court-basketball-a/scan', 'court-basketball-a', 'study-room-b'),
+    ).toBe('/admin/study-room-b/scan');
   });
 
   it('preserves trailing segments', () => {

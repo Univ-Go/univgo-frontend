@@ -9,7 +9,11 @@
   [tuiDropdown]="panel"
   [(tuiDropdownOpen)]="open"
   [attr.aria-label]="
-    switcherLabel + ': ' + (current()?.start | date: 'shortTime') + ' – ' + (current()?.end | date: 'shortTime')
+    switcherLabel +
+    ': ' +
+    (current()?.start | date: 'shortTime') +
+    ' – ' +
+    (current()?.end | date: 'shortTime')
   "
 >
   <span i18n="@@admin.capacity.blockRange"

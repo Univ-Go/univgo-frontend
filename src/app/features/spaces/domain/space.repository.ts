@@ -10,8 +10,12 @@ import type { SpaceBlock } from './space-block';
 export abstract class SpaceRepository {
   abstract catalog(date: Date): Observable<readonly Space[]>;
 
-  /** Answers `null` for an id that is not in the catalogue, which is a link gone stale, not a fault. */
-  abstract findById(id: string): Observable<Space | null>;
+  /**
+   * Answers `null` for an id that is not in the catalogue, which is a link gone stale, not a fault.
+   * `date` is the day the availability fields describe; omitted, it is today — which is all a
+   * caller that only wants the space's own facts needs.
+   */
+  abstract findById(id: string, date?: Date): Observable<Space | null>;
 
   /**
    * Every block the space runs that day, offered or not, resolved against the student asking: the

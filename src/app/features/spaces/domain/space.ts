@@ -54,6 +54,16 @@ export interface Space {
   readonly freeSlots: readonly SpaceSlot[];
   /** Ordered by the backend; the first is the cover shown wherever a space gets one image. */
   readonly images: readonly string[];
+  /** What the space says about itself: what it is and what it is for. */
+  readonly description: string;
+  /**
+   * What a student must read before booking, in reading order. Per space and not per category —
+   * two courts of the same kind share a taxonomy, not a set of instructions — and written by an
+   * administrator, so it is user content like the name and the location: it arrives in one
+   * language and does not travel through i18n. Empty when nobody has written them yet, which the
+   * views read as "no section" rather than as a fault.
+   */
+  readonly rules: readonly string[];
 }
 
 /**

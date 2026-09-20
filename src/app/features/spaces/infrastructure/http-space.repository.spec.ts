@@ -1,7 +1,10 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { APP_CONFIG, type AppConfig } from '../../../core/config/app-config';
+import { httpErrorInterceptor } from '../../../core/http/http-error.interceptor';
+import { Logger } from '../../../core/logging/logger';
+import { NotificationService } from '../../../core/notifications/notification.service';
 import type { Space } from '../domain/space';
 import type { SpaceBlock } from '../domain/space-block';
 import { SpaceRepository } from '../domain/space.repository';
@@ -22,8 +25,12 @@ const CATALOG_PAYLOAD = [
     opensOnDate: true,
     closedOnDate: false,
     freeBlockStarts: ['06:00:00', '14:00:00'],
+    description: 'Cancha de tenis de campo en superficie dura.',
+    rules: ['Usa calzado de tenis de suela lisa.'],
   },
 ];
+
+const [SPACE_PAYLOAD] = CATALOG_PAYLOAD;
 
 describe('HttpSpaceRepository', () => {
   let repository: SpaceRepository;
@@ -32,8 +39,13 @@ describe('HttpSpaceRepository', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
+        // The interceptor is what turns a failed request into an `AppError`, and `findById` reads
+        // that vocabulary to tell a stale link from a failure. Without it here the adapter would be
+        // tested against a transport error it never sees in the application.
+        provideHttpClient(withInterceptors([httpErrorInterceptor])),
         provideHttpClientTesting(),
+        { provide: NotificationService, useValue: { error: vi.fn() } },
+        { provide: Logger, useValue: { error: vi.fn(), warn: vi.fn() } },
         { provide: APP_CONFIG, useValue: { apiBaseUrl: API_BASE_URL } as AppConfig },
         { provide: SpaceRepository, useClass: HttpSpaceRepository },
       ],
@@ -78,8 +90,33 @@ describe('HttpSpaceRepository', () => {
           { date: DATE, from: 840, to: 960 },
         ],
         images: [],
+        description: 'Cancha de tenis de campo en superficie dura.',
+        rules: ['Usa calzado de tenis de suela lisa.'],
       },
     ]);
+  });
+
+  it('reads one space for the day asked about, with what it says about itself', async () => {
+    const space = new Promise<Space | null>((resolve) =>
+      repository.findById('f2e1', DATE).subscribe(resolve),
+    );
+
+    const request = controller.expectOne(
+      (candidate) => candidate.url === `${API_BASE_URL}/spaces/f2e1`,
+    );
+
+    expect(request.request.params.get('date')).toBe('2026-09-17');
+    request.flush(SPACE_PAYLOAD);
+
+    expect(await space).toMatchObject({
+      id: 'f2e1',
+      description: 'Cancha de tenis de campo en superficie dura.',
+      rules: ['Usa calzado de tenis de suela lisa.'],
+      freeSlots: [
+        { date: DATE, from: 360, to: 480 },
+        { date: DATE, from: 840, to: 960 },
+      ],
+    });
   });
 
   it('answers with no space at all when the id is not in the catalogue', async () => {
@@ -88,8 +125,8 @@ describe('HttpSpaceRepository', () => {
     );
 
     controller
-      .expectOne((candidate) => candidate.url === `${API_BASE_URL}/spaces`)
-      .flush(CATALOG_PAYLOAD);
+      .expectOne((candidate) => candidate.url === `${API_BASE_URL}/spaces/gone`)
+      .flush('', { status: 404, statusText: 'Not Found' });
 
     expect(await space).toBeNull();
   });

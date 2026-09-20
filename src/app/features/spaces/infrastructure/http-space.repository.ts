@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { type Observable, map } from 'rxjs';
+import { type Observable, catchError, map, of, throwError } from 'rxjs';
+import { isAppError } from '../../../core/errors/app-error';
+import { SKIP_ERROR_NOTIFICATION } from '../../../core/http/http-error.interceptor';
 import { APP_CONFIG } from '../../../core/config/app-config';
 import { fromIsoDateTime, minutesFromIsoTime } from '../../../shared/time/api-time';
 import { toIsoDate } from '../../../shared/time/calendar-day';
@@ -26,6 +28,8 @@ interface SpaceCatalogDto {
    * mapped to `[]` rather than trusting the field is always there.
    */
   readonly images?: readonly string[];
+  readonly description: string;
+  readonly rules: readonly string[];
 }
 
 interface BlockAvailabilityDto {
@@ -64,6 +68,8 @@ function toSpace(dto: SpaceCatalogDto, date: Date): Space {
       to: minutesFromIsoTime(start) + BOOKING_DURATION_MINUTES,
     })),
     images: dto.images ?? [],
+    description: dto.description,
+    rules: dto.rules,
   };
 }
 
@@ -98,14 +104,25 @@ export class HttpSpaceRepository extends SpaceRepository {
   }
 
   /**
-   * Read out of today's catalogue because the server has no endpoint for one space yet. The
-   * shortcut stays here rather than in the caller: when that endpoint exists this is the only
-   * method that changes.
+   * `date` is what the day-dependent half of the answer describes — free blocks, whether the space
+   * opens, whether it is shut. A caller that only needs the space's own facts can leave it out and
+   * read today's, which is what the booking flow does: it picks the day a step later.
+   *
+   * A space that is not there is an answer, not a failure — a stale link — so the request opts out
+   * of the automatic alert and the view says it in its own words. Anything else stays a failure.
    */
-  findById(id: string): Observable<Space | null> {
-    return this.catalog(new Date()).pipe(
-      map((spaces) => spaces.find((space) => space.id === id) ?? null),
-    );
+  findById(id: string, date = new Date()): Observable<Space | null> {
+    return this.http
+      .get<SpaceCatalogDto>(`${this.baseUrl}/${id}`, {
+        params: { date: toIsoDate(date) },
+        context: new HttpContext().set(SKIP_ERROR_NOTIFICATION, true),
+      })
+      .pipe(
+        map((dto) => toSpace(dto, date)),
+        catchError((error: unknown) =>
+          isAppError(error) && error.code === 'notFound' ? of(null) : throwError(() => error),
+        ),
+      );
   }
 
   availability(spaceId: string, date: Date): Observable<readonly SpaceBlock[]> {

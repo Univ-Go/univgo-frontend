@@ -38,6 +38,8 @@ export interface Reservation {
   readonly location: string;
   readonly category: SpaceCategory;
   readonly images: readonly string[];
+  /** The space's own rules, carried along like its name: the pass is where they are read again. */
+  readonly rules: readonly string[];
   readonly date: Date;
   readonly startMinutes: number;
   readonly endMinutes: number;

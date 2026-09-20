@@ -17,6 +17,7 @@ function reservation(overrides: Partial<Reservation> = {}): Reservation {
     location: 'Complejo Deportivo Central',
     category: 'sports',
     images: [],
+    rules: [],
     date: MONDAY,
     startMinutes: 840,
     endMinutes: 960,

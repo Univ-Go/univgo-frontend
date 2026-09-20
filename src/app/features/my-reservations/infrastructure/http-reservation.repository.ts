@@ -66,6 +66,8 @@ const UNKNOWN_SPACE: Space = {
   closedOnDate: false,
   freeSlots: [],
   images: [],
+  description: '',
+  rules: [],
 };
 
 function toReservation(dto: ReservationDto, space: Space): Reservation {
@@ -77,6 +79,7 @@ function toReservation(dto: ReservationDto, space: Space): Reservation {
     location: space.location,
     category: space.category,
     images: space.images,
+    rules: space.rules,
     date: fromIsoDate(dto.reservationDate),
     startMinutes: minutesFromIsoTime(dto.blockStart),
     endMinutes: minutesFromIsoTime(dto.blockEnd),

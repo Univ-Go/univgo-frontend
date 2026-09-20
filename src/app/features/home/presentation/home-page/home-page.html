@@ -8,6 +8,7 @@
 
   <a
     tuiButton
+    appQuickActionAnchor
     routerLink="/book/space"
     size="l"
     appearance="primary"
@@ -18,78 +19,64 @@
   </a>
 </section>
 
-<section class="section" aria-labelledby="next-reservation">
-  <header tuiHeader class="section__header">
-    <h2 id="next-reservation" tuiTitle i18n="@@home.nextReservation">Próxima reserva</h2>
-  </header>
+<!-- Nothing to say when there is nothing booked: an empty card would only repeat the action
+     the greeting already offers, and the section reads as a promise the view cannot keep. The
+     way in is the greeting's button, and on a phone the shell's own floating one. -->
+@if (loadingReservation() || nextReservation()) {
+  <section class="section" aria-labelledby="next-reservation">
+    <header tuiHeader class="section__header">
+      <h2 id="next-reservation" tuiTitle i18n="@@home.nextReservation">Próxima reserva</h2>
+    </header>
 
-  <!-- The status belongs to the booking, not to the section: it rides on the card, in the same
-       badge every other view uses, so "Próxima" cannot become "Confirmada" on one screen only. -->
-  @if (loadingReservation()) {
-    <p
-      class="reservation reservation--skeleton"
-      [tuiSkeleton]="true"
-      aria-busy="true"
-      i18n-aria-label="@@home.nextReservation.loading"
-      aria-label="Cargando tu próxima reserva"
-    ></p>
-  } @else if (nextReservation(); as reservation) {
-    <article tuiCardLarge tuiSurface tuiAppearance="floating" class="reservation">
-      <span class="reservation__icon" aria-hidden="true">
-        <tui-icon [icon]="categoryIcon(reservation.category)" />
-      </span>
+    <!-- The status belongs to the booking, not to the section: it rides on the card, in the same
+         badge every other view uses, so "Próxima" cannot become "Confirmada" on one screen only. -->
+    @if (loadingReservation()) {
+      <p
+        class="reservation reservation--skeleton"
+        [tuiSkeleton]="true"
+        aria-busy="true"
+        i18n-aria-label="@@home.nextReservation.loading"
+        aria-label="Cargando tu próxima reserva"
+      ></p>
+    } @else if (nextReservation(); as reservation) {
+      <article tuiCardLarge tuiSurface tuiAppearance="floating" class="reservation">
+        <span class="reservation__icon" aria-hidden="true">
+          <tui-icon [icon]="categoryIcon(reservation.category)" />
+        </span>
 
-      <div class="reservation__identity">
-        <h3 class="reservation__name">{{ reservation.spaceName }}</h3>
-        <p class="reservation__location">{{ reservation.location }}</p>
-      </div>
-
-      <app-reservation-status-badge [state]="reservation.state" />
-
-      <dl class="reservation__facts">
-        <div class="fact">
-          <dt i18n="@@reservation.factTime">Horario</dt>
-          <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ nextRange() }}</dd>
+        <div class="reservation__identity">
+          <h3 class="reservation__name">{{ reservation.spaceName }}</h3>
+          <p class="reservation__location">{{ reservation.location }}</p>
         </div>
-        <div class="fact">
-          <dt i18n="@@reservation.factDate">Fecha</dt>
-          <dd>
-            <tui-icon icon="@tui.calendar" aria-hidden="true" />{{
-              reservation.date | date: 'd MMM'
-            }}
-          </dd>
-        </div>
-      </dl>
 
-      <a
-        tuiLink
-        [routerLink]="['/reservations', reservation.id]"
-        iconEnd="@tui.arrow-right"
-        i18n="@@common.viewDetails"
-        >Ver detalles</a
-      >
-    </article>
-  } @else {
-    <app-empty-state
-      icon="@tui.calendar-plus"
-      i18n-heading="@@home.noReservation.heading"
-      heading="No tienes reservas próximas"
-      i18n-description="@@home.noReservation.description"
-      description="Elige un espacio y resérvalo en menos de un minuto."
-    >
-      <a
-        tuiButton
-        routerLink="/book/space"
-        size="m"
-        appearance="outline"
-        iconStart="@tui.circle-plus"
-        i18n="@@home.newReservation"
-      >
-        Nueva reserva
-      </a>
-    </app-empty-state>
-  }
-</section>
+        <app-reservation-status-badge [state]="reservation.state" />
+
+        <dl class="reservation__facts">
+          <div class="fact">
+            <dt i18n="@@reservation.factTime">Horario</dt>
+            <dd><tui-icon icon="@tui.clock" aria-hidden="true" />{{ nextRange() }}</dd>
+          </div>
+          <div class="fact">
+            <dt i18n="@@reservation.factDate">Fecha</dt>
+            <dd>
+              <tui-icon icon="@tui.calendar" aria-hidden="true" />{{
+                reservation.date | date: 'd MMM'
+              }}
+            </dd>
+          </div>
+        </dl>
+
+        <a
+          tuiLink
+          [routerLink]="['/reservations', reservation.id]"
+          iconEnd="@tui.arrow-right"
+          i18n="@@common.viewDetails"
+          >Ver detalles</a
+        >
+      </article>
+    }
+  </section>
+}
 
 <section class="section" aria-labelledby="featured">
   <header tuiHeader class="section__header">

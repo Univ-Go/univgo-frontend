@@ -7,6 +7,7 @@ import { TuiButton } from '@taiga-ui/core';
 import { TuiSkeleton } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiHeader, TuiSurface } from '@taiga-ui/layout';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { QuickActionAnchor } from '../../../../shared/quick-action/quick-action-anchor';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import { SessionStore } from '../../../auth/application/session-store';
 import { ReservationRepository } from '../../../my-reservations/domain/reservation.repository';
@@ -33,6 +34,7 @@ const SKELETON_CARDS = Array.from({ length: FEATURED_SPACES }, (_, index) => ind
   imports: [
     DatePipe,
     EmptyState,
+    QuickActionAnchor,
     ReservationStatusBadge,
     RouterLink,
     SpaceCard,

@@ -86,6 +86,13 @@
 //
 // A real elevation rather than the ring it used to wear: the ring existed to cut the button out of
 // the bar it overlapped, and over page content a shadow is what says the same thing.
+//
+// It comes and goes with the scroll, so it grows into place and shrinks out of it rather than
+// blinking either way. Withdrawn with a class rather than removed from the template: an element
+// that is gone has nothing to animate out. `visibility` is in the transition so it holds until the
+// fade finishes and then takes the link out of the tab order and the accessibility tree — hidden
+// and still focusable is the worse half of both. The global reduced-motion rule already cuts the
+// movement for anyone who asked for that.
 .fab {
   // Half the button's own height, which is what makes the ends semicircles whatever the label
   // measures. Taiga's `l` size already is that height, so the two cannot drift.
@@ -95,9 +102,19 @@
   inset-block-end: calc(100% + var(--univgo-space-l));
   inset-inline-end: var(--univgo-layout-gutter);
   box-shadow: var(--tui-shadow-medium);
-  transition: box-shadow var(--tui-duration);
+  transition:
+    box-shadow var(--tui-duration),
+    opacity var(--tui-duration) ease-out,
+    transform var(--tui-duration) ease-out,
+    visibility var(--tui-duration);
 
   &:hover {
     box-shadow: var(--tui-shadow-medium-hover);
   }
+}
+
+.fab--withdrawn {
+  opacity: 0;
+  transform: scale(0.8);
+  visibility: hidden;
 }

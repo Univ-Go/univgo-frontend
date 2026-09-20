@@ -202,14 +202,6 @@
         <source>Próxima reserva</source>
         <target>Next booking</target>
       </trans-unit>
-      <trans-unit id="home.noReservation.heading" datatype="html">
-        <source>No tienes reservas próximas</source>
-        <target>You have no upcoming bookings</target>
-      </trans-unit>
-      <trans-unit id="home.noReservation.description" datatype="html">
-        <source>Elige un espacio y resérvalo en menos de un minuto.</source>
-        <target>Pick a space and book it in under a minute.</target>
-      </trans-unit>
       <trans-unit id="home.nextReservation.loading" datatype="html">
         <source>Cargando tu próxima reserva</source>
         <target>Loading your next booking</target>

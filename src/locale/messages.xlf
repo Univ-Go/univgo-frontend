@@ -362,7 +362,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">117,120</context>
+          <context context-type="linenumber">104,107</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
@@ -397,7 +397,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">128,130</context>
+          <context context-type="linenumber">115,117</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/my-reservations-page/my-reservations-page.html</context>
@@ -739,11 +739,11 @@
         <source><x id="INTERPOLATION" equiv-text="{{ current()?.start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ current()?.end | date: &apos;shortTime&apos; }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-switcher/block-switcher.html</context>
-          <context context-type="linenumber">16,18</context>
+          <context context-type="linenumber">20,22</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-switcher/block-switcher.html</context>
-          <context context-type="linenumber">31,33</context>
+          <context context-type="linenumber">35,37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blockSwitcher.label" datatype="html">
@@ -1266,31 +1266,31 @@
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.lead" datatype="html">
-        <source> Capacidad máxima permitida </source>
+        <source>Capacidad máxima permitida</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">5,9</context>
+          <context context-type="linenumber">4,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.occupied" datatype="html">
         <source>Ocupadas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">11,12</context>
+          <context context-type="linenumber">9,10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.free" datatype="html">
         <source> Libres (de <x id="INTERPOLATION" equiv-text="{{ occupancy().capacity }}"/>) </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">19,21</context>
+          <context context-type="linenumber">17,19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.rate" datatype="html">
         <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().ratio | percent }}"/> de ocupación </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">37,39</context>
+          <context context-type="linenumber">35,37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.camera.starting" datatype="html">
@@ -1838,7 +1838,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">55,57</context>
+          <context context-type="linenumber">60,62</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
@@ -1915,11 +1915,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">17,21</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">88,90</context>
+          <context context-type="linenumber">18,22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.steps.label" datatype="html">
@@ -2108,7 +2104,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">51,52</context>
+          <context context-type="linenumber">56,57</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
@@ -2228,60 +2224,46 @@
         <source>Próxima reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">23,26</context>
+          <context context-type="linenumber">28,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.nextReservation.loading" datatype="html">
         <source>Cargando tu próxima reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">34,36</context>
+          <context context-type="linenumber">39,41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="common.viewDetails" datatype="html">
         <source>Ver detalles</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">69,72</context>
+          <context context-type="linenumber">74,77</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-card/reservation-card.html</context>
           <context context-type="linenumber">68,71</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="home.noReservation.heading" datatype="html">
-        <source>No tienes reservas próximas</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">76,77</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="home.noReservation.description" datatype="html">
-        <source>Elige un espacio y resérvalo en menos de un minuto.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">78,82</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="home.featuredSpaces" datatype="html">
         <source>Espacios destacados</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">96,97</context>
+          <context context-type="linenumber">83,84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.viewAll" datatype="html">
         <source>Ver todos</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">97,100</context>
+          <context context-type="linenumber">84,87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.loading.label" datatype="html">
         <source>Cargando espacios</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">105,107</context>
+          <context context-type="linenumber">92,94</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
@@ -2292,7 +2274,7 @@
         <source>No pudimos cargar los espacios</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
-          <context context-type="linenumber">115,116</context>
+          <context context-type="linenumber">102,103</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/spaces-page/spaces-page.html</context>
@@ -2900,49 +2882,49 @@
         <source>¿Te interesa este espacio?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-detail-page/space-detail-page.html</context>
-          <context context-type="linenumber">171,173</context>
+          <context context-type="linenumber">175,177</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.detail.action.freeToday" datatype="html">
         <source> Bloques libres hoy </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-detail-page/space-detail-page.html</context>
-          <context context-type="linenumber">179,181</context>
+          <context context-type="linenumber">187,189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.detail.action.noneToday" datatype="html">
         <source> Hoy no queda nada libre. Mira los horarios y elige el día que te sirva. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-detail-page/space-detail-page.html</context>
-          <context context-type="linenumber">191,195</context>
+          <context context-type="linenumber">199,203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.detail.action.blockLength" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {Cada reserva ocupa un bloque de 1 hora.} other {Cada reserva ocupa un bloque de <x id="INTERPOLATION"/> horas.}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-detail-page/space-detail-page.html</context>
-          <context context-type="linenumber">202,206</context>
+          <context context-type="linenumber">214,218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.detail.notFound.title" datatype="html">
         <source>Espacio no encontrado</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-detail-page/space-detail-page.html</context>
-          <context context-type="linenumber">213,214</context>
+          <context context-type="linenumber">226,227</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.detail.notFound.description" datatype="html">
         <source>Puede que el enlace sea incorrecto o que el espacio ya no esté disponible.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-detail-page/space-detail-page.html</context>
-          <context context-type="linenumber">215,220</context>
+          <context context-type="linenumber">228,233</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.detail.backToList" datatype="html">
         <source> Ver todos los espacios </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/spaces/presentation/space-detail-page/space-detail-page.html</context>
-          <context context-type="linenumber">224,226</context>
+          <context context-type="linenumber">237,241</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.shelf.previous" datatype="html">

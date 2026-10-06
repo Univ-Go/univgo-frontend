@@ -217,4 +217,43 @@ describe('HttpReservationRepository', () => {
 
     expect((await cancelled).state).toBe('cancelled');
   });
+
+  it("tells a penalised student when the penalty lifts, from the server's own answer", async () => {
+    const refusal = new Promise<unknown>((resolve) =>
+      repository
+        .create({ spaceId: 'f2e1', date: new Date(2026, 9, 6), startMinutes: 840 })
+        .subscribe({ error: resolve }),
+    );
+
+    controller.expectOne(`${API_BASE_URL}/reservations`).flush(
+      {
+        timestamp: '2026-10-06T12:00:00',
+        status: 409,
+        code: 'SPACE_PENALIZED',
+        message: 'Space is penalized for this student',
+        spaceId: 'f2e1',
+        penalizedUntil: '2026-10-07T08:00:00',
+      },
+      { status: 409, statusText: 'Conflict' },
+    );
+
+    expect(await refusal).toEqual({
+      code: 'spacePenalized',
+      penalizedUntil: new Date(2026, 9, 7, 8, 0),
+    });
+  });
+
+  it('keeps any other conflict as the generic one, without reading its body', async () => {
+    const refusal = new Promise<unknown>((resolve) =>
+      repository
+        .create({ spaceId: 'f2e1', date: new Date(2026, 9, 6), startMinutes: 840 })
+        .subscribe({ error: resolve }),
+    );
+
+    controller
+      .expectOne(`${API_BASE_URL}/reservations`)
+      .flush({ message: 'Block is full' }, { status: 409, statusText: 'Conflict' });
+
+    expect(await refusal).toEqual({ code: 'conflict' });
+  });
 });

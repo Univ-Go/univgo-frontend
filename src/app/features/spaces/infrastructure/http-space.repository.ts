@@ -45,6 +45,7 @@ interface BlockAvailabilityDto {
   /** The check-in window the student would get by reserving this block right now. */
   readonly previewCheckInOpensAt: string;
   readonly previewCheckInClosesAt: string;
+  readonly penalizedUntil: string | null;
 }
 
 /**
@@ -89,6 +90,7 @@ function toBlock(dto: BlockAvailabilityDto): SpaceBlock {
       closed: dto.closed,
     }),
     closureReason: dto.closureReason ? closureReasonFromName(dto.closureReason) : null,
+    penalizedUntil: dto.penalizedUntil ? fromIsoDateTime(dto.penalizedUntil) : null,
   };
 }
 

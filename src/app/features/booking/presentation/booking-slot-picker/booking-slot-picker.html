@@ -30,6 +30,10 @@
     <span class="picker__note" i18n="@@booking.schedule.blockLength2h">Bloques de 2 horas</span>
   </legend>
 
+  @if (penalizedUntil(); as until) {
+    <app-booking-penalty-notice [penalizedUntil]="until" (lifted)="availability.reload()" />
+  }
+
   @if (availability.isLoading()) {
     <div
       class="picker__hours"

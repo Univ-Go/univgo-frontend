@@ -28,6 +28,11 @@ export interface SpaceBlock {
   readonly blocker: BlockBlocker | null;
   /** Set exactly when the blocker is `closed`, which is the only case that has a reason to give. */
   readonly closureReason: ClosureReason | null;
+  /**
+   * When this student's penalty on the space lifts, as the server computed it. The penalty belongs
+   * to the space, so every block of it carries the same value: while set, no block can be taken.
+   */
+  readonly penalizedUntil: Date | null;
 }
 
 /**

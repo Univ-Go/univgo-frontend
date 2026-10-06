@@ -3,13 +3,14 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Router, RouterLink } from '@angular/router';
 import { TuiAppearance, TuiButton, TuiIcon, TuiLink, TuiLoader } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-import { createAppError, isAppError } from '../../../../core/errors/app-error';
+import { createAppError, isAppError, isSpacePenaltyError } from '../../../../core/errors/app-error';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
 import { SpaceBriefing } from '../../../spaces/presentation/space-briefing/space-briefing';
 import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import { BookingDraftStore } from '../../application/booking-draft.store';
+import { BookingPenaltyNotice } from '../booking-penalty-notice/booking-penalty-notice';
 
 /**
  * Step three: everything the flow agreed on, in one place, with a way back to whichever step owns
@@ -22,6 +23,7 @@ import { BookingDraftStore } from '../../application/booking-draft.store';
 @Component({
   selector: 'app-booking-review-page',
   imports: [
+    BookingPenaltyNotice,
     DatePipe,
     MediaPlate,
     RouterLink,
@@ -47,6 +49,13 @@ export class BookingReviewPage {
 
   /** The button stays put while the request is in flight, so the booking cannot be sent twice. */
   protected readonly creating = signal(false);
+
+  /** Set by a refused creation; the server's own answer on when the student may book again. */
+  protected readonly penalizedUntil = signal<Date | null>(null);
+
+  protected readonly creationBlocked = computed(
+    () => this.creating() || this.penalizedUntil() !== null,
+  );
 
   protected readonly icon = computed(() => {
     const booking = this.booking();
@@ -80,7 +89,7 @@ export class BookingReviewPage {
   protected readonly changeScheduleLabel = $localize`:@@booking.review.changeScheduleLabel:Cambiar la fecha y la hora`;
 
   protected create(): void {
-    if (this.creating()) {
+    if (this.creationBlocked()) {
       return;
     }
 
@@ -90,6 +99,12 @@ export class BookingReviewPage {
       next: () => void this.router.navigate(['/book', 'done'], { replaceUrl: true }),
       error: (error: unknown) => {
         this.creating.set(false);
+
+        if (isSpacePenaltyError(error)) {
+          this.penalizedUntil.set(error.penalizedUntil);
+          return;
+        }
+
         this.report(error);
       },
     });

@@ -9,6 +9,7 @@ import { closureReasonName } from '../../../spaces/presentation/closure-reason';
 import type { Space } from '../../../spaces/domain/space';
 import type { BlockBlocker, SpaceBlock } from '../../../spaces/domain/space-block';
 import { SpaceRepository } from '../../../spaces/domain/space.repository';
+import { BookingPenaltyNotice } from '../booking-penalty-notice/booking-penalty-notice';
 
 /** A booking window a person can plan around without the picker turning into a calendar. */
 const DAYS_OFFERED = 7;
@@ -71,7 +72,15 @@ interface OfferedBlock {
  */
 @Component({
   selector: 'app-booking-slot-picker',
-  imports: [DatePipe, FormsModule, TuiBlock, TuiButton, TuiSkeleton, TuiTitle],
+  imports: [
+    BookingPenaltyNotice,
+    DatePipe,
+    FormsModule,
+    TuiBlock,
+    TuiButton,
+    TuiSkeleton,
+    TuiTitle,
+  ],
   templateUrl: './booking-slot-picker.html',
   styleUrl: './booking-slot-picker.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -109,11 +118,18 @@ export class BookingSlotPicker {
 
   protected readonly selectedStart = computed(() => this.block()?.startMinutes ?? null);
 
+  /** The penalty belongs to the space, so any block that carries it speaks for all of them. */
+  protected readonly penalizedUntil = computed(
+    () =>
+      this.availability.value().find((block) => block.penalizedUntil !== null)?.penalizedUntil ??
+      null,
+  );
+
   protected readonly blocks = computed<readonly OfferedBlock[]>(() =>
     this.availability.value().map((block) => ({
       block,
       minutes: block.startMinutes,
-      available: block.blocker === null,
+      available: block.blocker === null && this.penalizedUntil() === null,
       free: block.free,
       blocker: block.blocker,
       closureReason: closureReasonName(block.closureReason),

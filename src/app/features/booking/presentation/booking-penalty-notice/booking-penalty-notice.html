@@ -1,0 +1,9 @@
+<div tuiNotification appearance="warning" icon="@tui.ban" size="m">
+  <span tuiTitle>
+    <span i18n="@@booking.penalty.title">Este espacio no está disponible para ti</span>
+    <span tuiSubtitle i18n="@@booking.penalty.description"
+      >No puedes reservar este espacio hasta el {{ penalizedUntil() | date: 'EEEE d MMMM, HH:mm' }}.
+      Tiempo restante: {{ countdown() }}.</span
+    >
+  </span>
+</div>

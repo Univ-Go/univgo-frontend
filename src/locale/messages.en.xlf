@@ -850,6 +850,14 @@
         <source>El bloque ya empezó: debes presentarte antes de las <x id="INTERPOLATION" equiv-text="{{ booking.checkInClosesAt | date: &apos;HH:mm&apos; }}"/> o perderás la plaza.</source>
         <target>The block has already started: you must be there before <x id="INTERPOLATION" equiv-text="{{ booking.checkInClosesAt | date: &apos;HH:mm&apos; }}"/> or you lose the place.</target>
       </trans-unit>
+      <trans-unit id="booking.penalty.title" datatype="html">
+        <source>Este espacio no está disponible para ti</source>
+        <target>This space is not available to you</target>
+      </trans-unit>
+      <trans-unit id="booking.penalty.description" datatype="html">
+        <source>No puedes reservar este espacio hasta el <x id="INTERPOLATION" equiv-text="{{ penalizedUntil() | date: &apos;EEEE d MMMM, HH:mm&apos; }}"/>. Tiempo restante: <x id="INTERPOLATION_1" equiv-text="{{ countdown() }}"/>.</source>
+        <target>You cannot book this space until <x id="INTERPOLATION" equiv-text="{{ penalizedUntil() | date: &apos;EEEE d MMMM, HH:mm&apos; }}"/>. Time remaining: <x id="INTERPOLATION_1" equiv-text="{{ countdown() }}"/>.</target>
+      </trans-unit>
       <trans-unit id="booking.review.taken.summary" datatype="html">
         <source>Ese bloque ya no está disponible</source>
         <target>That block is no longer available</target>

@@ -81,6 +81,10 @@
         </output>
       }
 
+      @if (penalizedUntil(); as until) {
+        <app-booking-penalty-notice [penalizedUntil]="until" (lifted)="penalizedUntil.set(null)" />
+      }
+
       <button
         tuiButton
         type="button"
@@ -88,7 +92,7 @@
         appearance="primary"
         iconStart="@tui.calendar-check"
         class="summary-card__create"
-        [disabled]="creating()"
+        [disabled]="creationBlocked()"
         (click)="create()"
       >
         <tui-loader [loading]="creating()" [inheritColor]="true" [overlay]="true">

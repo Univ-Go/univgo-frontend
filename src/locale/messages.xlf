@@ -393,7 +393,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">57,60</context>
+          <context context-type="linenumber">61,64</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
@@ -739,11 +739,11 @@
         <source><x id="INTERPOLATION" equiv-text="{{ current()?.start | date: &apos;shortTime&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ current()?.end | date: &apos;shortTime&apos; }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-switcher/block-switcher.html</context>
-          <context context-type="linenumber">16,18</context>
+          <context context-type="linenumber">20,22</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/block-switcher/block-switcher.html</context>
-          <context context-type="linenumber">31,33</context>
+          <context context-type="linenumber">35,37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blockSwitcher.label" datatype="html">
@@ -1266,31 +1266,31 @@
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.lead" datatype="html">
-        <source> Capacidad máxima permitida </source>
+        <source>Capacidad máxima permitida</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">5,9</context>
+          <context context-type="linenumber">4,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.occupied" datatype="html">
         <source>Ocupadas</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">11,12</context>
+          <context context-type="linenumber">9,10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.free" datatype="html">
         <source> Libres (de <x id="INTERPOLATION" equiv-text="{{ occupancy().capacity }}"/>) </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">19,21</context>
+          <context context-type="linenumber">17,19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.occupancy.rate" datatype="html">
         <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().ratio | percent }}"/> de ocupación </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/occupancy-card/occupancy-card.html</context>
-          <context context-type="linenumber">37,39</context>
+          <context context-type="linenumber">35,37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.camera.starting" datatype="html">
@@ -1975,6 +1975,20 @@
           <context context-type="linenumber">118,120</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="booking.penalty.title" datatype="html">
+        <source>Este espacio no está disponible para ti</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-penalty-notice/booking-penalty-notice.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="booking.penalty.description" datatype="html">
+        <source>No puedes reservar este espacio hasta el <x id="INTERPOLATION" equiv-text="{{ penalizedUntil() | date: &apos;EEEE d MMMM, HH:mm&apos; }}"/>. Tiempo restante: <x id="INTERPOLATION_1" equiv-text="{{ countdown() }}"/>.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-penalty-notice/booking-penalty-notice.html</context>
+          <context context-type="linenumber">5,9</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="booking.review.title" datatype="html">
         <source>Revisa y confirma</source>
         <context-group purpose="location">
@@ -2039,35 +2053,35 @@
         <source>Crear reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-review-page/booking-review-page.html</context>
-          <context context-type="linenumber">95,97</context>
+          <context context-type="linenumber">99,101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.review.changeSpaceLabel" datatype="html">
         <source>Cambiar el espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-review-page/booking-review-page.ts</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.review.changeScheduleLabel" datatype="html">
         <source>Cambiar la fecha y la hora</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-review-page/booking-review-page.ts</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.review.taken.summary" datatype="html">
         <source>Ese bloque ya no está disponible</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-review-page/booking-review-page.ts</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">135</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.review.taken.detail" datatype="html">
         <source>Puede que se haya llenado o que ya no dé tiempo. Elige otro bloque para continuar.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-review-page/booking-review-page.ts</context>
-          <context context-type="linenumber">117</context>
+          <context context-type="linenumber">136</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spaces.card.capacityValue" datatype="html">
@@ -2140,70 +2154,70 @@
         <source>Cargando los bloques del día</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">38,40</context>
+          <context context-type="linenumber">42,44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.error" datatype="html">
         <source>No pudimos consultar los bloques de este día.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">46,49</context>
+          <context context-type="linenumber">50,53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.until" datatype="html">
         <source>hasta <x id="INTERPOLATION" equiv-text="{{ offered.end }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">77,78</context>
+          <context context-type="linenumber">81,82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.freePlaces" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 cupo} other {<x id="INTERPOLATION"/> cupos}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">82,85</context>
+          <context context-type="linenumber">86,89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.closed" datatype="html">
         <source>cerrado</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">88,89</context>
+          <context context-type="linenumber">92,93</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.full" datatype="html">
         <source>completo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">96,98</context>
+          <context context-type="linenumber">100,102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.alreadyBooked" datatype="html">
         <source>ya reservaste aquí hoy</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">100,103</context>
+          <context context-type="linenumber">104,107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.overlaps" datatype="html">
         <source>se cruza con otra reserva</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">105,107</context>
+          <context context-type="linenumber">109,111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.tooLate" datatype="html">
         <source>ya no da tiempo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">109,112</context>
+          <context context-type="linenumber">113,116</context>
         </context-group>
       </trans-unit>
       <trans-unit id="booking.schedule.noHours" datatype="html">
         <source> Este espacio no abre este día. Prueba con otra fecha. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
-          <context context-type="linenumber">118,122</context>
+          <context context-type="linenumber">122,126</context>
         </context-group>
       </trans-unit>
       <trans-unit id="home.greeting" datatype="html">

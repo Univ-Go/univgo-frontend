@@ -1,9 +1,13 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { type Observable, catchError, forkJoin, map, of, switchMap, throwError } from 'rxjs';
 import { APP_CONFIG } from '../../../core/config/app-config';
-import { isAppError } from '../../../core/errors/app-error';
-import { SKIP_ERROR_NOTIFICATION } from '../../../core/http/http-error.interceptor';
+import { type SpacePenaltyError, isAppError } from '../../../core/errors/app-error';
+import {
+  KEEP_HTTP_ERROR_RESPONSE,
+  SKIP_ERROR_NOTIFICATION,
+  toAppError,
+} from '../../../core/http/http-error.interceptor';
 import {
   fromIsoDate,
   fromIsoDateTime,
@@ -45,10 +49,42 @@ const STATES: Readonly<Record<string, ReservationState>> = {
   CANCELLED: 'cancelled',
 };
 
+const HTTP_CONFLICT = 409;
+
+const SPACE_PENALIZED_CODE = 'SPACE_PENALIZED';
+
 const CANCELLERS: Readonly<Record<string, Canceller>> = {
   STUDENT: 'student',
   ADMIN: 'admin',
 };
+
+/**
+ * The server answers a penalised student with a conflict that names the penalty's end. Only that
+ * body is read; any other refusal is the generic conflict and maps like every other failure.
+ */
+function spacePenaltyOf(cause: unknown): SpacePenaltyError | null {
+  if (!(cause instanceof HttpErrorResponse) || cause.status !== HTTP_CONFLICT) {
+    return null;
+  }
+
+  const body: unknown = cause.error;
+
+  if (
+    typeof body !== 'object' ||
+    body === null ||
+    !('code' in body) ||
+    body.code !== SPACE_PENALIZED_CODE ||
+    !('penalizedUntil' in body) ||
+    typeof body.penalizedUntil !== 'string'
+  ) {
+    return null;
+  }
+
+  return {
+    code: 'spacePenalized',
+    penalizedUntil: fromIsoDateTime(body.penalizedUntil),
+  };
+}
 
 /**
  * A booking whose space is missing from the catalogue cannot happen: the catalogue lists every
@@ -110,20 +146,31 @@ export class HttpReservationRepository extends ReservationRepository {
    * The refusals this can meet — the block filled up, it stopped being bookable, the student
    * already has one here today — all arrive as the same conflict, and none of them is answered by
    * "reload the page". The flow says what happened and sends the student back to the grid, so the
-   * request opts out of the automatic alert.
+   * request opts out of the automatic alert. A penalty is the one refusal that carries its own
+   * answer, so the body is read for it and the rest is mapped as any other failure.
    */
   create(request: BookingRequest): Observable<Reservation> {
-    return this.withSpace(
-      this.http.post<ReservationDto>(
+    const created = this.http
+      .post<ReservationDto>(
         this.baseUrl,
         {
           spaceId: request.spaceId,
           reservationDate: toIsoDate(request.date),
           startTime: toIsoTime(request.startMinutes),
         },
-        { context: new HttpContext().set(SKIP_ERROR_NOTIFICATION, true) },
-      ),
-    );
+        {
+          context: new HttpContext()
+            .set(SKIP_ERROR_NOTIFICATION, true)
+            .set(KEEP_HTTP_ERROR_RESPONSE, true),
+        },
+      )
+      .pipe(
+        catchError((cause: unknown) =>
+          throwError(() => spacePenaltyOf(cause) ?? toAppError(cause)),
+        ),
+      );
+
+    return this.withSpace(created);
   }
 
   mine(): Observable<readonly Reservation[]> {

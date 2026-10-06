@@ -11,6 +11,7 @@ export type AppErrorCode =
   | 'conflict'
   | 'validation'
   | 'rateLimited'
+  | 'spacePenalized'
   | 'server'
   | 'unknown';
 
@@ -25,10 +26,24 @@ export interface AppError {
   readonly reference?: string;
 }
 
+/**
+ * A refusal that carries the one fact the interface needs to explain it: when the penalty lifts.
+ * The field is typed and read from the server's contract, never the raw payload, so it keeps the
+ * no-`cause` rule intact.
+ */
+export interface SpacePenaltyError extends AppError {
+  readonly code: 'spacePenalized';
+  readonly penalizedUntil: Date;
+}
+
 export function createAppError(code: AppErrorCode, reference?: string): AppError {
   return { code, reference };
 }
 
 export function isAppError(value: unknown): value is AppError {
   return typeof value === 'object' && value !== null && 'code' in value;
+}
+
+export function isSpacePenaltyError(value: unknown): value is SpacePenaltyError {
+  return isAppError(value) && value.code === 'spacePenalized';
 }

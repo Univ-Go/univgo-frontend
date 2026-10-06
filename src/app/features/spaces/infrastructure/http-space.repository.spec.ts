@@ -151,6 +151,7 @@ describe('HttpSpaceRepository', () => {
           closureReason: null,
           previewCheckInOpensAt: '2026-09-17T13:45:00',
           previewCheckInClosesAt: '2026-09-17T14:15:00',
+          penalizedUntil: null,
         },
         {
           start: '16:00:00',
@@ -164,6 +165,7 @@ describe('HttpSpaceRepository', () => {
           closureReason: 'MAINTENANCE',
           previewCheckInOpensAt: '2026-09-17T15:45:00',
           previewCheckInClosesAt: '2026-09-17T16:15:00',
+          penalizedUntil: null,
         },
       ]);
 
@@ -175,6 +177,7 @@ describe('HttpSpaceRepository', () => {
         free: 2,
         checkInOpensAt: new Date(2026, 8, 17, 13, 45),
         checkInClosesAt: new Date(2026, 8, 17, 14, 15),
+        penalizedUntil: null,
         blocker: null,
         closureReason: null,
       },
@@ -185,9 +188,39 @@ describe('HttpSpaceRepository', () => {
         free: 0,
         checkInOpensAt: new Date(2026, 8, 17, 15, 45),
         checkInClosesAt: new Date(2026, 8, 17, 16, 15),
+        penalizedUntil: null,
         blocker: 'closed',
         closureReason: 'maintenance',
       },
     ]);
+  });
+
+  it('reads the end of a space penalty as local time, on the penalty itself', async () => {
+    const blocks = new Promise<readonly SpaceBlock[]>((resolve) =>
+      repository.availability('f2e1', DATE).subscribe(resolve),
+    );
+
+    controller
+      .expectOne((candidate) => candidate.url === `${API_BASE_URL}/spaces/f2e1/availability`)
+      .flush([
+        {
+          start: '14:00:00',
+          end: '16:00:00',
+          capacity: 4,
+          free: 2,
+          offered: false,
+          alreadyReservedByUserToday: false,
+          overlapsUserReservation: false,
+          closed: false,
+          closureReason: null,
+          previewCheckInOpensAt: '2026-10-06T13:45:00',
+          previewCheckInClosesAt: '2026-10-06T14:15:00',
+          penalizedUntil: '2026-10-07T08:00:00',
+        },
+      ]);
+
+    const [block] = await blocks;
+
+    expect(block.penalizedUntil).toEqual(new Date(2026, 9, 7, 8, 0));
   });
 });

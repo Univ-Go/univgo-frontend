@@ -57,7 +57,7 @@ reglas escritas en el dominio: cambiarlos no debe exigir tocar el producto.
 | Parámetro                  | Valor       | Qué gobierna                                                                                                                                 |
 | -------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | Duración del bloque        | 120 min     | La rejilla de bloques de todos los espacios.                                                                                                 |
-| Tolerancia de check-in     | 15 min      | Cuánto antes del inicio se puede entrar, y cuánto margen hay después para no perder la reserva. Un solo número para las dos cosas.           |
+| Tolerancia de check-in     | 15 min      | Cuánto margen hay desde que el bloque empieza para entrar sin perder la reserva. No abre ninguna antesala: antes del inicio no se entra.     |
 | Uso mínimo garantizado     | 75 min      | Cuánto tiempo de bloque debe quedar para que la plaza siga ofreciéndose.                                                                     |
 | Reservas por espacio y día | 1           | Cuántas veces al día puede un mismo estudiante reservar el mismo espacio.                                                                    |
 | Aforo                      | por espacio | Cuántas plazas ofrece cada bloque de ese espacio.                                                                                            |
@@ -120,10 +120,11 @@ aceptar sería una trampa.
 El estudiante llega al espacio y enseña su código. El administrador lo escanea desde su panel. Ese
 escaneo es el check-in: la reserva pasa a estar **en curso** y ya no puede perderse.
 
-La ventana tiene apertura y cierre, y ambos salen de los mismos dos parámetros:
+La ventana tiene apertura y cierre. La apertura no necesita ningún parámetro —es el inicio del
+bloque, o la hora de creación si ya pasó—; el cierre sale de los dos:
 
 ```
-abre  = máx( inicio del bloque − tolerancia , hora de creación )
+abre  = máx( inicio del bloque , hora de creación )
 cierra = mín( máx( inicio del bloque , hora de creación ) + tolerancia , fin del bloque − uso mínimo )
 ```
 
@@ -131,15 +132,19 @@ Para el bloque 14:00–16:00:
 
 | Reserva creada      | Abre  | Cierra | Por qué                                                           |
 | ------------------- | ----- | ------ | ----------------------------------------------------------------- |
-| Ayer, o esta mañana | 13:45 | 14:15  | Reserva normal: quince minutos antes, quince después.             |
+| Ayer, o esta mañana | 14:00 | 14:15  | Reserva normal: desde la hora en punto, quince minutos de margen. |
 | 14:22               | 14:22 | 14:37  | Último minuto: quince minutos desde que reservó.                  |
 | 14:30               | 14:30 | 14:45  | El último caso posible. Le quedan las 1:15 de uso mínimo exactas. |
 
 Pasado el cierre sin escanear, la reserva **expira** por sí sola. Nadie tiene que hacer nada para
 que ocurra: es el reloj.
 
-Las tres marcas que gobiernan el flujo son **14:00** (inicio), **14:30** (último instante para
-reservar) y **14:45** (tope absoluto de check-in). Las 14:15 son sólo el cierre del caso anticipado.
+Nadie entra antes de que el bloque empiece: la tolerancia es margen posterior, no una antesala. Un
+estudiante que se presenta a las 13:50 se escanea a las 14:00.
+
+Las tres marcas que gobiernan el flujo son **14:00** (inicio, y apertura del check-in en el caso
+anticipado), **14:30** (último instante para reservar) y **14:45** (tope absoluto de check-in). Las
+14:15 son sólo el cierre del caso anticipado.
 
 ---
 
@@ -205,7 +210,7 @@ Ejemplo — bloque 14:00–16:00, aforo 30, completo desde ayer:
 
 | Hora  | Qué ocurre                                                           | Plazas libres |
 | ----- | -------------------------------------------------------------------- | ------------- |
-| 13:45 | Abre el check-in. Empiezan a entrar estudiantes.                     | 0             |
+| 14:00 | Empieza el bloque y abre el check-in. Empiezan a entrar estudiantes. | 0             |
 | 14:15 | Cierra el check-in. Ana no apareció: su reserva expira.              | 1             |
 | 14:15 | El bloque vuelve a aparecer en el catálogo, con 1 plaza.             | 1             |
 | 14:22 | Luis lo reserva. El paso 3 le avisa: debe entrar antes de las 14:37. | 0             |
@@ -248,9 +253,9 @@ teclearlo. Cada escaneo tiene que dar una respuesta inequívoca a un metro de di
 esperando:
 
 - **Válida** — nombre del estudiante y hora de fin. Check-in registrado.
-- **Aún no** — el check-in abre a las 13:45.
+- **Aún no** — el check-in abre a las 14:00.
 - **Expirada** — venció a las 14:15.
-- **Ya usada** — entró a las 13:52.
+- **Ya usada** — entró a las 14:03.
 - **Otro bloque** — su reserva es de 16:00 a 18:00.
 - **Cerrado** — el espacio no está operando a esta hora.
 - **No existe** — código desconocido o cancelado.

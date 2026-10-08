@@ -26,7 +26,7 @@ function block(overrides: Partial<SpaceBlock> = {}): SpaceBlock {
     endMinutes: 960,
     capacity: 20,
     free: 4,
-    checkInOpensAt: new Date(2026, 7, 17, 13, 45),
+    checkInOpensAt: new Date(2026, 7, 17, 14, 0),
     checkInClosesAt: new Date(2026, 7, 17, 14, 15),
     blocker: null,
     closureReason: null,

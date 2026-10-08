@@ -44,7 +44,7 @@ const RESERVATION_PAYLOAD = {
   cancelledAt: null,
   cancelledBy: null,
   closureReason: null,
-  checkInOpensAt: '2026-09-17T13:45:00',
+  checkInOpensAt: '2026-09-17T14:00:00',
   checkInClosesAt: '2026-09-17T14:15:00',
 };
 
@@ -126,7 +126,7 @@ describe('HttpReservationRepository', () => {
       startMinutes: 840,
       endMinutes: 960,
       state: 'reserved',
-      checkInOpensAt: new Date(2026, 8, 17, 13, 45),
+      checkInOpensAt: new Date(2026, 8, 17, 14, 0),
       checkInClosesAt: new Date(2026, 8, 17, 14, 15),
       cancelledBy: null,
       closureReason: null,

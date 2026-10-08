@@ -36,8 +36,8 @@ export interface SpaceBlock {
  * (`docs/booking-flow.md` §9).
  *
  * Read from the server's own answer rather than from the browser's clock: check-in opens at
- * `max(start − tolerance, creation)`, so a window that opens *after* the block began can only mean
- * the block began first.
+ * `max(start, creation)`, so a window that opens *after* the block began can only mean the block
+ * began first.
  */
 export function isLastMinute(block: SpaceBlock, date: Date): boolean {
   const start = new Date(date);

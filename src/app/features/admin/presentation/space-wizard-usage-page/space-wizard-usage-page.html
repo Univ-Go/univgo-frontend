@@ -1,0 +1,35 @@
+<header class="intro">
+  <h1 i18n="@@admin.spaceWizard.usage.title">¿Para qué sirve?</h1>
+  <p class="intro__lead" i18n="@@admin.spaceWizard.usage.lead">
+    Lo que un estudiante lee antes de reservar: qué es el espacio y qué normas tiene.
+  </p>
+</header>
+
+<app-space-usage-form [value]="draft.usage()" (valueChange)="draft.setUsage($event)" />
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="outline"
+    iconStart="@tui.arrow-left"
+    (click)="back()"
+    i18n="@@admin.spaceWizard.back"
+  >
+    Atrás
+  </button>
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="primary"
+    iconEnd="@tui.arrow-right"
+    [disabled]="!valid()"
+    (click)="continue()"
+    i18n="@@admin.spaceWizard.continue"
+  >
+    Continuar
+  </button>
+</div>

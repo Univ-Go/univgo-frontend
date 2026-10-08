@@ -1,0 +1,80 @@
+<header class="flow__header">
+  <!-- A label, not a heading: every step owns the page's `h1`. -->
+  <p class="flow__label" i18n="@@admin.spaceWizard.label">Nuevo espacio</p>
+
+  <!-- `tui-stepper` renders a plain scroll container, so the landmark and its accessible name are
+       ours to provide, the same way the booking flow's steps do it. -->
+  <nav
+    class="flow__steps"
+    i18n-aria-label="@@admin.spaceWizard.steps.label"
+    aria-label="Pasos del nuevo espacio"
+  >
+    <tui-stepper [activeItemIndex]="activeStep()">
+      <button
+        tuiStep
+        [stepState]="stepState(0)"
+        (click)="goTo(0)"
+        i18n="@@admin.spaceSection.identity"
+      >
+        Identidad
+      </button>
+
+      <button
+        tuiStep
+        [disabled]="!reachable(1)"
+        [stepState]="stepState(1)"
+        (click)="goTo(1)"
+        i18n="@@admin.spaceSection.usage"
+      >
+        Uso
+      </button>
+
+      <button
+        tuiStep
+        [disabled]="!reachable(2)"
+        [stepState]="stepState(2)"
+        (click)="goTo(2)"
+        i18n="@@admin.spaceSection.schedules"
+      >
+        Horarios
+      </button>
+
+      <button
+        tuiStep
+        [disabled]="!reachable(3)"
+        [stepState]="stepState(3)"
+        (click)="goTo(3)"
+        i18n="@@admin.spaceSection.photos"
+      >
+        Fotos
+      </button>
+
+      <button
+        tuiStep
+        [disabled]="!reachable(4)"
+        [stepState]="stepState(4)"
+        (click)="goTo(4)"
+        i18n="@@admin.spaceWizard.step.review"
+      >
+        Revisar
+      </button>
+    </tui-stepper>
+  </nav>
+
+  <button
+    tuiButton
+    type="button"
+    appearance="flat"
+    size="s"
+    iconStart="@tui.x"
+    class="flow__cancel"
+    (click)="cancel()"
+    i18n="@@admin.spaceWizard.cancel"
+  >
+    Cancelar
+  </button>
+</header>
+
+<div class="flow__content">
+  <router-outlet />
+</div>

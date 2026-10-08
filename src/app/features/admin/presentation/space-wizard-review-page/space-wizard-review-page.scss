@@ -1,0 +1,94 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  max-inline-size: var(--univgo-form-max-width);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.intro h1 {
+  margin: 0;
+}
+
+.intro__lead {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+// Mobile first: the step's action spans the width, which is the easiest target on a phone. From
+// tablet the pair sits on one line, aligned to the end.
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+@media (width >= bp.$tablet) {
+  .actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+}
+
+.summary__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--univgo-space-s);
+}
+
+.summary__title {
+  margin: 0;
+  font: var(--tui-typography-heading-6);
+}
+
+.summary__text {
+  margin: 0;
+  font: var(--tui-typography-body-s);
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+  margin: 0;
+}
+
+.fact {
+  display: grid;
+  gap: var(--univgo-space-xs);
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+  overflow-wrap: anywhere;
+}
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  padding-inline-start: var(--univgo-space-l);
+  font: var(--tui-typography-body-s);
+}

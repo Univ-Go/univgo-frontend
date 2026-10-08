@@ -1,0 +1,42 @@
+<header class="intro">
+  <h1 i18n="@@admin.spaceWizard.photos.title">Fotos del espacio</h1>
+  <p class="intro__lead" i18n="@@admin.spaceWizard.photos.lead">
+    La primera es la portada: es la que se ve en el catálogo. Puedes reordenarlas.
+  </p>
+</header>
+
+<app-space-photo-editor
+  [photos]="items()"
+  [remaining]="remaining()"
+  (filesPicked)="draft.addPhotos($event)"
+  (moved)="draft.movePhoto($event.from, $event.to)"
+  (coverSet)="draft.makeCover($event)"
+  (removed)="draft.removePhoto($event)"
+/>
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="outline"
+    iconStart="@tui.arrow-left"
+    (click)="back()"
+    i18n="@@admin.spaceWizard.back"
+  >
+    Atrás
+  </button>
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="primary"
+    iconEnd="@tui.arrow-right"
+    [disabled]="!valid()"
+    (click)="continue()"
+    i18n="@@admin.spaceWizard.continue"
+  >
+    Continuar
+  </button>
+</div>

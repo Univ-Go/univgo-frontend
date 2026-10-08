@@ -1,0 +1,49 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.flow__header {
+  display: grid;
+  grid-template-areas:
+    'label cancel'
+    'steps steps';
+  grid-template-columns: 1fr auto;
+  gap: var(--univgo-space-s);
+  align-items: center;
+}
+
+.flow__label {
+  grid-area: label;
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+.flow__cancel {
+  grid-area: cancel;
+}
+
+// The row of five steps scrolls sideways on a phone rather than wrapping: a wrapped stepper loses
+// the sense of a single line of progress.
+.flow__steps {
+  grid-area: steps;
+  overflow-x: auto;
+  margin-inline: calc(-1 * var(--univgo-space-m));
+  padding-inline: var(--univgo-space-m);
+}
+
+@media (width >= bp.$tablet) {
+  .flow__steps {
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
+
+.flow__content {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,10 +1,21 @@
 import type { Routes } from '@angular/router';
 import { adminSpaceGuard } from './application/admin-space.guard';
+import { SpaceDraftStore } from './application/space-draft.store';
+import {
+  spaceWizardIdentityGuard,
+  spaceWizardLeaveGuard,
+  spaceWizardPhotosGuard,
+  spaceWizardRestartGuard,
+  spaceWizardSchedulesGuard,
+  spaceWizardUsageGuard,
+} from './application/space-wizard.guards';
 
 /**
  * The administrator's panel. `docs/booking-flow.md` §11 asks it for five things — picking which
  * space to manage, scanning, a day's blocks, one block in detail and cancelling reservations — and
- * all five now have a route.
+ * all five have a route. Managing the catalogue itself is the sixth, and the two routes it adds
+ * (`spaces/new` and `spaces/:spaceId/edit`) are declared before `:spaceId` so the parameter cannot
+ * swallow them.
  *
  * The space is a path segment (`:spaceId`) rather than a query param: `docs/booking-flow.md` §11
  * treats it as the subject every other screen is about, so it belongs in the address the same way
@@ -29,6 +40,114 @@ export const ADMIN_ROUTES: Routes = [
     title: $localize`:@@admin.spaces.pageTitle:Espacios`,
     data: {
       description: $localize`:@@admin.spaces.pageDescription:Elige el espacio que quieres gestionar: escanear accesos, consultar sus bloques o cambiar su configuración.`,
+    },
+  },
+  {
+    path: 'spaces/new',
+    loadComponent: () =>
+      import('./presentation/space-wizard-layout/space-wizard-layout').then(
+        (m) => m.SpaceWizardLayout,
+      ),
+    canDeactivate: [spaceWizardLeaveGuard],
+    // Provided here so the five steps share one draft: walking between them keeps every answer.
+    // The injector is cached on the route config rather than destroyed on deactivation, which is
+    // why a restart guard and not the navigation is what empties it.
+    providers: [SpaceDraftStore],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'identity',
+      },
+      {
+        path: 'identity',
+        canActivate: [spaceWizardRestartGuard],
+        loadComponent: () =>
+          import('./presentation/space-wizard-identity-page/space-wizard-identity-page').then(
+            (m) => m.SpaceWizardIdentityPage,
+          ),
+        title: $localize`:@@admin.spaceWizard.identity.pageTitle:Nuevo espacio: identidad`,
+        data: {
+          step: 0,
+          description: $localize`:@@admin.spaceWizard.identity.pageDescription:Pon nombre, ubicación, tipo y aforo al espacio que vas a crear.`,
+        },
+      },
+      {
+        path: 'usage',
+        canActivate: [spaceWizardRestartGuard, spaceWizardIdentityGuard],
+        loadComponent: () =>
+          import('./presentation/space-wizard-usage-page/space-wizard-usage-page').then(
+            (m) => m.SpaceWizardUsagePage,
+          ),
+        title: $localize`:@@admin.spaceWizard.usage.pageTitle:Nuevo espacio: uso`,
+        data: {
+          step: 1,
+          description: $localize`:@@admin.spaceWizard.usage.pageDescription:Describe para qué sirve el espacio y qué normas debe respetar quien lo reserva.`,
+        },
+      },
+      {
+        path: 'schedules',
+        canActivate: [spaceWizardRestartGuard, spaceWizardIdentityGuard, spaceWizardUsageGuard],
+        loadComponent: () =>
+          import('./presentation/space-wizard-schedules-page/space-wizard-schedules-page').then(
+            (m) => m.SpaceWizardSchedulesPage,
+          ),
+        title: $localize`:@@admin.spaceWizard.schedules.pageTitle:Nuevo espacio: horarios`,
+        data: {
+          step: 2,
+          description: $localize`:@@admin.spaceWizard.schedules.pageDescription:Define las franjas horarias de cada día de la semana, que son las que generan los bloques reservables.`,
+        },
+      },
+      {
+        path: 'photos',
+        canActivate: [
+          spaceWizardRestartGuard,
+          spaceWizardIdentityGuard,
+          spaceWizardUsageGuard,
+          spaceWizardSchedulesGuard,
+        ],
+        loadComponent: () =>
+          import('./presentation/space-wizard-photos-page/space-wizard-photos-page').then(
+            (m) => m.SpaceWizardPhotosPage,
+          ),
+        title: $localize`:@@admin.spaceWizard.photos.pageTitle:Nuevo espacio: fotos`,
+        data: {
+          step: 3,
+          description: $localize`:@@admin.spaceWizard.photos.pageDescription:Sube las fotos del espacio y elige cuál será la portada del catálogo.`,
+        },
+      },
+      {
+        path: 'review',
+        canActivate: [
+          spaceWizardRestartGuard,
+          spaceWizardIdentityGuard,
+          spaceWizardUsageGuard,
+          spaceWizardSchedulesGuard,
+          spaceWizardPhotosGuard,
+        ],
+        loadComponent: () =>
+          import('./presentation/space-wizard-review-page/space-wizard-review-page').then(
+            (m) => m.SpaceWizardReviewPage,
+          ),
+        title: $localize`:@@admin.spaceWizard.review.pageTitle:Nuevo espacio: revisar y publicar`,
+        data: {
+          step: 4,
+          description: $localize`:@@admin.spaceWizard.review.pageDescription:Revisa todos los datos del espacio antes de publicarlo en el catálogo.`,
+        },
+      },
+    ],
+  },
+  {
+    // Deliberately not behind `adminSpaceGuard`: that guard answers "can the panel operate this
+    // space", and an archived one cannot — yet the edit screen is exactly where it is restored
+    // from. An id that is not a space renders this page's own error state, which is the honest
+    // answer for a stale link.
+    path: 'spaces/:spaceId/edit',
+    loadComponent: () =>
+      import('./presentation/space-edit-page/space-edit-page').then((m) => m.SpaceEditPage),
+    title: $localize`:@@admin.spaceEdit.pageTitle:Editar espacio`,
+    data: {
+      description: $localize`:@@admin.spaceEdit.pageDescription:Cambia la información, los horarios y las fotos de un espacio, o retíralo del catálogo.`,
     },
   },
   {

@@ -1,0 +1,188 @@
+@if (detail.isLoading()) {
+  <div class="skeleton" [tuiSkeleton]="true"></div>
+} @else if (detail.error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.spaceEdit.error.heading"
+    heading="No pudimos cargar este espacio"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="retry()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (detail.value(); as space) {
+  <header class="intro">
+    <div class="intro__text">
+      <h1>{{ space.name }}</h1>
+      <p class="intro__lead">{{ space.spaceTypeName }} · {{ space.location }}</p>
+    </div>
+
+    @if (space.archived) {
+      <span tuiBadge appearance="neutral" i18n="@@admin.spaces.archivedBadge">Archivado</span>
+    }
+  </header>
+
+  <section tuiCardLarge tuiSurface tuiAppearance="outline" class="section">
+    <h2 class="section__title" i18n="@@admin.spaceSection.identity">Identidad</h2>
+
+    <app-space-identity-form
+      [value]="identityValue()"
+      (valueChange)="identity.set($event)"
+      [types]="types.value()"
+      [disabled]="savingIdentity()"
+    />
+
+    <div class="section__actions">
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="primary"
+        [disabled]="!identityValid() || savingIdentity()"
+        (click)="saveIdentity()"
+      >
+        <tui-loader [loading]="savingIdentity()" [inheritColor]="true" [overlay]="true">
+          <span i18n="@@admin.spaceEdit.save">Guardar</span>
+        </tui-loader>
+      </button>
+    </div>
+  </section>
+
+  <section tuiCardLarge tuiSurface tuiAppearance="outline" class="section">
+    <h2 class="section__title" i18n="@@admin.spaceSection.usage">Uso</h2>
+
+    <app-space-usage-form
+      [value]="usageValue()"
+      (valueChange)="usage.set($event)"
+      [disabled]="savingUsage()"
+    />
+
+    <div class="section__actions">
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="primary"
+        [disabled]="!usageValid() || savingUsage()"
+        (click)="saveUsage()"
+      >
+        <tui-loader [loading]="savingUsage()" [inheritColor]="true" [overlay]="true">
+          <span i18n="@@admin.spaceEdit.save">Guardar</span>
+        </tui-loader>
+      </button>
+    </div>
+  </section>
+
+  <section tuiCardLarge tuiSurface tuiAppearance="outline" class="section">
+    <h2 class="section__title" i18n="@@admin.spaceSection.schedules">Horarios</h2>
+
+    <app-space-schedule-editor
+      [value]="scheduleValue()"
+      (valueChange)="schedules.set($event)"
+      [disabled]="savingSchedules()"
+    />
+
+    <div class="section__actions">
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="primary"
+        [disabled]="!schedulesValid() || savingSchedules()"
+        (click)="saveSchedules()"
+      >
+        <tui-loader [loading]="savingSchedules()" [inheritColor]="true" [overlay]="true">
+          <span i18n="@@admin.spaceEdit.save">Guardar</span>
+        </tui-loader>
+      </button>
+    </div>
+  </section>
+
+  <!-- The photographs save as they change: adding, reordering and removing are each a request, so
+       there is nothing left for a Guardar button to do here. -->
+  <section tuiCardLarge tuiSurface tuiAppearance="outline" class="section">
+    <h2 class="section__title" i18n="@@admin.spaceSection.photos">Fotos</h2>
+
+    <app-space-photo-editor
+      [photos]="photoItems()"
+      [remaining]="remainingPhotos()"
+      [disabled]="savingPhotos()"
+      (filesPicked)="addPhotos($event)"
+      (moved)="movePhoto($event.from, $event.to)"
+      (coverSet)="setCover($event)"
+      (removed)="removePhoto($event)"
+    />
+  </section>
+
+  <section tuiCardLarge tuiSurface tuiAppearance="outline" class="section section--danger">
+    <h2 class="section__title" i18n="@@admin.spaceArchive.title">Retirar el espacio</h2>
+
+    @if (space.archived) {
+      <p class="section__text" i18n="@@admin.spaceArchive.archivedLead">
+        Este espacio está archivado: no aparece en el catálogo y no se puede reservar. Su historial
+        de reservas se conserva.
+      </p>
+
+      <div class="section__actions">
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          appearance="outline"
+          iconStart="@tui.archive-restore"
+          [disabled]="archiving()"
+          (click)="restore()"
+        >
+          <tui-loader [loading]="archiving()" [inheritColor]="true" [overlay]="true">
+            <span i18n="@@admin.spaceArchive.restore">Restaurar espacio</span>
+          </tui-loader>
+        </button>
+      </div>
+    } @else {
+      <p class="section__text" i18n="@@admin.spaceArchive.lead">
+        Archivar saca el espacio del catálogo sin borrar nada. Las reservas que ya existen quedan
+        suspendidas, no canceladas. Se puede restaurar.
+      </p>
+
+      <div class="section__actions">
+        <button
+          tuiButton
+          type="button"
+          size="m"
+          appearance="outline-destructive"
+          iconStart="@tui.archive"
+          [disabled]="archiving()"
+          (click)="archive()"
+        >
+          <tui-loader [loading]="archiving()" [inheritColor]="true" [overlay]="true">
+            <span i18n="@@admin.spaceArchive.archive">Archivar espacio</span>
+          </tui-loader>
+        </button>
+      </div>
+    }
+  </section>
+
+  <div class="back">
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="flat"
+      iconStart="@tui.arrow-left"
+      (click)="backToGrid()"
+      i18n="@@admin.spaceEdit.backToGrid"
+    >
+      Volver a los espacios
+    </button>
+  </div>
+}

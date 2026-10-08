@@ -1146,6 +1146,10 @@
         <source>Gestión de reservas y aforo por horario.</source>
         <target>Bookings and capacity by time slot.</target>
       </trans-unit>
+      <trans-unit id="admin.blocks.downloadReport" datatype="html">
+        <source>Descargar reporte</source>
+        <target>Download report</target>
+      </trans-unit>
       <trans-unit id="admin.blocks.count" datatype="html">
         <source>{VAR_PLURAL, plural, =0 {Sin bloques} =1 {1 bloque} other {<x id="INTERPOLATION"/> bloques}}</source>
         <target>{VAR_PLURAL, plural, =0 {No blocks} =1 {1 block} other {<x id="INTERPOLATION"/> blocks}}</target>

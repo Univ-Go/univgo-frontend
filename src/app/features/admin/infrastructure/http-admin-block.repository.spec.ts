@@ -1,6 +1,7 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { firstValueFrom } from 'rxjs';
 import { APP_CONFIG, type AppConfig } from '../../../core/config/app-config';
 import { httpErrorInterceptor } from '../../../core/http/http-error.interceptor';
 import { Logger } from '../../../core/logging/logger';
@@ -159,5 +160,29 @@ describe('HttpAdminBlockRepository', () => {
       .flush({ message: 'Space not found' }, { status: 404, statusText: 'Not Found' });
 
     expect(await detail).toBeNull();
+  });
+
+  it('downloads the day as a file named by the server', async () => {
+    const report = firstValueFrom(repository.exportBlocks(SPACE_ID, DAY));
+    const request = controller.expectOne(
+      (candidate) => candidate.url === `${API_BASE_URL}/admin/spaces/${SPACE_ID}/blocks/export`,
+    );
+
+    expect(request.request.params.get('date')).toBe('2026-09-17');
+    request.flush(new Blob(['report']), {
+      headers: { 'Content-Disposition': 'attachment; filename="aforo-2026-09-17.xlsx"' },
+    });
+
+    expect((await report).fileName).toBe('aforo-2026-09-17.xlsx');
+  });
+
+  it('names the file after the day when the server does not', async () => {
+    const report = firstValueFrom(repository.exportBlocks(SPACE_ID, DAY));
+
+    controller
+      .expectOne((candidate) => candidate.url.endsWith('/blocks/export'))
+      .flush(new Blob(['report']));
+
+    expect((await report).fileName).toBe('blocks-2026-09-17.xlsx');
   });
 });

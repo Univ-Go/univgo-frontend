@@ -12,6 +12,7 @@ import { BookingDraftStore } from './booking-draft.store';
 const CREATED: Reservation = {
   id: 'reservation-1',
   code: 'a0f3c1d2',
+  confirmationCode: '146264',
   spaceId: 'court-a',
   spaceName: 'Cancha A',
   location: 'Complejo Deportivo',

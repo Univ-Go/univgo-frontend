@@ -962,13 +962,14 @@ caso aparte: es **aforo 1**. Reservar no basta — la reserva se conserva hacien
 un administrador registra escaneando el código del estudiante.
 
 **Parámetros** (van a `APP_CONFIG`, nunca quemados en el dominio): bloque `120` min, tolerancia de
-check-in `15` min, uso mínimo garantizado `75` min, `1` reserva por espacio y día, aforo por espacio.
+check-in `15` min —margen **posterior** al inicio, no una antesala—, uso mínimo garantizado `75` min,
+`1` reserva por espacio y día, aforo por espacio.
 
 **Las dos fórmulas.** Se reimplementan mal a la segunda; salen las dos de los mismos parámetros:
 
 ```
 último instante para reservar = fin del bloque − uso mínimo − tolerancia
-check-in abre   = máx( inicio − tolerancia , creación )
+check-in abre   = máx( inicio , creación )
 check-in cierra = mín( máx( inicio , creación ) + tolerancia , fin − uso mínimo )
 ```
 

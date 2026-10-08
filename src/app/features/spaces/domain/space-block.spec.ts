@@ -9,7 +9,7 @@ function block(overrides: Partial<SpaceBlock> = {}): SpaceBlock {
     endMinutes: 960,
     capacity: 20,
     free: 4,
-    checkInOpensAt: new Date(2026, 7, 17, 13, 45),
+    checkInOpensAt: new Date(2026, 7, 17, 14, 0),
     checkInClosesAt: new Date(2026, 7, 17, 14, 15),
     blocker: null,
     closureReason: null,
@@ -61,7 +61,7 @@ describe('blockerOf', () => {
 });
 
 describe('isLastMinute', () => {
-  it('reads a window that opens before the block as a booking made in advance', () => {
+  it('reads a window that opens with the block as a booking made in advance', () => {
     expect(isLastMinute(block(), MONDAY)).toBe(false);
   });
 
@@ -72,12 +72,6 @@ describe('isLastMinute', () => {
     });
 
     expect(isLastMinute(taken, MONDAY)).toBe(true);
-  });
-
-  it('does not call the very start of the block last minute', () => {
-    const taken = block({ checkInOpensAt: new Date(2026, 7, 17, 14, 0) });
-
-    expect(isLastMinute(taken, MONDAY)).toBe(false);
   });
 
   it('ignores the time of day carried by the date it is asked about', () => {

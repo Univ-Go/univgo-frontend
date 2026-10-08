@@ -15,7 +15,7 @@ function reservation(overrides: Partial<Reservation> = {}): Reservation {
     startMinutes: 840,
     endMinutes: 960,
     state: 'reserved',
-    checkInOpensAt: new Date(2026, 7, 17, 13, 45),
+    checkInOpensAt: new Date(2026, 7, 17, 14, 0),
     checkInClosesAt: new Date(2026, 7, 17, 14, 15),
     cancelledBy: null,
     closureReason: null,

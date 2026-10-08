@@ -6,6 +6,11 @@ import type { AdminBlock, AdminBlockDetail } from './attendance';
  * list is the space's own counts, and the roster is a name, a document and a school per person. A
  * list that carried every roster would be seven of those to draw seven rows.
  */
+export interface BlockReport {
+  readonly fileName: string;
+  readonly content: Blob;
+}
+
 export abstract class AdminBlockRepository {
   abstract blocksOf(spaceId: string, date: Date): Observable<readonly AdminBlock[]>;
 
@@ -18,6 +23,8 @@ export abstract class AdminBlockRepository {
     date: Date,
     start: Date,
   ): Observable<AdminBlockDetail | null>;
+
+  abstract exportBlocks(spaceId: string, date: Date): Observable<BlockReport>;
 }
 
 /**

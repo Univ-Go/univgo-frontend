@@ -1,9 +1,9 @@
-import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { DOCUMENT, DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Params } from '@angular/router';
-import { TuiButton } from '@taiga-ui/core';
+import { TuiButton, TuiLoader } from '@taiga-ui/core';
 import { TuiSkeleton } from '@taiga-ui/kit';
 import { APP_CONFIG } from '../../../../core/config/app-config';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
@@ -32,7 +32,7 @@ const SKELETON_ROWS = Array.from({ length: 4 }, (_, index) => index);
  */
 @Component({
   selector: 'app-blocks-page',
-  imports: [BlockDayStepper, BlockRow, DatePipe, EmptyState, TuiButton, TuiSkeleton],
+  imports: [BlockDayStepper, BlockRow, DatePipe, EmptyState, TuiButton, TuiLoader, TuiSkeleton],
   templateUrl: './blocks-page.html',
   styleUrl: './blocks-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,6 +46,7 @@ export class BlocksPage {
   private readonly repository = inject(AdminBlockRepository);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly document = inject(DOCUMENT);
 
   /**
    * Read once per render rather than on a timer: the panel is a screen somebody is standing in front
@@ -81,6 +82,34 @@ export class BlocksPage {
   protected readonly blocks = this.schedule.value;
 
   protected readonly skeletonRows = SKELETON_ROWS;
+
+  protected readonly exporting = signal(false);
+
+  /** Failures need no handling here: the interceptor already tells the user. */
+  protected exportReport(): void {
+    if (this.exporting()) {
+      return;
+    }
+
+    this.exporting.set(true);
+    this.repository.exportBlocks(this.spaceId(), this.selectedDay()).subscribe({
+      next: (report) => {
+        this.save(report.fileName, report.content);
+        this.exporting.set(false);
+      },
+      error: () => this.exporting.set(false),
+    });
+  }
+
+  private save(fileName: string, content: Blob): void {
+    const url = URL.createObjectURL(content);
+    const link = this.document.createElement('a');
+
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
 
   protected selectDay(day: Date): void {
     const iso = toIsoDate(day);

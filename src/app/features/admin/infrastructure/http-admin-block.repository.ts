@@ -9,7 +9,7 @@ import { toIsoDate } from '../../../shared/time/calendar-day';
 import { minutesOfDay } from '../../../shared/time/time-of-day';
 import type { ReservationState } from '../../my-reservations/domain/reservation';
 import { closureReasonFromName } from '../../spaces/domain/closure-reason';
-import { AdminBlockRepository } from '../domain/admin-block.repository';
+import { AdminBlockRepository, type BlockReport } from '../domain/admin-block.repository';
 import type { AdminBlock, AdminBlockDetail, Attendee } from '../domain/attendance';
 
 interface BlockSummaryDto {
@@ -82,6 +82,13 @@ function toAttendee(dto: OccupantDto): Attendee {
   };
 }
 
+/** The server names the file; the fallback only covers a response that does not. */
+function fileNameOf(contentDisposition: string | null, date: Date): string {
+  const name = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(contentDisposition ?? '')?.[1];
+
+  return name ? decodeURIComponent(name) : `blocks-${toIsoDate(date)}.xlsx`;
+}
+
 @Injectable()
 export class HttpAdminBlockRepository extends AdminBlockRepository {
   private readonly http = inject(HttpClient);
@@ -111,6 +118,21 @@ export class HttpAdminBlockRepository extends AdminBlockRepository {
         catchError((error: unknown) =>
           isAppError(error) && error.code === 'notFound' ? of(null) : throwError(() => error),
         ),
+      );
+  }
+
+  exportBlocks(spaceId: string, date: Date): Observable<BlockReport> {
+    return this.http
+      .get(`${this.baseUrl}/${spaceId}/blocks/export`, {
+        params: { date: toIsoDate(date) },
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .pipe(
+        map((response) => ({
+          fileName: fileNameOf(response.headers.get('Content-Disposition'), date),
+          content: response.body ?? new Blob(),
+        })),
       );
   }
 }

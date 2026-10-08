@@ -17,24 +17,37 @@ Este fichero no repite ninguno de los dos: sólo dice por dónde va la implement
 
 Los pasos son los de `booking-flow.md` §5 y §11.
 
-| Paso                                | Estado   | Qué lo sostiene                                      |
-| ----------------------------------- | -------- | ---------------------------------------------------- |
-| Iniciar sesión                      | **Real** | `POST /auth/login`, cookies, refresco y guards       |
-| Catálogo de espacios                | **Real** | `GET /spaces?date=`                                  |
-| Elegir día y bloque                 | **Real** | `GET /spaces/{id}/availability?date=`                |
-| Confirmar la reserva                | **Real** | `POST /reservations`, con el aviso de último minuto  |
-| Ver el código de acceso             | **Real** | El código del servidor, dibujado como QR escaneable  |
-| Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`    |
-| Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                     |
-| Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante      |
-| Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso    |
-| Panel: bloques del día y su detalle | **Real** | `GET /admin/spaces/{id}/blocks` y `/blocks/{hora}`   |
-| Panel: cierres y mantenimiento      | **Real** | `GET/POST /admin/spaces/{id}/closures` y su `revert` |
+| Paso                                | Estado   | Qué lo sostiene                                                                     |
+| ----------------------------------- | -------- | ----------------------------------------------------------------------------------- |
+| Iniciar sesión                      | **Real** | `POST /auth/login`, cookies, refresco y guards                                      |
+| Catálogo de espacios                | **Real** | `GET /spaces?date=`                                                                 |
+| Elegir día y bloque                 | **Real** | `GET /spaces/{id}/availability?date=`                                               |
+| Confirmar la reserva                | **Real** | `POST /reservations`, con el aviso de último minuto                                 |
+| Ver el código de acceso             | **Real** | El código del servidor, dibujado como QR escaneable                                 |
+| Mis reservas y su detalle           | **Real** | `GET /reservations/me` y `GET /reservations/{id}`                                   |
+| Cancelar una reserva                | **Real** | `POST /reservations/{id}/cancel`                                                    |
+| Panel: elegir espacio               | **Real** | `GET /spaces`, el mismo catálogo del estudiante                                     |
+| Panel: escanear el check-in         | **Real** | `POST /admin/checkin/scan` con el bloque en curso                                   |
+| Panel: bloques del día y su detalle | **Real** | `GET /admin/spaces/{id}/blocks` y `/blocks/{hora}`                                  |
+| Panel: cierres y mantenimiento      | **Real** | `GET/POST /admin/spaces/{id}/closures` y su `revert`                                |
+| Panel: CRUD de espacios             | **Real** | `GET/POST /admin/spaces`, los `PUT` por sección, las imágenes y `archive`/`restore` |
 
-**El backend está completo para todo el flujo.** Lo que falta es cablear el frontend: de los catorce
-endpoints que publica para las reservas —sin contar los de sesión ni los de usuarios— hoy se llaman
-catorce. Los tres que quedan son el listado de reservas del administrador y las dos mitades de la
-configuración de la institución, que ninguna vista pide todavía.
+**El backend está completo para todo el flujo**, y el CRUD de espacios lo amplió: once endpoints
+nuevos bajo `/admin/spaces` más `GET /admin/space-types`, todos cableados. Los que siguen sin
+consumir son el listado de reservas del administrador y las dos mitades de la configuración de la
+institución, que ninguna vista pide todavía.
+
+La **`V19` ya corrió** (2026-10-08) y el esquema está verificado contra la base. Lo que queda es
+que las fotos de los seis espacios sembrados hay que **resubirlas a mano** por el CRUD nuevo: la
+fuente de verdad pasó de ser el bucket a ser `space_images`, y una migración SQL no puede ver S3.
+Hasta entonces el catálogo sale sin imágenes. Ver `database.md` §6.
+
+⚠️ **`feat/spaces-crud` necesita la `V18` de `refactor/shorter-reservation-code`.** El CRUD nació
+como `V18` y esa otra rama aplicó su propia `V18` a la base compartida primero, así que Flyway
+abortaba el arranque. El CRUD se renumeró a `V19`, pero Flyway sigue exigiendo el fichero de la
+`V18` que la base ya ejecutó: hoy está en el working tree **sin commitear**, y lo correcto es
+traerlo por cherry-pick de `356a9ed` o esperar a que esa rama entre en `main` y rebasar. Ver
+`database.md` §2.
 
 ---
 
@@ -231,25 +244,38 @@ Ninguno es un fallo de código, y los tres se ven como si lo fueran.
 - **El filtro «disponible a las» cambió de significado.** Ofrece horas cada media hora, pero ahora
   los bloques son fijos: pedir las 14:30 nunca encaja con el bloque de 14:00 y siempre responde «más
   tarde». Es correcto, y el control sugiere lo contrario. Debería ofrecer los inicios de bloque.
-- **El budget de bundle sigue sin recalibrar**, con los dos problemas que `CLAUDE.md` §12 ya
-  describe: los dos paquetes de idioma de Taiga viajan en cada build y `@angular/forms` acaba en el
-  inicial.
+- **El budget de bundle está tres veces por encima de la realidad.** Remedido con el CRUD de
+  espacios puesto: el inicial son **168 kB en crudo / 32 kB transferidos**, no los 507 kB que
+  `CLAUDE.md` §12 daba —esa cifra era de cuando sólo existía el login, y Angular ahora saca el
+  andamiaje de Taiga a un chunk perezoso—. Un budget de 500/650 kB no detectaría una regresión
+  aunque el inicial se duplicara: hay que bajarlo a propósito. Los dos paquetes de idioma de Taiga
+  siguen viajando en cada build, pero **ya no en el inicial**.
+- **`AdminSpacesStore.refresh()` no llegaba a las vistas vivas, y ya sí.** Sólo descartaba un
+  observable cacheado, así que invalidaba la caché para los _futuros_ suscriptores y dejaba a los
+  actuales sobre el replay viejo. `AdminHeader` se suscribe una vez, al construirse, y `AdminLayout`
+  no se destruye dentro de `/admin`: crear o archivar un espacio dejaba el selector del shell
+  obsoleto el resto de la sesión. Ahora la caché pasa por un subject.
 - **Mobile no se ha probado en un viewport real.** Las vistas se construyeron responsive, pero la
   comprobación sigue pendiente desde el bootstrap.
 
-### 4.6 Lo que el cierre de espacios dejó pendiente
+### 4.6 Lo que el cierre de espacios y el CRUD dejaron pendiente
 
 `booking-flow.md` §12 está implementado en los dos lados: `space_closures`, el estado `suspended`,
 el veredicto «cerrado» del escáner, `cancelledBy` en la respuesta y el interruptor de mantenimiento
 convertido en un cierre sin fecha de fin. Queda el rastro:
 
-- **La `V14` no se ha ejecutado.** Corre la próxima vez que alguien arranque el backend, y migra los
-  espacios con `under_maintenance = true` a un cierre indefinido. La base es compartida.
+- ~~**La `V14` no se ha ejecutado.**~~ **Sí se ejecutó**, el 2026-09-18. Comprobado consultando
+  `flyway_schema_history`, no leyendo el repo: esta nota llevaba desfasada desde entonces.
 - **`spaces.under_maintenance` queda huérfana.** El código ya no la lee ni la escribe; se retira en
   una migración posterior, cuando esté claro que nada la mira.
 - **La reserva cancelada a mano por un administrador no dice por qué.** `cancelledBy` sí llega; el
   motivo sólo existe cuando la cancelación viene de un cierre, que es el único sitio donde alguien
   lo escribió.
+- **Las fotos de los seis espacios siguen sin resubir.** La `V19` ya corrió, así que el catálogo
+  sale sin imágenes hasta que alguien las suba por el CRUD. Ver `database.md` §6.
+- **Una creación de espacio revertida puede dejar objetos huérfanos en S3.** La atomicidad entre
+  Postgres y S3 no existe; lo que se garantiza es que nunca se _vea_ un espacio a medio publicar. El
+  borrado de esos objetos es best effort.
 - **El escáner no sabe pintar el veredicto «cerrado».** «Mis reservas» ya enseña la suspensión
   —badge `Suspendida`, motivo del cierre y qué pasa si reabre— y distingue la reserva que canceló
   el espacio, con su motivo, de la que canceló el estudiante; el roster del panel también lista las
@@ -271,11 +297,14 @@ espacio la suspende sin destruirla.
 
 Lo que queda son remates, no funcionalidad que falte:
 
-1. **Arrancar el backend para que corra la `V14`** —crea `space_closures` y migra el mantenimiento—
-   y comprobar el ciclo contra la base: cerrar, ver la reserva suspendida, reabrir y verla volver.
-2. **Pintar el veredicto «cerrado» en el escáner**: «Mis reservas» ya enseña la suspensión y
+1. **Resolver la `V18` en `feat/spaces-crud`** —cherry-pick de `356a9ed` o rebase cuando entre en
+   `main`— porque hoy ese fichero está en el working tree sin commitear y sin él Flyway no arranca.
+2. **Resubir las fotos de los seis espacios** por el CRUD nuevo: la fuente de verdad pasó del bucket
+   a `space_images` y hasta entonces el catálogo sale sin imágenes. Luego borrar del bucket las
+   claves heredadas `spaces/{spaceId}/{fichero}`.
+3. **Pintar el veredicto «cerrado» en el escáner**: «Mis reservas» ya enseña la suspensión y
    quién canceló; el escáner todavía no distingue un espacio cerrado.
-3. **Retirar `spaces.under_maintenance`** con una migración, cuando esté claro que nada la mira.
+4. **Retirar `spaces.under_maintenance`** con una migración, cuando esté claro que nada la mira.
 
 De la deuda, lo que conviene no dejar para después: **4.4** (los datos, porque es lo que se ve en
 una demostración) y **4.2** (los parámetros duplicados, porque cada vista nueva que los lea

@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { TuiTime } from '@taiga-ui/cdk';
-import { TuiButton, TuiDataList, TuiError } from '@taiga-ui/core';
-import { TuiInputTime } from '@taiga-ui/kit';
+import { TuiButton, TuiError } from '@taiga-ui/core';
 import type { ScheduleIssueKind } from '../../domain/space-draft';
 
 /** One row of the editor: a window of the day, its position in the whole week, and what is wrong. */
@@ -28,10 +25,18 @@ let nextDayId = 0;
  *
  * Componentised because the editor repeats it seven times, which is the case §4 of `CLAUDE.md` calls
  * repetition within a view, and because it is where the only inline field errors in the panel live.
+ *
+ * The hour fields are a plain native `<input type="time">` rather than Taiga's `tuiInputTime` or
+ * `tuiSelect`: mounting either inside this row — with or without a dropdown, with or without
+ * `tui-expand` around it — reliably freezes the tab and crashes the renderer with an out-of-memory
+ * error the first time the control appears. Verified live, repeatedly, bisecting down to this one
+ * element; not a guess. The native control needs no library wiring, so it sidesteps whatever in
+ * Taiga's textfield/dropdown machinery is cycling. Revisit once the Taiga UI bug is understood or a
+ * newer release fixes it — the project is several minors behind (§21).
  */
 @Component({
   selector: 'app-space-schedule-day',
-  imports: [FormsModule, TuiButton, TuiDataList, TuiError, TuiInputTime],
+  imports: [TuiButton, TuiError],
   templateUrl: './space-schedule-day.html',
   styleUrl: './space-schedule-day.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +44,6 @@ let nextDayId = 0;
 export class SpaceScheduleDay {
   public readonly dayName = input.required<string>();
   public readonly rows = input.required<readonly ScheduleRow[]>();
-  public readonly timeOptions = input.required<readonly TuiTime[]>();
   public readonly disabled = input(false);
   public readonly copyable = input(false);
 
@@ -64,13 +68,12 @@ export class SpaceScheduleDay {
     return `${this.dayId}-to-${index}`;
   }
 
-  protected timeOf(minutes: number): TuiTime {
-    return new TuiTime(Math.floor(minutes / MINUTES_PER_HOUR), minutes % MINUTES_PER_HOUR);
-  }
+  /** `<input type="time">`'s own value format. */
+  protected timeOf(minutes: number): string {
+    const hours = Math.floor(minutes / MINUTES_PER_HOUR);
+    const rest = minutes % MINUTES_PER_HOUR;
 
-  /** `TuiTime` has no `equals`, and two instances for the same hour are never `===`. */
-  protected isSelected(option: TuiTime, minutes: number): boolean {
-    return option.hours * MINUTES_PER_HOUR + option.minutes === minutes;
+    return `${String(hours).padStart(2, '0')}:${String(rest).padStart(2, '0')}`;
   }
 
   protected messageFor(issue: ScheduleIssueKind): string {
@@ -84,27 +87,34 @@ export class SpaceScheduleDay {
     }
   }
 
-  protected changeFrom(row: ScheduleRow, time: TuiTime | null): void {
-    if (!time) {
+  protected changeFrom(row: ScheduleRow, value: string): void {
+    const minutes = this.parse(value);
+
+    if (minutes === null) {
       return;
     }
 
-    this.windowChanged.emit({
-      index: row.index,
-      fromMinutes: time.hours * MINUTES_PER_HOUR + time.minutes,
-      toMinutes: row.toMinutes,
-    });
+    this.windowChanged.emit({ index: row.index, fromMinutes: minutes, toMinutes: row.toMinutes });
   }
 
-  protected changeTo(row: ScheduleRow, time: TuiTime | null): void {
-    if (!time) {
+  protected changeTo(row: ScheduleRow, value: string): void {
+    const minutes = this.parse(value);
+
+    if (minutes === null) {
       return;
     }
 
-    this.windowChanged.emit({
-      index: row.index,
-      fromMinutes: row.fromMinutes,
-      toMinutes: time.hours * MINUTES_PER_HOUR + time.minutes,
-    });
+    this.windowChanged.emit({ index: row.index, fromMinutes: row.fromMinutes, toMinutes: minutes });
+  }
+
+  /** Empty while the field is mid-edit; a browser never sends a malformed non-empty `HH:MM`. */
+  private parse(value: string): number | null {
+    if (!value) {
+      return null;
+    }
+
+    const [hours, minutes] = value.split(':').map(Number);
+
+    return hours * MINUTES_PER_HOUR + minutes;
   }
 }

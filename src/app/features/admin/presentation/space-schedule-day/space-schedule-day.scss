@@ -32,6 +32,34 @@
   align-items: end;
 }
 
+.row__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.row__label {
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+// A plain native control, not Taiga's textfield: see the component doc comment for why.
+.row__input {
+  box-sizing: border-box;
+  block-size: var(--tui-height-m);
+  padding-inline: var(--univgo-space-s);
+  border: 1px solid var(--univgo-border-control);
+  border-radius: var(--tui-radius-s);
+  background: var(--tui-background-base);
+  color: var(--tui-text-primary);
+  font: var(--tui-typography-body-m);
+
+  &:disabled {
+    color: var(--tui-text-secondary);
+    background: var(--tui-background-neutral-1);
+  }
+}
+
 .row__remove {
   grid-column: 1 / -1;
   justify-self: start;

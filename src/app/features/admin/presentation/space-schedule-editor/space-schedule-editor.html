@@ -15,7 +15,6 @@
       <app-space-schedule-day
         [dayName]="section.name"
         [rows]="section.rows"
-        [timeOptions]="timeOptions"
         [disabled]="disabled()"
         [copyable]="section.rows.length > 0"
         (windowAdded)="addWindow(section.dayOfWeek)"

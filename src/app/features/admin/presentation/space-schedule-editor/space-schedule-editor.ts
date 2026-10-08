@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
-import { TuiTime } from '@taiga-ui/cdk';
 import { tuiExtractI18n } from '@taiga-ui/i18n';
 import { TuiAccordion } from '@taiga-ui/kit';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
@@ -14,23 +13,6 @@ import type { ScheduleRow, ScheduleRowChange } from '../space-schedule-day/space
 import { SpaceScheduleDay } from '../space-schedule-day/space-schedule-day';
 
 const MINUTES_PER_HOUR = 60;
-
-/**
- * Half-hour steps, not hourly. A closure is registered on the hour, which is why that form offers
- * whole hours; opening hours are routinely half past.
- */
-const STEP_MINUTES = 30;
-
-const DAY_MINUTES = 24 * MINUTES_PER_HOUR;
-
-const TIME_OPTIONS: readonly TuiTime[] = Array.from(
-  { length: DAY_MINUTES / STEP_MINUTES },
-  (_, step) => {
-    const minutes = step * STEP_MINUTES;
-
-    return new TuiTime(Math.floor(minutes / MINUTES_PER_HOUR), minutes % MINUTES_PER_HOUR);
-  },
-);
 
 const DEFAULT_WINDOW = { fromMinutes: 6 * MINUTES_PER_HOUR, toMinutes: 22 * MINUTES_PER_HOUR };
 
@@ -72,8 +54,6 @@ export class SpaceScheduleEditor {
 
   /** Already in the build's language, and Monday-first, which is `day_of_week` 1. */
   private readonly shortWeekDays = tuiExtractI18n('shortWeekDays')();
-
-  protected readonly timeOptions = TIME_OPTIONS;
 
   protected readonly sections = computed<readonly DaySection[]>(() => {
     const windows = this.value();

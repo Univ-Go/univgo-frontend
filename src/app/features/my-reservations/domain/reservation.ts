@@ -31,8 +31,10 @@ export const RESERVATION_STATES: readonly ReservationState[] = [
  */
 export interface Reservation {
   readonly id: string;
-  /** What the QR encodes and what an administrator's scanner reads; also the code shown as text. */
+  /** What the QR encodes and what an administrator's scanner reads. */
   readonly code: string;
+  /** The short code shown as text, for when the QR cannot be scanned. */
+  readonly confirmationCode: string;
   readonly spaceId: string;
   readonly spaceName: string;
   readonly location: string;

@@ -12,6 +12,7 @@ function reservation(overrides: Partial<Reservation> = {}): Reservation {
   return {
     id: 'court-a',
     code: 'a0f3c1d2',
+    confirmationCode: '146264',
     spaceId: 'space-1',
     spaceName: 'Cancha de Básquetbol A',
     location: 'Complejo Deportivo Central',

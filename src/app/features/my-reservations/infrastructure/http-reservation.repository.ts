@@ -20,6 +20,7 @@ import { type BookingRequest, ReservationRepository } from '../domain/reservatio
 interface ReservationDto {
   readonly id: string;
   readonly qrCodeData: string;
+  readonly confirmationCode: string;
   readonly spaceId: string;
   readonly reservationDate: string;
   readonly blockStart: string;
@@ -72,6 +73,7 @@ function toReservation(dto: ReservationDto, space: Space): Reservation {
   return {
     id: dto.id,
     code: dto.qrCodeData,
+    confirmationCode: dto.confirmationCode,
     spaceId: dto.spaceId,
     spaceName: space.name,
     location: space.location,

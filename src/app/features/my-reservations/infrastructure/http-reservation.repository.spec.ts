@@ -31,6 +31,7 @@ const COURT: Space = {
 const RESERVATION_PAYLOAD = {
   id: 'r-1',
   qrCodeData: 'a0f3c1d2-1111-2222-3333-444455556666',
+  confirmationCode: '146264',
   userId: 'u-1',
   spaceId: 'f2e1',
   reservationDate: '2026-09-17',
@@ -114,6 +115,7 @@ describe('HttpReservationRepository', () => {
     expect(await created).toEqual({
       id: 'r-1',
       code: 'a0f3c1d2-1111-2222-3333-444455556666',
+      confirmationCode: '146264',
       spaceId: 'f2e1',
       spaceName: 'Cancha de Tenis de Campo A',
       location: 'Complejo Deportivo Central',

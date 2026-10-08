@@ -39,6 +39,50 @@ export interface SpaceSlot {
   readonly to: number;
 }
 
+/**
+ * One photograph of a space, as a URL per derivative width. The server resizes on upload and nothing
+ * resizes between it and the browser, so the surface that renders a photograph is what picks its
+ * width: a card on a phone and a banner on a desktop are not the same request.
+ *
+ * `width` and `height` are the source's, which is what lets a layout reserve the right box before
+ * the bytes arrive.
+ */
+export interface SpacePhoto {
+  readonly urls: Readonly<Record<number, string>>;
+  readonly width: number;
+  readonly height: number;
+}
+
+/**
+ * The two sizes a plate is ever rendered at: a card in a grid, and a banner on a detail view.
+ *
+ * They must stay in step with `univgo.spaces.images.widths` on the server, which is what decides
+ * which derivatives exist. Asking for a width the server does not publish is not an error —
+ * `photoUrl` falls back to the widest available — but it does mean downloading the wrong size.
+ */
+export const PLATE_WIDTH_CARD = 640;
+
+export const PLATE_WIDTH_BANNER = 960;
+
+/**
+ * Picks the narrowest derivative that still covers the size asked for, and the widest available
+ * when none does. Never upscales a request into a bigger download than the surface can show.
+ */
+export function photoUrl(photo: SpacePhoto, width: number): string | null {
+  const available = Object.keys(photo.urls)
+    .map(Number)
+    .sort((left, right) => left - right);
+
+  if (available.length === 0) {
+    return null;
+  }
+
+  const chosen =
+    available.find((candidate) => candidate >= width) ?? available[available.length - 1];
+
+  return photo.urls[chosen];
+}
+
 export interface Space {
   readonly id: string;
   readonly name: string;
@@ -53,7 +97,7 @@ export interface Space {
   readonly closedOnDate: boolean;
   readonly freeSlots: readonly SpaceSlot[];
   /** Ordered by the backend; the first is the cover shown wherever a space gets one image. */
-  readonly images: readonly string[];
+  readonly images: readonly SpacePhoto[];
   /** What the space says about itself: what it is and what it is for. */
   readonly description: string;
   /**

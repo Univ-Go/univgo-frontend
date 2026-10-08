@@ -15,6 +15,7 @@ import { SpaceAvailabilityBadge } from '../space-availability-badge/space-availa
 import { SpaceBookAction } from '../space-book-action/space-book-action';
 import { SpaceBriefing } from '../space-briefing/space-briefing';
 import { spaceCategoryIcon, spaceCategoryName } from '../space-category';
+import { PLATE_WIDTH_BANNER, type SpacePhoto, photoUrl } from '../../domain/space';
 
 const MINUTES_PER_HOUR = 60;
 
@@ -101,4 +102,9 @@ export class SpaceDetailPage {
 
   /** Which photograph of the album is showing; the carousel is bounded to the album's length. */
   protected readonly slide = signal(0);
+
+  /** A banner renders the plate large, so it asks for the wide derivative. */
+  protected bannerUrl(photo: SpacePhoto | undefined): string | null {
+    return photo ? photoUrl(photo, PLATE_WIDTH_BANNER) : null;
+  }
 }

@@ -76,8 +76,7 @@
     <app-media-plate
       class="detail__media"
       [icon]="categoryIcon(reservation.category)"
-      [imageUrl]="reservation.images[0]"
-      [width]="960"
+      [imageUrl]="bannerUrl(reservation.images[0])"
     />
 
     @if (showsPass()) {

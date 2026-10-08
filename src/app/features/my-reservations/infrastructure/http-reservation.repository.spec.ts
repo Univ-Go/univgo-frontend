@@ -25,7 +25,7 @@ const COURT: Space = {
   opensOnDate: true,
   closedOnDate: false,
   freeSlots: [],
-  images: ['https://cdn.univgo.test/court-a.jpg'],
+  images: [{ urls: { 640: 'https://cdn.univgo.test/court-a-640.jpg' }, width: 640, height: 480 }],
   description: 'Cancha de tenis de campo en superficie dura.',
   rules: ['Usa calzado de tenis de suela lisa.'],
 };
@@ -120,7 +120,9 @@ describe('HttpReservationRepository', () => {
       spaceName: 'Cancha de Tenis de Campo A',
       location: 'Complejo Deportivo Central',
       category: 'sports',
-      images: ['https://cdn.univgo.test/court-a.jpg'],
+      images: [
+        { urls: { 640: 'https://cdn.univgo.test/court-a-640.jpg' }, width: 640, height: 480 },
+      ],
       rules: ['Usa calzado de tenis de suela lisa.'],
       date: new Date(2026, 8, 17),
       startMinutes: 840,
@@ -145,7 +147,9 @@ describe('HttpReservationRepository', () => {
     const [reservation] = await mine;
 
     expect(reservation.spaceName).toBe('Cancha de Tenis de Campo A');
-    expect(reservation.images).toEqual(['https://cdn.univgo.test/court-a.jpg']);
+    expect(reservation.images).toEqual([
+      { urls: { 640: 'https://cdn.univgo.test/court-a-640.jpg' }, width: 640, height: 480 },
+    ]);
     expect(reservation.state).toBe('inProgress');
   });
 

@@ -21,17 +21,15 @@ import { TuiSkeleton } from '@taiga-ui/kit';
  * while the image streams in, read as a red flash popping into a photo. `alt=""` is deliberate: the
  * space name already sits next to the plate as text, so the image is decorative to a screen reader.
  *
- * Uploaded photos arrive as full camera-resolution files (multi-megapixel, several hundred KB) with
- * no cache header — the upload pipeline has no resizing step yet. Rather than ship that weight to a
- * thumbnail, `imageUrl` is routed through the platform's image optimizer
- * (`/_vercel/image?url=...&w=...&q=...`), which resizes and caches it at the edge; `width` is how
- * large the host actually renders it. Local dev has no optimizer to answer that path, so a failure
- * there falls back to the original URL once — slower, but the same behaviour the app had before
- * this existed, not a broken plate.
+ * **No image optimizer sits in front of this, and the plate does not choose a size.** The server
+ * resizes a photograph on upload and publishes one URL per width; picking which one belongs to the
+ * surface that knows how large it renders — `photoUrl` in the spaces domain. Routing these through
+ * the platform optimizer was worse than useless: the URLs are signed and rotate every 55 minutes,
+ * so every rotation was a cache miss and a billed transformation of an image that was already the
+ * right size.
  *
- * `width` must be one of the sizes declared in `vercel.json`; an unlisted one is rejected outright
- * rather than resized to the nearest. The fallback would hide that, so the two lists are kept in
- * step deliberately.
+ * A `blob:` from `URL.createObjectURL` works here unchanged, which is what lets the creation wizard
+ * preview a file that has not been uploaded yet.
  */
 @Component({
   selector: 'app-media-plate',
@@ -94,7 +92,7 @@ import { TuiSkeleton } from '@taiga-ui/kit';
       <img
         class="photo"
         [class.photo--pending]="!loaded()"
-        [src]="displayUrl()"
+        [src]="src"
         alt=""
         loading="lazy"
         decoding="async"
@@ -113,49 +111,28 @@ import { TuiSkeleton } from '@taiga-ui/kit';
 export class MediaPlate {
   public readonly icon = input.required<string>();
   public readonly imageUrl = input<string | null>(null);
-  /** The largest CSS pixel size this host ever renders the photo at; a card and a banner differ. */
-  public readonly width = input(640);
 
-  protected readonly loadedSrc = signal<string | null>(null);
-  private readonly proxyFailed = signal(false);
+  private readonly loadedSrc = signal<string | null>(null);
 
-  protected readonly displayUrl = computed(() => {
-    const src = this.imageUrl();
-
-    if (!src) {
-      return null;
-    }
-
-    if (this.proxyFailed()) {
-      return src;
-    }
-
-    const params = new URLSearchParams({ url: src, w: String(this.width()), q: '75' });
-
-    return `/_vercel/image?${params}`;
-  });
-
-  protected readonly loaded = computed(() => this.loadedSrc() === this.displayUrl());
+  protected readonly loaded = computed(() => this.loadedSrc() === this.imageUrl());
 
   constructor() {
     effect(() => {
       this.imageUrl();
-      this.proxyFailed.set(false);
       this.loadedSrc.set(null);
     });
   }
 
   protected onLoad(): void {
-    this.loadedSrc.set(this.displayUrl());
+    this.loadedSrc.set(this.imageUrl());
   }
 
+  /**
+   * A photograph that will not load would leave the skeleton showing forever, which reads as a
+   * stuck page. Treating the failure as settled shows the browser's own broken-image state, which
+   * is at least honest.
+   */
   protected onError(): void {
-    if (this.proxyFailed()) {
-      this.loadedSrc.set(this.displayUrl());
-
-      return;
-    }
-
-    this.proxyFailed.set(true);
+    this.loadedSrc.set(this.imageUrl());
   }
 }

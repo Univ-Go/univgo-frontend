@@ -13,8 +13,7 @@
       <app-media-plate
         class="schedule__media"
         [icon]="icon()"
-        [imageUrl]="space.images[0]"
-        [width]="960"
+        [imageUrl]="bannerUrl(space.images[0])"
       />
 
       <!-- `tuiChip` draws its icon through the icons directive, not as a child element: a nested

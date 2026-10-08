@@ -7,6 +7,7 @@ import { createAppError, isAppError } from '../../../../core/errors/app-error';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { formatTimeRange } from '../../../../shared/time/time-of-day';
+import { PLATE_WIDTH_BANNER, photoUrl } from '../../../spaces/domain/space';
 import { SpaceBriefing } from '../../../spaces/presentation/space-briefing/space-briefing';
 import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import { BookingDraftStore } from '../../application/booking-draft.store';
@@ -55,9 +56,9 @@ export class BookingReviewPage {
   });
 
   protected readonly coverImage = computed(() => {
-    const booking = this.booking();
+    const cover = this.booking()?.space.images[0];
 
-    return booking?.space.images[0] ?? null;
+    return cover ? photoUrl(cover, PLATE_WIDTH_BANNER) : null;
   });
 
   protected readonly range = computed(() => {

@@ -1,5 +1,5 @@
 import type { ClosureReason } from '../../spaces/domain/closure-reason';
-import type { SpaceCategory } from '../../spaces/domain/space';
+import type { SpaceCategory, SpacePhoto } from '../../spaces/domain/space';
 
 /**
  * The states of `docs/booking-flow.md` §7 and §12. They are never stored: the server derives each
@@ -37,7 +37,7 @@ export interface Reservation {
   readonly spaceName: string;
   readonly location: string;
   readonly category: SpaceCategory;
-  readonly images: readonly string[];
+  readonly images: readonly SpacePhoto[];
   /** The space's own rules, carried along like its name: the pass is where they are read again. */
   readonly rules: readonly string[];
   readonly date: Date;

@@ -4,6 +4,7 @@ import { TuiAppearance, TuiButton, TuiIcon } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
 import { MediaPlate } from '../../../../shared/media-plate/media-plate';
 import { BookingDraftStore } from '../../../booking/application/booking-draft.store';
+import { PLATE_WIDTH_CARD, photoUrl } from '../../domain/space';
 import type { ListedSpace } from '../../domain/space';
 import { SpaceBookAction } from '../space-book-action/space-book-action';
 import { spaceCategoryIcon } from '../space-category';
@@ -54,7 +55,12 @@ export class SpaceCard {
 
   protected readonly icon = computed(() => spaceCategoryIcon(this.listed().space.category));
 
-  protected readonly coverImage = computed(() => this.listed().space.images[0] ?? null);
+  /** A card renders the plate at card width, so it asks for the small derivative. */
+  protected readonly coverImage = computed(() => {
+    const cover = this.listed().space.images[0];
+
+    return cover ? photoUrl(cover, PLATE_WIDTH_CARD) : null;
+  });
 
   protected readonly bookable = computed(() => this.listed().availability.kind === 'free');
 

@@ -9,6 +9,7 @@ import { spaceCategoryIcon } from '../../../spaces/presentation/space-category';
 import { type Reservation, hasUsablePass, isCancellable } from '../../domain/reservation';
 import { ReservationInterruptionNotice } from '../reservation-interruption-notice/reservation-interruption-notice';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
+import { PLATE_WIDTH_CARD, photoUrl } from '../../../spaces/domain/space';
 
 /**
  * Feature-level card: every view that lists reservations renders the same summary, so the state
@@ -60,4 +61,10 @@ export class ReservationCard {
   protected readonly canCancel = computed(() => isCancellable(this.reservation()));
 
   protected readonly hasPass = computed(() => hasUsablePass(this.reservation()));
+  /** A card renders the plate at card width, so it asks for the small derivative. */
+  protected readonly coverUrl = computed(() => {
+    const cover = this.reservation().images[0];
+
+    return cover ? photoUrl(cover, PLATE_WIDTH_CARD) : null;
+  });
 }

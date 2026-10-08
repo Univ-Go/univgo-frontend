@@ -582,6 +582,10 @@
         <source> Todos los tipos </source>
         <target> All types </target>
       </trans-unit>
+      <trans-unit id="spaces.filters.showingDate" datatype="html">
+        <source> Mostrando disponibilidad para <x id="INTERPOLATION" equiv-text="{{ date().toLocalNativeDate() | date: &apos;EEEE d MMMM&apos; }}"/> </source>
+        <target> Showing availability for <x id="INTERPOLATION" equiv-text="{{ date().toLocalNativeDate() | date: &apos;EEEE d MMMM&apos; }}"/> </target>
+      </trans-unit>
       <trans-unit id="spaces.filters.date" datatype="html">
         <source>Fecha</source>
         <target>Date</target>

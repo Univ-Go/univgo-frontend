@@ -246,7 +246,7 @@ tiempo de usarlas de verdad.
 ## 11. Qué necesita el panel de administrador
 
 El check-in vive en el panel, así que el flujo sólo se sostiene si el administrador tiene estas
-cuatro cosas.
+cinco cosas.
 
 **Escanear.** La pantalla principal y casi la única: cámara apuntando a un código, o un campo para
 teclearlo. Cada escaneo tiene que dar una respuesta inequívoca a un metro de distancia y con alguien
@@ -281,6 +281,17 @@ nada. El bloque en curso no es un caso aparte: es una fila más de la lista, mar
 **Cerrar un espacio, y volver a abrirlo.** Para mantenimiento imprevisto, cierre anticipado o
 incidencias. Es lo que §12 define, y no es lo mismo que cancelar: cancelar las reservas de un
 espacio es una segunda acción, explícita y sin vuelta atrás.
+
+**Gestionar el catálogo de espacios.** Crear un espacio, corregirlo y retirarlo. Nada de lo
+anterior existe hasta que alguien dice que el espacio existe, cuánta gente cabe, cuándo abre y qué
+normas tiene — y durante el piloto eso lo sembró una migración, con texto de relleno. Un espacio se
+crea completo, en un asistente por pasos, porque publicarlo a medias significa enseñar en el
+catálogo un espacio sin horario, que no ofrece ningún bloque, o sin foto, que se lee como algo sin
+terminar. Corregirlo después es otra pantalla: a esas alturas el orden ya no importa y obligar a
+recorrer cinco pasos para cambiar un aforo sería trabajo inventado.
+
+Vive en la misma rejilla que ya era el selector de espacios (`/admin/spaces`), no en una sección
+aparte: una segunda lista de espacios en el panel sería una segunda respuesta a «qué espacios hay».
 
 **Un administrador gestiona varios espacios.** Todo lo anterior está siempre situado en uno: el
 escáner comprueba contra el bloque en curso de un espacio concreto, y la lista muestra el día de un
@@ -358,6 +369,24 @@ leen igual.
 en lugar de un aforo que ya no significa nada. Un bloque cerrado que se muestra disponible es peor
 que no mostrar nada, porque invita a contar con plazas que no existen.
 
+### Archivar no es cerrar, y ninguna de las dos es cancelar
+
+Son tres acciones y se confunden con facilidad, así que: **cerrar** suspende el espacio durante un
+rango de tiempo y se revierte; **archivar** lo retira del catálogo para siempre jamás —salvo que
+alguien lo restaure— y además abre un cierre indefinido, para que sus reservas se lean suspendidas
+en lugar de desaparecer sin explicación; **cancelar las reservas de un espacio** es la única de las
+tres que destruye algo, y por eso sigue siendo una acción aparte, explícita y sin vuelta atrás.
+
+Un espacio archivado **no se borra**: sus reservas son historia y la clave ajena que las une a él no
+tiene borrado en cascada, así que un `DELETE` duro o fallaría o se llevaría por delante lo que pasó.
+Sale del catálogo, sale del selector del panel, y el escáner y la consulta de bloques lo rechazan
+igual que a un espacio que nunca existió. Lo único que sigue abierto para él es su propia pantalla de
+edición, que es desde donde se restaura.
+
+Restaurar **no reabre** el espacio: devuelve la fila al catálogo y deja el cierre indefinido en pie.
+Volver a la lista y volver a estar operativo son dos decisiones, igual que ya se comportaba el
+interruptor de fuera de servicio.
+
 ### El registro
 
 Un cierre guarda: el espacio, desde cuándo, hasta cuándo —vacío si es indefinido—, el motivo, un
@@ -394,6 +423,15 @@ notificar a un estudiante** fuera de la propia aplicación.
 resultado de comparar el reloj con dos marcas de tiempo. Se calculan con una función pura a la que
 se le pasa el instante actual, en lugar de programar tareas que reescriban filas. No hace falta
 ningún planificador, y las pruebas quedan deterministas porque el «ahora» es un parámetro.
+
+**Dos franjas del mismo día no pueden compartir ni un minuto.** `BlockGenerator` recorre las
+ventanas de un día una a una y añade los bloques de cada una, así que dos que se solapan generan los
+bloques que comparten **dos veces**: el estudiante vería la misma hora repetida y el panel contaría
+su aforo doble. La `V16` arregló el caso del duplicado exacto con una restricción de unicidad, pero
+`06:00–12:00` junto a `10:00–22:00` la cumple y tiene el mismo efecto, así que la regla vive en el
+dominio (`SpaceScheduleSet`) y el editor de horarios la espeja para no obligar a un viaje al
+servidor. Dos franjas que sólo se tocan —`12:00–14:00` y `14:00–16:00`— son legales: no comparten
+ningún minuto.
 
 **La autoridad es el servidor.** El reloj del móvil no es de fiar y la liberación de una plaza
 afecta a otras personas, así que la verdad vive en el backend. El frontend deriva de esas marcas lo

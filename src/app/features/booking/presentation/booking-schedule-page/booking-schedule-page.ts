@@ -13,6 +13,7 @@ import { spaceCategoryIcon, spaceCategoryName } from '../../../spaces/presentati
 import { BookingDraftStore } from '../../application/booking-draft.store';
 
 import { BookingSlotPicker } from '../booking-slot-picker/booking-slot-picker';
+import { PLATE_WIDTH_BANNER, type SpacePhoto, photoUrl } from '../../../spaces/domain/space';
 
 /**
  * Step two: when. The space is settled by the time this view renders — `bookingSpaceGuard` puts it
@@ -78,5 +79,10 @@ export class BookingSchedulePage {
     if (booking) {
       void this.router.navigate(['/book', booking.space.id, 'review']);
     }
+  }
+
+  /** A banner renders the plate large, so it asks for the wide derivative. */
+  protected bannerUrl(photo: SpacePhoto | undefined): string | null {
+    return photo ? photoUrl(photo, PLATE_WIDTH_BANNER) : null;
   }
 }

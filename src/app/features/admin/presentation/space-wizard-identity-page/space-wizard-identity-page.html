@@ -1,0 +1,31 @@
+<header class="intro">
+  <h1 i18n="@@admin.spaceWizard.identity.title">¿Qué espacio es?</h1>
+  <p class="intro__lead" i18n="@@admin.spaceWizard.identity.lead">
+    Cómo se llama, dónde está y cuánta gente cabe en cada bloque.
+  </p>
+</header>
+
+@if (types.isLoading()) {
+  <div class="skeleton" [tuiSkeleton]="true"></div>
+} @else {
+  <app-space-identity-form
+    [value]="draft.identity()"
+    (valueChange)="draft.setIdentity($event)"
+    [types]="types.value()"
+  />
+}
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="primary"
+    iconEnd="@tui.arrow-right"
+    [disabled]="!valid()"
+    (click)="continue()"
+    i18n="@@admin.spaceWizard.continue"
+  >
+    Continuar
+  </button>
+</div>

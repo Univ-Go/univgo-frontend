@@ -1722,6 +1722,444 @@
         <source> Cancela las reservas que aún no han terminado. A diferencia de un cierre, no se puede deshacer: los estudiantes las verán canceladas y podrán reservar en otro sitio. </source>
         <target> Cancels the bookings that have not ended yet. Unlike a closure, it cannot be undone: students will see them as cancelled and can book somewhere else. </target>
       </trans-unit>
+      <trans-unit id="admin.spaceWizard.identity.pageTitle" datatype="html">
+        <source>Nuevo espacio: identidad</source>
+        <target>New space: identity</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.identity.pageDescription" datatype="html">
+        <source>Pon nombre, ubicación, tipo y aforo al espacio que vas a crear.</source>
+        <target>Give the space you are creating a name, a location, a type and a capacity.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.usage.pageTitle" datatype="html">
+        <source>Nuevo espacio: uso</source>
+        <target>New space: usage</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.usage.pageDescription" datatype="html">
+        <source>Describe para qué sirve el espacio y qué normas debe respetar quien lo reserva.</source>
+        <target>Describe what the space is for and which rules whoever books it has to follow.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.schedules.pageTitle" datatype="html">
+        <source>Nuevo espacio: horarios</source>
+        <target>New space: opening hours</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.schedules.pageDescription" datatype="html">
+        <source>Define las franjas horarias de cada día de la semana, que son las que generan los bloques reservables.</source>
+        <target>Set each weekday's opening windows, which are what generate the bookable blocks.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.photos.pageTitle" datatype="html">
+        <source>Nuevo espacio: fotos</source>
+        <target>New space: photos</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.photos.pageDescription" datatype="html">
+        <source>Sube las fotos del espacio y elige cuál será la portada del catálogo.</source>
+        <target>Upload the space's photos and choose which one is the catalogue cover.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.review.pageTitle" datatype="html">
+        <source>Nuevo espacio: revisar y publicar</source>
+        <target>New space: review and publish</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.review.pageDescription" datatype="html">
+        <source>Revisa todos los datos del espacio antes de publicarlo en el catálogo.</source>
+        <target>Check every detail of the space before publishing it to the catalogue.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.pageTitle" datatype="html">
+        <source>Editar espacio</source>
+        <target>Edit space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.pageDescription" datatype="html">
+        <source>Cambia la información, los horarios y las fotos de un espacio, o retíralo del catálogo.</source>
+        <target>Change a space's information, opening hours and photos, or retire it from the catalogue.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.leave.title" datatype="html">
+        <source>¿Salir sin crear el espacio?</source>
+        <target>Leave without creating the space?</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.leave.content" datatype="html">
+        <source>Se perderá todo lo que escribiste, incluidas las fotos que subiste.</source>
+        <target>Everything you typed will be lost, including the photos you uploaded.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.leave.confirm" datatype="html">
+        <source>Salir</source>
+        <target>Leave</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.leave.stay" datatype="html">
+        <source>Seguir aquí</source>
+        <target>Stay here</target>
+      </trans-unit>
+      <trans-unit id="weekday.monday" datatype="html">
+        <source>Lunes</source>
+        <target>Monday</target>
+      </trans-unit>
+      <trans-unit id="weekday.tuesday" datatype="html">
+        <source>Martes</source>
+        <target>Tuesday</target>
+      </trans-unit>
+      <trans-unit id="weekday.wednesday" datatype="html">
+        <source>Miércoles</source>
+        <target>Wednesday</target>
+      </trans-unit>
+      <trans-unit id="weekday.thursday" datatype="html">
+        <source>Jueves</source>
+        <target>Thursday</target>
+      </trans-unit>
+      <trans-unit id="weekday.friday" datatype="html">
+        <source>Viernes</source>
+        <target>Friday</target>
+      </trans-unit>
+      <trans-unit id="weekday.saturday" datatype="html">
+        <source>Sábado</source>
+        <target>Saturday</target>
+      </trans-unit>
+      <trans-unit id="weekday.sunday" datatype="html">
+        <source>Domingo</source>
+        <target>Sunday</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.archivedBadge" datatype="html">
+        <source>Archivado</source>
+        <target>Archived</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.missingSchedule" datatype="html">
+        <source>Sin horario: no ofrece bloques</source>
+        <target>No opening hours: offers no blocks</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.missingPhotos" datatype="html">
+        <source>Sin fotos</source>
+        <target>No photos</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.edit" datatype="html">
+        <source>Editar</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.create" datatype="html">
+        <source> Crear espacio </source>
+        <target>Create space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.archivedHeading" datatype="html">
+        <source>Espacios archivados</source>
+        <target>Archived spaces</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.archivedLead" datatype="html">
+        <source> Ya no aparecen en el catálogo ni se pueden reservar. Su historial de reservas se conserva. </source>
+        <target>They no longer appear in the catalogue and cannot be booked. Their booking history is kept.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.error.heading" datatype="html">
+        <source>No pudimos cargar este espacio</source>
+        <target>We couldn't load this space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSection.identity" datatype="html">
+        <source>Identidad</source>
+        <target>Identity</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.save" datatype="html">
+        <source>Guardar</source>
+        <target>Save</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSection.usage" datatype="html">
+        <source>Uso</source>
+        <target>Usage</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSection.schedules" datatype="html">
+        <source>Horarios</source>
+        <target>Opening hours</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSection.photos" datatype="html">
+        <source>Fotos</source>
+        <target>Photos</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.title" datatype="html">
+        <source>Retirar el espacio</source>
+        <target>Retire the space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.archivedLead" datatype="html">
+        <source> Este espacio está archivado: no aparece en el catálogo y no se puede reservar. Su historial de reservas se conserva. </source>
+        <target>This space is archived: it does not appear in the catalogue and cannot be booked. Its booking history is kept.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.restore" datatype="html">
+        <source>Restaurar espacio</source>
+        <target>Restore space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.lead" datatype="html">
+        <source> Archivar saca el espacio del catálogo sin borrar nada. Las reservas que ya existen quedan suspendidas, no canceladas. Se puede restaurar. </source>
+        <target>Archiving takes the space out of the catalogue without deleting anything. Bookings that already exist are suspended, not cancelled. It can be restored.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.archive" datatype="html">
+        <source>Archivar espacio</source>
+        <target>Archive space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.backToGrid" datatype="html">
+        <source> Volver a los espacios </source>
+        <target>Back to spaces</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.positionLabel" datatype="html">
+        <source>Foto <x id="PH" equiv-text="index + 1"/></source>
+        <target>Photo <x id="PH" equiv-text="index + 1"/></target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.confirm.title" datatype="html">
+        <source>¿Archivar este espacio?</source>
+        <target>Archive this space?</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.confirm.content" datatype="html">
+        <source>Dejará de aparecer en el catálogo y no se podrá reservar. Las reservas que ya existen quedarán suspendidas, no canceladas, y su historial se conserva. Puedes restaurarlo después.</source>
+        <target>It will stop appearing in the catalogue and cannot be booked. Bookings that already exist will be suspended, not cancelled, and their history is kept. You can restore it later.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.confirm.yes" datatype="html">
+        <source>Archivar</source>
+        <target>Archive</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.confirm.no" datatype="html">
+        <source>Cancelar</source>
+        <target>Cancel</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.restored.summary" datatype="html">
+        <source>Espacio restaurado</source>
+        <target>Space restored</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.restored.detail" datatype="html">
+        <source>Vuelve al catálogo. Sigue cerrado hasta que reabras el cierre que creó el archivado.</source>
+        <target>It is back in the catalogue. It stays closed until you revert the closure that archiving created.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.archived.summary" datatype="html">
+        <source>Espacio archivado</source>
+        <target>Space archived</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.archived.none" datatype="html">
+        <source>Ya no aparece en el catálogo. No había reservas activas.</source>
+        <target>It no longer appears in the catalogue. There were no active bookings.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceArchive.archived.some" datatype="html">
+        <source>Ya no aparece en el catálogo. <x id="PH" equiv-text="suspended"/> reservas quedaron suspendidas.</source>
+        <target>It no longer appears in the catalogue. <x id="PH" equiv-text="suspended"/> bookings were suspended.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.saved.summary" datatype="html">
+        <source>Cambios guardados</source>
+        <target>Changes saved</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.saved.detail" datatype="html">
+        <source>Los estudiantes ya ven la información nueva.</source>
+        <target>Students can already see the new information.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.name" datatype="html">
+        <source>Nombre</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.namePlaceholder" datatype="html">
+        <source>Cancha de básquetbol</source>
+        <target>Basketball court</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.location" datatype="html">
+        <source>Ubicación</source>
+        <target>Location</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.locationPlaceholder" datatype="html">
+        <source>Complejo Deportivo Central</source>
+        <target>Central Sports Complex</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.type" datatype="html">
+        <source>Tipo de espacio</source>
+        <target>Space type</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.typePlaceholder" datatype="html">
+        <source>Selecciona un tipo…</source>
+        <target>Choose a type…</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.typeHint" datatype="html">
+        <source> El tipo decide la categoría con la que el espacio aparece en el catálogo. </source>
+        <target>The type decides which category the space appears under in the catalogue.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.capacity" datatype="html">
+        <source>Aforo por bloque</source>
+        <target>Capacity per block</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.capacityHint" datatype="html">
+        <source> Cuántos estudiantes pueden reservar el mismo bloque. Un espacio de uso exclusivo es aforo 1. </source>
+        <target>How many students can book the same block. A space for exclusive use has a capacity of 1.</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.none" datatype="html">
+        <source> Todavía no hay fotos. La primera que subas será la portada. </source>
+        <target>No photos yet. The first one you upload will be the cover.</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.announce" datatype="html">
+        <source>Foto <x id="PH" equiv-text="position + 1"/> de <x id="PH_1" equiv-text="this.photos().length"/>. La portada es la foto 1.</source>
+        <target>Photo <x id="PH" equiv-text="position + 1"/> of <x id="PH_1" equiv-text="this.photos().length"/>. The cover is photo 1.</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.cover" datatype="html">
+        <source> Portada </source>
+        <target>Cover</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.moveUp" datatype="html">
+        <source>Mover «<x id="PH" equiv-text="this.photo().label"/>» una posición arriba</source>
+        <target>Move «<x id="PH" equiv-text="this.photo().label"/>» one position up</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.moveDown" datatype="html">
+        <source>Mover «<x id="PH" equiv-text="this.photo().label"/>» una posición abajo</source>
+        <target>Move «<x id="PH" equiv-text="this.photo().label"/>» one position down</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.makeCover" datatype="html">
+        <source>Usar «<x id="PH" equiv-text="this.photo().label"/>» como portada</source>
+        <target>Use «<x id="PH" equiv-text="this.photo().label"/>» as the cover</target>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.remove" datatype="html">
+        <source>Quitar «<x id="PH" equiv-text="this.photo().label"/>»</source>
+        <target>Remove «<x id="PH" equiv-text="this.photo().label"/>»</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.from" datatype="html">
+        <source>Abre</source>
+        <target>Opens</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.to" datatype="html">
+        <source>Cierra</source>
+        <target>Closes</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.removeWindow" datatype="html">
+        <source>Quitar franja</source>
+        <target>Remove window</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.closedDay" datatype="html">
+        <source> Cerrado todo el día. Sin franjas no se puede reservar nada este día. </source>
+        <target>Closed all day. With no windows, nothing can be booked on this day.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.addWindow" datatype="html">
+        <source> Añadir franja </source>
+        <target>Add window</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.copyToWeek" datatype="html">
+        <source>Copiar al resto de la semana</source>
+        <target>Copy to the rest of the week</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.endBeforeStart" datatype="html">
+        <source>La hora de cierre tiene que ser posterior a la de apertura.</source>
+        <target>The closing time has to be later than the opening time.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.duplicate" datatype="html">
+        <source>Esta franja está repetida en el mismo día.</source>
+        <target>This window is repeated on the same day.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.overlap" datatype="html">
+        <source>Esta franja se solapa con otra del mismo día. Dos franjas que comparten horas duplicarían los bloques.</source>
+        <target>This window overlaps another one on the same day. Two windows that share hours would generate the blocks twice.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceSchedules.closed" datatype="html">
+        <source>Cerrado</source>
+        <target>Closed</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.description" datatype="html">
+        <source>Descripción</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.descriptionPlaceholder" datatype="html">
+        <source>Qué es el espacio y para qué sirve…</source>
+        <target>What the space is and what it is for…</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.descriptionHint" datatype="html">
+        <source> Es lo primero que lee un estudiante para decidir si este es el espacio que busca. </source>
+        <target>It is the first thing a student reads to decide whether this is the space they want.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.rules" datatype="html">
+        <source>Normas de uso</source>
+        <target>Rules of use</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.rulesPlaceholder" datatype="html">
+        <source>Escribe una norma y pulsa Enter…</source>
+        <target>Type a rule and press Enter…</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceForm.rulesHint" datatype="html">
+        <source> Una norma por línea. Puedes dejarlo vacío si el espacio no tiene normas propias. </source>
+        <target>One rule per line. You can leave it empty if the space has no rules of its own.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.identity.title" datatype="html">
+        <source>¿Qué espacio es?</source>
+        <target>Which space is it?</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.identity.lead" datatype="html">
+        <source> Cómo se llama, dónde está y cuánta gente cabe en cada bloque. </source>
+        <target>What it is called, where it is and how many people fit in each block.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.continue" datatype="html">
+        <source> Continuar </source>
+        <target>Continue</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.label" datatype="html">
+        <source>Nuevo espacio</source>
+        <target>New space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.steps.label" datatype="html">
+        <source>Pasos del nuevo espacio</source>
+        <target>New space steps</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.step.review" datatype="html">
+        <source>Revisar</source>
+        <target>Review</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.cancel" datatype="html">
+        <source> Cancelar </source>
+        <target>Cancel</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.photos.title" datatype="html">
+        <source>Fotos del espacio</source>
+        <target>Photos of the space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.photos.lead" datatype="html">
+        <source> La primera es la portada: es la que se ve en el catálogo. Puedes reordenarlas. </source>
+        <target>The first one is the cover: it is the one shown in the catalogue. You can reorder them.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.back" datatype="html">
+        <source> Atrás </source>
+        <target>Back</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.review.title" datatype="html">
+        <source>Revisa antes de publicar</source>
+        <target>Review before publishing</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.review.lead" datatype="html">
+        <source> Al publicar, el espacio aparece en el catálogo y los estudiantes pueden reservarlo. </source>
+        <target>Once published, the space appears in the catalogue and students can book it.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.review.edit" datatype="html">
+        <source> Editar </source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.review.photoCount" datatype="html">
+        <source> <x id="ICU" equiv-text="{photoCount(), plural,
+      =1 {1 foto, que será la portada}
+      other {{{photoCount()}} fotos, y la primera será la portada}
+    }" xid="57202839026252588"/> </source>
+        <target> <x id="ICU" equiv-text="{photoCount(), plural,
+      =1 {1 foto, que será la portada}
+      other {{{photoCount()}} fotos, y la primera será la portada}
+    }" xid="57202839026252588"/> </target>
+      </trans-unit>
+      <trans-unit id="3488515573080183362" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 foto, que será la portada} other {<x id="INTERPOLATION"/> fotos, y la primera será la portada}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 photo, which will be the cover} other {<x id="INTERPOLATION"/> photos, and the first will be the cover}}</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.publish" datatype="html">
+        <source>Publicar espacio</source>
+        <target>Publish space</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.published.summary" datatype="html">
+        <source>Espacio publicado</source>
+        <target>Space published</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.published.detail" datatype="html">
+        <source>Ya aparece en el catálogo y se puede reservar.</source>
+        <target>It already appears in the catalogue and can be booked.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.schedules.title" datatype="html">
+        <source>¿Cuándo abre?</source>
+        <target>When does it open?</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.schedules.lead" datatype="html">
+        <source> Las franjas de cada día se parten en bloques reservables. Un día sin franjas queda cerrado. </source>
+        <target>Each day's windows are sliced into bookable blocks. A day with no windows stays closed.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.usage.title" datatype="html">
+        <source>¿Para qué sirve?</source>
+        <target>What is it for?</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceWizard.usage.lead" datatype="html">
+        <source> Lo que un estudiante lee antes de reservar: qué es el espacio y qué normas tiene. </source>
+        <target>What a student reads before booking: what the space is and which rules it has.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

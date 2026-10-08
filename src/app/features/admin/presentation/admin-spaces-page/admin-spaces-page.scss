@@ -1,3 +1,4 @@
+@use 'breakpoints' as bp;
 @use 'cards';
 
 :host {
@@ -6,10 +7,40 @@
   gap: var(--univgo-space-l);
 }
 
+// Mobile first: the heading and the action stack, and the button spans the width so it is an easy
+// target. From tablet they sit on one line with the action to the right.
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+}
+
+.intro__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
 .intro__lead {
   margin: 0;
   color: var(--tui-text-secondary);
   font: var(--tui-typography-body-m);
+}
+
+.intro__create {
+  align-self: stretch;
+}
+
+@media (width >= bp.$tablet) {
+  .intro {
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .intro__create {
+    align-self: center;
+  }
 }
 
 .grid {
@@ -23,4 +54,23 @@
 .grid__item--skeleton {
   block-size: var(--univgo-card-placeholder-height);
   border-radius: var(--tui-radius-l);
+}
+
+.archived {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  padding-block-start: var(--univgo-space-l);
+  border-block-start: 1px solid var(--tui-border-normal);
+}
+
+.archived__title {
+  margin: 0;
+  font: var(--tui-typography-heading-6);
+}
+
+.archived__lead {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
 }

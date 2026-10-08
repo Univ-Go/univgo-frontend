@@ -520,38 +520,39 @@ sobre la línea base de Taiga **sin ninguna vista** (~424 kB en crudo, ~100 kB t
 el margen es headroom para construirlas, no una medida de nada. **Remedir y ajustar** cuando el
 flujo de reservas exista: un budget que nunca se acerca al límite no detecta regresiones.
 
-#### Estado tras la vista de login (pendiente de resolver)
+#### Estado medido tras el CRUD de espacios
 
-El warning **ya salta**: 507 kB en crudo, 7 kB por encima. Medido, no estimado:
+La cifra de 507 kB que este apartado daba estaba **desfasada**: se midió cuando sólo existía el
+login. Con todas las vistas construidas, Angular saca el andamiaje de Taiga y de su propio core a un
+chunk compartido **perezoso**, así que el inicial es mucho más pequeño de lo que decía.
 
-| Fichero         | Crudo      | Transferido | Qué contiene                                                                                          |
-| --------------- | ---------- | ----------- | ----------------------------------------------------------------------------------------------------- |
-| `chunk-*.js`    | 397 kB     | 108 kB      | Angular core + router + forms, `tui-root`, scrollbar, alertas, Polymorpheus, packs de idioma de Taiga |
-| `styles.css`    | 80 kB      | 5.8 kB      | Tema de Taiga + marca                                                                                 |
-| `main.js`       | 18 kB      | 7.2 kB      | Bootstrap y providers                                                                                 |
-| **Inicial**     | **507 kB** | **122 kB**  |                                                                                                       |
-| `login-page.js` | 135 kB     | 23 kB       | Lazy, no cuenta para el budget                                                                        |
+Medido, no estimado, comparando la rama contra `main`:
 
-**No es alarmante y no lo provocó el login.** La vista es lazy y no entra en el inicial; lo que hay
-ahí es el arranque de Angular más el andamiaje de Taiga, que ya pesaba ~424 kB sin ninguna vista. El
-budget se fijó sobre esa línea base precisamente como headroom, así que cruzarlo con la primera
-pantalla estaba previsto. Lo que viaja al usuario son **122 kB comprimidos**, que para el shell
-completo de una SPA es razonable.
+| Build                           | Inicial (crudo) | Inicial (transferido) |
+| ------------------------------- | --------------- | --------------------- |
+| `main`                          | 165,35 kB       | 31,10 kB              |
+| con el CRUD de espacios         | 168,28 kB       | 31,84 kB              |
+| **Coste de esta funcionalidad** | **+2,93 kB**    | **+0,74 kB**          |
 
-Dos cosas **sí** están mal y conviene arreglar antes de recalibrar, porque cambian la medición:
+El inicial son sólo `main.js` (~84 kB), `styles.css` (~83 kB) y los polyfills. Todo lo demás
+—incluido el chunk de ~414 kB con Angular, el router y el andamiaje de Taiga— es perezoso. El CRUD
+entero vive en chunks perezosos, y `@maskito/kit`, que entra nuevo con `tuiInputNumber`, no toca el
+inicial.
 
-1. **Los dos packs de idioma de Taiga viajan en cada build.** `core/i18n/taiga-language.ts` importa
-   `TUI_SPANISH_LANGUAGE` y `TUI_ENGLISH_LANGUAGE` de forma estática, así que la build `es` incluye
-   el inglés y viceversa (~11.5 kB en crudo cada uno; se comprobó buscando `Afghanistan` dentro del
-   chunk de la build española). El locale se conoce en tiempo de compilación: debería entrar sólo el
-   que corresponde.
-2. **`@angular/forms` acaba en el inicial** sin que ninguna vista use `ReactiveFormsModule`: lo
-   arrastra el textfield de Taiga vía `NgControl`. Hay que confirmar si es evitable o es el precio
-   de la librería.
+**El budget de 500 kB / 650 kB ya no mide nada.** Está tres veces por encima de la realidad, así que
+no detectaría una regresión aunque el inicial se duplicara. Bajarlo es lo que haría útil la métrica
+—a algo como 200 kB warning / 260 kB error, que deja margen sin ser decorativo— pero es cambiar la
+puerta de calidad de todo el equipo, así que **se decide y se baja a propósito**, no de pasada.
 
-**Orden correcto**: primero esas dos, después construir las vistas restantes, y **sólo entonces**
-recalibrar el budget con las tres pantallas puestas. Subir el número ahora sería maquillar la
-métrica, que es justo lo que este documento prohíbe.
+Lo que sigue pendiente de aquel apartado, con la medición al día:
+
+1. **Los dos packs de idioma de Taiga siguen viajando en cada build.** `core/i18n/taiga-language.ts`
+   importa `TUI_SPANISH_LANGUAGE` y `TUI_ENGLISH_LANGUAGE` de forma estática, así que la build `es`
+   incluye el inglés y viceversa (~11,5 kB en crudo cada uno). Lo que **ya no** es cierto es que
+   estén en el inicial: se comprobó buscando `Afghanistan` dentro de `main.js` de la build española
+   y no aparece. Sigue siendo peso que nadie usa, pero perezoso.
+2. **`@angular/forms`** lo arrastra el textfield de Taiga vía `NgControl`, y ahora además lo usa el
+   login de verdad. Está en el chunk compartido perezoso, no en el inicial.
 
 No introducir dependencias pesadas para problemas que Angular, Taiga UI o las capacidades existentes
 ya resuelven. La optimización se basa en mediciones, no en microoptimizaciones prematuras.
@@ -916,24 +917,37 @@ una cookie debe viajar por el proxy con su prefijo intacto**. Si el backend alg�
 en `Path=/`, esta separación deja de ser necesaria, pero mientras la acote no hay arreglo posible
 desde el lado del navegador.
 
-#### El optimizador de imágenes tiene una trampa sin resolver
+#### El optimizador de imágenes salió del camino (resuelto)
 
-`MediaPlate` rutea las fotos por `/_vercel/image`, el equivalente del Image CDN de Netlify que había
-antes. Funciona, pero **las URLs del backend son presigned de S3 y rotan cada 55 minutos**
-(`PRESIGN_DURATION` 60 min con caché de 55 en `S3SpaceImageRepositoryAdapter`). El optimizador
-cachea por URL de origen, así que **cada rotación es un miss y una transformación nueva facturada**:
-con el plan Hobby, unas pocas fotos bastan para agotar la cuota mensual. `minimumCacheTTL` está en
-3300 s para aprovechar la ventana completa, pero eso no evita el miss al rotar.
+Estuvo mal montado y se retiró. `MediaPlate` ruteaba las fotos por `/_vercel/image`, pero **las URLs
+del backend son presigned de S3 y rotan cada 55 minutos**: el optimizador cachea por URL de origen,
+así que cada rotación era un miss y una transformación nueva facturada. Y encima transformaba una
+imagen que ya venía al tamaño correcto, porque el problema nunca fue el tamaño, fue que la URL no es
+estable.
 
-La solución no está en el frontend: **el backend debe redimensionar al subir**, o servir una
-derivada con URL estable. Mientras tanto, si la cuota se dispara, la mitigación es una línea —
-devolver `src` sin pasar por el optimizador en `displayUrl()`— y el resultado es exactamente el
-comportamiento que la aplicación ya tenía.
+Cómo quedó:
 
-Dato relacionado: el `netlify.toml` anterior **nunca tuvo bloque `[images]` con `remote_images`**,
-que Netlify exige para orígenes remotos. Es muy probable que el Image CDN llevara todo el tiempo
-rechazando estas URLs y que el componente estuviera cayendo siempre al fallback — es decir, que la
-optimización nunca llegó a funcionar en producción.
+- El backend **redimensiona al subir** (Thumbnailator) y publica **una URL por ancho** —
+  `univgo.spaces.images.widths`, hoy 640 y 960 — bajo `spaces/{spaceId}/{imageId}/{width}.jpg`.
+- `MediaPlate` recibe una URL y nada más: ya no elige tamaño ni conoce ningún optimizador. Quien la
+  llama elige su derivada con `photoUrl(photo, width)` del dominio de espacios, usando
+  `PLATE_WIDTH_CARD` o `PLATE_WIDTH_BANNER`.
+- El bloque `images` de `vercel.json` se borró: era configuración muerta.
+
+Residual aceptado: los presigned siguen rotando, así que el **navegador** pierde caché cada 55
+minutos. En un JPEG de 640 px (~60 kB) eso es ruido, y ya no hay un tercero facturando por ello. Si
+alguna vez molesta, la salida es hacer público el prefijo `spaces/` y servir URLs sin firmar — pero
+eso es una decisión de seguridad y la seguridad está fuera de foco (§12), así que no se toma de
+pasada.
+
+**Las tres listas de anchos tienen que moverse juntas:** `univgo.spaces.images.widths` en el
+backend, y `PLATE_WIDTH_CARD` / `PLATE_WIDTH_BANNER` en `features/spaces/domain/space.ts`. Pedir un
+ancho que el servidor no publica no falla —`photoUrl` cae al más grande disponible— pero descarga el
+tamaño equivocado.
+
+Dato que ya no importa pero explica el historial: el `netlify.toml` anterior **nunca tuvo bloque
+`[images]` con `remote_images`**, que Netlify exigía para orígenes remotos. Es muy probable que la
+optimización nunca llegara a funcionar en producción.
 
 ### Pendiente de verificar
 

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { TuiButton } from '@taiga-ui/core';
 import { TuiSkeleton } from '@taiga-ui/kit';
 import { EmptyState } from '../../../../shared/empty-state/empty-state';
@@ -15,12 +16,17 @@ const SKELETON_CARDS = Array.from({ length: 3 }, (_, index) => index);
  * never a remembered last section — which keeps the grid a plain choice rather than a second kind of
  * navigation history to reason about.
  *
- * The spaces are the campus's own, read through `AdminSpacesStore`, so the ids in the panel's URLs
- * are the ones the check-in endpoint answers about.
+ * It is also where the catalogue is managed from, so the grid gained a way to create a space and
+ * each card a way to edit one. There is no second list: a separate management screen would be a
+ * second answer to "which spaces exist".
+ *
+ * Archived spaces are kept in their own section at the end rather than mixed in. They are not part
+ * of the campus any more, but they have to be reachable: restoring one lives on its edit screen, and
+ * without a way in it would need SQL on a shared database.
  */
 @Component({
   selector: 'app-admin-spaces-page',
-  imports: [AdminSpaceCard, EmptyState, TuiButton, TuiSkeleton],
+  imports: [AdminSpaceCard, EmptyState, RouterLink, TuiButton, TuiSkeleton],
   templateUrl: './admin-spaces-page.html',
   styleUrl: './admin-spaces-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +38,14 @@ export class AdminSpacesPage {
     stream: () => this.store.list(),
     defaultValue: [],
   });
+
+  protected readonly active = computed(() =>
+    this.spaces.value().filter((space) => !space.archived),
+  );
+
+  protected readonly archived = computed(() =>
+    this.spaces.value().filter((space) => space.archived),
+  );
 
   protected readonly skeletonCards = SKELETON_CARDS;
 

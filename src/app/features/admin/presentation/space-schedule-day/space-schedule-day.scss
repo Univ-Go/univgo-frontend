@@ -1,0 +1,92 @@
+@use 'a11y';
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  padding: var(--univgo-space-m) 0;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+// Mobile first: the two hours sit side by side and the remove button follows on its own line, so
+// neither time field is squeezed under 48px of touch target.
+.row__times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--univgo-space-s);
+  align-items: end;
+}
+
+.row__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.row__label {
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+// A plain native control, not Taiga's textfield: see the component doc comment for why.
+.row__input {
+  box-sizing: border-box;
+  block-size: var(--tui-height-m);
+  padding-inline: var(--univgo-space-s);
+  border: 1px solid var(--univgo-border-control);
+  border-radius: var(--tui-radius-s);
+  background: var(--tui-background-base);
+  color: var(--tui-text-primary);
+  font: var(--tui-typography-body-m);
+
+  &:disabled {
+    color: var(--tui-text-secondary);
+    background: var(--tui-background-neutral-1);
+  }
+}
+
+.row__remove {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+@media (width >= bp.$tablet) {
+  .row__times {
+    grid-template-columns: 1fr 1fr auto;
+  }
+
+  .row__remove {
+    grid-column: auto;
+  }
+}
+
+.closed {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-s);
+}
+
+.actions__context {
+  @include a11y.visually-hidden;
+}

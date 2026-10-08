@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.field__hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-xs);
+}

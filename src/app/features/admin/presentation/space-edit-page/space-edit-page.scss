@@ -1,0 +1,77 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  max-inline-size: var(--univgo-form-max-width);
+}
+
+.skeleton {
+  block-size: 24rem;
+  border-radius: var(--tui-radius-l);
+}
+
+.intro {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--univgo-space-s);
+}
+
+.intro__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+}
+
+.intro h1 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.intro__lead {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+}
+
+.section__title {
+  margin: 0;
+  font: var(--tui-typography-heading-6);
+}
+
+.section__text {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+// Mobile first: the action spans the row so it is an easy target, and moves to the end from tablet.
+.section__actions {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (width >= bp.$tablet) {
+  .section__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+// Not colour alone: the heading and the copy both say what this section does.
+.section--danger {
+  border-color: var(--tui-status-negative-pale);
+}
+
+.back {
+  display: flex;
+}

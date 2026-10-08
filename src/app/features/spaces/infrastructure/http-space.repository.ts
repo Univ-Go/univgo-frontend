@@ -7,7 +7,12 @@ import { APP_CONFIG } from '../../../core/config/app-config';
 import { fromIsoDateTime, minutesFromIsoTime } from '../../../shared/time/api-time';
 import { toIsoDate } from '../../../shared/time/calendar-day';
 import { closureReasonFromName } from '../domain/closure-reason';
-import { BOOKING_DURATION_MINUTES, type Space, categoryFromName } from '../domain/space';
+import {
+  BOOKING_DURATION_MINUTES,
+  type Space,
+  type SpacePhoto,
+  categoryFromName,
+} from '../domain/space';
 import type { SpaceBlock } from '../domain/space-block';
 import { blockerOf } from '../domain/space-block';
 import { SpaceRepository } from '../domain/space.repository';
@@ -24,12 +29,18 @@ interface SpaceCatalogDto {
   /** Start of every block that still has a plaza on the requested day, as `HH:mm:ss`. */
   readonly freeBlockStarts: readonly string[];
   /**
-   * Absent until the backend fills it in for a space (manually uploaded, no upload endpoint yet):
-   * mapped to `[]` rather than trusting the field is always there.
+   * Absent for a space whose photographs nobody has uploaded yet: mapped to `[]` rather than
+   * trusting the field is always there.
    */
-  readonly images?: readonly string[];
+  readonly images?: readonly SpacePhotoDto[];
   readonly description: string;
   readonly rules: readonly string[];
+}
+
+interface SpacePhotoDto {
+  readonly urls: Readonly<Record<string, string>>;
+  readonly width: number;
+  readonly height: number;
 }
 
 interface BlockAvailabilityDto {
@@ -52,6 +63,18 @@ interface BlockAvailabilityDto {
  * one window of the institution's fixed length, which is what `docs/booking-flow.md` §14 means by
  * opening hours ceasing to be continuous ranges.
  */
+/**
+ * The widths arrive as JSON object keys, which are always strings; the domain compares them as
+ * numbers, so they are converted once here rather than at every surface that renders a photograph.
+ */
+function toPhoto(dto: SpacePhotoDto): SpacePhoto {
+  return {
+    urls: Object.fromEntries(Object.entries(dto.urls).map(([width, url]) => [Number(width), url])),
+    width: dto.width,
+    height: dto.height,
+  };
+}
+
 function toSpace(dto: SpaceCatalogDto, date: Date): Space {
   return {
     id: dto.spaceId,
@@ -67,7 +90,7 @@ function toSpace(dto: SpaceCatalogDto, date: Date): Space {
       from: minutesFromIsoTime(start),
       to: minutesFromIsoTime(start) + BOOKING_DURATION_MINUTES,
     })),
-    images: dto.images ?? [],
+    images: (dto.images ?? []).map(toPhoto),
     description: dto.description,
     rules: dto.rules,
   };

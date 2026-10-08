@@ -1,3 +1,4 @@
+@use 'a11y';
 @use 'cards';
 
 :host {
@@ -6,18 +7,24 @@
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--univgo-space-m);
   inline-size: 100%;
-  text-decoration: none;
-  color: inherit;
 
   @include cards.lift($ring: true);
 }
 
+// An archived space is still listed here so it can be restored, but it is not part of the campus
+// any more. Dimming the plate says so without relying on the badge alone being noticed.
+.card--archived app-media-plate {
+  opacity: 0.55;
+}
+
 .card__body {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--univgo-space-s);
 }
@@ -28,17 +35,86 @@
   overflow-wrap: anywhere;
 }
 
-.card__fact {
+// The heading's link is the card's primary destination; this extends its hit area over the whole
+// surface. Anything that must stay clickable — the edit button — needs its own stacking context.
+.card__link {
+  color: inherit;
+  text-decoration: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.card__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+  margin: 0;
+}
+
+.fact {
+  display: grid;
+  gap: var(--univgo-space-xs);
+}
+
+.fact dt {
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-ui-xs);
+}
+
+.fact dd {
   display: flex;
   align-items: center;
   gap: var(--univgo-space-xs);
   margin: 0;
-  color: var(--tui-text-secondary);
   font: var(--tui-typography-ui-s);
+  overflow-wrap: anywhere;
 
   tui-icon {
     flex: none;
     color: var(--tui-text-tertiary);
     font-size: var(--univgo-icon-inline);
   }
+}
+
+// What a space is missing is a warning and not an error: the space exists and the panel works, but
+// a student sees nothing bookable. Colour is not the only carrier — each line has its own icon and
+// its own words.
+.card__warnings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--univgo-space-xs);
+    color: var(--tui-status-warning);
+    font: var(--tui-typography-ui-xs);
+  }
+
+  tui-icon {
+    flex: none;
+    font-size: var(--univgo-icon-inline);
+  }
+}
+
+.card__action {
+  position: relative;
+  align-self: start;
+}
+
+.card__action-context {
+  @include a11y.visually-hidden;
 }

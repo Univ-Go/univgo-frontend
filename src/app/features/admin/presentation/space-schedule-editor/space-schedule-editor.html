@@ -1,0 +1,27 @@
+<tui-accordion [closeOthers]="false" size="m">
+  @for (section of sections(); track section.dayOfWeek) {
+    <button tuiAccordion type="button">
+      <span class="header">
+        <span class="header__day">{{ section.shortName }}</span>
+        <span class="header__summary" [class.header__summary--invalid]="section.invalid">
+          {{ section.summary }}
+        </span>
+        <!-- The day's full name is what a screen reader needs; the abbreviation is for the eye. -->
+        <span class="header__full">{{ section.name }}</span>
+      </span>
+    </button>
+
+    <tui-expand>
+      <app-space-schedule-day
+        [dayName]="section.name"
+        [rows]="section.rows"
+        [disabled]="disabled()"
+        [copyable]="section.rows.length > 0"
+        (windowAdded)="addWindow(section.dayOfWeek)"
+        (windowRemoved)="removeWindow($event)"
+        (windowChanged)="changeWindow($event)"
+        (copiedToWeek)="copyToWeek(section.dayOfWeek)"
+      />
+    </tui-expand>
+  }
+</tui-accordion>

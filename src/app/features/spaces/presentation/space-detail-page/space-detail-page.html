@@ -110,8 +110,7 @@
                 *tuiItem="let position"
                 class="gallery__slide"
                 [icon]="icon()"
-                [imageUrl]="space.images[position]"
-                [width]="960"
+                [imageUrl]="bannerUrl(space.images[position])"
               >
                 @if (availability(); as availability) {
                   <app-space-availability-badge [availability]="availability" />
@@ -157,8 +156,7 @@
           <app-media-plate
             class="gallery__slide"
             [icon]="icon()"
-            [imageUrl]="space.images[0]"
-            [width]="960"
+            [imageUrl]="bannerUrl(space.images[0])"
           >
             @if (availability(); as availability) {
               <app-space-availability-badge [availability]="availability" />

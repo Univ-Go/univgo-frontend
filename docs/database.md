@@ -4,7 +4,7 @@ Retrato de la base que sirve al backend (`../univgo-backend`). Existe porque su 
 migraciones **no** se deduce leyendo `db/migration`: la base es anterior a Flyway y arrastra
 decisiones que cuestan medio día de redescubrir.
 
-**Última verificación: 2026-09-19.** Todo lo de aquí se comprobó consultando la base, no leyendo el
+**Última verificación: 2026-10-08.** Todo lo de aquí se comprobó consultando la base, no leyendo el
 código. `CLAUDE.md` §23 obliga a actualizar este fichero cuando el esquema o los datos cambien.
 
 ---
@@ -33,7 +33,22 @@ base está corrupta. No lo está: **`V2` borra y recrea** `space_types`, `spaces
 `reservations` y `reservation_guests` con claves `uuid`, que es lo que hay. Para saber qué hay de
 verdad, leer `V2` en adelante, no `V1`.
 
-Estado actual: **hasta la `V17`, todas aplicadas.**
+Estado actual: **hasta la `V19`, todas aplicadas y verificadas contra la base.**
+
+> 🔴 **La `V18` la aplicó otra rama, y ya chocó una vez.** El CRUD de espacios se escribió como
+> `V18__space_images_and_archive.sql` y, mientras se escribía,
+> `refactor/shorter-reservation-code` aplicó su propia `V18__reservations_confirmation_code.sql` a
+> esta base. Resultado: el backend no arrancaba con _«Migration checksum mismatch for migration
+> version 18»_, porque la fila del historial pertenecía a una migración distinta de la del fichero
+> local. Se resolvió **renumerando** la del CRUD a `V19`, no con `flyway repair` — repair habría
+> reescrito el historial para que la fila de otro cuadrara con nuestro fichero.
+>
+> **Antes de escribir una migración nueva, mira el número que hay en la base, no el último del
+> repo.** Dos ramas en paralelo eligen el mismo número por defecto. La consulta está en §5.
+>
+> Consecuencia para quien trabaje en `feat/spaces-crud`: esa rama **no tiene** el fichero de la
+> `V18`, así que Flyway ve una migración aplicada que no resuelve localmente. Hay que traerse esa
+> rama —o esperar a que entre en `main` y rebasar— antes de que el backend arranque.
 
 | Versión | Qué hizo                                                                                                                           | Cuándo     |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------- |
@@ -55,6 +70,8 @@ Estado actual: **hasta la `V17`, todas aplicadas.**
 | `15`    | Siembra el horario semanal del Gimnasio, que la `V5` se había saltado                                                              | 2026-09-18 |
 | `16`    | Borra horarios duplicados y añade `UNIQUE (space_id, day_of_week, start_time, end_time)`                                           | 2026-09-19 |
 | `17`    | `spaces.description` y `spaces.rules`; siembra el texto de los 6 espacios                                                          | 2026-09-19 |
+| `18`    | `reservations.confirmation_code` y su índice único por día. **De `refactor/shorter-reservation-code`, no de aquí**                 | 2026-10-07 |
+| `19`    | `space_images`; `spaces.archived_at` y `archived_by`. **Escrita, sin ejecutar**                                                    | —          |
 
 **La `V4_1` se añadió al repo después de que la `V5` ya hubiera corrido.** Flyway rechaza por defecto
 aplicar algo por detrás de lo ya ejecutado, así que abortaba el arranque antes de migrar nada. Se
@@ -68,7 +85,7 @@ esto otra vez: alguien intercaló una versión.
 
 `users` · `roles` · `permissions` · `role_permissions` · `user_roles` · `refresh_tokens` ·
 `space_types` · `spaces` · `space_schedules` · `space_closures` · `reservations` ·
-`institution_config` · `flyway_schema_history`
+`institution_config` · `space_images` · `flyway_schema_history`
 
 Todas las claves primarias son `uuid` con `gen_random_uuid()`, salvo `institution_config`, que es una
 fila única con `id SMALLINT` fijo a 1.
@@ -98,6 +115,26 @@ generaba cada bloque dos veces y el catálogo ofrecía sus horas por pares.
 espacio fuera de servicio es un cierre sin fecha de fin en `space_closures`. La columna sigue ahí a
 propósito —expand/contract sobre una base compartida— y se retira en una migración posterior, cuando
 esté claro que nada la mira.
+
+**Las fotos de un espacio son filas, no lo que haya en el bucket** (`space_images`, `V19`). Antes
+la fuente de verdad era S3: se listaba el prefijo `spaces/` y el orden salía del `lastModified`, así
+que la portada era la foto que se hubiera subido primero y nadie podía decidir otra cosa. `position`
+es el orden y `0` es la portada — no hay columna de portada, porque dos fuentes para un mismo hecho
+se desincronizan. Su `UNIQUE (space_id, position)` es **`DEFERRABLE`** a propósito: reordenar pasa,
+dentro de una transacción, por un estado donde dos filas comparten posición.
+
+Una subida se deriva en un JPEG por cada ancho de `univgo.spaces.images.widths`, bajo
+`spaces/{spaceId}/{imageId}/{width}.jpg`. Las claves se derivan de los ids justamente para que
+añadir un ancho sea un backfill y no un cambio de esquema. El JDK no trae códec WebP, así que se
+aceptan JPEG y PNG y las derivadas son JPEG.
+
+**Un espacio no se borra, se archiva** (`spaces.archived_at` / `archived_by`, `V19`).
+`reservations.space_id` no tiene `ON DELETE CASCADE` y sus reservas son historia: un `DELETE` duro
+fallaría por la clave ajena o, con un cascade puesto a mano, borraría lo que pasó. La forma es la de
+`space_closures.reverted_at` —un instante nullable, así que la columna dice _cuándo_ y el filtro es
+`IS NULL`— en vez de un booleano, que no registra nada. Archivar abre además un cierre indefinido,
+para que las reservas existentes se lean **suspendidas** (`booking-flow.md` §12) en lugar de
+desaparecer; vaciarlas sigue siendo la segunda acción explícita e irreversible.
 
 **La categoría de un espacio no está en `spaces`**, sino en `space_types.category`
 (`SPORTS` | `STUDY` | `LAB`, con `CHECK`). El tipo ya es la taxonomía: duplicarla en la fila del
@@ -202,4 +239,18 @@ select (select count(*) from spaces) as spaces,
 - **La `V15` no corre sobre una base nueva.** Siembra el horario del Gimnasio contra un `uuid`
   literal que sólo existe en esta base; en una recién creada la clave ajena no encuentra el espacio
   y la migración falla. Habría que crear el espacio en la propia migración o acotarla a que exista.
+- **Dos ramas pueden volver a elegir el mismo número de migración.** Ya pasó con la `V18`; la
+  lección y la consulta están en §2.
+- **Las fotos de los 6 espacios hay que resubirlas a mano.** Una migración SQL no puede ver S3, así
+  que al pasar la lectura de «listar el bucket» a «leer `space_images`» los espacios sembrados se
+  quedan sin fotos hasta que alguien las suba por el CRUD nuevo; después hay que borrar del bucket
+  las claves heredadas `spaces/{spaceId}/{fichero}`. **No** se construyó un camino de lectura dual
+  (tabla y, si no, bucket): serían dos fuentes de verdad para el problema que la `V19` viene a
+  arreglar.
+- **Una creación de espacio revertida puede dejar objetos huérfanos en S3.** La atomicidad entre
+  Postgres y S3 no existe; lo que se garantiza es que nunca se _vea_ un espacio a medio publicar. El
+  borrado de esos objetos es best effort y, si falla, quedan ficheros que ninguna fila referencia:
+  invisibles para la aplicación, porque la fuente de verdad es la tabla.
+- **`spaces.under_maintenance` sigue huérfana.** La `V19` no la retira: eso es una migración propia,
+  como dice el expand/contract de §3.
 - **Esta base no tiene copia de seguridad propia** más allá de lo que ofrezca Neon.

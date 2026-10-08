@@ -1,0 +1,95 @@
+@if (hasRows()) {
+  <ul class="rows">
+    @for (row of rows(); track row.index) {
+      <li class="row">
+        <div class="row__times">
+          <div class="row__field">
+            <label class="row__label" [for]="fromId(row.index)" i18n="@@admin.spaceSchedules.from"
+              >Abre</label
+            >
+            <input
+              [id]="fromId(row.index)"
+              type="time"
+              class="row__input"
+              [name]="'from-' + row.index"
+              [disabled]="disabled()"
+              [value]="timeOf(row.fromMinutes)"
+              (input)="changeFrom(row, $any($event.target).value)"
+            />
+          </div>
+
+          <div class="row__field">
+            <label class="row__label" [for]="toId(row.index)" i18n="@@admin.spaceSchedules.to"
+              >Cierra</label
+            >
+            <input
+              [id]="toId(row.index)"
+              type="time"
+              class="row__input"
+              [name]="'to-' + row.index"
+              [disabled]="disabled()"
+              [value]="timeOf(row.toMinutes)"
+              (input)="changeTo(row, $any($event.target).value)"
+            />
+          </div>
+
+          <button
+            tuiIconButton
+            type="button"
+            size="m"
+            appearance="flat"
+            iconStart="@tui.trash"
+            class="row__remove"
+            [disabled]="disabled()"
+            i18n-aria-label="@@admin.spaceSchedules.removeWindow"
+            aria-label="Quitar franja"
+            (click)="windowRemoved.emit(row.index)"
+          ></button>
+        </div>
+
+        <!-- The only inline field errors in the panel, and for a reason the convention allows: the
+             problem is a relationship between two fields of a repeated row, and no toast can say
+             which row it means. -->
+        @if (row.issue; as issue) {
+          <tui-error [error]="messageFor(issue)" />
+        }
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="closed" i18n="@@admin.spaceSchedules.closedDay">
+    Cerrado todo el día. Sin franjas no se puede reservar nada este día.
+  </p>
+}
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="s"
+    appearance="outline"
+    iconStart="@tui.plus"
+    [disabled]="disabled()"
+    (click)="windowAdded.emit()"
+    i18n="@@admin.spaceSchedules.addWindow"
+  >
+    Añadir franja
+  </button>
+
+  <!-- The pilot's real case is seven identical days. Without this an administrator fills fourteen
+       time fields by hand, which is where mistakes come from. -->
+  @if (copyable()) {
+    <button
+      tuiButton
+      type="button"
+      size="s"
+      appearance="flat"
+      iconStart="@tui.copy"
+      [disabled]="disabled()"
+      (click)="copiedToWeek.emit()"
+    >
+      <span i18n="@@admin.spaceSchedules.copyToWeek">Copiar al resto de la semana</span>
+      <span class="actions__context">{{ dayName() }}</span>
+    </button>
+  }
+</div>

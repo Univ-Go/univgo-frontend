@@ -1,0 +1,92 @@
+@let identity = value();
+
+<div class="fields">
+  <tui-textfield tuiTextfieldSize="m">
+    <label tuiLabel [for]="nameId" i18n="@@admin.spaceForm.name">Nombre</label>
+    <input
+      [id]="nameId"
+      tuiInput
+      name="name"
+      autocomplete="off"
+      maxlength="150"
+      i18n-placeholder="@@admin.spaceForm.namePlaceholder"
+      placeholder="Cancha de básquetbol"
+      [disabled]="disabled()"
+      [ngModel]="identity.name"
+      (ngModelChange)="setName($event)"
+    />
+  </tui-textfield>
+
+  <tui-textfield tuiTextfieldSize="m">
+    <label tuiLabel [for]="locationId" i18n="@@admin.spaceForm.location">Ubicación</label>
+    <input
+      [id]="locationId"
+      tuiInput
+      name="location"
+      autocomplete="off"
+      maxlength="150"
+      i18n-placeholder="@@admin.spaceForm.locationPlaceholder"
+      placeholder="Complejo Deportivo Central"
+      [disabled]="disabled()"
+      [ngModel]="identity.location"
+      (ngModelChange)="setLocation($event)"
+    />
+  </tui-textfield>
+
+  <!-- The category is not a field of the space: it belongs to the type, so picking a type is how a
+       space gets one. The hint says so, because an administrator choosing "Cancha" is also choosing
+       "deportivo" without being told anywhere else. -->
+  <div class="field">
+    <tui-textfield tuiTextfieldSize="m" [stringify]="typeName">
+      <label tuiLabel [for]="typeId" i18n="@@admin.spaceForm.type">Tipo de espacio</label>
+      <input
+        [id]="typeId"
+        tuiSelect
+        name="spaceType"
+        i18n-placeholder="@@admin.spaceForm.typePlaceholder"
+        placeholder="Selecciona un tipo…"
+        [disabled]="disabled()"
+        [ngModel]="selectedType()"
+        (ngModelChange)="setType($event)"
+      />
+      <tui-data-list *tuiDropdown>
+        @for (type of types(); track type.id) {
+          <button
+            tuiOption
+            type="button"
+            [value]="type"
+            [attr.aria-selected]="type.id === identity.spaceTypeId ? 'true' : null"
+          >
+            {{ type.name }}
+          </button>
+        }
+      </tui-data-list>
+    </tui-textfield>
+
+    <p class="field__hint" i18n="@@admin.spaceForm.typeHint">
+      El tipo decide la categoría con la que el espacio aparece en el catálogo.
+    </p>
+  </div>
+
+  <div class="field">
+    <tui-textfield tuiTextfieldSize="m">
+      <label tuiLabel [for]="capacityId" i18n="@@admin.spaceForm.capacity">Aforo por bloque</label>
+      <input
+        [id]="capacityId"
+        tuiInputNumber
+        name="capacity"
+        autocomplete="off"
+        [step]="1"
+        [min]="minCapacity"
+        [max]="maxCapacity"
+        [disabled]="disabled()"
+        [ngModel]="identity.capacity"
+        (ngModelChange)="setCapacity($event)"
+      />
+    </tui-textfield>
+
+    <p class="field__hint" i18n="@@admin.spaceForm.capacityHint">
+      Cuántos estudiantes pueden reservar el mismo bloque. Un espacio de uso exclusivo es aforo 1.
+    </p>
+  </div>
+</div>

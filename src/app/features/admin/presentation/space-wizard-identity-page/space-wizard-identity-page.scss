@@ -1,0 +1,44 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  max-inline-size: var(--univgo-form-max-width);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.intro h1 {
+  margin: 0;
+}
+
+.intro__lead {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
+}
+
+// Mobile first: the step's action spans the width, which is the easiest target on a phone. From
+// tablet the pair sits on one line, aligned to the end.
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+@media (width >= bp.$tablet) {
+  .actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.skeleton {
+  block-size: 18rem;
+  border-radius: var(--tui-radius-l);
+}

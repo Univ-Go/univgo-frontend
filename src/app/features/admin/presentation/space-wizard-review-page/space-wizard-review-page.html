@@ -1,0 +1,147 @@
+@let identity = draft.identity();
+@let usage = draft.usage();
+
+<header class="intro">
+  <h1 i18n="@@admin.spaceWizard.review.title">Revisa antes de publicar</h1>
+  <p class="intro__lead" i18n="@@admin.spaceWizard.review.lead">
+    Al publicar, el espacio aparece en el catálogo y los estudiantes pueden reservarlo.
+  </p>
+</header>
+
+<section tuiCardLarge tuiSurface tuiAppearance="outline" class="summary">
+  <header class="summary__header">
+    <h2 class="summary__title" i18n="@@admin.spaceSection.identity">Identidad</h2>
+    <button
+      tuiButton
+      type="button"
+      size="xs"
+      appearance="flat"
+      iconStart="@tui.pencil"
+      (click)="editStep('identity')"
+      i18n="@@admin.spaceWizard.review.edit"
+    >
+      Editar
+    </button>
+  </header>
+
+  <dl class="facts">
+    <div class="fact">
+      <dt i18n="@@admin.spaceForm.name">Nombre</dt>
+      <dd>{{ identity.name }}</dd>
+    </div>
+    <div class="fact">
+      <dt i18n="@@admin.spaceForm.location">Ubicación</dt>
+      <dd>{{ identity.location }}</dd>
+    </div>
+    <div class="fact">
+      <dt i18n="@@admin.spaceForm.capacity">Aforo por bloque</dt>
+      <dd>{{ identity.capacity }}</dd>
+    </div>
+  </dl>
+</section>
+
+<section tuiCardLarge tuiSurface tuiAppearance="outline" class="summary">
+  <header class="summary__header">
+    <h2 class="summary__title" i18n="@@admin.spaceSection.usage">Uso</h2>
+    <button
+      tuiButton
+      type="button"
+      size="xs"
+      appearance="flat"
+      iconStart="@tui.pencil"
+      (click)="editStep('usage')"
+      i18n="@@admin.spaceWizard.review.edit"
+    >
+      Editar
+    </button>
+  </header>
+
+  <p class="summary__text">{{ usage.description }}</p>
+
+  @if (usage.rules.length > 0) {
+    <ul class="rules">
+      @for (rule of usage.rules; track rule) {
+        <li>{{ rule }}</li>
+      }
+    </ul>
+  }
+</section>
+
+<section tuiCardLarge tuiSurface tuiAppearance="outline" class="summary">
+  <header class="summary__header">
+    <h2 class="summary__title" i18n="@@admin.spaceSection.schedules">Horarios</h2>
+    <button
+      tuiButton
+      type="button"
+      size="xs"
+      appearance="flat"
+      iconStart="@tui.pencil"
+      (click)="editStep('schedules')"
+      i18n="@@admin.spaceWizard.review.edit"
+    >
+      Editar
+    </button>
+  </header>
+
+  <dl class="facts">
+    @for (day of week(); track day.name) {
+      <div class="fact">
+        <dt>{{ day.name }}</dt>
+        <dd>{{ day.hours }}</dd>
+      </div>
+    }
+  </dl>
+</section>
+
+<section tuiCardLarge tuiSurface tuiAppearance="outline" class="summary">
+  <header class="summary__header">
+    <h2 class="summary__title" i18n="@@admin.spaceSection.photos">Fotos</h2>
+    <button
+      tuiButton
+      type="button"
+      size="xs"
+      appearance="flat"
+      iconStart="@tui.pencil"
+      (click)="editStep('photos')"
+      i18n="@@admin.spaceWizard.review.edit"
+    >
+      Editar
+    </button>
+  </header>
+
+  <p class="summary__text" i18n="@@admin.spaceWizard.review.photoCount">
+    {photoCount(), plural,
+      =1 {1 foto, que será la portada}
+      other {{{photoCount()}} fotos, y la primera será la portada}
+    }
+  </p>
+</section>
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="outline"
+    iconStart="@tui.arrow-left"
+    [disabled]="publishing()"
+    (click)="editStep('photos')"
+    i18n="@@admin.spaceWizard.back"
+  >
+    Atrás
+  </button>
+
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="primary"
+    iconStart="@tui.check"
+    [disabled]="publishing()"
+    (click)="publish()"
+  >
+    <tui-loader [loading]="publishing()" [inheritColor]="true" [overlay]="true">
+      <span i18n="@@admin.spaceWizard.publish">Publicar espacio</span>
+    </tui-loader>
+  </button>
+</div>

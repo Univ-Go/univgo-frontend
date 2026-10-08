@@ -25,18 +25,6 @@
     { "source": "/es/:path*", "destination": "/es/index.html" },
     { "source": "/en/:path*", "destination": "/en/index.html" }
   ],
-  "images": {
-    "sizes": [640, 960],
-    "qualities": [75],
-    "formats": ["image/webp"],
-    "minimumCacheTTL": 3300,
-    "remotePatterns": [
-      {
-        "protocol": "https",
-        "hostname": "*.storage.c-5.us-east-2.aws.neon.tech"
-      }
-    ]
-  },
   "headers": [
     {
       "source": "/:locale(es|en)/index.html",

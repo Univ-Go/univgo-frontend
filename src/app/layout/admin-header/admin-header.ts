@@ -101,7 +101,9 @@ export class AdminHeader {
    * than costing a request of its own. An empty list while it is in flight leaves the trigger
    * naming the current space and nothing to switch to, which is the truth for that instant.
    */
-  protected readonly spaces = toSignal(inject(AdminSpacesStore).list(), { initialValue: [] });
+  protected readonly spaces = toSignal(inject(AdminSpacesStore).listForSwitcher(), {
+    initialValue: [],
+  });
 
   protected readonly currentSpaceId = currentAdminSpaceId();
 

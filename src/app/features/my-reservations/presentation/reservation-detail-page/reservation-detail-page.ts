@@ -25,6 +25,7 @@ import { hasUsablePass } from '../../domain/reservation';
 import { ReservationRepository } from '../../domain/reservation.repository';
 import { ReservationInterruptionNotice } from '../reservation-interruption-notice/reservation-interruption-notice';
 import { ReservationStatusBadge } from '../reservation-status-badge/reservation-status-badge';
+import { PLATE_WIDTH_BANNER, type SpacePhoto, photoUrl } from '../../../spaces/domain/space';
 
 /**
  * One booking in full, with the pass that gets it through the door. `id` is bound from the `:id`
@@ -109,4 +110,9 @@ export class ReservationDetailPage {
     size: 'l',
     label: $localize`:@@reservations.detail.pass.dialogTitle:Código QR de tu reserva`,
   };
+
+  /** A banner renders the plate large, so it asks for the wide derivative. */
+  protected bannerUrl(photo: SpacePhoto | undefined): string | null {
+    return photo ? photoUrl(photo, PLATE_WIDTH_BANNER) : null;
+  }
 }

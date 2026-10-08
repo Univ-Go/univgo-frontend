@@ -1,21 +1,74 @@
-<a
+@let current = space();
+
+<article
   tuiCardLarge
   tuiSurface
   tuiAppearance="outline"
   class="card"
-  [routerLink]="['/admin', space().spaceId, 'scan']"
+  [class.card--archived]="current.archived"
 >
-  <app-media-plate icon="@tui.map-pin" />
+  <app-media-plate icon="@tui.map-pin" [imageUrl]="current.coverImageUrl">
+    @if (current.archived) {
+      <span tuiBadge appearance="neutral" i18n="@@admin.spaces.archivedBadge">Archivado</span>
+    }
+  </app-media-plate>
 
   <div class="card__body">
-    <h3 class="card__name">{{ space().spaceName }}</h3>
+    <h3 class="card__name">
+      <!-- The link inside the heading is what makes the card reachable by keyboard and announceable
+           by name; the overlay in the stylesheet only extends its hit area. An archived space has
+           no scanner to open, so it is plain text and the edit button is the only way in. -->
+      @if (scanLink(); as link) {
+        <a class="card__link" [routerLink]="link">{{ current.name }}</a>
+      } @else {
+        {{ current.name }}
+      }
+    </h3>
 
-    <p class="card__fact">
-      <tui-icon icon="@tui.users" aria-hidden="true" />
-      <span i18n="@@admin.spacesGrid.card.capacity">{space().capacity, plural,
-        =1 {1 persona}
-        other {{{space().capacity}} personas}
-      }</span>
-    </p>
+    <dl class="card__facts">
+      <div class="fact">
+        <dt i18n="@@spaces.card.capacity">Capacidad</dt>
+        <dd>
+          <tui-icon icon="@tui.users" aria-hidden="true" />
+          <span i18n="@@admin.spacesGrid.card.capacity">{current.capacity, plural,
+            =1 {1 persona}
+            other {{{current.capacity}} personas}
+          }</span>
+        </dd>
+      </div>
+      <div class="fact">
+        <dt i18n="@@reservation.factLocation">Ubicación</dt>
+        <dd><tui-icon icon="@tui.map-pin" aria-hidden="true" />{{ current.location }}</dd>
+      </div>
+    </dl>
+
+    @if (missingSchedule() || missingPhotos()) {
+      <ul class="card__warnings">
+        @if (missingSchedule()) {
+          <li>
+            <tui-icon icon="@tui.circle-alert" aria-hidden="true" />
+            <span i18n="@@admin.spaces.missingSchedule">Sin horario: no ofrece bloques</span>
+          </li>
+        }
+        @if (missingPhotos()) {
+          <li>
+            <tui-icon icon="@tui.camera-off" aria-hidden="true" />
+            <span i18n="@@admin.spaces.missingPhotos">Sin fotos</span>
+          </li>
+        }
+      </ul>
+    }
   </div>
-</a>
+
+  <a
+    tuiButton
+    size="m"
+    appearance="outline"
+    iconStart="@tui.pencil"
+    class="card__action"
+    [routerLink]="editLink()"
+  >
+    <span i18n="@@admin.spaces.edit">Editar</span>
+    <span class="card__action-context">{{ current.name }}</span>
+  </a>
+</article>

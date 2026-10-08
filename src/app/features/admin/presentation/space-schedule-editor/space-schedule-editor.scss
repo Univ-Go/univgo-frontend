@@ -1,0 +1,37 @@
+@use 'a11y';
+
+:host {
+  display: block;
+}
+
+.header {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: var(--univgo-space-s);
+  min-inline-size: 0;
+}
+
+.header__day {
+  flex: none;
+  font: var(--tui-typography-ui-m);
+  text-transform: capitalize;
+}
+
+.header__summary {
+  overflow: hidden;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Not colour alone: an invalid day is also the only one whose rows carry a written error, and the
+// accordion header is just a pointer to it.
+.header__summary--invalid {
+  color: var(--tui-status-negative);
+}
+
+.header__full {
+  @include a11y.visually-hidden;
+}

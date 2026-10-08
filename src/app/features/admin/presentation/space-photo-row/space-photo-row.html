@@ -1,0 +1,63 @@
+@let item = photo();
+
+<app-media-plate icon="@tui.image" [imageUrl]="item.previewUrl" class="thumb" />
+
+<div class="body">
+  <p class="name">{{ item.label }}</p>
+
+  @if (isCover()) {
+    <!-- A written badge and `aria-current`, not a coloured border: being the cover must not depend
+         on colour alone. -->
+    <span tuiBadge appearance="accent" [attr.aria-current]="true" i18n="@@admin.spacePhotos.cover">
+      Portada
+    </span>
+  }
+</div>
+
+<div class="actions">
+  <button
+    tuiIconButton
+    type="button"
+    size="m"
+    appearance="flat"
+    iconStart="@tui.arrow-up"
+    [disabled]="disabled() || isFirst()"
+    [attr.aria-label]="moveUpLabel()"
+    (click)="movedUp.emit()"
+  ></button>
+
+  <button
+    tuiIconButton
+    type="button"
+    size="m"
+    appearance="flat"
+    iconStart="@tui.arrow-down"
+    [disabled]="disabled() || isLast()"
+    [attr.aria-label]="moveDownLabel()"
+    (click)="movedDown.emit()"
+  ></button>
+
+  @if (!isCover()) {
+    <button
+      tuiIconButton
+      type="button"
+      size="m"
+      appearance="flat"
+      iconStart="@tui.star"
+      [disabled]="disabled()"
+      [attr.aria-label]="makeCoverLabel()"
+      (click)="coverSet.emit()"
+    ></button>
+  }
+
+  <button
+    tuiIconButton
+    type="button"
+    size="m"
+    appearance="flat"
+    iconStart="@tui.trash"
+    [disabled]="disabled() || !removable()"
+    [attr.aria-label]="removeLabel()"
+    (click)="removed.emit()"
+  ></button>
+</div>

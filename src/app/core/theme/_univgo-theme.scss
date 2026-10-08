@@ -342,6 +342,10 @@ $shadow-tint: 65, 0, 5;
   --univgo-content-max-width: 80rem;
   --univgo-layout-gutter: 1.25rem;
 
+  // A form stops growing well before the page does: a label-and-field column wider than this makes
+  // the eye travel from the label to its own input.
+  --univgo-form-max-width: 40rem;
+
   // The phone's bottom navigation. Three things need this number — the bar itself, the room the
   // shell leaves under the content, and anything else that floats above the fold — so it is one
   // value rather than three that drift.

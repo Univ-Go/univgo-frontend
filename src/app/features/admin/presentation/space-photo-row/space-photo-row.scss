@@ -1,0 +1,50 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--univgo-space-s) var(--univgo-space-m);
+  align-items: center;
+  padding: var(--univgo-space-s) 0;
+}
+
+.thumb {
+  --media-plate-ratio: 1;
+
+  inline-size: 4rem;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+}
+
+.name {
+  margin: 0;
+  font: var(--tui-typography-ui-s);
+  overflow-wrap: anywhere;
+}
+
+// Four controls on a phone is the tightest spot in the feature, so they get the full width of the
+// row rather than being squeezed next to the thumbnail. `--tui-height-m` is 48px in this theme and
+// is the floor for every one of them.
+.actions {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-xs);
+}
+
+@media (width >= bp.$tablet) {
+  :host {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .actions {
+    grid-column: auto;
+    flex-wrap: nowrap;
+  }
+}

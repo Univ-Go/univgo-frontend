@@ -1,0 +1,29 @@
+@use 'a11y';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+}
+
+.photos {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li + li {
+    border-block-start: 1px solid var(--tui-border-normal);
+  }
+}
+
+.hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-ui-s);
+}
+
+.sr-live {
+  @include a11y.visually-hidden;
+}

@@ -1,0 +1,117 @@
+@if (hasRows()) {
+  <ul class="rows">
+    @for (row of rows(); track row.index) {
+      <li class="row">
+        <div class="row__times">
+          <tui-textfield tuiTextfieldSize="m" class="row__time">
+            <label tuiLabel [for]="fromId(row.index)" i18n="@@admin.spaceSchedules.from"
+              >Abre</label
+            >
+            <input
+              [id]="fromId(row.index)"
+              tuiInputTime
+              [name]="'from-' + row.index"
+              autocomplete="off"
+              [disabled]="disabled()"
+              [ngModel]="timeOf(row.fromMinutes)"
+              (ngModelChange)="changeFrom(row, $event)"
+            />
+            <tui-data-list *tuiDropdown>
+              @for (option of timeOptions(); track option.toString()) {
+                <button
+                  tuiOption
+                  type="button"
+                  [value]="option"
+                  [attr.aria-selected]="isSelected(option, row.fromMinutes) ? 'true' : null"
+                >
+                  {{ option }}
+                </button>
+              }
+            </tui-data-list>
+          </tui-textfield>
+
+          <tui-textfield tuiTextfieldSize="m" class="row__time">
+            <label tuiLabel [for]="toId(row.index)" i18n="@@admin.spaceSchedules.to">Cierra</label>
+            <input
+              [id]="toId(row.index)"
+              tuiInputTime
+              [name]="'to-' + row.index"
+              autocomplete="off"
+              [disabled]="disabled()"
+              [ngModel]="timeOf(row.toMinutes)"
+              (ngModelChange)="changeTo(row, $event)"
+            />
+            <tui-data-list *tuiDropdown>
+              @for (option of timeOptions(); track option.toString()) {
+                <button
+                  tuiOption
+                  type="button"
+                  [value]="option"
+                  [attr.aria-selected]="isSelected(option, row.toMinutes) ? 'true' : null"
+                >
+                  {{ option }}
+                </button>
+              }
+            </tui-data-list>
+          </tui-textfield>
+
+          <button
+            tuiIconButton
+            type="button"
+            size="m"
+            appearance="flat"
+            iconStart="@tui.trash"
+            class="row__remove"
+            [disabled]="disabled()"
+            i18n-aria-label="@@admin.spaceSchedules.removeWindow"
+            aria-label="Quitar franja"
+            (click)="windowRemoved.emit(row.index)"
+          ></button>
+        </div>
+
+        <!-- The only inline field errors in the panel, and for a reason the convention allows: the
+             problem is a relationship between two fields of a repeated row, and no toast can say
+             which row it means. -->
+        @if (row.issue; as issue) {
+          <tui-error [error]="messageFor(issue)" />
+        }
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="closed" i18n="@@admin.spaceSchedules.closedDay">
+    Cerrado todo el día. Sin franjas no se puede reservar nada este día.
+  </p>
+}
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="s"
+    appearance="outline"
+    iconStart="@tui.plus"
+    [disabled]="disabled()"
+    (click)="windowAdded.emit()"
+    i18n="@@admin.spaceSchedules.addWindow"
+  >
+    Añadir franja
+  </button>
+
+  <!-- The pilot's real case is seven identical days. Without this an administrator fills fourteen
+       time fields by hand, which is where mistakes come from. -->
+  @if (copyable()) {
+    <button
+      tuiButton
+      type="button"
+      size="s"
+      appearance="flat"
+      iconStart="@tui.copy"
+      [disabled]="disabled()"
+      (click)="copiedToWeek.emit()"
+    >
+      <span i18n="@@admin.spaceSchedules.copyToWeek">Copiar al resto de la semana</span>
+      <span class="actions__context">{{ dayName() }}</span>
+    </button>
+  }
+</div>

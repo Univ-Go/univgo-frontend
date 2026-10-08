@@ -1,0 +1,51 @@
+@if (!full()) {
+  <label tuiInputFiles="m" class="dropzone">
+    <input
+      tuiInputFiles
+      type="file"
+      name="photos"
+      multiple
+      [accept]="accept"
+      [maxFileSize]="maxFileSize"
+      [disabled]="disabled()"
+      [ngModel]="picked()"
+      (ngModelChange)="onPicked($event)"
+      (reject)="onRejected($event)"
+    />
+  </label>
+}
+
+@if (photos().length > 0) {
+  <!-- An ordered list, so a photograph's place is structural rather than a badge: position 1 is the
+       cover and a screen reader is told so by the markup. -->
+  <ol class="photos">
+    @for (item of photos(); track item.id; let index = $index) {
+      <li>
+        <app-space-photo-row
+          [photo]="item"
+          [index]="index"
+          [total]="photos().length"
+          [disabled]="disabled()"
+          (movedUp)="move(index, index - 1)"
+          (movedDown)="move(index, index + 1)"
+          (coverSet)="setCover(item.id)"
+          (removed)="removed.emit(item.id)"
+        />
+      </li>
+    }
+  </ol>
+} @else {
+  <p class="hint" i18n="@@admin.spacePhotos.none">
+    Todavía no hay fotos. La primera que subas será la portada.
+  </p>
+}
+
+<p class="sr-live" aria-live="polite">{{ announcement() }}</p>
+
+@if (rejected().length > 0) {
+  <tui-files class="rejected">
+    @for (file of rejected(); track file.name) {
+      <tui-file *tuiItem [file]="file" state="error" />
+    }
+  </tui-files>
+}

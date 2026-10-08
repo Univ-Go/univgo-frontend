@@ -1,0 +1,46 @@
+@let usage = value();
+
+<div class="fields">
+  <div class="field">
+    <tui-textfield tuiTextfieldSize="m">
+      <label tuiLabel [for]="descriptionId" i18n="@@admin.spaceForm.description">Descripción</label>
+      <textarea
+        [id]="descriptionId"
+        tuiTextarea
+        name="description"
+        maxlength="2000"
+        i18n-placeholder="@@admin.spaceForm.descriptionPlaceholder"
+        placeholder="Qué es el espacio y para qué sirve…"
+        [disabled]="disabled()"
+        [ngModel]="usage.description"
+        (ngModelChange)="setDescription($event)"
+      ></textarea>
+    </tui-textfield>
+
+    <p class="field__hint" i18n="@@admin.spaceForm.descriptionHint">
+      Es lo primero que lee un estudiante para decidir si este es el espacio que busca.
+    </p>
+  </div>
+
+  <div class="field">
+    <tui-textfield tuiTextfieldMulti tuiTextfieldSize="m">
+      <label tuiLabel [for]="rulesId" i18n="@@admin.spaceForm.rules">Normas de uso</label>
+      <input
+        [id]="rulesId"
+        tuiInputChip
+        name="rules"
+        [separator]="ruleSeparator"
+        [unique]="true"
+        i18n-placeholder="@@admin.spaceForm.rulesPlaceholder"
+        placeholder="Escribe una norma y pulsa Enter…"
+        [disabled]="disabled()"
+        [ngModel]="usage.rules"
+        (ngModelChange)="setRules($event)"
+      />
+    </tui-textfield>
+
+    <p class="field__hint" i18n="@@admin.spaceForm.rulesHint">
+      Una norma por línea. Puedes dejarlo vacío si el espacio no tiene normas propias.
+    </p>
+  </div>
+</div>

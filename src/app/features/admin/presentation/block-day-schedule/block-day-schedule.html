@@ -1,0 +1,75 @@
+<!-- Changing the day swaps the list without a page change, so a screen reader would otherwise be
+     told nothing at all. The count and the date are announced rather than the list itself: a live
+     region around a day's worth of cards would read the whole schedule back on every selection. -->
+<p class="day__status" aria-live="polite">
+  <span i18n="@@admin.blocks.count">{blocks().length, plural,
+    =0 {Sin bloques}
+    =1 {1 bloque}
+    other {{{blocks().length}} bloques}
+  }</span>
+  <span class="day__dot" aria-hidden="true"></span>
+  <time [attr.datetime]="day()">{{ day() | date: 'fullDate' }}</time>
+</p>
+
+@if (loading()) {
+  <ul
+    class="schedule"
+    aria-busy="true"
+    i18n-aria-label="@@admin.blocks.loading"
+    aria-label="Cargando los bloques del día"
+  >
+    @for (row of skeletonRows; track row) {
+      <li class="schedule__placeholder" [tuiSkeleton]="true"></li>
+    }
+  </ul>
+} @else if (error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.blocks.error.heading"
+    heading="No pudimos cargar los bloques"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="retry.emit()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (blocks().length > 0) {
+  <div class="shifts">
+    @for (group of shiftGroups(); track group.shift) {
+      <section class="shift" [attr.aria-labelledby]="'shift-' + group.shift">
+        <header class="shift__header">
+          <tui-icon class="shift__icon" [icon]="shiftIcon(group.shift)" aria-hidden="true" />
+          <h2 class="shift__title" [id]="'shift-' + group.shift">{{ shiftLabel(group.shift) }}</h2>
+          <span class="shift__range">{{ group.from | date: 'shortTime' }} – {{
+            group.to | date: 'shortTime'
+          }}</span>
+        </header>
+
+        <ul class="schedule">
+          @for (block of group.blocks; track block.start.getTime()) {
+            <li>
+              <app-block-row [block]="block" [now]="now()" [day]="day()" />
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </div>
+} @else {
+  <app-empty-state
+    icon="@tui.calendar-x"
+    i18n-heading="@@admin.blocks.list.empty.title"
+    heading="Este espacio no abre este día"
+    i18n-description="@@admin.blocks.list.empty.description"
+    description="Prueba con otra fecha, o cambia de espacio desde el selector de arriba."
+  />
+}

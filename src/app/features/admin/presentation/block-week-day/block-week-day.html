@@ -1,0 +1,49 @@
+<button
+  type="button"
+  class="day"
+  [class.day--viewing]="viewing()"
+  (click)="selected.emit()"
+>
+  <span class="day__top">
+    <span class="day__weekday">{{ day() | date: 'EEE' }}</span>
+
+    <span class="day__badge-slot" [tuiSkeleton]="loading()">
+      @if (!loading()) {
+        @if (!open()) {
+          <span tuiBadge appearance="neutral" size="s" i18n="@@admin.blocks.row.closed"
+            >Cerrado</span
+          >
+        } @else if (today() && viewing()) {
+          <span class="day__today-badge" i18n="@@admin.blocks.day.today">Hoy</span>
+        } @else if (today()) {
+          <span tuiBadge appearance="info" size="s" i18n="@@admin.blocks.day.today">Hoy</span>
+        } @else {
+          <span tuiBadge [appearance]="badgeAppearance()" size="s">{{ occupancyPercent() }}%</span>
+        }
+      }
+    </span>
+  </span>
+
+  <span class="day__date">
+    <span class="day__date-number">{{ day() | date: 'd' }}</span>
+    <span class="day__date-month">{{ day() | date: 'MMM' }}</span>
+  </span>
+
+  <span class="day__caption" [tuiSkeleton]="loading()">
+    @if (!loading() && open()) {
+      @if (today()) {
+        <span class="day__live">
+          <span i18n="@@admin.blocks.week.occupancy">{{ occupancyPercent() }}% aforo</span>
+          <span class="day__live-dot" aria-hidden="true"></span>
+        </span>
+      } @else {
+        @let spots = freeSpots();
+        <span i18n="@@admin.blocks.week.freeSpots">{spots, plural,
+          =0 {Sin cupos libres}
+          =1 {1 cupo libre}
+          other {{{spots}} cupos libres}
+        }</span>
+      }
+    }
+  </span>
+</button>

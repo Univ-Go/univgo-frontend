@@ -1,0 +1,123 @@
+:host {
+  display: block;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  inline-size: 100%;
+  padding: var(--univgo-space-s);
+  border: 0.0625rem solid var(--tui-border-normal);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-base);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.day:hover {
+  border-color: var(--tui-border-hover);
+  background: var(--tui-background-neutral-1-hover);
+}
+
+// The filled, brand-coloured surface belongs to whichever day the schedule below is answering for
+// right now — not to today on its own, which would leave it painted even once something else is
+// selected.
+.day--viewing {
+  border-color: var(--tui-background-accent-1);
+  background: var(--tui-background-accent-1);
+  color: var(--tui-background-base);
+}
+
+.day__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--univgo-space-xs);
+}
+
+.day__weekday {
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-xs);
+  text-transform: capitalize;
+}
+
+.day--viewing .day__weekday {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.day__badge-slot {
+  min-inline-size: 2.5rem;
+  min-block-size: 1.25rem;
+}
+
+// Every `tuiBadge` appearance draws a pale, low-contrast background meant to sit on a neutral card
+// surface — `--t-bg` and `--tui-text-primary` are the two custom properties every one of them reads
+// (verified in the compiled stylesheet, since Taiga does not document the pair). Redefining them
+// here, scoped to badges inside a painted card, is the same mechanism as `block-row`'s
+// `--tui-progress-color` override rather than a fight against the library's specificity.
+.day--viewing [tuiBadge] {
+  --t-bg: rgb(255 255 255 / 22%);
+  --tui-text-primary: var(--tui-background-base);
+}
+
+// No token in the system is "a label on a card that is itself brand-coloured" — the overlay has to
+// read against whatever that background is, so it is built from transparency rather than picked
+// from the palette.
+.day__today-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--univgo-space-xs);
+  border-radius: var(--tui-radius-s);
+  background: rgb(255 255 255 / 22%);
+  font: var(--tui-typography-body-xs);
+  font-weight: bold;
+}
+
+.day__date {
+  display: flex;
+  align-items: baseline;
+  gap: var(--univgo-space-xs);
+}
+
+.day__date-number {
+  font: var(--tui-typography-heading-h5);
+}
+
+.day__date-month {
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+  text-transform: lowercase;
+}
+
+.day--viewing .day__date-month {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.day__caption {
+  min-block-size: 1rem;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-xs);
+}
+
+.day--viewing .day__caption {
+  color: inherit;
+  opacity: 0.9;
+}
+
+.day__live {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+}
+
+.day__live-dot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--tui-status-positive);
+}

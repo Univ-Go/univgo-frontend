@@ -1,0 +1,111 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.week-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-s);
+}
+
+.week-group__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--univgo-space-xs) var(--univgo-space-m);
+}
+
+.week-group__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  font: var(--tui-typography-ui-l);
+}
+
+.week-group__range {
+  padding: 0 var(--univgo-space-xs);
+  border-radius: var(--tui-radius-s);
+  background: var(--tui-background-neutral-1);
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+}
+
+.week-group__hint {
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-xs);
+}
+
+.week-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-s);
+  padding: var(--univgo-space-s) var(--univgo-space-m);
+  border: 0.0625rem solid var(--tui-border-normal);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-background-neutral-1);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.week-toggle:hover {
+  background: var(--tui-background-neutral-1-hover);
+}
+
+.week-toggle__chevron {
+  flex-shrink: 0;
+  color: var(--tui-text-tertiary);
+}
+
+.week-toggle__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+  font: var(--tui-typography-ui-m);
+}
+
+.week-toggle__badge {
+  padding: 0 var(--univgo-space-xs);
+  border-radius: var(--tui-radius-s);
+  background: var(--tui-background-neutral-2);
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-xs);
+}
+
+.week-toggle__action {
+  flex-shrink: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+  font-weight: bold;
+}
+
+.week__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.week__days--next {
+  margin-block-start: var(--univgo-space-s);
+}
+
+@media (min-width: bp.$tablet) {
+  .week__days {
+    gap: var(--univgo-space-s);
+  }
+}

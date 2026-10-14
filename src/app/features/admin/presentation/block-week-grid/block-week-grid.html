@@ -1,0 +1,107 @@
+@if (error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.blocks.error.heading"
+    heading="No pudimos cargar los bloques"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="retry.emit()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else {
+  <section class="week-group">
+    <header class="week-group__header">
+      <h2 class="week-group__title">
+        <span i18n="@@admin.blocks.week.thisWeek">Esta semana</span>
+        @if (thisWeek().length === daysPerWeek) {
+          <span class="week-group__range">
+            <span i18n="@@admin.blocks.week.range"
+              >{{ thisWeek()[0] | date: 'd MMM' }} – {{ thisWeek()[6] | date: 'd MMM' }}</span
+            >
+          </span>
+        }
+      </h2>
+
+      <p class="week-group__hint" i18n="@@admin.blocks.week.hint">
+        Haz clic en un día para actualizar el cronograma
+      </p>
+    </header>
+
+    <ul class="week__days">
+      @for (day of thisWeek(); track day.getTime()) {
+        <li>
+          <app-block-week-day
+            [day]="day"
+            [summary]="summaryOf(day)"
+            [today]="isToday(day)"
+            [viewing]="isSelected(day)"
+            [loading]="loading()"
+            (selected)="daySelected.emit(day)"
+          />
+        </li>
+      }
+    </ul>
+  </section>
+
+  @if (nextWeek().length === daysPerWeek) {
+    <button
+      type="button"
+      class="week-toggle"
+      [attr.aria-expanded]="nextWeekOpen()"
+      aria-controls="next-week-panel"
+      (click)="toggleNextWeek()"
+    >
+      <tui-icon
+        class="week-toggle__chevron"
+        [icon]="nextWeekOpen() ? '@tui.chevron-down' : '@tui.chevron-right'"
+      />
+
+      <span class="week-toggle__text">
+        <span i18n="@@admin.blocks.week.nextWeek">Semana próxima</span>
+        <span class="week-group__range">
+          <span i18n="@@admin.blocks.week.range"
+            >{{ nextWeek()[0] | date: 'd MMM' }} – {{ nextWeek()[6] | date: 'd MMM' }}</span
+          >
+        </span>
+        <span class="week-toggle__badge" i18n="@@admin.blocks.week.openSchedule"
+          >Programación abierta</span
+        >
+      </span>
+
+      <span class="week-toggle__action">
+        @if (nextWeekOpen()) {
+          <span i18n="@@admin.blocks.week.collapse">Colapsar</span>
+        } @else {
+          <span i18n="@@admin.blocks.week.expand">Desplegar</span>
+        }
+      </span>
+    </button>
+
+    <tui-expand id="next-week-panel" [expanded]="nextWeekOpen()">
+      <ul class="week__days week__days--next">
+        @for (day of nextWeek(); track day.getTime()) {
+          <li>
+            <app-block-week-day
+              [day]="day"
+              [summary]="summaryOf(day)"
+              [today]="isToday(day)"
+              [viewing]="isSelected(day)"
+              [loading]="loading()"
+              (selected)="daySelected.emit(day)"
+            />
+          </li>
+        }
+      </ul>
+    </tui-expand>
+  }
+}

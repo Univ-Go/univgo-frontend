@@ -1,0 +1,77 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+}
+
+.day__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--univgo-space-xs);
+  margin: 0;
+  color: var(--tui-text-tertiary);
+  font: var(--tui-typography-body-s);
+  font-variant-numeric: tabular-nums;
+}
+
+// Drawn rather than typed, like every other separator in the panel: never in the accessibility
+// tree, never translated.
+.day__dot {
+  inline-size: var(--univgo-space-xs);
+  block-size: var(--univgo-space-xs);
+  border-radius: 50%;
+  background: var(--tui-text-tertiary);
+}
+
+.shifts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.shift__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--univgo-space-xs);
+  margin-block-end: var(--univgo-space-s);
+}
+
+.shift__icon {
+  align-self: center;
+  color: var(--tui-text-secondary);
+}
+
+.shift__title {
+  margin: 0;
+  font: var(--tui-typography-ui-l);
+}
+
+.shift__range {
+  padding: 0 var(--univgo-space-xs);
+  border-radius: var(--tui-radius-s);
+  background: var(--tui-background-neutral-1);
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
+  font-variant-numeric: tabular-nums;
+}
+
+// A card grid rather than a list: each block is read on its own, so width goes to fitting as many
+// as the viewport allows at a readable size instead of to one column stretching edge to edge.
+.schedule {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--univgo-space-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// The structure before the data, like every other view that waits on the server: cards at the
+// height they will have, so the grid does not reflow when the day arrives. Three control-heights
+// plus their gaps stands in for a card's header, meter and action.
+.schedule__placeholder {
+  block-size: calc(var(--tui-height-l) * 3 + var(--univgo-space-m) * 2);
+  border-radius: var(--tui-radius-l);
+}

@@ -12,5 +12,5 @@ export const defaultAppConfig: AppConfig = {
   apiBaseUrl: environment.apiBaseUrl,
   authBaseUrl: environment.authBaseUrl,
   capacityHistoryDays: 7,
-  capacityPlanningDays: 7,
+  capacityPlanningDays: 13,
 };

@@ -104,6 +104,111 @@ export function clampToNavigableRange(day: Date, range: NavigableDayRange): Date
   return candidate.getTime() > range.to.getTime() ? range.to : candidate;
 }
 
+/** A day's total seats across its blocks, for the week grid — per-block detail belongs to a day
+ *  already chosen, not to an overview of several of them. */
+export interface SpaceDaySummary {
+  readonly date: Date;
+  readonly totalCapacity: number;
+  readonly totalFree: number;
+}
+
+/** A day with no schedule reports `totalCapacity` zero, the same way `blocksOf` reports an empty
+ *  list for it — it is closed, not full. */
+export function isDayOpen(summary: SpaceDaySummary): boolean {
+  return summary.totalCapacity > 0;
+}
+
+const DAYS_PER_WEEK = 7;
+const WEEK_GRID_LENGTH_DAYS = DAYS_PER_WEEK * 2;
+
+/** `Date#getDay()` counts from Sunday; the grid opens on Monday regardless of locale. */
+function mondayOffsetOf(date: Date): number {
+  return (date.getDay() + 6) % DAYS_PER_WEEK;
+}
+
+export function startOfWeek(date: Date): Date {
+  return addDays(startOfDay(date), -mondayOffsetOf(date));
+}
+
+/**
+ * The current week and the next one, Monday through Sunday, as a single span — not "the next 14
+ * days", which would start wherever today happens to fall and could open on a Thursday, showing
+ * four days of one week and ten of the next instead of two weeks anyone would recognise as such.
+ */
+export function weekGridRange(now: Date): NavigableDayRange {
+  const from = startOfWeek(now);
+
+  return { from, to: addDays(from, WEEK_GRID_LENGTH_DAYS - 1) };
+}
+
+export function daysOf(range: NavigableDayRange): readonly Date[] {
+  const days: Date[] = [];
+
+  for (let day = range.from; day.getTime() <= range.to.getTime(); day = addDays(day, 1)) {
+    days.push(day);
+  }
+
+  return days;
+}
+
+/**
+ * The three bands the desk already groups a day into when talking about it — "la mañana", "la
+ * tarde", "la noche" — not a concept the booking flow defines. A block belongs to the band its
+ * start hour falls in; a space that opens at six has nothing before the morning boundary, so the
+ * boundary never needs to match a space's actual opening hour.
+ */
+export type BlockShift = 'morning' | 'afternoon' | 'night';
+
+const SHIFT_ORDER: readonly BlockShift[] = ['morning', 'afternoon', 'night'];
+
+const AFTERNOON_START_HOUR = 12;
+const NIGHT_START_HOUR = 18;
+
+function shiftOfHour(hour: number): BlockShift {
+  if (hour < AFTERNOON_START_HOUR) {
+    return 'morning';
+  }
+
+  return hour < NIGHT_START_HOUR ? 'afternoon' : 'night';
+}
+
+export function blockShiftOf(block: AdminBlock): BlockShift {
+  return shiftOfHour(block.start.getHours());
+}
+
+/** A shift's blocks, plus the span they actually cover — read from the blocks themselves rather
+ *  than from the shift's own boundary, since a space's true opening hours are narrower than it. */
+export interface BlockShiftGroup {
+  readonly shift: BlockShift;
+  readonly blocks: readonly AdminBlock[];
+  readonly from: Date;
+  readonly to: Date;
+}
+
+/** Blocks split by shift, in a fixed morning → afternoon → night order. A shift with nothing
+ *  scheduled in it is left out: an empty "Turno noche" tells the reader nothing a shorter list
+ *  would not. */
+export function groupBlocksByShift(blocks: readonly AdminBlock[]): readonly BlockShiftGroup[] {
+  return SHIFT_ORDER.flatMap((shift) => {
+    const inShift = blocks.filter((candidate) => blockShiftOf(candidate) === shift);
+
+    if (inShift.length === 0) {
+      return [];
+    }
+
+    const from = inShift.reduce(
+      (earliest, candidate) => (candidate.start < earliest ? candidate.start : earliest),
+      inShift[0].start,
+    );
+    const to = inShift.reduce(
+      (latest, candidate) => (candidate.end > latest ? candidate.end : latest),
+      inShift[0].end,
+    );
+
+    return [{ shift, blocks: inShift, from, to }];
+  });
+}
+
 const BLOCK_KEY = /^(\d{2})-(\d{2})$/;
 
 const HOURS_PER_DAY = 24;

@@ -1,5 +1,6 @@
 import type { Observable } from 'rxjs';
 import type { AdminBlock, AdminBlockDetail } from './attendance';
+import type { NavigableDayRange, SpaceDaySummary } from './block-schedule';
 
 /**
  * The day's blocks, and one of them in full. They are two reads because they cost differently: the
@@ -25,6 +26,12 @@ export abstract class AdminBlockRepository {
   ): Observable<AdminBlockDetail | null>;
 
   abstract exportBlocks(spaceId: string, date: Date): Observable<BlockReport>;
+
+  /** One entry per day in `range`, including a day the space has no schedule for. */
+  abstract summaryOf(
+    spaceId: string,
+    range: NavigableDayRange,
+  ): Observable<readonly SpaceDaySummary[]>;
 }
 
 /**

@@ -5,12 +5,13 @@ import { APP_CONFIG } from '../../../core/config/app-config';
 import { isAppError } from '../../../core/errors/app-error';
 import { SKIP_ERROR_NOTIFICATION } from '../../../core/http/http-error.interceptor';
 import { fromIsoDateTime, minutesFromIsoTime, toIsoTime } from '../../../shared/time/api-time';
-import { toIsoDate } from '../../../shared/time/calendar-day';
+import { parseIsoDate, toIsoDate } from '../../../shared/time/calendar-day';
 import { minutesOfDay } from '../../../shared/time/time-of-day';
 import type { ReservationState } from '../../my-reservations/domain/reservation';
 import { closureReasonFromName } from '../../spaces/domain/closure-reason';
 import { AdminBlockRepository, type BlockReport } from '../domain/admin-block.repository';
 import type { AdminBlock, AdminBlockDetail, Attendee } from '../domain/attendance';
+import type { NavigableDayRange, SpaceDaySummary } from '../domain/block-schedule';
 
 interface BlockSummaryDto {
   readonly start: string;
@@ -32,6 +33,12 @@ interface OccupantDto {
 
 interface BlockDetailDto extends BlockSummaryDto {
   readonly roster: readonly OccupantDto[];
+}
+
+interface DaySummaryDto {
+  readonly date: string;
+  readonly totalCapacity: number;
+  readonly totalFree: number;
 }
 
 /** The same vocabulary the student's own reservations arrive in, read the same way. */
@@ -69,6 +76,15 @@ function toBlock(dto: BlockSummaryDto, day: Date): AdminBlock {
     free: dto.free,
     closed: dto.closed,
     closureReason: dto.closureReason ? closureReasonFromName(dto.closureReason) : null,
+  };
+}
+
+/** `parseIsoDate` only fails on a malformed string, which a same-origin response never sends. */
+function toDaySummary(dto: DaySummaryDto): SpaceDaySummary {
+  return {
+    date: parseIsoDate(dto.date) ?? new Date(dto.date),
+    totalCapacity: dto.totalCapacity,
+    totalFree: dto.totalFree,
   };
 }
 
@@ -119,6 +135,14 @@ export class HttpAdminBlockRepository extends AdminBlockRepository {
           isAppError(error) && error.code === 'notFound' ? of(null) : throwError(() => error),
         ),
       );
+  }
+
+  summaryOf(spaceId: string, range: NavigableDayRange): Observable<readonly SpaceDaySummary[]> {
+    return this.http
+      .get<readonly DaySummaryDto[]>(`${this.baseUrl}/${spaceId}/blocks/summary`, {
+        params: { from: toIsoDate(range.from), to: toIsoDate(range.to) },
+      })
+      .pipe(map((days) => days.map(toDaySummary)));
   }
 
   exportBlocks(spaceId: string, date: Date): Observable<BlockReport> {

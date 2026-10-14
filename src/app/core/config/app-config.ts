@@ -18,7 +18,8 @@ export interface AppConfig {
   readonly capacityHistoryDays: number;
   /**
    * How many days forward. Never below the student's booking horizon, or the panel could not show a
-   * block a student has already reserved.
+   * block a student has already reserved — and never below 13, or the week grid's "next week" row
+   * could reach a day the single-day view would then refuse and clamp back.
    */
   readonly capacityPlanningDays: number;
 }

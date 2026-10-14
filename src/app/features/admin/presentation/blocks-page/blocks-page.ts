@@ -1,38 +1,40 @@
-import { DOCUMENT, DatePipe } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Params } from '@angular/router';
 import { TuiButton, TuiLoader } from '@taiga-ui/core';
-import { TuiSkeleton } from '@taiga-ui/kit';
 import { APP_CONFIG } from '../../../../core/config/app-config';
-import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import { parseIsoDate, startOfDay, toIsoDate } from '../../../../shared/time/calendar-day';
 import { AdminBlockRepository } from '../../domain/admin-block.repository';
-import { clampToNavigableRange, navigableDayRange } from '../../domain/block-schedule';
-import { BlockDayStepper } from '../block-day-stepper/block-day-stepper';
-import { BlockRow } from '../block-row/block-row';
-
-/** Placeholder rows drawn while the day loads: a screenful, not the whole schedule. */
-const SKELETON_ROWS = Array.from({ length: 4 }, (_, index) => index);
+import {
+  clampToNavigableRange,
+  daysOf,
+  navigableDayRange,
+  weekGridRange,
+} from '../../domain/block-schedule';
+import { BlockDaySchedule } from '../block-day-schedule/block-day-schedule';
+import { BlockWeekGrid } from '../block-week-grid/block-week-grid';
 
 /**
- * `docs/booking-flow.md` §11 asks the panel to let an administrator consult a day's blocks. This is
- * that day, as a list: which space, which day, and then each block saying only what the clock lets
- * it say about itself. The block in progress is not a separate view — it is one row of this list,
- * marked as current.
+ * `docs/booking-flow.md` §11 asks the panel to let an administrator consult a day's blocks. The
+ * week grid answers "which day" — the current week and the next one, each standing in for its
+ * schedule as one occupancy percentage — and the day chosen there is read below it, as a list
+ * split into the three shifts the desk already thinks a day in: which space, which day, and then
+ * each block saying only what the clock lets it say about itself. The block in progress is not a
+ * separate view — it is one row of this list, marked as current.
  *
- * Which day is showing lives in the URL rather than in the component — a filtered day becomes a link
- * somebody can send, and the detail can return here without the shell having to remember anything on
- * its behalf. Which space is showing lives in the URL too, but as the panel's own `:spaceId` segment
- * rather than this view's concern: it arrives as an input the same way the day does. Everything is
- * therefore derived with `computed()` over the inputs — `withComponentInputBinding` re-emits on the
- * same instance when only the query changes, so a value captured once into a `signal` would leave
- * the page frozen on the day it first opened.
+ * Which day is showing lives in the URL rather than in the component — a filtered day becomes a
+ * link somebody can send, and the detail can return here without the shell having to remember
+ * anything on its behalf. Which space is showing lives in the URL too, but as the panel's own
+ * `:spaceId` segment rather than this view's concern: it arrives as an input the same way the day
+ * does. Everything is therefore derived with `computed()` over the inputs — `withComponentInputBinding`
+ * re-emits on the same instance when only the query changes, so a value captured once into a
+ * `signal` would leave the page frozen on the day it first opened.
  */
 @Component({
   selector: 'app-blocks-page',
-  imports: [BlockDayStepper, BlockRow, DatePipe, EmptyState, TuiButton, TuiLoader, TuiSkeleton],
+  imports: [BlockDaySchedule, BlockWeekGrid, TuiButton, TuiLoader],
   templateUrl: './blocks-page.html',
   styleUrl: './blocks-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -81,7 +83,17 @@ export class BlocksPage {
 
   protected readonly blocks = this.schedule.value;
 
-  protected readonly skeletonRows = SKELETON_ROWS;
+  protected readonly weekRange = computed(() => weekGridRange(this.now));
+
+  protected readonly weekDays = computed(() => daysOf(this.weekRange()));
+
+  protected readonly summary = rxResource({
+    params: () => ({ spaceId: this.spaceId(), range: this.weekRange() }),
+    stream: ({ params }) => this.repository.summaryOf(params.spaceId, params.range),
+    defaultValue: [],
+  });
+
+  protected readonly daySummaries = this.summary.value;
 
   protected readonly exporting = signal(false);
 

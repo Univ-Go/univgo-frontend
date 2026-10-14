@@ -4,20 +4,41 @@
   class="row"
   [attr.data-live]="phase() === 'live' ? '' : null"
 >
-  <div class="row__plate" aria-hidden="true">
-    <tui-icon icon="@tui.clock" />
-  </div>
+  <header class="row__header">
+    <p class="row__when">
+      {{ block().start | date: 'shortTime' }} – {{ block().end | date: 'shortTime' }}
+    </p>
 
-  <div class="row__when">
-    <p class="row__start">{{ block().start | date: 'shortTime' }}</p>
-    <p class="row__end">{{ block().end | date: 'shortTime' }}</p>
-  </div>
+    <div class="row__flags">
+      @if (block().closed) {
+        <span
+          tuiBadge
+          appearance="negative"
+          size="s"
+          iconStart="@tui.lock"
+          i18n="@@admin.blocks.row.closed"
+          >Cerrado</span
+        >
+      } @else if (phase() === 'live') {
+        <span
+          tuiBadge
+          appearance="info"
+          size="s"
+          iconStart="@tui.radio"
+          i18n="@@admin.blocks.row.live"
+          >En curso</span
+        >
+      }
+
+      <app-block-status-badge size="s" [band]="band()" [phase]="phase()" />
+    </div>
+  </header>
 
   <div class="row__meter">
     <p class="row__capacity">
       <tui-icon icon="@tui.users" [attr.aria-hidden]="true" />
       <span>{{ capacityLabel() }}</span>
-      @if (phase() !== 'past' && !block().closed) {
+      @if (!block().closed) {
         <span class="row__count">{{ occupancy().occupied }} / {{ occupancy().capacity }}</span>
       }
     </p>
@@ -28,10 +49,6 @@
         @if (closureReason(); as reason) {
           <span class="row__reason">{{ reason }}</span>
         }
-      </p>
-    } @else if (phase() === 'past') {
-      <p class="row__caption" i18n="@@admin.blocks.caption.past">
-        El bloque terminó. Consulta quién se presentó en su detalle.
       </p>
     } @else {
       <!-- The count above says the same number in words, so the meter adds nothing for a screen
@@ -47,34 +64,16 @@
         [max]="1"
       ></progress>
 
-      <p class="row__caption" i18n="@@admin.blocks.caption.booked">
-        {{ occupancy().occupied }} reservas confirmadas · {{ occupancy().free }} libres
-      </p>
+      @if (phase() === 'past') {
+        <p class="row__caption" i18n="@@admin.blocks.caption.past">
+          El bloque terminó. Consulta quién se presentó en su detalle.
+        </p>
+      } @else {
+        <p class="row__caption" i18n="@@admin.blocks.caption.booked">
+          {{ occupancy().occupied }} reservas confirmadas · {{ occupancy().free }} libres
+        </p>
+      }
     }
-  </div>
-
-  <div class="row__flags">
-    @if (block().closed) {
-      <span
-        tuiBadge
-        appearance="negative"
-        size="s"
-        iconStart="@tui.lock"
-        i18n="@@admin.blocks.row.closed"
-        >Cerrado</span
-      >
-    } @else if (phase() === 'live') {
-      <span
-        tuiBadge
-        appearance="info"
-        size="s"
-        iconStart="@tui.radio"
-        i18n="@@admin.blocks.row.live"
-        >En curso</span
-      >
-    }
-
-    <app-block-status-badge size="s" [band]="band()" [phase]="phase()" />
   </div>
 
   <!-- Seven links all reading "Ver detalles" are indistinguishable to anyone tabbing the list, so

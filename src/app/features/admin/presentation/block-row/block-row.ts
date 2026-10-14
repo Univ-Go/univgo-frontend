@@ -17,15 +17,16 @@ import { BLOCK_PHASE_LABELS } from '../block-phase-copy';
 import { BlockStatusBadge } from '../block-status-badge/block-status-badge';
 
 /**
- * Level 3: one block of the day's schedule, as the row the administrator reads across.
+ * Level 3: one block of the day's schedule, as a card in the shift grid it sits in.
  *
  * What it shows changes with the clock, and that is the point of the view rather than a flourish: a
- * block still to come can report only what has been booked, one in progress reports who is in the
- * room and who has yet to walk in, and one that is over reports who turned up. The meter keeps the
- * same meaning across the first two — seats held out of capacity — and changes to attendance in the
- * third, which is exactly what the heading above it changes to license.
+ * block still to come reports what has been booked, one in progress reports who is in the room and
+ * who has yet to walk in, and one that is over still draws the same meter from the same
+ * `occupied`/`free` pair — the heading above it relabels to "Asistencia" because that is what the
+ * number means once the block ends, even though the true attendance count (who actually checked in)
+ * lives in the roster, one click away, not in this list's own fields.
  *
- * The whole row is deliberately not a link. It carries a button, and a link wrapping a button is
+ * The whole card is deliberately not a link. It carries a button, and a link wrapping a button is
  * nested interactive content; the mock asks for the explicit action anyway.
  */
 @Component({
@@ -58,13 +59,14 @@ export class BlockRow {
   protected readonly band = computed(() => fullnessBandOf(this.occupancy()));
 
   /**
-   * `null` once the block is over, and so is the meter: a finished block holds no seats — that is
-   * the whole of "liberar una plaza es una consecuencia" — so its counts are all zero and a bar
-   * drawn from them would report an empty room as good news. What happened in it is the roster's
-   * answer, one click away.
+   * `null` only while the space is shut, the one case with no seats to read at all. A finished
+   * block still draws the bar from the same `occupied`/`free` the server gave it — reservations
+   * stop holding a seat once they finish ("liberar una plaza es una consecuencia", CLAUDE.md §22),
+   * so most of the time it reads as empty. The true attendance count is the roster's answer, one
+   * click away, not something this card recomputes.
    */
   protected readonly load = computed(() =>
-    this.phase() === 'past' || this.block().closed ? null : occupancyLoadOf(this.occupancy()),
+    this.block().closed ? null : occupancyLoadOf(this.occupancy()),
   );
 
   protected readonly key = computed(() => blockKeyOf(this.block()));

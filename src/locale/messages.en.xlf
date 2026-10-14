@@ -1158,9 +1158,17 @@
         <source>{VAR_PLURAL, plural, =0 {Sin bloques} =1 {1 bloque} other {<x id="INTERPOLATION"/> bloques}}</source>
         <target>{VAR_PLURAL, plural, =0 {No blocks} =1 {1 block} other {<x id="INTERPOLATION"/> blocks}}</target>
       </trans-unit>
-      <trans-unit id="admin.blocks.list.label" datatype="html">
-        <source>Bloques del día</source>
-        <target>The day's blocks</target>
+      <trans-unit id="admin.blocks.shift.morning" datatype="html">
+        <source>Turno mañana</source>
+        <target>Morning shift</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.shift.afternoon" datatype="html">
+        <source>Turno tarde</source>
+        <target>Afternoon shift</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.shift.night" datatype="html">
+        <source>Turno noche</source>
+        <target>Night shift</target>
       </trans-unit>
       <trans-unit id="admin.blocks.list.empty.title" datatype="html">
         <source>Este espacio no abre este día</source>
@@ -1170,29 +1178,9 @@
         <source>Prueba con otra fecha, o cambia de espacio desde el selector de arriba.</source>
         <target>Try another date, or switch space using the picker above.</target>
       </trans-unit>
-      <trans-unit id="admin.blocks.day.label" datatype="html">
-        <source>Cambiar de día</source>
-        <target>Change day</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.day.previous" datatype="html">
-        <source>Día anterior</source>
-        <target>Previous day</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.day.next" datatype="html">
-        <source>Día siguiente</source>
-        <target>Next day</target>
-      </trans-unit>
       <trans-unit id="admin.blocks.day.today" datatype="html">
         <source>Hoy</source>
         <target>Today</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.day.yesterday" datatype="html">
-        <source>Ayer</source>
-        <target>Yesterday</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.day.tomorrow" datatype="html">
-        <source>Mañana</source>
-        <target>Tomorrow</target>
       </trans-unit>
       <trans-unit id="admin.blocks.row.live" datatype="html">
         <source> En curso </source>
@@ -1241,6 +1229,42 @@
       <trans-unit id="admin.blocks.error.heading" datatype="html">
         <source>No pudimos cargar los bloques</source>
         <target>We couldn't load the blocks</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.thisWeek" datatype="html">
+        <source>Esta semana</source>
+        <target>This week</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.range" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ thisWeek()[0] | date: &apos;d MMM&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ thisWeek()[6] | date: &apos;d MMM&apos; }}"/></source>
+        <target><x id="INTERPOLATION" equiv-text="{{ thisWeek()[0] | date: &apos;d MMM&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ thisWeek()[6] | date: &apos;d MMM&apos; }}"/></target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.hint" datatype="html">
+        <source> Haz clic en un día para actualizar el cronograma </source>
+        <target> Click a day to refresh the schedule </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.nextWeek" datatype="html">
+        <source>Semana próxima</source>
+        <target>Next week</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.openSchedule" datatype="html">
+        <source>Programación abierta</source>
+        <target>Scheduling open</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.collapse" datatype="html">
+        <source>Colapsar</source>
+        <target>Collapse</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.expand" datatype="html">
+        <source>Desplegar</source>
+        <target>Expand</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.freeSpots" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {Sin cupos libres} =1 {1 cupo libre} other {<x id="INTERPOLATION"/> cupos libres}}</source>
+        <target>{VAR_PLURAL, plural, =0 {No free spots} =1 {1 free spot} other {<x id="INTERPOLATION"/> free spots}}</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.occupancy" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ occupancyPercent() }}"/>% aforo</source>
+        <target><x id="INTERPOLATION" equiv-text="{{ occupancyPercent() }}"/>% occupancy</target>
       </trans-unit>
       <trans-unit id="admin.capacity.loading" datatype="html">
         <source>Cargando el bloque</source>

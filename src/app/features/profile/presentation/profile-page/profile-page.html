@@ -1,0 +1,90 @@
+<header class="intro">
+  <h1 i18n="@@profile.title">Tu perfil</h1>
+  <p class="intro__lead" i18n="@@profile.lead">Gestiona la seguridad de tu cuenta.</p>
+</header>
+
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="password"
+  aria-labelledby="password-title"
+>
+  <h2 id="password-title" i18n="@@profile.password.heading">Cambiar contraseña</h2>
+
+  <p class="password__hint" i18n="@@profile.password.hint">
+    Al guardarla cerraremos tu sesión en todos tus dispositivos y tendrás que volver a entrar.
+  </p>
+
+  <form class="form" tuiForm="l" [formGroup]="form" (ngSubmit)="submit()">
+    <tui-textfield>
+      <label tuiLabel for="profile-current-password" i18n="@@profile.password.currentLabel"
+        >Contraseña actual</label
+      >
+      <input
+        id="profile-current-password"
+        tuiInput
+        type="password"
+        autocomplete="current-password"
+        formControlName="currentPassword"
+      />
+      <tui-icon tuiPassword />
+    </tui-textfield>
+    @if (form.controls.currentPassword.touched && form.controls.currentPassword.invalid) {
+      <tui-error [error]="currentRequiredMessage" />
+    }
+
+    <tui-textfield>
+      <label tuiLabel for="profile-new-password" i18n="@@profile.password.newLabel"
+        >Nueva contraseña</label
+      >
+      <input
+        id="profile-new-password"
+        tuiInput
+        type="password"
+        autocomplete="new-password"
+        formControlName="newPassword"
+      />
+      <tui-icon tuiPassword />
+    </tui-textfield>
+    @if (form.controls.newPassword.touched && form.controls.newPassword.invalid) {
+      <tui-error [error]="newTooShortMessage" />
+    }
+
+    <tui-textfield>
+      <label tuiLabel for="profile-confirmation" i18n="@@profile.password.confirmationLabel"
+        >Repite la nueva contraseña</label
+      >
+      <input
+        id="profile-confirmation"
+        tuiInput
+        type="password"
+        autocomplete="new-password"
+        formControlName="confirmation"
+      />
+      <tui-icon tuiPassword />
+    </tui-textfield>
+    @if (form.controls.confirmation.touched && form.hasError('mismatch')) {
+      <tui-error [error]="mismatchMessage" />
+    }
+
+    @if (wrongCurrentPassword()) {
+      <p class="form__failure" role="alert" i18n="@@profile.password.wrongCurrent">
+        Tu contraseña actual no es correcta. Revísala e inténtalo de nuevo.
+      </p>
+    }
+
+    <button
+      tuiButton
+      type="submit"
+      size="m"
+      appearance="primary"
+      iconStart="@tui.lock"
+      [disabled]="submitting()"
+    >
+      <tui-loader [loading]="submitting()" [inheritColor]="true" [overlay]="true">
+        <span i18n="@@profile.password.submit">Guardar contraseña</span>
+      </tui-loader>
+    </button>
+  </form>
+</section>

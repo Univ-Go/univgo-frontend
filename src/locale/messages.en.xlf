@@ -2168,6 +2168,70 @@
         <source>Ver detalles</source>
         <target>View details</target>
       </trans-unit>
+      <trans-unit id="profile.pageTitle" datatype="html">
+        <source>Tu perfil</source>
+        <target>Your profile</target>
+      </trans-unit>
+      <trans-unit id="profile.pageDescription" datatype="html">
+        <source>Gestiona tu cuenta y cambia tu contraseña.</source>
+        <target>Manage your account and change your password.</target>
+      </trans-unit>
+      <trans-unit id="profile.title" datatype="html">
+        <source>Tu perfil</source>
+        <target>Your profile</target>
+      </trans-unit>
+      <trans-unit id="profile.lead" datatype="html">
+        <source>Gestiona la seguridad de tu cuenta.</source>
+        <target>Manage your account's security.</target>
+      </trans-unit>
+      <trans-unit id="profile.password.heading" datatype="html">
+        <source>Cambiar contraseña</source>
+        <target>Change password</target>
+      </trans-unit>
+      <trans-unit id="profile.password.hint" datatype="html">
+        <source> Al guardarla cerraremos tu sesión en todos tus dispositivos y tendrás que volver a entrar. </source>
+        <target> Once you save it, we will sign you out on all your devices and you will need to sign in again. </target>
+      </trans-unit>
+      <trans-unit id="profile.password.currentLabel" datatype="html">
+        <source>Contraseña actual</source>
+        <target>Current password</target>
+      </trans-unit>
+      <trans-unit id="profile.password.newLabel" datatype="html">
+        <source>Nueva contraseña</source>
+        <target>New password</target>
+      </trans-unit>
+      <trans-unit id="profile.password.confirmationLabel" datatype="html">
+        <source>Repite la nueva contraseña</source>
+        <target>Repeat the new password</target>
+      </trans-unit>
+      <trans-unit id="profile.password.wrongCurrent" datatype="html">
+        <source> Tu contraseña actual no es correcta. Revísala e inténtalo de nuevo. </source>
+        <target> Your current password is not correct. Check it and try again. </target>
+      </trans-unit>
+      <trans-unit id="profile.password.submit" datatype="html">
+        <source>Guardar contraseña</source>
+        <target>Save password</target>
+      </trans-unit>
+      <trans-unit id="profile.password.currentRequired" datatype="html">
+        <source>Introduce tu contraseña actual.</source>
+        <target>Enter your current password.</target>
+      </trans-unit>
+      <trans-unit id="profile.password.newTooShort" datatype="html">
+        <source>La nueva contraseña debe tener al menos <x id="minLength" equiv-text="PASSWORD_MIN_LENGTH"/> caracteres.</source>
+        <target>The new password must be at least <x id="minLength" equiv-text="PASSWORD_MIN_LENGTH"/> characters long.</target>
+      </trans-unit>
+      <trans-unit id="profile.password.mismatch" datatype="html">
+        <source>Las contraseñas no coinciden.</source>
+        <target>The passwords do not match.</target>
+      </trans-unit>
+      <trans-unit id="profile.password.changedSummary" datatype="html">
+        <source>Contraseña actualizada</source>
+        <target>Password updated</target>
+      </trans-unit>
+      <trans-unit id="profile.password.changedDetail" datatype="html">
+        <source>Inicia sesión de nuevo con tu nueva contraseña.</source>
+        <target>Sign in again with your new password.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

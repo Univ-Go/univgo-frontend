@@ -1,5 +1,6 @@
 import type { Routes } from '@angular/router';
 import { adminGuard, guestGuard, studentGuard } from './features/auth/application/auth.guards';
+import { PROFILE_ROUTE } from './features/profile/profile.routes';
 
 /**
  * Every route declares `title` and `data.description`, which `PageMetadataStrategy` turns into
@@ -107,6 +108,7 @@ export const routes: Routes = [
           description: $localize`:@@reservations.detail.pageDescription:Consulta el pase, el horario, la ubicación y las normas de tu reserva.`,
         },
       },
+      PROFILE_ROUTE,
       // Last, and inside the shell: an unknown URL leaves the user with the navigation bar rather
       // than on a blank page. Without this entry the router aborts the navigation and renders
       // nothing at all.

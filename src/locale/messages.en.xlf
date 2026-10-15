@@ -2168,6 +2168,10 @@
         <source>Ver detalles</source>
         <target>View details</target>
       </trans-unit>
+      <trans-unit id="admin.nav.spaces" datatype="html">
+        <source>Espacios</source>
+        <target>Spaces</target>
+      </trans-unit>
       <trans-unit id="admin.spaces.search" datatype="html">
         <source>Buscar por nombre, ubicación o tipo</source>
         <target>Search by name, location or type</target>

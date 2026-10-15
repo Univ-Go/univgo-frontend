@@ -23,7 +23,11 @@ import { LanguageSelector } from '../../shared/language-selector/language-select
 import { ShellChrome, reportShellInset } from '../../shared/shell-chrome/shell-chrome';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { AccountMenu } from '../account-menu/account-menu';
-import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
+import {
+  ADMIN_NAV_ITEMS,
+  ADMIN_NAV_MATCH_OPTIONS,
+  ADMIN_SPACES_NAV_ITEM,
+} from '../admin-nav-items';
 
 /** The query-string key the roster reads its search from. */
 const QUERY_PARAM = 'query';
@@ -111,6 +115,7 @@ export class AdminHeader {
   protected readonly menuOpen = signal(false);
 
   protected readonly navItems = ADMIN_NAV_ITEMS;
+  protected readonly spacesItem = ADMIN_SPACES_NAV_ITEM;
   protected readonly navMatchOptions = ADMIN_NAV_MATCH_OPTIONS;
 
   /**

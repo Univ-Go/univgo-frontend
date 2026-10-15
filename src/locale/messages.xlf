@@ -4026,13 +4026,6 @@
           <context context-type="linenumber">12,15</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.brandRole" datatype="html">
-        <source>Gestión institucional</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/admin-aside/admin-aside.ts</context>
-          <context context-type="linenumber">102,105</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="admin.nav.label" datatype="html">
         <source>Secciones del panel</source>
         <context-group purpose="location">

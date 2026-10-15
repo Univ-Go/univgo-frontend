@@ -1,25 +1,21 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AdminAside } from '../admin-aside/admin-aside';
 import { AdminHeader } from '../admin-header/admin-header';
 import { AppTabBar } from '../app-tab-bar/app-tab-bar';
 
 /**
  * Level 1: the shell the panel's views render inside, and the counterpart of MainLayout. It is a
  * second shell rather than a mode of the first because the two answer to different people: this one
- * is a desk tool whose destinations sit in a column and whose bar is a search field, while the
- * student's shell navigates a catalogue.
+ * is a desk tool whose bar also carries a space switcher and a search field, while the student's
+ * shell navigates a catalogue.
  *
  * Below desktop, both shells give their destinations to the same thumb-reachable bottom bar —
  * AppTabBar, told which destination set to render — rather than each keeping its own copy of that
- * shape. The three landmarks are laid out by named areas rather than by nesting, which is what lets
- * the same markup put the aside beside the content from desktop up and give the bar no grid area at
- * all: a position: fixed element ignores one anyway, and leaving the track would book room next to
- * a main that no longer has a sibling there.
+ * shape. The bar gets no grid area: a position: fixed element ignores one anyway.
  */
 @Component({
   selector: 'app-admin-layout',
-  imports: [AdminAside, AdminHeader, AppTabBar, RouterOutlet],
+  imports: [AdminHeader, AppTabBar, RouterOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     @use 'breakpoints' as bp;
@@ -44,7 +40,13 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
     main {
       grid-area: main;
       min-inline-size: 0;
-      padding: var(--univgo-space-xl) var(--univgo-layout-gutter);
+      // A content cap like MainLayout's, but as padding rather than a max-width on main: main is the
+      // scroll container on desktop, and narrowing it would pull its scrollbar in off the window edge.
+      padding: var(--univgo-space-xl)
+        calc(
+          max(0px, (100% - var(--univgo-content-max-width)) / 2) * var(--univgo-admin-side-room) +
+            var(--univgo-layout-gutter)
+        );
     }
 
     .skip-link {
@@ -65,29 +67,16 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
 
     @media (width >= bp.$desktop) {
       :host {
-        grid-template-areas:
-          'aside header'
-          'aside main';
-        grid-template-columns: 16rem minmax(0, 1fr);
         // A hard cap here, not just a floor: the shell itself never scrolls from this breakpoint up.
-        // Only main does — the column and the header have no reason to move for a view whose own
-        // content runs long, and a page-level scroll was carrying them away with it.
+        // Only main does — the header has no reason to move for a view whose own
+        // content runs long, and a page-level scroll was carrying it away.
         block-size: 100svh;
         overflow: hidden;
       }
 
       main {
         // The one thing that scrolls on desktop. A view taller than the shell no longer stretches
-        // the whole grid to fit it — it scrolls inside this box instead, same as the aside's own
-        // nav does below if it ever grows past its column.
-        overflow-y: auto;
-      }
-
-      app-admin-aside {
-        grid-area: aside;
-        // 100% of a now fixed-height shell, so this always is exactly one screen tall — no
-        // position: sticky needed to keep it in view, because nothing around it scrolls anymore.
-        block-size: 100%;
+        // the whole grid to fit it — it scrolls inside this box instead.
         overflow-y: auto;
       }
     }
@@ -106,8 +95,6 @@ import { AppTabBar } from '../app-tab-bar/app-tab-bar';
     <a class="skip-link" href="#content" i18n="@@layout.skipToContent">Saltar al contenido</a>
 
     <app-admin-header />
-
-    <app-admin-aside />
 
     <main id="content">
       <router-outlet />

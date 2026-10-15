@@ -25,7 +25,7 @@ export function spaceIdFromSnapshot(root: ActivatedRouteSnapshot): string | null
 
 /**
  * The panel's current space as a signal, shared by every Level 1 shell piece that needs it
- * (`AdminHeader`, `AdminAside`, `AppTabBar`) instead of each walking the route tree on its own —
+ * (`AdminHeader`, `AppTabBar`) instead of each walking the route tree on its own —
  * the same shape `AdminHeader` already used privately for its search-box visibility.
  */
 export function currentAdminSpaceId(): Signal<string | null> {

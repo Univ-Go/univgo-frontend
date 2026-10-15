@@ -1,81 +1,106 @@
 <header class="bar">
-  <!-- One mark on screen at a time: the aside signs the panel where it is a column, so the bar
-       hides this one from that width up, and on a phone the wordmark gives way to the isotype —
-       four controls and a full wordmark do not share a 320px line. Both are in the markup and the
-       stylesheet picks: the aside already changes shape in CSS, and a second opinion in TypeScript
-       would need the same number written twice. The link carries the accessible name either way,
-       so the artwork underneath is free to be decorative. -->
-  <a
-    class="bar__logo"
-    routerLink="/admin/spaces"
-    i18n-aria-label="@@admin.header.backToSpaces"
-    aria-label="Volver a espacios"
-  >
-    <app-brand-logo />
-    <app-brand-isotype />
-  </a>
-
-  @if (currentSpaceId(); as id) {
-    <!-- A line of its own on a phone: Taiga's button does not shrink, so beside the mark and the
-         controls it was what broke the bar onto three rows. -->
-    <app-space-switcher
-      [spaces]="spaces()"
-      [selectedId]="id"
-      [fullWidth]="compact()"
-      (spaceSelected)="changeSpace($event)"
-    />
-  }
-
-  <!-- Nothing to submit: the roster answers as the field changes. The handler is what keeps Enter
-       from reloading the page. Absent, rather than disabled, on the views that do not read it: a
-       field nobody consumes is worse than no field, and the bar keeps its shape either way. -->
-  @if (searchable()) {
-    <form class="bar__search" (submit)="$event.preventDefault()">
-      <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
-        <label tuiLabel for="admin-search" i18n="@@admin.search.label"
-          >Buscar estudiante o ID</label
-        >
-        <input
-          id="admin-search"
-          tuiInput
-          name="query"
-          autocomplete="off"
-          [ngModel]="query()"
-          (ngModelChange)="search($event)"
-        />
-      </tui-textfield>
-    </form>
-  }
-
-  <!-- No notification bell: neither shell has anything behind one, and the room it took is what
-       lets the utilities and the account stay in the bar at every width. -->
-  <div class="bar__actions">
-    <button
-      tuiIconButton
-      type="button"
-      appearance="flat"
-      size="s"
-      iconStart="@tui.circle-help"
-      i18n-aria-label="@@admin.help"
-      aria-label="Ayuda"
-    ></button>
-
-    <app-language-selector />
-    <app-theme-toggle />
-
-    <button
-      tuiAvatar
-      type="button"
-      size="m"
-      appearance="primary"
-      class="bar__profile"
-      i18n-aria-label="@@navigation.accountMenu"
-      aria-label="Tu cuenta"
-      [tuiDropdown]="accountMenu"
-      [(tuiDropdownOpen)]="menuOpen"
+  <!-- Three groups so the desktop grid can centre the destinations on the viewport, as the student
+       bar does. Below desktop the groups are `display: contents` and the bar wraps as before. -->
+  <div class="bar__start">
+    <!-- On a phone the wordmark gives way to the isotype — four controls and a full wordmark do not
+         share a 320px line. Both are in the markup and the stylesheet picks. The link carries the
+         accessible name either way, so the artwork underneath is free to be decorative. -->
+    <a
+      class="bar__logo"
+      routerLink="/admin/spaces"
+      i18n-aria-label="@@admin.header.backToSpaces"
+      aria-label="Volver a espacios"
     >
-      {{ initials() }}
-    </button>
+      <app-brand-logo />
+      <app-brand-isotype />
+    </a>
+
+    @if (currentSpaceId(); as id) {
+      <!-- A line of its own on a phone: Taiga's button does not shrink, so beside the mark and the
+           controls it was what broke the bar onto three rows. -->
+      <app-space-switcher
+        [spaces]="spaces()"
+        [selectedId]="id"
+        [fullWidth]="compact()"
+        (spaceSelected)="changeSpace($event)"
+      />
+    }
+  </div>
+
+  <nav class="bar__nav" i18n-aria-label="@@admin.nav.label" aria-label="Secciones del panel">
+    @for (item of navItems; track item.label) {
+      @if (currentSpaceId() && item.link; as link) {
+        <a
+          tuiLink
+          class="bar__nav-item"
+          routerLinkActive="bar__nav-item--active"
+          [iconStart]="item.icon"
+          [routerLink]="['/admin', currentSpaceId(), link]"
+          [routerLinkActiveOptions]="navMatchOptions"
+          [attr.aria-current]="active.isActive ? 'page' : null"
+          #active="routerLinkActive"
+          >{{ item.label }}</a
+        >
+      } @else {
+        <button tuiLink type="button" class="bar__nav-item" disabled [iconStart]="item.icon">
+          {{ item.label }}
+        </button>
+      }
+    }
+  </nav>
+
+  <div class="bar__end">
+    <!-- Nothing to submit: the roster answers as the field changes. The handler is what keeps Enter
+         from reloading the page. Absent, rather than disabled, on the views that do not read it: a
+         field nobody consumes is worse than no field, and the bar keeps its shape either way. -->
+    @if (searchable()) {
+      <form class="bar__search" (submit)="$event.preventDefault()">
+        <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
+          <label tuiLabel for="admin-search" i18n="@@admin.search.label"
+            >Buscar estudiante o ID</label
+          >
+          <input
+            id="admin-search"
+            tuiInput
+            name="query"
+            autocomplete="off"
+            [ngModel]="query()"
+            (ngModelChange)="search($event)"
+          />
+        </tui-textfield>
+      </form>
+    }
+
+    <!-- No notification bell: neither shell has anything behind one, and the room it took is what
+         lets the utilities and the account stay in the bar at every width. -->
+    <div class="bar__actions">
+      <button
+        tuiIconButton
+        type="button"
+        appearance="flat"
+        size="s"
+        iconStart="@tui.circle-help"
+        i18n-aria-label="@@admin.help"
+        aria-label="Ayuda"
+      ></button>
+
+      <app-language-selector />
+      <app-theme-toggle />
+
+      <button
+        tuiAvatar
+        type="button"
+        size="m"
+        appearance="primary"
+        class="bar__profile"
+        i18n-aria-label="@@navigation.accountMenu"
+        aria-label="Tu cuenta"
+        [tuiDropdown]="accountMenu"
+        [(tuiDropdownOpen)]="menuOpen"
+      >
+        {{ initials() }}
+      </button>
+    </div>
   </div>
 </header>
 

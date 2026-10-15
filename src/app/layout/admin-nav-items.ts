@@ -1,10 +1,10 @@
 import type { IsActiveMatchOptions } from '@angular/router';
 
 /**
- * The administrator's destinations, shared by the desktop sidebar (`AdminAside`) and the compact
+ * The administrator's destinations, shared by the desktop bar (`AdminHeader`) and the compact
  * bottom bar (`AppTabBar`'s admin variant) so the two surfaces cannot drift into different sets.
  * A plain data module, with no Angular decorators: importing it from `AppTabBar` — part of the
- * student shell's own, eagerly-reached bundle — does not pull `AdminAside`'s component code along
+ * student shell's own, eagerly-reached bundle — does not pull `AdminHeader`'s component code along
  * with it.
  *
  * `link` is `null` while the destination has not shipped: a `routerLink` pointing at a route that
@@ -21,7 +21,7 @@ import type { IsActiveMatchOptions } from '@angular/router';
  * `exact` would drop the highlight the moment the panel opened a block or moved off today: the
  * schedule carries its space and block in the path and its day in the query string, and the
  * shorthand demands an exact match on all three. Subset paths keep the section marked while the
- * administrator is anywhere inside it, which is what the sidebar is answering.
+ * administrator is anywhere inside it, which is what the bar is answering.
  *
  * Safe across the whole set because no destination is a path prefix of another.
  */

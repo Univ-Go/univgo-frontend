@@ -1318,10 +1318,6 @@
         <source>Ajustes</source>
         <target>Settings</target>
       </trans-unit>
-      <trans-unit id="admin.brandRole" datatype="html">
-        <source>Gestión institucional</source>
-        <target>Institutional management</target>
-      </trans-unit>
       <trans-unit id="admin.nav.label" datatype="html">
         <source>Secciones del panel</source>
         <target>Panel sections</target>

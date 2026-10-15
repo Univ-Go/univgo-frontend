@@ -61,7 +61,7 @@
 // A destination that needs a space chosen before it means anything: the markup already renders it
 // as a disabled button instead of a link, but with no style of its own it read exactly like a live
 // tab, cursor included. Dimmed to the same value Taiga gives every other disabled control, so the
-// panel's bar says the same thing its sidebar already did at desktop width.
+// panel's bar says the same thing its header nav does at desktop width.
 .tab:disabled {
   color: var(--tui-text-tertiary);
   cursor: default;

@@ -340,6 +340,9 @@ $shadow-tint: 65, 0, 5;
   --univgo-space-3xl: 4rem;
 
   --univgo-content-max-width: 80rem;
+  // Share of the student shell's side margin the panel keeps: 15% less room either side, so its
+  // denser views get more of the width.
+  --univgo-admin-side-room: 0.85;
   --univgo-layout-gutter: 1.25rem;
 
   // A form stops growing well before the page does: a label-and-field column wider than this makes

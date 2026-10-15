@@ -64,46 +64,48 @@
 }
 
 /// A titled block of a settings page — the space's profile, retiring it, cancelling its
-/// reservations. Included on the block's own class, so `&__header`, `&__icon`, `&__title`,
-/// `&__text` and `&__actions` land on its BEM children and the components that draw one cannot
-/// drift apart.
+/// reservations — and its BEM children, so the components that draw one cannot drift apart.
+/// Included at the root of a component's stylesheet: it writes whole selectors rather than `&`
+/// ones, which would only resolve inside whatever rule happened to include it.
 @mixin section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-m);
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--univgo-space-m);
+  }
 
-  &__header {
+  .section__header {
     @include section-header;
   }
 
-  &__icon {
+  .section__icon {
     @include section-icon;
 
     color: var(--tui-text-secondary);
   }
 
-  &__title {
+  .section__title {
     @include section-title;
   }
 
-  &__text {
+  .section__text {
     margin: 0;
     color: var(--tui-text-secondary);
     font: var(--tui-typography-body-s);
   }
 
   // Not colour alone: the heading and the copy both say what a danger section does.
-  &--danger {
+  .section--danger {
     border-color: var(--tui-status-negative-pale);
   }
 
-  &--danger &__icon {
+  .section--danger .section__icon {
     color: var(--tui-status-negative);
   }
 
   // Mobile first: the action spans the row so it is an easy target, and moves to the end from tablet.
   // Pushed to the bottom so two sections side by side keep their buttons on one line.
-  &__actions {
+  .section__actions {
     display: flex;
     flex-direction: column;
     gap: var(--univgo-space-s);

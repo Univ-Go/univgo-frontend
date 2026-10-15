@@ -24,6 +24,8 @@ import { AuthRepository } from './features/auth/domain/auth.repository';
 import { HttpAuthRepository } from './features/auth/infrastructure/http-auth.repository';
 import { ReservationRepository } from './features/my-reservations/domain/reservation.repository';
 import { HttpReservationRepository } from './features/my-reservations/infrastructure/http-reservation.repository';
+import { ProfileRepository } from './features/profile/domain/profile.repository';
+import { HttpProfileRepository } from './features/profile/infrastructure/http-profile.repository';
 import { SpaceRepository } from './features/spaces/domain/space.repository';
 import { HttpSpaceRepository } from './features/spaces/infrastructure/http-space.repository';
 import { authInterceptor } from './core/http/auth.interceptor';
@@ -72,6 +74,7 @@ export const appConfig: ApplicationConfig = {
     { provide: AdminSpaceRepository, useClass: HttpAdminSpaceRepository },
     { provide: AdminSpaceCrudRepository, useClass: HttpAdminSpaceCrudRepository },
     { provide: SpaceClosureRepository, useClass: HttpSpaceClosureRepository },
+    { provide: ProfileRepository, useClass: HttpProfileRepository },
     { provide: Logger, useClass: ConsoleLogger },
     { provide: TitleStrategy, useClass: PageMetadataStrategy },
   ],

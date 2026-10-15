@@ -1,4 +1,5 @@
 import type { Routes } from '@angular/router';
+import { PROFILE_ROUTE } from '../profile/profile.routes';
 import { adminSpaceGuard } from './application/admin-space.guard';
 import { SpaceDraftStore } from './application/space-draft.store';
 import {
@@ -151,6 +152,8 @@ export const ADMIN_ROUTES: Routes = [
       description: $localize`:@@admin.settings.pageDescription:Gestiona los cierres de un espacio, cambia su información, horarios y fotos, o retíralo del catálogo.`,
     },
   },
+  // Before `:spaceId`, which would otherwise read `profile` as a space id.
+  PROFILE_ROUTE,
   {
     path: ':spaceId',
     canActivate: [adminSpaceGuard],

@@ -1,0 +1,63 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xl);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+}
+
+.intro__lead,
+.password__hint {
+  margin: 0;
+  color: var(--tui-text-secondary);
+}
+
+.intro__lead {
+  font: var(--tui-typography-body-m);
+}
+
+.password {
+  max-inline-size: 36rem;
+
+  h2 {
+    font: var(--tui-typography-heading-h6);
+  }
+}
+
+.password__hint {
+  font: var(--tui-typography-ui-s);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+// Same treatment as the sign-in refusal: the answer to what the user just did, kept on screen.
+.form__failure {
+  margin: 0;
+  padding: var(--univgo-space-m);
+  border-radius: var(--tui-radius-m);
+  background: var(--tui-status-negative-pale);
+  color: var(--tui-status-negative);
+  font: var(--tui-typography-body-s);
+}
+
+// Full width under the thumb on a phone; sized to its label once there is room beside it.
+.form [tuiButton] {
+  inline-size: 100%;
+}
+
+@media (width >= bp.$tablet) {
+  .form [tuiButton] {
+    align-self: flex-start;
+    inline-size: auto;
+  }
+}

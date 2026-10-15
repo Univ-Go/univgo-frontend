@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TuiDataList } from '@taiga-ui/core';
 import { SessionStore } from '../../features/auth/application/session-store';
+import { profilePathFor } from '../../features/auth/domain/session';
 
 /**
  * Level 1: what the account dropdown contains, without saying where it hangs from. Both shells open
@@ -14,13 +16,13 @@ import { SessionStore } from '../../features/auth/application/session-store';
  */
 @Component({
   selector: 'app-account-menu',
-  imports: [TuiDataList],
+  imports: [RouterLink, TuiDataList],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <tui-data-list>
-      <button tuiOption type="button" iconStart="@tui.user" i18n="@@navigation.profile">
+      <a tuiOption iconStart="@tui.user" [routerLink]="profilePath()" i18n="@@navigation.profile">
         Tu perfil
-      </button>
+      </a>
 
       <button
         tuiOption
@@ -39,6 +41,10 @@ export class AccountMenu {
   private readonly session = inject(SessionStore);
 
   protected readonly signingOut = signal(false);
+
+  protected readonly profilePath = computed(() =>
+    profilePathFor(this.session.user()?.role ?? 'student'),
+  );
 
   /** The store clears the session and navigates whether the server answered or not. */
   protected signOut(): void {

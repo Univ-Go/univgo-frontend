@@ -26,6 +26,11 @@ export function landingPathFor(role: UserRole): string {
   return role === 'admin' ? '/admin' : '/home';
 }
 
+/** Each shell mounts its own copy of the profile, so the account keeps its own bar around it. */
+export function profilePathFor(role: UserRole): string {
+  return role === 'admin' ? '/admin/profile' : '/profile';
+}
+
 export function fullName(user: AuthenticatedUser): string {
   return `${user.firstName} ${user.lastName}`;
 }

@@ -7,7 +7,9 @@
  * `/api` drops its prefix; `/auth` keeps it because the server scopes the refresh cookie to
  * `Path=/auth`, and behind a different path the browser would never send it back.
  */
-export const config = { matcher: ['/api/:path*', '/auth/:path*'] };
+// Edge loads this file as an ES module; the Node runtime would load it as CommonJS, because
+// package.json has no "type": "module", and crash on the first `export`.
+export const config = { runtime: 'edge', matcher: ['/api/:path*', '/auth/:path*'] };
 
 export default function middleware(request: Request): Response {
   const backend = process.env['BACKEND_URL'];

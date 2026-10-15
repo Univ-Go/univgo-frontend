@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /**
  * Vercel Routing Middleware: proxies the backend for each deployment. vercel.json rewrites cannot
  * read environment variables, so the destination lives here and `BACKEND_URL` (an origin) is set

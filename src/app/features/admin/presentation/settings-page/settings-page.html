@@ -1,73 +1,173 @@
-<header class="intro">
-  <div class="intro__text">
-    <h1 i18n="@@admin.settings.title">Configuración y cancelación de espacio</h1>
-
-    <p class="intro__lead" i18n="@@admin.settings.lead">
-      Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o
-      incidencias.
-    </p>
-  </div>
-</header>
-
-<div class="layout">
-  <app-closure-form [saving]="closing()" (closureRequested)="close($event)" />
-
-  <div class="layout__side">
-    <div class="stats">
-      <app-metric-card
-        icon="@tui.calendar-x"
-        tone="negative"
-        align="center"
-        i18n-heading="@@admin.closure.stats.thisMonth"
-        heading="Cierres este mes"
-        [value]="closuresThisMonthCount()"
-      />
-
-      <app-metric-card
-        icon="@tui.wrench"
-        tone="neutral"
-        align="center"
-        i18n-heading="@@admin.closure.stats.frequentReason"
-        heading="Motivo frecuente"
-        [value]="frequentReasonLabel()"
-      />
+@if (detail.error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.spaceEdit.error.heading"
+    heading="No pudimos cargar este espacio"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="detail.reload()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else if (detail.value(); as space) {
+  <header class="intro">
+    <div class="intro__text">
+      <h1 i18n="@@admin.settings.title">Ajustes del espacio</h1>
+      <!-- The name in its own element rather than inside the heading's sentence: it survives
+           translation without the grammar of either language depending on it. -->
+      <p class="intro__lead">{{ space.name }} · {{ space.location }}</p>
     </div>
 
-    <app-closure-history
-      [closures]="closures.value()"
-      [reverting]="revertingId()"
-      (reverted)="revert($event)"
-    />
+    @if (space.archived) {
+      <span tuiBadge appearance="neutral" i18n="@@admin.spaces.archivedBadge">Archivado</span>
+    }
+  </header>
+
+  <div class="layout">
+    <!-- Two renderings of one table of contents: a column beside the content from desktop, and a
+         strip pinned under the header below it, where a column would leave no room to read. The
+         stylesheet shows one; the hidden one is out of the accessibility tree with it. -->
+    <nav
+      class="toc toc--column"
+      i18n-aria-label="@@admin.settings.toc.label"
+      aria-label="Secciones de los ajustes"
+    >
+      <tui-tabs
+        vertical="start"
+        [activeItemIndex]="tocIndex()"
+        (activeItemIndexChange)="jump($event)"
+      >
+        @for (entry of toc(); track entry.id) {
+          <button tuiTab type="button">{{ entry.label }}</button>
+        }
+      </tui-tabs>
+    </nav>
+
+    <nav
+      #compactToc
+      class="toc toc--strip"
+      i18n-aria-label="@@admin.settings.toc.label"
+      aria-label="Secciones de los ajustes"
+    >
+      <tui-tabs [activeItemIndex]="tocIndex()" (activeItemIndexChange)="jump($event)">
+        @for (entry of toc(); track entry.id) {
+          <button tuiTab type="button">{{ entry.label }}</button>
+        }
+      </tui-tabs>
+    </nav>
+
+    <div class="content">
+      <app-space-profile-editor [space]="space" (changed)="detail.reload()" />
+
+      @if (!space.archived) {
+        <section
+          class="closures"
+          appScrollSpySection="closures"
+          i18n-aria-label="@@admin.settings.toc.closures"
+          aria-label="Cierres"
+        >
+          <app-closure-form [saving]="closing()" (closureRequested)="close($event)" />
+
+          <div class="closures__side">
+            <div class="stats">
+              <app-metric-card
+                icon="@tui.calendar-x"
+                tone="negative"
+                align="center"
+                i18n-heading="@@admin.closure.stats.thisMonth"
+                heading="Cierres este mes"
+                [value]="closuresThisMonthCount()"
+              />
+
+              <app-metric-card
+                icon="@tui.wrench"
+                tone="neutral"
+                align="center"
+                i18n-heading="@@admin.closure.stats.frequentReason"
+                heading="Motivo frecuente"
+                [value]="frequentReasonLabel()"
+              />
+            </div>
+
+            <app-closure-history
+              [closures]="closures.value()"
+              [reverting]="revertingId()"
+              (reverted)="revert($event)"
+            />
+          </div>
+        </section>
+      }
+
+      <!-- The two irreversible actions share a row: each is a short card, and side by side they
+           read as one place for the decisions that cannot be taken back. -->
+      <div class="danger-row">
+        @if (!space.archived) {
+          <!-- A closure suspends and can be undone; this cannot. They stay two controls because they
+               are two decisions (`docs/booking-flow.md` §12): announcing next week's closure must not
+               empty today. -->
+          <section
+            tuiCardLarge
+            tuiSurface
+            tuiAppearance="outline"
+            class="section section--danger"
+            appScrollSpySection="cancel"
+            aria-labelledby="cancel-title"
+          >
+            <header class="section__header">
+              <span tuiAppearance="negative" class="section__icon" aria-hidden="true">
+                <tui-icon icon="@tui.calendar-x" />
+              </span>
+              <h2
+                id="cancel-title"
+                class="section__title"
+                i18n="@@admin.settings.cancelAll.heading"
+              >
+                Cancelar reservas del espacio
+              </h2>
+            </header>
+
+            <p class="section__text" i18n="@@admin.settings.cancelAll.closureHint">
+              Cancela las reservas que aún no han terminado. A diferencia de un cierre, no se puede
+              deshacer: los estudiantes las verán canceladas y podrán reservar en otro sitio.
+            </p>
+
+            <div class="section__actions">
+              <button
+                tuiButton
+                type="button"
+                size="m"
+                appearance="outline-destructive"
+                iconStart="@tui.calendar-x"
+                [disabled]="cancelling()"
+                (click)="confirmCancelAll()"
+              >
+                <tui-loader [loading]="cancelling()" [inheritColor]="true" [overlay]="true">
+                  <span i18n="@@admin.settings.cancelAll.action"
+                    >Cancelar las reservas del espacio</span
+                  >
+                </tui-loader>
+              </button>
+            </div>
+          </section>
+        }
+
+        <app-space-archive-section
+          [spaceId]="space.spaceId"
+          [archived]="space.archived"
+          (restored)="detail.reload()"
+        />
+      </div>
+    </div>
   </div>
-</div>
-
-<!-- A closure suspends and can be undone; this cannot. They stay two controls because they are two
-     decisions (`docs/booking-flow.md` §12): announcing next week's closure must not empty today. -->
-<section
-  tuiCardLarge
-  tuiSurface
-  tuiAppearance="floating"
-  class="cancel-card"
-  aria-labelledby="cancel-title"
->
-  <h2 id="cancel-title" i18n="@@admin.settings.cancelAll.heading">Cancelar reservas del espacio</h2>
-
-  <p class="cancel-card__hint" i18n="@@admin.settings.cancelAll.closureHint">
-    Cancela las reservas que aún no han terminado. A diferencia de un cierre, no se puede deshacer:
-    los estudiantes las verán canceladas y podrán reservar en otro sitio.
-  </p>
-
-  <button
-    tuiButton
-    type="button"
-    size="m"
-    appearance="outline-destructive"
-    iconStart="@tui.calendar-x"
-    [disabled]="cancelling()"
-    (click)="confirmCancelAll()"
-  >
-    <tui-loader [loading]="cancelling()" [inheritColor]="true" [overlay]="true">
-      <span i18n="@@admin.settings.cancelAll.action">Cancelar las reservas del espacio</span>
-    </tui-loader>
-  </button>
-</section>
+} @else {
+  <div class="skeleton" [tuiSkeleton]="true"></div>
+}

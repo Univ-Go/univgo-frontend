@@ -25,7 +25,7 @@
     aria-label="Cargando los espacios"
   >
     @for (card of skeletonCards; track card) {
-      <li class="grid__item grid__item--skeleton" [tuiSkeleton]="true"></li>
+      <li class="grid__skeleton" [tuiSkeleton]="true"></li>
     }
   </ul>
 } @else if (spaces.error()) {
@@ -68,6 +68,24 @@
     </a>
   </app-empty-state>
 } @else {
+  <!-- Nothing to submit: the grid answers as the field changes. The handler is what keeps Enter
+       from reloading the page. -->
+  <form class="search" role="search" (submit)="$event.preventDefault()">
+    <tui-textfield tuiTextfieldSize="m" iconStart="@tui.search">
+      <label tuiLabel for="admin-space-query" i18n="@@admin.spaces.search"
+        >Buscar por nombre, ubicación o tipo</label
+      >
+      <input
+        id="admin-space-query"
+        tuiInput
+        name="query"
+        autocomplete="off"
+        [ngModel]="query()"
+        (ngModelChange)="query.set($event ?? '')"
+      />
+    </tui-textfield>
+  </form>
+
   @if (active().length > 0) {
     <ul class="grid">
       @for (space of active(); track space.spaceId) {
@@ -76,22 +94,49 @@
         </li>
       }
     </ul>
+  } @else if (query() && archived().length === 0) {
+    <app-empty-state
+      icon="@tui.search-x"
+      i18n-heading="@@admin.spaces.noMatch.heading"
+      heading="Ningún espacio coincide con tu búsqueda"
+      i18n-description="@@admin.spaces.noMatch.description"
+      description="Revisa cómo lo escribiste o busca por su ubicación."
+    >
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="outline"
+        iconStart="@tui.x"
+        (click)="query.set('')"
+        i18n="@@admin.spaces.clearSearch"
+      >
+        Borrar búsqueda
+      </button>
+    </app-empty-state>
   }
 
   @if (archived().length > 0) {
-    <section class="archived">
-      <h2 class="archived__title" i18n="@@admin.spaces.archivedHeading">Espacios archivados</h2>
-      <p class="archived__lead" i18n="@@admin.spaces.archivedLead">
-        Ya no aparecen en el catálogo ni se pueden reservar. Su historial de reservas se conserva.
-      </p>
+    <!-- Folded by default: restoring a space is rare, and this screen is about choosing an active
+         one. Open, the archived cards doubled the scroll for a task almost nobody comes here for. -->
+    <tui-accordion size="m" class="archived">
+      <button tuiAccordion type="button" i18n="@@admin.spaces.archivedHeading">
+        Espacios archivados ({{ archived().length }})
+      </button>
 
-      <ul class="grid">
-        @for (space of archived(); track space.spaceId) {
-          <li class="grid__item">
-            <app-admin-space-card [space]="space" />
-          </li>
-        }
-      </ul>
-    </section>
+      <tui-expand>
+        <p class="archived__lead" i18n="@@admin.spaces.archivedLead">
+          Ya no aparecen en el catálogo ni se pueden reservar. Su historial de reservas se conserva.
+        </p>
+
+        <ul class="grid">
+          @for (space of archived(); track space.spaceId) {
+            <li class="grid__item">
+              <app-admin-space-card [space]="space" />
+            </li>
+          }
+        </ul>
+      </tui-expand>
+    </tui-accordion>
   }
 }

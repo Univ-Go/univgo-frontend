@@ -6,7 +6,11 @@ import { TuiButton, TuiIcon } from '@taiga-ui/core';
 import { filter, map, startWith } from 'rxjs';
 import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
 import { ShellChrome, reportShellInset } from '../../shared/shell-chrome/shell-chrome';
-import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
+import {
+  ADMIN_NAV_ITEMS,
+  ADMIN_NAV_MATCH_OPTIONS,
+  ADMIN_SPACES_NAV_ITEM,
+} from '../admin-nav-items';
 
 /**
  * Whether the shell should offer its quick action here. Every level of the tree is asked, not just
@@ -92,6 +96,7 @@ export class AppTabBar {
   );
 
   protected readonly adminItems = ADMIN_NAV_ITEMS;
+  protected readonly adminSpacesItem = ADMIN_SPACES_NAV_ITEM;
   protected readonly adminMatchOptions = ADMIN_NAV_MATCH_OPTIONS;
   protected readonly adminSpaceId = currentAdminSpaceId();
 

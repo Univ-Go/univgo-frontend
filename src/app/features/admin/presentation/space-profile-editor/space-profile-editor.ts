@@ -1,14 +1,21 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  linkedSignal,
+  output,
+  signal,
+} from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
-import { TuiAppearance, TuiButton, TuiDialogService, TuiLoader } from '@taiga-ui/core';
-import { TUI_CONFIRM, TuiBadge, TuiSkeleton } from '@taiga-ui/kit';
+import { TuiAppearance, TuiButton, TuiIcon, TuiLoader } from '@taiga-ui/core';
 import { TuiCardLarge, TuiSurface } from '@taiga-ui/layout';
-import { defaultIfEmpty } from 'rxjs';
 import { NotificationService } from '../../../../core/notifications/notification.service';
-import { EmptyState } from '../../../../shared/empty-state/empty-state';
+import { ScrollSpySection } from '../../../../shared/scroll-spy/scroll-spy';
 import { AdminSpacesStore } from '../../application/admin-spaces.store';
 import { AdminSpaceCrudRepository } from '../../domain/admin-space-crud.repository';
+import type { AdminSpaceDetail } from '../../domain/admin-space-detail';
 import {
   type ScheduleWindowDraft,
   type SpaceIdentityDraft,
@@ -27,7 +34,8 @@ import { SpaceUsageForm } from '../space-usage-form/space-usage-form';
 const MAX_PHOTOS = 8;
 
 /**
- * Editing a space, section by section.
+ * Level 3: what a space is — identity, usage, hours and photographs — edited section by section
+ * inside the space's settings, each section a stop in the settings page's table of contents.
  *
  * Not the wizard: the wizard exists because the order matters the first time, and reopening it to
  * fix a capacity would mean walking five steps that were already right. Each section here saves on
@@ -37,44 +45,40 @@ const MAX_PHOTOS = 8;
  * Each section owns its own in-flight signal. One shared flag would grey out the capacity field
  * while a photograph uploads.
  *
- * On success a section re-reads the detail rather than patching what it has: the server is the
- * authority on order and on derived URLs. On failure it only clears its flag — the toast is the
- * interceptor's job.
+ * On success a section asks the page to re-read the detail rather than patching what it has: the
+ * server is the authority on order and on derived URLs. On failure it only clears its flag — the
+ * toast is the interceptor's job.
  */
 @Component({
-  selector: 'app-space-edit-page',
+  selector: 'app-space-profile-editor',
   imports: [
-    EmptyState,
+    ScrollSpySection,
     SpaceIdentityForm,
     SpacePhotoEditor,
     SpaceScheduleEditor,
     SpaceUsageForm,
     TuiAppearance,
-    TuiBadge,
     TuiButton,
+    TuiIcon,
     TuiLoader,
     TuiCardLarge,
-    TuiSkeleton,
     TuiSurface,
   ],
-  templateUrl: './space-edit-page.html',
-  styleUrl: './space-edit-page.scss',
+  templateUrl: './space-profile-editor.html',
+  styleUrl: './space-profile-editor.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SpaceEditPage {
-  public readonly spaceId = input.required<string>();
+export class SpaceProfileEditor {
+  public readonly space = input.required<AdminSpaceDetail>();
+
+  /** A section saved: the page re-reads the detail this component is showing. */
+  public readonly changed = output<void>();
+
+  private readonly spaceId = computed(() => this.space().spaceId);
 
   private readonly spaces = inject(AdminSpaceCrudRepository);
   private readonly directory = inject(AdminSpacesStore);
   private readonly notifications = inject(NotificationService);
-  private readonly dialogs = inject(TuiDialogService);
-  private readonly router = inject(Router);
-
-  protected readonly detail = rxResource({
-    params: () => this.spaceId(),
-    stream: ({ params }) => this.spaces.detail(params),
-    defaultValue: undefined,
-  });
 
   protected readonly types = rxResource({
     stream: () => this.spaces.spaceTypes(),
@@ -85,38 +89,49 @@ export class SpaceEditPage {
   protected readonly savingUsage = signal(false);
   protected readonly savingSchedules = signal(false);
   protected readonly savingPhotos = signal(false);
-  protected readonly archiving = signal(false);
 
   /**
    * Each section's working copy, seeded from the server's answer. They are separate signals rather
-   * than one object so that editing the hours never marks the identity dirty.
+   * than one object so that editing the hours never marks the identity dirty. Linked to the space
+   * rather than emptied on save: the page keeps the old detail on screen while it re-reads it, and an
+   * emptied draft would show the old values for that instant before the new ones arrived. A draft
+   * is `null` until the section is edited, which is what tells Guardar and Descartar they have work.
    */
-  protected readonly identity = signal<SpaceIdentityDraft | null>(null);
-  protected readonly usage = signal<SpaceUsageDraft | null>(null);
-  protected readonly schedules = signal<readonly ScheduleWindowDraft[] | null>(null);
+  protected readonly identity = linkedSignal<AdminSpaceDetail, SpaceIdentityDraft | null>({
+    source: this.space,
+    computation: () => null,
+  });
+  protected readonly usage = linkedSignal<AdminSpaceDetail, SpaceUsageDraft | null>({
+    source: this.space,
+    computation: () => null,
+  });
+  protected readonly schedules = linkedSignal<
+    AdminSpaceDetail,
+    readonly ScheduleWindowDraft[] | null
+  >({ source: this.space, computation: () => null });
 
   protected readonly identityValue = computed(
     () =>
       this.identity() ?? {
-        name: this.detail.value()?.name ?? '',
-        location: this.detail.value()?.location ?? '',
-        spaceTypeId: this.detail.value()?.spaceTypeId ?? null,
-        capacity: this.detail.value()?.capacity ?? null,
+        name: this.space().name,
+        location: this.space().location,
+        spaceTypeId: this.space().spaceTypeId,
+        capacity: this.space().capacity,
       },
   );
 
   protected readonly usageValue = computed(
     () =>
       this.usage() ?? {
-        description: this.detail.value()?.description ?? '',
-        rules: this.detail.value()?.rules ?? [],
+        description: this.space().description,
+        rules: this.space().rules,
       },
   );
 
   protected readonly scheduleValue = computed<readonly ScheduleWindowDraft[]>(
     () =>
       this.schedules() ??
-      (this.detail.value()?.schedules ?? []).map((window) => ({
+      this.space().schedules.map((window) => ({
         dayOfWeek: window.dayOfWeek,
         fromMinutes: window.fromMinutes,
         toMinutes: window.toMinutes,
@@ -124,16 +139,14 @@ export class SpaceEditPage {
   );
 
   protected readonly photoItems = computed<readonly PhotoItem[]>(() =>
-    (this.detail.value()?.images ?? []).map((image, index) => ({
+    this.space().images.map((image, index) => ({
       id: image.id,
       previewUrl: image.url,
       label: $localize`:@@admin.spacePhotos.positionLabel:Foto ${index + 1}`,
     })),
   );
 
-  protected readonly remainingPhotos = computed(
-    () => MAX_PHOTOS - (this.detail.value()?.images.length ?? 0),
-  );
+  protected readonly remainingPhotos = computed(() => MAX_PHOTOS - this.space().images.length);
 
   protected readonly identityValid = computed(() => isIdentityComplete(this.identityValue()));
   protected readonly usageValid = computed(() => isUsageComplete(this.usageValue()));
@@ -142,7 +155,12 @@ export class SpaceEditPage {
   protected saveIdentity(): void {
     const value = this.identityValue();
 
-    if (this.savingIdentity() || !this.identityValid() || value.spaceTypeId === null) {
+    if (
+      this.identity() === null ||
+      this.savingIdentity() ||
+      !this.identityValid() ||
+      value.spaceTypeId === null
+    ) {
       return;
     }
 
@@ -158,11 +176,10 @@ export class SpaceEditPage {
       .subscribe({
         next: () => {
           this.savingIdentity.set(false);
-          this.identity.set(null);
           // The name and the capacity are both in the shell's space switcher, so the directory has
           // to be re-read. The other sections reach neither it nor the grid.
           this.directory.refresh();
-          this.detail.reload();
+          this.changed.emit();
           this.saved();
         },
         error: () => this.savingIdentity.set(false),
@@ -170,7 +187,7 @@ export class SpaceEditPage {
   }
 
   protected saveUsage(): void {
-    if (this.savingUsage() || !this.usageValid()) {
+    if (this.usage() === null || this.savingUsage() || !this.usageValid()) {
       return;
     }
 
@@ -179,8 +196,7 @@ export class SpaceEditPage {
     this.spaces.updateUsage(this.spaceId(), this.usageValue()).subscribe({
       next: () => {
         this.savingUsage.set(false);
-        this.usage.set(null);
-        this.detail.reload();
+        this.changed.emit();
         this.saved();
       },
       error: () => this.savingUsage.set(false),
@@ -188,7 +204,7 @@ export class SpaceEditPage {
   }
 
   protected saveSchedules(): void {
-    if (this.savingSchedules() || !this.schedulesValid()) {
+    if (this.schedules() === null || this.savingSchedules() || !this.schedulesValid()) {
       return;
     }
 
@@ -197,8 +213,7 @@ export class SpaceEditPage {
     this.spaces.replaceSchedules(this.spaceId(), this.scheduleValue()).subscribe({
       next: () => {
         this.savingSchedules.set(false);
-        this.schedules.set(null);
-        this.detail.reload();
+        this.changed.emit();
         this.saved();
       },
       error: () => this.savingSchedules.set(false),
@@ -215,7 +230,7 @@ export class SpaceEditPage {
     this.spaces.addImages(this.spaceId(), [...files]).subscribe({
       next: () => {
         this.savingPhotos.set(false);
-        this.detail.reload();
+        this.changed.emit();
         this.saved();
       },
       error: () => this.savingPhotos.set(false),
@@ -252,87 +267,10 @@ export class SpaceEditPage {
     this.spaces.deleteImage(this.spaceId(), photoId).subscribe({
       next: () => {
         this.savingPhotos.set(false);
-        this.detail.reload();
+        this.changed.emit();
         this.saved();
       },
       error: () => this.savingPhotos.set(false),
-    });
-  }
-
-  /**
-   * Archiving is the destructive one, so it asks first and says what it affects. It suspends the
-   * space's reservations rather than cancelling them — clearing them is a separate, irreversible
-   * action — and the count is what makes that concrete before the administrator commits.
-   */
-  protected archive(): void {
-    this.dialogs
-      .open<boolean>(TUI_CONFIRM, {
-        size: 's',
-        label: $localize`:@@admin.spaceArchive.confirm.title:¿Archivar este espacio?`,
-        data: {
-          content: $localize`:@@admin.spaceArchive.confirm.content:Dejará de aparecer en el catálogo y no se podrá reservar. Las reservas que ya existen quedarán suspendidas, no canceladas, y su historial se conserva. Puedes restaurarlo después.`,
-          yes: $localize`:@@admin.spaceArchive.confirm.yes:Archivar`,
-          no: $localize`:@@admin.spaceArchive.confirm.no:Cancelar`,
-          appearance: 'primary-destructive',
-        },
-      })
-      .pipe(defaultIfEmpty(false))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.runArchive();
-        }
-      });
-  }
-
-  protected restore(): void {
-    if (this.archiving()) {
-      return;
-    }
-
-    this.archiving.set(true);
-
-    this.spaces.restore(this.spaceId()).subscribe({
-      next: () => {
-        this.archiving.set(false);
-        this.directory.refresh();
-        this.detail.reload();
-        this.notifications.success(
-          $localize`:@@admin.spaceArchive.restored.summary:Espacio restaurado`,
-          $localize`:@@admin.spaceArchive.restored.detail:Vuelve al catálogo. Sigue cerrado hasta que reabras el cierre que creó el archivado.`,
-        );
-      },
-      error: () => this.archiving.set(false),
-    });
-  }
-
-  protected backToGrid(): void {
-    void this.router.navigate(['/admin', 'spaces']);
-  }
-
-  protected retry(): void {
-    this.detail.reload();
-  }
-
-  private runArchive(): void {
-    if (this.archiving()) {
-      return;
-    }
-
-    this.archiving.set(true);
-
-    this.spaces.archive(this.spaceId()).subscribe({
-      next: (suspended) => {
-        this.archiving.set(false);
-        this.directory.refresh();
-        this.detail.reload();
-        this.notifications.success(
-          $localize`:@@admin.spaceArchive.archived.summary:Espacio archivado`,
-          suspended === 0
-            ? $localize`:@@admin.spaceArchive.archived.none:Ya no aparece en el catálogo. No había reservas activas.`
-            : $localize`:@@admin.spaceArchive.archived.some:Ya no aparece en el catálogo. ${suspended} reservas quedaron suspendidas.`,
-        );
-      },
-      error: () => this.archiving.set(false),
     });
   }
 
@@ -346,7 +284,7 @@ export class SpaceEditPage {
     this.spaces.reorderImages(this.spaceId(), imageIds).subscribe({
       next: () => {
         this.savingPhotos.set(false);
-        this.detail.reload();
+        this.changed.emit();
       },
       error: () => this.savingPhotos.set(false),
     });

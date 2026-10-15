@@ -325,59 +325,94 @@
           <context context-type="linenumber">136</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.spaceEdit.pageTitle" datatype="html">
-        <source>Editar espacio</source>
+      <trans-unit id="admin.settings.pageTitle" datatype="html">
+        <source>Ajustes del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
           <context context-type="linenumber">149</context>
+<<<<<<< HEAD
+=======
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+          <context context-type="linenumber">200</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.spaceEdit.pageDescription" datatype="html">
-        <source>Cambia la información, los horarios y las fotos de un espacio, o retíralo del catálogo.</source>
+      <trans-unit id="admin.settings.pageDescription" datatype="html">
+        <source>Gestiona los cierres de un espacio, cambia su información, horarios y fotos, o retíralo del catálogo.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
           <context context-type="linenumber">151</context>
+<<<<<<< HEAD
+=======
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+          <context context-type="linenumber">202</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.pageTitle" datatype="html">
         <source>Escáner de acceso</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+<<<<<<< HEAD
           <context context-type="linenumber">170</context>
+=======
+          <context context-type="linenumber">168</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.pageDescription" datatype="html">
         <source>Escanea el código de un estudiante para registrar su check-in y confirmar el acceso al espacio.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+<<<<<<< HEAD
           <context context-type="linenumber">172</context>
+=======
+          <context context-type="linenumber">170</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.pageTitle" datatype="html">
         <source>Ocupación del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+<<<<<<< HEAD
           <context context-type="linenumber">179</context>
+=======
+          <context context-type="linenumber">177</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.pageDescription" datatype="html">
         <source>Consulta cuántos lugares quedan libres en un espacio esta semana y la próxima, y en cada horario del día.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+<<<<<<< HEAD
           <context context-type="linenumber">181</context>
+=======
+          <context context-type="linenumber">179</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.detail.pageTitle" datatype="html">
         <source>Detalle del bloque</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+<<<<<<< HEAD
           <context context-type="linenumber">190</context>
+=======
+          <context context-type="linenumber">188</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.detail.pageDescription" datatype="html">
         <source>Consulta el aforo de un bloque, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
+<<<<<<< HEAD
           <context context-type="linenumber">195</context>
         </context-group>
       </trans-unit>
@@ -393,6 +428,9 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
           <context context-type="linenumber">204</context>
+=======
+          <context context-type="linenumber">193</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceWizard.leave.title" datatype="html">
@@ -472,73 +510,32 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.spaces.archivedBadge" datatype="html">
-        <source>Archivado</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
-          <context context-type="linenumber">12,16</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">31,35</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="spaces.card.capacity" datatype="html">
-        <source>Capacidad</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
-          <context context-type="linenumber">30,32</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">29,31</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="admin.spacesGrid.card.capacity" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 persona} other {<x id="INTERPOLATION"/> personas}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
-          <context context-type="linenumber">33,36</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="reservation.factLocation" datatype="html">
-        <source>Ubicación</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
-          <context context-type="linenumber">40,41</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/booking/presentation/booking-done-page/booking-done-page.html</context>
-          <context context-type="linenumber">34,36</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
-          <context context-type="linenumber">153,155</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="linenumber">46,49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaces.missingSchedule" datatype="html">
         <source>Sin horario: no ofrece bloques</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
-          <context context-type="linenumber">50,53</context>
+          <context context-type="linenumber">60,63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaces.missingPhotos" datatype="html">
         <source>Sin fotos</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
-          <context context-type="linenumber">56,59</context>
+          <context context-type="linenumber">66,69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaces.edit" datatype="html">
         <source>Editar</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/admin-space-card/admin-space-card.html</context>
-          <context context-type="linenumber">71,72</context>
+          <context context-type="linenumber">76,77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaces.title" datatype="html">
@@ -599,8 +596,8 @@
           <context context-type="linenumber">54,58</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">9,13</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">7,11</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/home/presentation/home-page/home-page.html</context>
@@ -638,8 +635,8 @@
           <context context-type="linenumber">65,67</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">20,22</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">18,20</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/booking/presentation/booking-slot-picker/booking-slot-picker.html</context>
@@ -680,18 +677,46 @@
           <context context-type="linenumber">57,62</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.spaces.archivedHeading" datatype="html">
-        <source>Espacios archivados</source>
+      <trans-unit id="admin.spaces.search" datatype="html">
+        <source>Buscar por nombre, ubicación o tipo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
-          <context context-type="linenumber">83,84</context>
+          <context context-type="linenumber">76,79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.noMatch.heading" datatype="html">
+        <source>Ningún espacio coincide con tu búsqueda</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.noMatch.description" datatype="html">
+        <source>Revisa cómo lo escribiste o busca por su ubicación.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
+          <context context-type="linenumber">103,107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.clearSearch" datatype="html">
+        <source> Borrar búsqueda </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
+          <context context-type="linenumber">114,116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.archivedHeading" datatype="html">
+        <source> Espacios archivados (<x id="INTERPOLATION" equiv-text="{{ archived().length }}"/>) </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
+          <context context-type="linenumber">124,127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaces.archivedLead" datatype="html">
         <source> Ya no aparecen en el catálogo ni se pueden reservar. Su historial de reservas se conserva. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/admin-spaces-page/admin-spaces-page.html</context>
-          <context context-type="linenumber">85,88</context>
+          <context context-type="linenumber">129,132</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.roster.filters.status.reserved" datatype="html">
@@ -1731,144 +1756,93 @@
           <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.settings.title" datatype="html">
-        <source>Configuración y cancelación de espacio</source>
+      <trans-unit id="admin.spaceEdit.error.heading" datatype="html">
+        <source>No pudimos cargar este espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">3,5</context>
+          <context context-type="linenumber">5,6</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.settings.lead" datatype="html">
-        <source> Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o incidencias. </source>
+      <trans-unit id="admin.settings.title" datatype="html">
+        <source>Ajustes del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">6,10</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaces.archivedBadge" datatype="html">
+        <source>Archivado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">31,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.toc.label" datatype="html">
+        <source>Secciones de los ajustes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">42,45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">59,61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.toc.closures" datatype="html">
+        <source>Cierres</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.thisMonth" datatype="html">
         <source>Cierres este mes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">22,23</context>
+          <context context-type="linenumber">87,88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.closure.stats.frequentReason" datatype="html">
         <source>Motivo frecuente</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">31,33</context>
+          <context context-type="linenumber">96,97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.settings.cancelAll.heading" datatype="html">
-        <source>Cancelar reservas del espacio</source>
+        <source> Cancelar reservas del espacio </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">53,55</context>
+          <context context-type="linenumber">134,136</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.settings.cancelAll.closureHint" datatype="html">
         <source> Cancela las reservas que aún no han terminado. A diferencia de un cierre, no se puede deshacer: los estudiantes las verán canceladas y podrán reservar en otro sitio. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">56,62</context>
+          <context context-type="linenumber">139,143</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.settings.cancelAll.action" datatype="html">
         <source>Cancelar las reservas del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.html</context>
-          <context context-type="linenumber">70,73</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.closure.stats.noReason" datatype="html">
-        <source>Sin cierres</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">70</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.closure.created.summary" datatype="html">
-        <source>Espacio cerrado</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">86</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.closure.created.detail" datatype="html">
-        <source>Las reservas de ese periodo quedan suspendidas y vuelven si lo reabres.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">87</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.closure.reverted.summary" datatype="html">
-        <source>Espacio reabierto</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">106</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.closure.reverted.detail" datatype="html">
-        <source>Las reservas que estaban suspendidas vuelven a estar en pie.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">107</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.cancelAll.title" datatype="html">
-        <source>¿Cancelar todas las reservas de este espacio?</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">122</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.cancelAll.content" datatype="html">
-        <source>Se cancelarán las reservas que no hayan terminado. Los estudiantes las verán como canceladas y podrán reservar en otro sitio.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">124</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.cancelAll.confirm" datatype="html">
-        <source>Cancelar las reservas</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">125</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.cancelAll.keep" datatype="html">
-        <source>Dejarlas como están</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">126</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.cancelAll.done" datatype="html">
-        <source>Reservas canceladas</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">145</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.cancelAll.doneDetail" datatype="html">
-        <source>Cupos liberados: <x id="count" equiv-text="cancelled"/></source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
-          <context context-type="linenumber">146</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.spaceEdit.error.heading" datatype="html">
-        <source>No pudimos cargar este espacio</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">7,8</context>
+          <context context-type="linenumber">155,157</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSection.identity" datatype="html">
         <source>Identidad</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">36,39</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">16,20</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-layout/space-wizard-layout.html</context>
@@ -1879,26 +1853,20 @@
           <context context-type="linenumber">13,16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="admin.spaceEdit.save" datatype="html">
-        <source>Guardar</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">55,57</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">80,82</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">105,107</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="admin.spaceSection.usage" datatype="html">
         <source>Uso</source>
         <context-group purpose="location">
+<<<<<<< HEAD
           <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
           <context context-type="linenumber">63,65</context>
+=======
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">71,73</context>
+>>>>>>> origin/main
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-layout/space-wizard-layout.html</context>
@@ -1907,6 +1875,7 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-review-page/space-wizard-review-page.html</context>
           <context context-type="linenumber">46,48</context>
+<<<<<<< HEAD
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSection.schedules" datatype="html">
@@ -1922,13 +1891,19 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-review-page/space-wizard-review-page.html</context>
           <context context-type="linenumber">72,75</context>
+=======
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSection.photos" datatype="html">
         <source>Fotos</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">114,117</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">124,127</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-layout/space-wizard-layout.html</context>
@@ -1939,130 +1914,209 @@
           <context context-type="linenumber">98,101</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="admin.spaceSection.schedules" datatype="html">
+        <source>Horarios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">151,155</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-layout/space-wizard-layout.html</context>
+          <context context-type="linenumber">39,43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-review-page/space-wizard-review-page.html</context>
+          <context context-type="linenumber">72,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.toc.cancel" datatype="html">
+        <source>Cancelar reservas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="admin.spaceArchive.title" datatype="html">
         <source>Retirar el espacio</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">128,131</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.html</context>
+          <context context-type="linenumber">14,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.closure.stats.noReason" datatype="html">
+        <source>Sin cierres</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.closure.created.summary" datatype="html">
+        <source>Espacio cerrado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.closure.created.detail" datatype="html">
+        <source>Las reservas de ese periodo quedan suspendidas y vuelven si lo reabres.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">197</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.closure.reverted.summary" datatype="html">
+        <source>Espacio reabierto</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">216</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.closure.reverted.detail" datatype="html">
+        <source>Las reservas que estaban suspendidas vuelven a estar en pie.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">217</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.title" datatype="html">
+        <source>¿Cancelar todas las reservas de este espacio?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">232</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.content" datatype="html">
+        <source>Se cancelarán las reservas que no hayan terminado. Los estudiantes las verán como canceladas y podrán reservar en otro sitio.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">234</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.confirm" datatype="html">
+        <source>Cancelar las reservas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">235</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.keep" datatype="html">
+        <source>Dejarlas como están</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">236</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.done" datatype="html">
+        <source>Reservas canceladas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">255</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.settings.cancelAll.doneDetail" datatype="html">
+        <source>Cupos liberados: <x id="count" equiv-text="cancelled"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
+          <context context-type="linenumber">256</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.archivedLead" datatype="html">
         <source> Este espacio está archivado: no aparece en el catálogo y no se puede reservar. Su historial de reservas se conserva. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">132,136</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.html</context>
+          <context context-type="linenumber">20,24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.restore" datatype="html">
         <source>Restaurar espacio</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">147,149</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.html</context>
+          <context context-type="linenumber">35,37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.lead" datatype="html">
         <source> Archivar saca el espacio del catálogo sin borrar nada. Las reservas que ya existen quedan suspendidas, no canceladas. Se puede restaurar. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">153,157</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.html</context>
+          <context context-type="linenumber">41,45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.archive" datatype="html">
         <source>Archivar espacio</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">168,170</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.spaceEdit.backToGrid" datatype="html">
-        <source> Volver a los espacios </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">185,189</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.spacePhotos.positionLabel" datatype="html">
-        <source>Foto <x id="PH" equiv-text="index + 1"/></source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">130</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.html</context>
+          <context context-type="linenumber">56,58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.confirm.title" datatype="html">
         <source>¿Archivar este espacio?</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">271</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.confirm.content" datatype="html">
         <source>Dejará de aparecer en el catálogo y no se podrá reservar. Las reservas que ya existen quedarán suspendidas, no canceladas, y su historial se conserva. Puedes restaurarlo después.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">273</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.confirm.yes" datatype="html">
         <source>Archivar</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">274</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.confirm.no" datatype="html">
         <source>Cancelar</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">275</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.restored.summary" datatype="html">
         <source>Espacio restaurado</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">300</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.restored.detail" datatype="html">
         <source>Vuelve al catálogo. Sigue cerrado hasta que reabras el cierre que creó el archivado.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.archived.summary" datatype="html">
         <source>Espacio archivado</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">329</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.archived.none" datatype="html">
         <source>Ya no aparece en el catálogo. No había reservas activas.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">331</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceArchive.archived.some" datatype="html">
         <source>Ya no aparece en el catálogo. <x id="PH" equiv-text="suspended"/> reservas quedaron suspendidas.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">332</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.spaceEdit.saved.summary" datatype="html">
-        <source>Cambios guardados</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">357</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.spaceEdit.saved.detail" datatype="html">
-        <source>Los estudiantes ya ven la información nueva.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.ts</context>
-          <context context-type="linenumber">358</context>
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-archive-section/space-archive-section.ts</context>
+          <context context-type="linenumber">112</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceForm.name" datatype="html">
@@ -2187,6 +2241,57 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-photo-row/space-photo-row.ts</context>
           <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.discard" datatype="html">
+        <source> Descartar cambios </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">39,43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">91,95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">173,177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.save" datatype="html">
+        <source>Guardar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">52,54</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">104,106</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
+          <context context-type="linenumber">186,188</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spacePhotos.positionLabel" datatype="html">
+        <source>Foto <x id="PH" equiv-text="index + 1"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.ts</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.saved.summary" datatype="html">
+        <source>Cambios guardados</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.ts</context>
+          <context context-type="linenumber">295</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.saved.detail" datatype="html">
+        <source>Los estudiantes ya ven la información nueva.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.ts</context>
+          <context context-type="linenumber">296</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSchedules.from" datatype="html">
@@ -2316,7 +2421,7 @@
         <source> Una norma por línea. Puedes dejarlo vacío si el espacio no tiene normas propias. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-usage-form/space-usage-form.html</context>
-          <context context-type="linenumber">43,47</context>
+          <context context-type="linenumber">46,50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceWizard.identity.title" datatype="html">
@@ -2796,6 +2901,21 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
           <context context-type="linenumber">142,144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reservation.factLocation" datatype="html">
+        <source>Ubicación</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/booking/presentation/booking-done-page/booking-done-page.html</context>
+          <context context-type="linenumber">34,36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/my-reservations/presentation/reservation-detail-page/reservation-detail-page.html</context>
+          <context context-type="linenumber">153,155</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
+          <context context-type="linenumber">39,40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reservation.factCheckIn" datatype="html">
@@ -3847,6 +3967,13 @@
           <context context-type="linenumber">10,12</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="spaces.card.capacity" datatype="html">
+        <source>Capacidad</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/spaces/presentation/space-card/space-card.html</context>
+          <context context-type="linenumber">29,31</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="spaces.card.choose" datatype="html">
         <source>Elegir</source>
         <context-group purpose="location">
@@ -4121,28 +4248,44 @@
         <source>Secciones del panel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+<<<<<<< HEAD
           <context context-type="linenumber">30,31</context>
+=======
+          <context context-type="linenumber">30,33</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.search.label" datatype="html">
         <source>Buscar estudiante o ID</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+<<<<<<< HEAD
           <context context-type="linenumber">60,62</context>
+=======
+          <context context-type="linenumber">72,74</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.help" datatype="html">
         <source>Ayuda</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+<<<<<<< HEAD
           <context context-type="linenumber">85,87</context>
+=======
+          <context context-type="linenumber">97,99</context>
+>>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.accountMenu" datatype="html">
         <source>Tu cuenta</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
+<<<<<<< HEAD
           <context context-type="linenumber">97,98</context>
+=======
+          <context context-type="linenumber">109,110</context>
+>>>>>>> origin/main
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>
@@ -4164,21 +4307,28 @@
         <source>Escáner</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.blocks" datatype="html">
         <source>Ocupación</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.nav.settings" datatype="html">
         <source>Ajustes</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="admin.nav.spaces" datatype="html">
+        <source>Espacios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/admin-nav-items.ts</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footer.rights" datatype="html">
@@ -4231,7 +4381,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">1,3</context>
+          <context context-type="linenumber">1,4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.home" datatype="html">
@@ -4242,7 +4392,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">29,33</context>
+          <context context-type="linenumber">39,43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.spaces" datatype="html">
@@ -4253,7 +4403,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">39,43</context>
+          <context context-type="linenumber">49,53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.reservations" datatype="html">
@@ -4264,14 +4414,14 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">49,54</context>
+          <context context-type="linenumber">59,64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.newReservation" datatype="html">
         <source>Reservar</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-tab-bar/app-tab-bar.html</context>
-          <context context-type="linenumber">75,78</context>
+          <context context-type="linenumber">85,88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="i18n.languageSelector" datatype="html">

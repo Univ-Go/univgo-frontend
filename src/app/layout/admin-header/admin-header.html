@@ -28,8 +28,20 @@
   </div>
 
   <nav class="bar__nav" i18n-aria-label="@@admin.nav.label" aria-label="Secciones del panel">
-    @for (item of navItems; track item.label) {
-      @if (currentSpaceId() && item.link; as link) {
+    <a
+      tuiLink
+      class="bar__nav-item"
+      routerLinkActive="bar__nav-item--active"
+      [iconStart]="spacesItem.icon"
+      [routerLink]="spacesItem.link"
+      [routerLinkActiveOptions]="navMatchOptions"
+      [attr.aria-current]="spacesActive.isActive ? 'page' : null"
+      #spacesActive="routerLinkActive"
+      >{{ spacesItem.label }}</a
+    >
+
+    @for (item of currentSpaceId() ? navItems : []; track item.label) {
+      @if (item.link; as link) {
         <a
           tuiLink
           class="bar__nav-item"

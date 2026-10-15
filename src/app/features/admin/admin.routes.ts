@@ -139,16 +139,17 @@ export const ADMIN_ROUTES: Routes = [
     ],
   },
   {
-    // Deliberately not behind `adminSpaceGuard`: that guard answers "can the panel operate this
-    // space", and an archived one cannot — yet the edit screen is exactly where it is restored
-    // from. An id that is not a space renders this page's own error state, which is the honest
-    // answer for a stale link.
+    // The same settings page as `:spaceId/settings`, deliberately not behind `adminSpaceGuard`: that
+    // guard answers "can the panel operate this space", and an archived one cannot — yet its
+    // settings are exactly where it is restored from. The page drops what an archived space cannot
+    // use. An id that is not a space renders the page's own error state, which is the honest answer
+    // for a stale link.
     path: 'spaces/:spaceId/edit',
     loadComponent: () =>
-      import('./presentation/space-edit-page/space-edit-page').then((m) => m.SpaceEditPage),
-    title: $localize`:@@admin.spaceEdit.pageTitle:Editar espacio`,
+      import('./presentation/settings-page/settings-page').then((m) => m.SettingsPage),
+    title: $localize`:@@admin.settings.pageTitle:Ajustes del espacio`,
     data: {
-      description: $localize`:@@admin.spaceEdit.pageDescription:Cambia la información, los horarios y las fotos de un espacio, o retíralo del catálogo.`,
+      description: $localize`:@@admin.settings.pageDescription:Gestiona los cierres de un espacio, cambia su información, horarios y fotos, o retíralo del catálogo.`,
     },
   },
   // Before `:spaceId`, which would otherwise read `profile` as a space id.
@@ -199,9 +200,9 @@ export const ADMIN_ROUTES: Routes = [
         path: 'settings',
         loadComponent: () =>
           import('./presentation/settings-page/settings-page').then((m) => m.SettingsPage),
-        title: $localize`:@@admin.settings.pageTitle:Configuración y cancelación de espacio`,
+        title: $localize`:@@admin.settings.pageTitle:Ajustes del espacio`,
         data: {
-          description: $localize`:@@admin.settings.pageDescription:Registra el cierre de un espacio por mantenimiento o incidencias y consulta el historial de cierres.`,
+          description: $localize`:@@admin.settings.pageDescription:Gestiona los cierres de un espacio, cambia su información, horarios y fotos, o retíralo del catálogo.`,
         },
       },
     ],

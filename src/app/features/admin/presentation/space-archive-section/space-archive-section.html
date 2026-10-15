@@ -1,0 +1,61 @@
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="section section--danger"
+  appScrollSpySection="archive"
+  aria-labelledby="archive-title"
+>
+  <header class="section__header">
+    <span tuiAppearance="negative" class="section__icon" aria-hidden="true">
+      <tui-icon icon="@tui.archive" />
+    </span>
+    <h2 id="archive-title" class="section__title" i18n="@@admin.spaceArchive.title">
+      Retirar el espacio
+    </h2>
+  </header>
+
+  @if (archived()) {
+    <p class="section__text" i18n="@@admin.spaceArchive.archivedLead">
+      Este espacio está archivado: no aparece en el catálogo y no se puede reservar. Su historial de
+      reservas se conserva.
+    </p>
+
+    <div class="section__actions">
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="outline"
+        iconStart="@tui.archive-restore"
+        [disabled]="busy()"
+        (click)="restore()"
+      >
+        <tui-loader [loading]="busy()" [inheritColor]="true" [overlay]="true">
+          <span i18n="@@admin.spaceArchive.restore">Restaurar espacio</span>
+        </tui-loader>
+      </button>
+    </div>
+  } @else {
+    <p class="section__text" i18n="@@admin.spaceArchive.lead">
+      Archivar saca el espacio del catálogo sin borrar nada. Las reservas que ya existen quedan
+      suspendidas, no canceladas. Se puede restaurar.
+    </p>
+
+    <div class="section__actions">
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="outline-destructive"
+        iconStart="@tui.archive"
+        [disabled]="busy()"
+        (click)="archive()"
+      >
+        <tui-loader [loading]="busy()" [inheritColor]="true" [overlay]="true">
+          <span i18n="@@admin.spaceArchive.archive">Archivar espacio</span>
+        </tui-loader>
+      </button>
+    </div>
+  }
+</section>

@@ -21,3 +21,7 @@ $occupancy-split-min: 42rem;
 // A week row moves its chips to a column on the right once the longest weekday and status fit beside
 // the date tile ("Wednesday" with "Almost full", ~19rem); narrower, they take a line of their own.
 $week-chips-beside-min: 19rem;
+
+// A space's identity form puts its fields two to a row once each field keeps a usable
+// width (~19rem) beside the other; the creation wizard's narrower column stays at one.
+$form-two-column-min: 40rem;

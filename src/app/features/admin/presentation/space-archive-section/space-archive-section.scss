@@ -1,0 +1,9 @@
+@use 'cards';
+
+:host {
+  display: contents;
+}
+
+.section {
+  @include cards.section;
+}

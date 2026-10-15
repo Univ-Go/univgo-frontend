@@ -1,3 +1,4 @@
+@use 'cards';
 @use 'breakpoints' as bp;
 
 .form {
@@ -7,18 +8,12 @@
 }
 
 .form__header {
-  display: flex;
-  align-items: center;
-  gap: var(--univgo-space-m);
+  @include cards.section-header;
 }
 
 .form__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: var(--tui-height-s);
-  block-size: var(--tui-height-s);
-  border-radius: var(--tui-radius-l);
+  @include cards.section-icon;
+
   // The background comes from `tuiAppearance="negative"` on this same element (its `--t-bg`), so
   // only the icon's own colour needs setting here — `--tui-text-negative` was never a real Taiga
   // token, so it fell back to the plain text colour instead of the intended negative-status red.
@@ -28,7 +23,7 @@
 }
 
 .form__heading {
-  font: var(--tui-typography-heading-h6);
+  @include cards.section-title;
 }
 
 // Mobile-first: three pills squeezed into a phone's width leave each one too narrow for its icon

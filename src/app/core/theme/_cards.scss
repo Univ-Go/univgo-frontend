@@ -36,3 +36,82 @@
     transform: translateY(var(--univgo-lift));
   }
 }
+
+/// The heading row every section of a settings page opens with: an icon tile and the title beside
+/// it. Mixins rather than one `section` include so `ClosureForm`, whose own class names predate
+/// these, draws exactly the same row.
+@mixin section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--univgo-space-m);
+}
+
+/// The tile behind a section's icon. Its background comes from the `tuiAppearance` on the same
+/// element; the icon colour is the host's to set, since a neutral tile and a danger one differ.
+@mixin section-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--tui-height-s);
+  block-size: var(--tui-height-s);
+  border-radius: var(--tui-radius-l);
+}
+
+@mixin section-title {
+  margin: 0;
+  font: var(--tui-typography-heading-h6);
+}
+
+/// A titled block of a settings page — the space's profile, retiring it, cancelling its
+/// reservations. Included on the block's own class, so `&__header`, `&__icon`, `&__title`,
+/// `&__text` and `&__actions` land on its BEM children and the components that draw one cannot
+/// drift apart.
+@mixin section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-m);
+
+  &__header {
+    @include section-header;
+  }
+
+  &__icon {
+    @include section-icon;
+
+    color: var(--tui-text-secondary);
+  }
+
+  &__title {
+    @include section-title;
+  }
+
+  &__text {
+    margin: 0;
+    color: var(--tui-text-secondary);
+    font: var(--tui-typography-body-s);
+  }
+
+  // Not colour alone: the heading and the copy both say what a danger section does.
+  &--danger {
+    border-color: var(--tui-status-negative-pale);
+  }
+
+  &--danger &__icon {
+    color: var(--tui-status-negative);
+  }
+
+  // Mobile first: the action spans the row so it is an easy target, and moves to the end from tablet.
+  // Pushed to the bottom so two sections side by side keep their buttons on one line.
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--univgo-space-s);
+    margin-block-start: auto;
+
+    @media (width >= bp.$tablet) {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
+}

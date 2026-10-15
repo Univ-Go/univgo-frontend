@@ -1254,6 +1254,10 @@
         <source>Ocupación</source>
         <target>Occupancy</target>
       </trans-unit>
+      <trans-unit id="admin.nav.spaces" datatype="html">
+        <source>Espacios</source>
+        <target>Spaces</target>
+      </trans-unit>
       <trans-unit id="admin.nav.settings" datatype="html">
         <source>Ajustes</source>
         <target>Settings</target>
@@ -1275,12 +1279,12 @@
         <target>Help</target>
       </trans-unit>
       <trans-unit id="admin.settings.pageTitle" datatype="html">
-        <source>Configuración y cancelación de espacio</source>
-        <target>Space configuration and cancellation</target>
+        <source>Ajustes del espacio</source>
+        <target>Space settings</target>
       </trans-unit>
       <trans-unit id="admin.settings.pageDescription" datatype="html">
-        <source>Registra el cierre de un espacio por mantenimiento o incidencias y consulta el historial de cierres.</source>
-        <target>Register a space closure for maintenance or incidents and check the closure history.</target>
+        <source>Gestiona los cierres de un espacio, cambia su información, horarios y fotos, o retíralo del catálogo.</source>
+        <target>Manage a space's closures, change its details, hours and photos, or remove it from the catalogue.</target>
       </trans-unit>
       <trans-unit id="admin.closure.form.title" datatype="html">
         <source>Cierre del espacio</source>
@@ -1450,13 +1454,21 @@
         <source>Las reservas que estaban suspendidas vuelven a estar en pie.</source>
         <target>The bookings that were suspended stand again.</target>
       </trans-unit>
-      <trans-unit id="admin.settings.title" datatype="html">
-        <source>Configuración y cancelación de espacio</source>
-        <target>Space configuration and cancellation</target>
+      <trans-unit id="admin.settings.toc.label" datatype="html">
+        <source>Secciones de los ajustes</source>
+        <target>Settings sections</target>
       </trans-unit>
-      <trans-unit id="admin.settings.lead" datatype="html">
-        <source>Gestiona la disponibilidad operativa del espacio y registra bloqueos por mantenimiento o incidencias.</source>
-        <target>Manage the space's operating availability and register blocks for maintenance or incidents.</target>
+      <trans-unit id="admin.settings.toc.closures" datatype="html">
+        <source>Cierres</source>
+        <target>Closures</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.toc.cancel" datatype="html">
+        <source>Cancelar reservas</source>
+        <target>Cancel reservations</target>
+      </trans-unit>
+      <trans-unit id="admin.settings.title" datatype="html">
+        <source>Ajustes del espacio</source>
+        <target>Space settings</target>
       </trans-unit>
       <trans-unit id="admin.settings.cancelAll.action" datatype="html">
         <source>Cancelar las reservas del espacio</source>
@@ -1726,14 +1738,6 @@
         <source>Revisa todos los datos del espacio antes de publicarlo en el catálogo.</source>
         <target>Check every detail of the space before publishing it to the catalogue.</target>
       </trans-unit>
-      <trans-unit id="admin.spaceEdit.pageTitle" datatype="html">
-        <source>Editar espacio</source>
-        <target>Edit space</target>
-      </trans-unit>
-      <trans-unit id="admin.spaceEdit.pageDescription" datatype="html">
-        <source>Cambia la información, los horarios y las fotos de un espacio, o retíralo del catálogo.</source>
-        <target>Change a space's information, opening hours and photos, or retire it from the catalogue.</target>
-      </trans-unit>
       <trans-unit id="admin.spaceWizard.leave.title" datatype="html">
         <source>¿Salir sin crear el espacio?</source>
         <target>Leave without creating the space?</target>
@@ -1802,6 +1806,22 @@
         <source> Espacios archivados (<x id="INTERPOLATION" equiv-text="{{ archived().length }}"/>) </source>
         <target>Archived spaces (<x id="INTERPOLATION" equiv-text="{{ archived().length }}"/>)</target>
       </trans-unit>
+      <trans-unit id="admin.spaces.search" datatype="html">
+        <source>Buscar por nombre, ubicación o tipo</source>
+        <target>Search by name, location or type</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.noMatch.heading" datatype="html">
+        <source>Ningún espacio coincide con tu búsqueda</source>
+        <target>No space matches your search</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.noMatch.description" datatype="html">
+        <source>Revisa cómo lo escribiste o busca por su ubicación.</source>
+        <target>Check the spelling or search by its location.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.clearSearch" datatype="html">
+        <source> Borrar búsqueda </source>
+        <target>Clear search</target>
+      </trans-unit>
       <trans-unit id="admin.spaces.archivedLead" datatype="html">
         <source> Ya no aparecen en el catálogo ni se pueden reservar. Su historial de reservas se conserva. </source>
         <target>They no longer appear in the catalogue and cannot be booked. Their booking history is kept.</target>
@@ -1813,6 +1833,10 @@
       <trans-unit id="admin.spaceSection.identity" datatype="html">
         <source>Identidad</source>
         <target>Identity</target>
+      </trans-unit>
+      <trans-unit id="admin.spaceEdit.discard" datatype="html">
+        <source> Descartar cambios </source>
+        <target>Discard changes</target>
       </trans-unit>
       <trans-unit id="admin.spaceEdit.save" datatype="html">
         <source>Guardar</source>
@@ -1849,10 +1873,6 @@
       <trans-unit id="admin.spaceArchive.archive" datatype="html">
         <source>Archivar espacio</source>
         <target>Archive space</target>
-      </trans-unit>
-      <trans-unit id="admin.spaceEdit.backToGrid" datatype="html">
-        <source> Volver a los espacios </source>
-        <target>Back to spaces</target>
       </trans-unit>
       <trans-unit id="admin.spacePhotos.positionLabel" datatype="html">
         <source>Foto <x id="PH" equiv-text="index + 1"/></source>
@@ -2167,26 +2187,6 @@
       <trans-unit id="admin.blocks.row.details" datatype="html">
         <source>Ver detalles</source>
         <target>View details</target>
-      </trans-unit>
-      <trans-unit id="admin.nav.spaces" datatype="html">
-        <source>Espacios</source>
-        <target>Spaces</target>
-      </trans-unit>
-      <trans-unit id="admin.spaces.search" datatype="html">
-        <source>Buscar por nombre, ubicación o tipo</source>
-        <target>Search by name, location or type</target>
-      </trans-unit>
-      <trans-unit id="admin.spaces.noMatch.heading" datatype="html">
-        <source>Ningún espacio coincide con tu búsqueda</source>
-        <target>No space matches your search</target>
-      </trans-unit>
-      <trans-unit id="admin.spaces.noMatch.description" datatype="html">
-        <source>Revisa cómo lo escribiste o busca por su ubicación.</source>
-        <target>Check the spelling or search by its location.</target>
-      </trans-unit>
-      <trans-unit id="admin.spaces.clearSearch" datatype="html">
-        <source> Borrar búsqueda </source>
-        <target>Clear search</target>
       </trans-unit>
     </body>
   </file>

@@ -1,0 +1,190 @@
+<!-- "Descartar cambios" appears only once a section has been edited, and Guardar waits for the
+     same thing: the pair is how the section says it holds something the server does not. -->
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="section"
+  appScrollSpySection="identity"
+  aria-labelledby="identity-title"
+>
+  <header class="section__header">
+    <span tuiAppearance="neutral" class="section__icon" aria-hidden="true">
+      <tui-icon icon="@tui.id-card" />
+    </span>
+    <h2 id="identity-title" class="section__title" i18n="@@admin.spaceSection.identity">
+      Identidad
+    </h2>
+  </header>
+
+  <app-space-identity-form
+    [value]="identityValue()"
+    (valueChange)="identity.set($event)"
+    [types]="types.value()"
+    [disabled]="savingIdentity()"
+  />
+
+  <div class="section__actions">
+    @if (identity() !== null) {
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="flat"
+        iconStart="@tui.rotate-ccw"
+        [disabled]="savingIdentity()"
+        (click)="identity.set(null)"
+        i18n="@@admin.spaceEdit.discard"
+      >
+        Descartar cambios
+      </button>
+    }
+
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="primary"
+      [disabled]="identity() === null || !identityValid() || savingIdentity()"
+      (click)="saveIdentity()"
+    >
+      <tui-loader [loading]="savingIdentity()" [inheritColor]="true" [overlay]="true">
+        <span i18n="@@admin.spaceEdit.save">Guardar</span>
+      </tui-loader>
+    </button>
+  </div>
+</section>
+
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="section"
+  appScrollSpySection="usage"
+  aria-labelledby="usage-title"
+>
+  <header class="section__header">
+    <span tuiAppearance="neutral" class="section__icon" aria-hidden="true">
+      <tui-icon icon="@tui.book-open" />
+    </span>
+    <h2 id="usage-title" class="section__title" i18n="@@admin.spaceSection.usage">Uso</h2>
+  </header>
+
+  <app-space-usage-form
+    [value]="usageValue()"
+    (valueChange)="usage.set($event)"
+    [disabled]="savingUsage()"
+  />
+
+  <div class="section__actions">
+    @if (usage() !== null) {
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="flat"
+        iconStart="@tui.rotate-ccw"
+        [disabled]="savingUsage()"
+        (click)="usage.set(null)"
+        i18n="@@admin.spaceEdit.discard"
+      >
+        Descartar cambios
+      </button>
+    }
+
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="primary"
+      [disabled]="usage() === null || !usageValid() || savingUsage()"
+      (click)="saveUsage()"
+    >
+      <tui-loader [loading]="savingUsage()" [inheritColor]="true" [overlay]="true">
+        <span i18n="@@admin.spaceEdit.save">Guardar</span>
+      </tui-loader>
+    </button>
+  </div>
+</section>
+
+<!-- The photographs save as they change: adding, reordering and removing are each a request, so
+     there is nothing left for a Guardar button to do here. -->
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="section"
+  appScrollSpySection="photos"
+  aria-labelledby="photos-title"
+>
+  <header class="section__header">
+    <span tuiAppearance="neutral" class="section__icon" aria-hidden="true">
+      <tui-icon icon="@tui.image" />
+    </span>
+    <h2 id="photos-title" class="section__title" i18n="@@admin.spaceSection.photos">Fotos</h2>
+  </header>
+
+  <app-space-photo-editor
+    [photos]="photoItems()"
+    [remaining]="remainingPhotos()"
+    [disabled]="savingPhotos()"
+    (filesPicked)="addPhotos($event)"
+    (moved)="movePhoto($event.from, $event.to)"
+    (coverSet)="setCover($event)"
+    (removed)="removePhoto($event)"
+  />
+</section>
+
+<section
+  tuiCardLarge
+  tuiSurface
+  tuiAppearance="outline"
+  class="section"
+  appScrollSpySection="schedules"
+  aria-labelledby="schedules-title"
+>
+  <header class="section__header">
+    <span tuiAppearance="neutral" class="section__icon" aria-hidden="true">
+      <tui-icon icon="@tui.clock" />
+    </span>
+    <h2 id="schedules-title" class="section__title" i18n="@@admin.spaceSection.schedules">
+      Horarios
+    </h2>
+  </header>
+
+  <app-space-schedule-editor
+    [value]="scheduleValue()"
+    (valueChange)="schedules.set($event)"
+    [disabled]="savingSchedules()"
+  />
+
+  <div class="section__actions">
+    @if (schedules() !== null) {
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="flat"
+        iconStart="@tui.rotate-ccw"
+        [disabled]="savingSchedules()"
+        (click)="schedules.set(null)"
+        i18n="@@admin.spaceEdit.discard"
+      >
+        Descartar cambios
+      </button>
+    }
+
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="primary"
+      [disabled]="schedules() === null || !schedulesValid() || savingSchedules()"
+      (click)="saveSchedules()"
+    >
+      <tui-loader [loading]="savingSchedules()" [inheritColor]="true" [overlay]="true">
+        <span i18n="@@admin.spaceEdit.save">Guardar</span>
+      </tui-loader>
+    </button>
+  </div>
+</section>

@@ -1,4 +1,5 @@
 @use 'breakpoints' as bp;
+@use 'cards';
 
 :host {
   display: flex;
@@ -6,14 +7,17 @@
   gap: var(--univgo-space-xl);
 }
 
-// Same shape `BlocksPage` and `ScanPage` give their own header: the space switcher rides the title
-// row, right-aligned, and drops to its own line under the title once the row can't fit both.
+.skeleton {
+  block-size: var(--univgo-card-placeholder-height);
+  border-radius: var(--tui-radius-l);
+}
+
 .intro {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: end;
-  gap: var(--univgo-space-l);
+  align-items: start;
+  gap: var(--univgo-space-s);
 }
 
 .intro__text {
@@ -27,33 +31,79 @@
   margin: 0;
   color: var(--tui-text-secondary);
   font: var(--tui-typography-body-m);
+  overflow-wrap: anywhere;
 }
 
-.cancel-card {
-  h2 {
-    font: var(--tui-typography-heading-h6);
+// Mobile first: the strip pins under the header and the sections run below it in one column.
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+}
+
+.toc--column {
+  display: none;
+}
+
+// Pinned with the page's own background behind it, so the sections scrolling underneath do not show
+// through the gaps between tabs.
+.toc--strip {
+  position: sticky;
+  z-index: var(--univgo-layer-sticky);
+  inset-block-start: var(--settings-toc-top, 0);
+  margin-inline: calc(-1 * var(--univgo-layout-gutter));
+  padding-inline: var(--univgo-layout-gutter);
+  background: var(--tui-background-base);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-l);
+  min-inline-size: 0;
+}
+
+// From desktop the contents become a column beside the sections. `main` is the scroll container
+// there and the header sits outside it, so the column pins to main's own top edge.
+@media (width >= bp.$desktop) {
+  .layout {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--univgo-space-2xl);
+  }
+
+  .toc--strip {
+    display: none;
+  }
+
+  .toc--column {
+    display: block;
+    position: sticky;
+    inset-block-start: 0;
   }
 }
 
-.cancel-card__hint {
-  margin: 0;
-  max-inline-size: 44rem;
-  color: var(--tui-text-secondary);
-  font: var(--tui-typography-ui-s);
-}
-
-// The form is the page's main task and gets the wider column; the stats and history follow it.
-.layout {
+// The form is the section's main task and gets its own column once there is room; the stats and
+// history follow it below that.
+.closures {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--univgo-space-l);
 }
 
-.layout__side {
+.closures__side {
   display: flex;
   flex-direction: column;
   gap: var(--univgo-space-l);
   min-inline-size: 0;
+}
+
+@media (width >= bp.$desktop) {
+  .closures {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+  }
 }
 
 // Always exactly two tiles, unlike the shared 1 → 2 → 3 card step other pages use: that step would
@@ -70,9 +120,22 @@
   }
 }
 
-@media (width >= bp.$desktop) {
-  .layout {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    align-items: start;
+// One card per column once a tablet's width is there, and one column for an archived space, which
+// keeps only the second card: equal tracks grow from the cards present rather than a fixed pair.
+.danger-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--univgo-space-l);
+}
+
+@media (width >= bp.$tablet) {
+  .danger-row {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
   }
+}
+
+.section {
+  @include cards.section;
 }

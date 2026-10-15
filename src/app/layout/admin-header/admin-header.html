@@ -105,5 +105,6 @@
 </header>
 
 <ng-template #accountMenu>
-  <app-account-menu />
+  <!-- Picking an entry navigates or signs out; either way the menu has done its job. -->
+  <app-account-menu (click)="menuOpen.set(false)" />
 </ng-template>

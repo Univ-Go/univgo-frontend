@@ -329,108 +329,64 @@
         <source>Ajustes del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">149</context>
-<<<<<<< HEAD
-=======
+          <context context-type="linenumber">150</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">200</context>
->>>>>>> origin/main
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.settings.pageDescription" datatype="html">
         <source>Gestiona los cierres de un espacio, cambia su información, horarios y fotos, o retíralo del catálogo.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">151</context>
-<<<<<<< HEAD
-=======
+          <context context-type="linenumber">152</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">202</context>
->>>>>>> origin/main
+          <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.pageTitle" datatype="html">
         <source>Escáner de acceso</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">170</context>
-=======
-          <context context-type="linenumber">168</context>
->>>>>>> origin/main
+          <context context-type="linenumber">171</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.scan.pageDescription" datatype="html">
         <source>Escanea el código de un estudiante para registrar su check-in y confirmar el acceso al espacio.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">172</context>
-=======
-          <context context-type="linenumber">170</context>
->>>>>>> origin/main
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.pageTitle" datatype="html">
         <source>Ocupación del espacio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">179</context>
-=======
-          <context context-type="linenumber">177</context>
->>>>>>> origin/main
+          <context context-type="linenumber">180</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.blocks.pageDescription" datatype="html">
         <source>Consulta cuántos lugares quedan libres en un espacio esta semana y la próxima, y en cada horario del día.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">181</context>
-=======
-          <context context-type="linenumber">179</context>
->>>>>>> origin/main
+          <context context-type="linenumber">182</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.detail.pageTitle" datatype="html">
         <source>Detalle del bloque</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">190</context>
-=======
-          <context context-type="linenumber">188</context>
->>>>>>> origin/main
+          <context context-type="linenumber">191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.capacity.detail.pageDescription" datatype="html">
         <source>Consulta el aforo de un bloque, quién ha entrado y qué reservas siguen pendientes de check-in.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">195</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.pageTitle" datatype="html">
-        <source>Configuración y cancelación de espacio</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">202</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.settings.pageDescription" datatype="html">
-        <source>Registra el cierre de un espacio por mantenimiento o incidencias y consulta el historial de cierres.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/admin.routes.ts</context>
-          <context context-type="linenumber">204</context>
-=======
-          <context context-type="linenumber">193</context>
->>>>>>> origin/main
+          <context context-type="linenumber">196</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceWizard.leave.title" datatype="html">
@@ -1856,17 +1812,12 @@
       <trans-unit id="admin.spaceSection.usage" datatype="html">
         <source>Uso</source>
         <context-group purpose="location">
-<<<<<<< HEAD
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">63,65</context>
-=======
           <context context-type="sourcefile">src/app/features/admin/presentation/settings-page/settings-page.ts</context>
           <context context-type="linenumber">49</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-profile-editor/space-profile-editor.html</context>
           <context context-type="linenumber">71,73</context>
->>>>>>> origin/main
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-layout/space-wizard-layout.html</context>
@@ -1875,24 +1826,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-review-page/space-wizard-review-page.html</context>
           <context context-type="linenumber">46,48</context>
-<<<<<<< HEAD
-        </context-group>
-      </trans-unit>
-      <trans-unit id="admin.spaceSection.schedules" datatype="html">
-        <source>Horarios</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-edit-page/space-edit-page.html</context>
-          <context context-type="linenumber">87,90</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-layout/space-wizard-layout.html</context>
-          <context context-type="linenumber">39,43</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/presentation/space-wizard-review-page/space-wizard-review-page.html</context>
-          <context context-type="linenumber">72,75</context>
-=======
->>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceSection.photos" datatype="html">
@@ -4248,44 +4181,28 @@
         <source>Secciones del panel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">30,31</context>
-=======
           <context context-type="linenumber">30,33</context>
->>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.search.label" datatype="html">
         <source>Buscar estudiante o ID</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">60,62</context>
-=======
           <context context-type="linenumber">72,74</context>
->>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="admin.help" datatype="html">
         <source>Ayuda</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">85,87</context>
-=======
           <context context-type="linenumber">97,99</context>
->>>>>>> origin/main
         </context-group>
       </trans-unit>
       <trans-unit id="navigation.accountMenu" datatype="html">
         <source>Tu cuenta</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/admin-header/admin-header.html</context>
-<<<<<<< HEAD
-          <context context-type="linenumber">97,98</context>
-=======
           <context context-type="linenumber">109,110</context>
->>>>>>> origin/main
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layout/app-header/app-header.html</context>

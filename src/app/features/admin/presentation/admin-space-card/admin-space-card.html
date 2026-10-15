@@ -7,68 +7,92 @@
   class="card"
   [class.card--archived]="current.archived"
 >
-  <app-media-plate icon="@tui.map-pin" [imageUrl]="current.coverImageUrl">
-    @if (current.archived) {
-      <span tuiBadge appearance="neutral" i18n="@@admin.spaces.archivedBadge">Archivado</span>
+  <app-media-plate icon="@tui.map-pin" class="card__plate" [imageUrl]="current.coverImageUrl">
+    <!-- Over the photo's corner, where a card's secondary destinations usually live. The floating
+         appearance is a solid surface with its own shadow, so it reads over any photograph. -->
+    @if (!current.archived) {
+      @for (section of cornerSections; track section.label) {
+        @if (section.link; as link) {
+          <a
+            tuiIconButton
+            size="s"
+            appearance="floating"
+            class="card__corner"
+            [iconStart]="section.icon"
+            [routerLink]="sectionLink(link)"
+            [attr.aria-label]="section.label + ': ' + current.name"
+          ></a>
+        }
+      }
     }
   </app-media-plate>
 
   <div class="card__body">
-    <h3 class="card__name">
-      <!-- The link inside the heading is what makes the card reachable by keyboard and announceable
-           by name; the overlay in the stylesheet only extends its hit area. An archived space has
-           no scanner to open, so it is plain text and the edit button is the only way in. -->
-      @if (scanLink(); as link) {
-        <a class="card__link" [routerLink]="link">{{ current.name }}</a>
-      } @else {
-        {{ current.name }}
-      }
-    </h3>
+    <!-- The link inside the heading is what makes the whole card reachable by keyboard and named by
+         the space; the overlay in the stylesheet extends its hit area over the surface, so tapping
+         the photo does something. It goes where the filled button goes, which is how the card says
+         in advance what a tap on it will do. -->
+    <h2 class="card__name">
+      <a class="card__link" [routerLink]="primaryLink()">{{ current.name }}</a>
+    </h2>
 
-    <dl class="card__facts">
-      <div class="fact">
-        <dt i18n="@@spaces.card.capacity">Capacidad</dt>
-        <dd>
-          <tui-icon icon="@tui.users" aria-hidden="true" />
-          <span i18n="@@admin.spacesGrid.card.capacity">{current.capacity, plural,
-            =1 {1 persona}
-            other {{{current.capacity}} personas}
-          }</span>
-        </dd>
-      </div>
-      <div class="fact">
-        <dt i18n="@@reservation.factLocation">Ubicación</dt>
-        <dd><tui-icon icon="@tui.map-pin" aria-hidden="true" />{{ current.location }}</dd>
-      </div>
-    </dl>
+    <p class="card__facts">
+      <span>{{ current.spaceTypeName }}</span>
+      <span class="card__fact">
+        <tui-icon icon="@tui.map-pin" aria-hidden="true" />{{ current.location }}
+      </span>
+      <span class="card__fact">
+        <tui-icon icon="@tui.users" aria-hidden="true" />
+        <span i18n="@@admin.spacesGrid.card.capacity">{current.capacity, plural,
+          =1 {1 persona}
+          other {{{current.capacity}} personas}
+        }</span>
+      </span>
+    </p>
 
+    <!-- A warning and not an error: the space exists and the panel works, but a student sees nothing
+         bookable. Colour is not the only carrier — each line has its own icon and its own words. -->
     @if (missingSchedule() || missingPhotos()) {
-      <ul class="card__warnings">
+      <p class="card__warnings">
         @if (missingSchedule()) {
-          <li>
+          <span class="card__fact">
             <tui-icon icon="@tui.circle-alert" aria-hidden="true" />
             <span i18n="@@admin.spaces.missingSchedule">Sin horario: no ofrece bloques</span>
-          </li>
+          </span>
         }
         @if (missingPhotos()) {
-          <li>
+          <span class="card__fact">
             <tui-icon icon="@tui.camera-off" aria-hidden="true" />
             <span i18n="@@admin.spaces.missingPhotos">Sin fotos</span>
-          </li>
+          </span>
         }
-      </ul>
+      </p>
     }
   </div>
 
-  <a
-    tuiButton
-    size="m"
-    appearance="outline"
-    iconStart="@tui.pencil"
-    class="card__action"
-    [routerLink]="editLink()"
-  >
-    <span i18n="@@admin.spaces.edit">Editar</span>
-    <span class="card__action-context">{{ current.name }}</span>
-  </a>
+  <div class="card__actions">
+    @if (current.archived) {
+      <a tuiButton size="m" appearance="outline" iconStart="@tui.pencil" [routerLink]="editLink()">
+        <span i18n="@@admin.spaces.edit">Editar</span>
+        <span class="card__context">{{ current.name }}</span>
+      </a>
+    } @else {
+      <!-- The space's name rides in each control's accessible name: a grid read aloud is a run of
+           identical "Escáner" links otherwise, with nothing to say which space each one opens. -->
+      @for (section of directSections; track section.label; let first = $first) {
+        @if (section.link; as link) {
+          <a
+            tuiButton
+            size="m"
+            [appearance]="first ? 'primary' : 'secondary'"
+            [iconStart]="section.icon"
+            [routerLink]="sectionLink(link)"
+          >
+            {{ section.label }}
+            <span class="card__context">{{ current.name }}</span>
+          </a>
+        }
+      }
+    }
+  </div>
 </article>

@@ -1799,8 +1799,8 @@
         <target>Create space</target>
       </trans-unit>
       <trans-unit id="admin.spaces.archivedHeading" datatype="html">
-        <source>Espacios archivados</source>
-        <target>Archived spaces</target>
+        <source> Espacios archivados (<x id="INTERPOLATION" equiv-text="{{ archived().length }}"/>) </source>
+        <target>Archived spaces (<x id="INTERPOLATION" equiv-text="{{ archived().length }}"/>)</target>
       </trans-unit>
       <trans-unit id="admin.spaces.archivedLead" datatype="html">
         <source> Ya no aparecen en el catálogo ni se pueden reservar. Su historial de reservas se conserva. </source>
@@ -2167,6 +2167,22 @@
       <trans-unit id="admin.blocks.row.details" datatype="html">
         <source>Ver detalles</source>
         <target>View details</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.search" datatype="html">
+        <source>Buscar por nombre, ubicación o tipo</source>
+        <target>Search by name, location or type</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.noMatch.heading" datatype="html">
+        <source>Ningún espacio coincide con tu búsqueda</source>
+        <target>No space matches your search</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.noMatch.description" datatype="html">
+        <source>Revisa cómo lo escribiste o busca por su ubicación.</source>
+        <target>Check the spelling or search by its location.</target>
+      </trans-unit>
+      <trans-unit id="admin.spaces.clearSearch" datatype="html">
+        <source> Borrar búsqueda </source>
+        <target>Clear search</target>
       </trans-unit>
     </body>
   </file>

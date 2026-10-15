@@ -1,15 +1,39 @@
-<!-- Changing the day swaps the list without a page change, so a screen reader would otherwise be
-     told nothing at all. The count and the date are announced rather than the list itself: a live
-     region around a day's worth of cards would read the whole schedule back on every selection. -->
-<p class="day__status" aria-live="polite">
-  <span i18n="@@admin.blocks.count">{blocks().length, plural,
-    =0 {Sin bloques}
-    =1 {1 bloque}
-    other {{{blocks().length}} bloques}
-  }</span>
-  <span class="day__dot" aria-hidden="true"></span>
-  <time [attr.datetime]="day()">{{ day() | date: 'fullDate' }}</time>
-</p>
+<header class="day">
+  <div class="day__text">
+    <h2 #heading class="day__title" tabindex="-1">
+      <time [attr.datetime]="day()">{{ day() | date: 'fullDate' }}</time>
+      @if (today()) {
+        <span tuiBadge appearance="info" size="m" i18n="@@admin.blocks.day.today">Hoy</span>
+      }
+    </h2>
+
+    <!-- Changing the day swaps the list without a page change; this line is what a screen reader
+         is told, rather than the whole list being read back on every selection. -->
+    <p class="day__summary" aria-live="polite" aria-atomic="true">
+      @if (!loading() && !error() && blocks().length > 0) {
+        @let free = remaining().totalFree;
+        @let count = remaining().slots;
+        @if (count === 0) {
+          <span i18n="@@admin.blocks.day.over">Ya no quedan horarios por reservar este día.</span>
+        } @else {
+          <span i18n="@@admin.blocks.day.freeSpots">{free, plural,
+            =0 {Sin lugares libres}
+            =1 {1 lugar libre}
+            other {{{free}} lugares libres}
+          }</span>
+          <span i18n="@@admin.blocks.day.slots">{count, plural,
+            =1 {en 1 horario}
+            other {en {{count}} horarios}
+          }</span>
+        }
+      }
+    </p>
+  </div>
+
+  <div class="day__actions">
+    <ng-content select="[dayActions]" />
+  </div>
+</header>
 
 @if (loading()) {
   <ul
@@ -46,13 +70,13 @@
   <div class="shifts">
     @for (group of shiftGroups(); track group.shift) {
       <section class="shift" [attr.aria-labelledby]="'shift-' + group.shift">
-        <header class="shift__header">
+        <h3 class="shift__header" [id]="'shift-' + group.shift">
           <tui-icon class="shift__icon" [icon]="shiftIcon(group.shift)" aria-hidden="true" />
-          <h2 class="shift__title" [id]="'shift-' + group.shift">{{ shiftLabel(group.shift) }}</h2>
-          <span class="shift__range">{{ group.from | date: 'shortTime' }} – {{
-            group.to | date: 'shortTime'
-          }}</span>
-        </header>
+          <span>{{ shiftLabel(group.shift) }}</span>
+          <span class="shift__range"
+            >{{ group.from | date: 'shortTime' }} – {{ group.to | date: 'shortTime' }}</span
+          >
+        </h3>
 
         <ul class="schedule">
           @for (block of group.blocks; track block.start.getTime()) {

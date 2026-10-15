@@ -11,3 +11,13 @@ $desktop: 64rem;
 // For the mobile-only blocks. Derived rather than written as 47.99rem, so moving `$tablet` moves
 // both sides of the boundary at once and no gap can open between them.
 $below-tablet: $tablet - 0.01rem;
+
+// Container widths, not viewport ones: a view takes a different share of the viewport at each
+// breakpoint, and so does browser zoom.
+//
+// The occupancy page puts the week beside the day once there is room for the picker plus one block
+// card (`--univgo-week-picker-width` + gap + the 17rem card) next to it.
+$occupancy-split-min: 42rem;
+// A week row moves its chips to a column on the right once the longest weekday and status fit beside
+// the date tile ("Wednesday" with "Almost full", ~19rem); narrower, they take a line of their own.
+$week-chips-beside-min: 19rem;

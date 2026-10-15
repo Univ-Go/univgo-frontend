@@ -4,24 +4,50 @@
   gap: var(--univgo-space-m);
 }
 
-.day__status {
+.day {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--univgo-space-s) var(--univgo-space-m);
+}
+
+.day__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--univgo-space-xs);
+  min-inline-size: 0;
+}
+
+.day__title {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--univgo-space-xs);
+  gap: var(--univgo-space-s);
   margin: 0;
-  color: var(--tui-text-tertiary);
-  font: var(--tui-typography-body-s);
+  font: var(--tui-typography-heading-h5);
+}
+
+.day__title time::first-letter {
+  text-transform: uppercase;
+}
+
+// Reserves its line while empty, so the header does not jump when the count arrives.
+.day__summary {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--univgo-space-xs);
+  min-block-size: 1lh;
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-m);
   font-variant-numeric: tabular-nums;
 }
 
-// Drawn rather than typed, like every other separator in the panel: never in the accessibility
-// tree, never translated.
-.day__dot {
-  inline-size: var(--univgo-space-xs);
-  block-size: var(--univgo-space-xs);
-  border-radius: 50%;
-  background: var(--tui-text-tertiary);
+.day__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--univgo-space-s);
 }
 
 .shifts {
@@ -33,19 +59,14 @@
 .shift__header {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: var(--univgo-space-xs);
-  margin-block-end: var(--univgo-space-s);
+  margin: 0 0 var(--univgo-space-s);
+  font: var(--tui-typography-ui-l);
 }
 
 .shift__icon {
-  align-self: center;
   color: var(--tui-text-secondary);
-}
-
-.shift__title {
-  margin: 0;
-  font: var(--tui-typography-ui-l);
 }
 
 .shift__range {
@@ -57,21 +78,18 @@
   font-variant-numeric: tabular-nums;
 }
 
-// A card grid rather than a list: each block is read on its own, so width goes to fitting as many
-// as the viewport allows at a readable size instead of to one column stretching edge to edge.
+// As many cards across as fit at a readable width; one column on a phone. Each li stretches to its
+// row, so cards side by side share a height and their buttons line up.
 .schedule {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
   gap: var(--univgo-space-m);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-// The structure before the data, like every other view that waits on the server: cards at the
-// height they will have, so the grid does not reflow when the day arrives. Three control-heights
-// plus their gaps stands in for a card's header, meter and action.
 .schedule__placeholder {
-  block-size: calc(var(--tui-height-l) * 3 + var(--univgo-space-m) * 2);
+  block-size: calc(var(--tui-height-l) * 3 + var(--univgo-space-l) * 2);
   border-radius: var(--tui-radius-l);
 }

@@ -1135,28 +1135,24 @@
         <target>Scanner</target>
       </trans-unit>
       <trans-unit id="admin.blocks.pageTitle" datatype="html">
-        <source>Consulta de bloques</source>
-        <target>Block schedule</target>
+        <source>Ocupación del espacio</source>
+        <target>Space occupancy</target>
       </trans-unit>
       <trans-unit id="admin.blocks.pageDescription" datatype="html">
-        <source>Consulta los bloques de un espacio para un día concreto, con su aforo previsto, quién está dentro y quién asistió.</source>
-        <target>Review a space's blocks for a given day, with their expected capacity, who is inside and who attended.</target>
+        <source>Consulta cuántos lugares quedan libres en un espacio esta semana y la próxima, y en cada horario del día.</source>
+        <target>See how many spots are free in a space this week and next, and in each time slot of the day.</target>
       </trans-unit>
       <trans-unit id="admin.blocks.title" datatype="html">
-        <source>Consulta de bloques</source>
-        <target>Block schedule</target>
+        <source>Ocupación del espacio</source>
+        <target>Space occupancy</target>
       </trans-unit>
       <trans-unit id="admin.blocks.lead" datatype="html">
-        <source>Gestión de reservas y aforo por horario.</source>
-        <target>Bookings and capacity by time slot.</target>
+        <source> Elige un día para ver cuántos lugares quedan en cada horario. </source>
+        <target>Pick a day to see how many spots are left in each time slot.</target>
       </trans-unit>
       <trans-unit id="admin.blocks.downloadReport" datatype="html">
-        <source>Descargar reporte</source>
-        <target>Download report</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.count" datatype="html">
-        <source>{VAR_PLURAL, plural, =0 {Sin bloques} =1 {1 bloque} other {<x id="INTERPOLATION"/> bloques}}</source>
-        <target>{VAR_PLURAL, plural, =0 {No blocks} =1 {1 block} other {<x id="INTERPOLATION"/> blocks}}</target>
+        <source>Descargar reporte del día</source>
+        <target>Download the day's report</target>
       </trans-unit>
       <trans-unit id="admin.blocks.shift.morning" datatype="html">
         <source>Turno mañana</source>
@@ -1182,45 +1178,17 @@
         <source>Hoy</source>
         <target>Today</target>
       </trans-unit>
-      <trans-unit id="admin.blocks.row.live" datatype="html">
-        <source> En curso </source>
-        <target> In progress </target>
-      </trans-unit>
       <trans-unit id="admin.blocks.row.closed" datatype="html">
         <source>Cerrado</source>
         <target>Closed</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.row.details" datatype="html">
-        <source>Ver detalles</source>
-        <target>View details</target>
       </trans-unit>
       <trans-unit id="admin.blocks.row.detailsLabel" datatype="html">
         <source>Ver detalles: bloque de <x id="INTERPOLATION"/> a <x id="INTERPOLATION_1"/></source>
         <target>View details: <x id="INTERPOLATION"/> to <x id="INTERPOLATION_1"/> block</target>
       </trans-unit>
-      <trans-unit id="admin.blocks.capacity.upcoming" datatype="html">
-        <source>Aforo previsto</source>
-        <target>Expected capacity</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.capacity.live" datatype="html">
-        <source>Aforo actual</source>
-        <target>Current capacity</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.capacity.past" datatype="html">
-        <source>Asistencia</source>
-        <target>Attendance</target>
-      </trans-unit>
       <trans-unit id="admin.blocks.caption.closed" datatype="html">
         <source>El espacio está cerrado a esta hora.</source>
         <target>The space is closed at this time.</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.caption.past" datatype="html">
-        <source> El bloque terminó. Consulta quién se presentó en su detalle. </source>
-        <target> The block is over. Its detail says who turned up. </target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.caption.booked" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> reservas confirmadas · <x id="INTERPOLATION_1" equiv-text="{{ occupancy().free }}"/> libres </source>
-        <target> <x id="INTERPOLATION" equiv-text="{{ occupancy().occupied }}"/> bookings confirmed · <x id="INTERPOLATION_1" equiv-text="{{ occupancy().free }}"/> free </target>
       </trans-unit>
       <trans-unit id="admin.blocks.loading" datatype="html">
         <source>Cargando los bloques del día</source>
@@ -1238,33 +1206,9 @@
         <source><x id="INTERPOLATION" equiv-text="{{ thisWeek()[0] | date: &apos;d MMM&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ thisWeek()[6] | date: &apos;d MMM&apos; }}"/></source>
         <target><x id="INTERPOLATION" equiv-text="{{ thisWeek()[0] | date: &apos;d MMM&apos; }}"/> – <x id="INTERPOLATION_1" equiv-text="{{ thisWeek()[6] | date: &apos;d MMM&apos; }}"/></target>
       </trans-unit>
-      <trans-unit id="admin.blocks.week.hint" datatype="html">
-        <source> Haz clic en un día para actualizar el cronograma </source>
-        <target> Click a day to refresh the schedule </target>
-      </trans-unit>
       <trans-unit id="admin.blocks.week.nextWeek" datatype="html">
-        <source>Semana próxima</source>
+        <source>Próxima semana</source>
         <target>Next week</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.week.openSchedule" datatype="html">
-        <source>Programación abierta</source>
-        <target>Scheduling open</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.week.collapse" datatype="html">
-        <source>Colapsar</source>
-        <target>Collapse</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.week.expand" datatype="html">
-        <source>Desplegar</source>
-        <target>Expand</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.week.freeSpots" datatype="html">
-        <source>{VAR_PLURAL, plural, =0 {Sin cupos libres} =1 {1 cupo libre} other {<x id="INTERPOLATION"/> cupos libres}}</source>
-        <target>{VAR_PLURAL, plural, =0 {No free spots} =1 {1 free spot} other {<x id="INTERPOLATION"/> free spots}}</target>
-      </trans-unit>
-      <trans-unit id="admin.blocks.week.occupancy" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ occupancyPercent() }}"/>% aforo</source>
-        <target><x id="INTERPOLATION" equiv-text="{{ occupancyPercent() }}"/>% occupancy</target>
       </trans-unit>
       <trans-unit id="admin.capacity.loading" datatype="html">
         <source>Cargando el bloque</source>
@@ -1307,12 +1251,8 @@
         <target>The link may be wrong, or this space may not open at that time.</target>
       </trans-unit>
       <trans-unit id="admin.nav.blocks" datatype="html">
-        <source>Consulta de bloques</source>
-        <target>Block schedule</target>
-      </trans-unit>
-      <trans-unit id="admin.nav.blocksShort" datatype="html">
-        <source>Bloques</source>
-        <target>Blocks</target>
+        <source>Ocupación</source>
+        <target>Occupancy</target>
       </trans-unit>
       <trans-unit id="admin.nav.settings" datatype="html">
         <source>Ajustes</source>
@@ -2183,6 +2123,50 @@
       <trans-unit id="admin.spaceWizard.usage.lead" datatype="html">
         <source> Lo que un estudiante lee antes de reservar: qué es el espacio y qué normas tiene. </source>
         <target>What a student reads before booking: what the space is and which rules it has.</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.backToToday" datatype="html">
+        <source> Volver a hoy </source>
+        <target>Back to today</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.freeSpots" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {Sin lugares libres} =1 {1 lugar libre} other {<x id="INTERPOLATION"/> lugares libres}}</source>
+        <target>{VAR_PLURAL, plural, =0 {No free spots} =1 {1 free spot} other {<x id="INTERPOLATION"/> free spots}}</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.slots" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {en 1 horario} other {en <x id="INTERPOLATION"/> horarios}}</source>
+        <target>{VAR_PLURAL, plural, =1 {in 1 time slot} other {in <x id="INTERPOLATION"/> time slots}}</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.legend.label" datatype="html">
+        <source>Qué significa cada estado</source>
+        <target>What each status means</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.row.freeOf" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 libre de <x id="INTERPOLATION"/>} other {<x id="INTERPOLATION_1"/> libres de <x id="INTERPOLATION"/>}}</source>
+        <target>{VAR_PLURAL, plural, =1 {1 free of <x id="INTERPOLATION"/>} other {<x id="INTERPOLATION_1"/> free of <x id="INTERPOLATION"/>}}</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.row.now" datatype="html">
+        <source>En curso ahora</source>
+        <target>Happening now</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.freeLabel" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {libre} other {libres}}</source>
+        <target>{VAR_PLURAL, plural, =1 {free} other {free}}</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.week.pickerLabel" datatype="html">
+        <source>Semana</source>
+        <target>Week</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.day.over" datatype="html">
+        <source>Ya no quedan horarios por reservar este día.</source>
+        <target>No time slots left to book this day.</target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.caption.past" datatype="html">
+        <source> El bloque terminó. Consulta quién se presentó en su detalle. </source>
+        <target> This block is over. Check who showed up in its details. </target>
+      </trans-unit>
+      <trans-unit id="admin.blocks.row.details" datatype="html">
+        <source>Ver detalles</source>
+        <target>View details</target>
       </trans-unit>
     </body>
   </file>

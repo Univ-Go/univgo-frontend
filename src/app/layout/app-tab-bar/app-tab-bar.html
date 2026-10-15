@@ -9,12 +9,12 @@
           [routerLinkActiveOptions]="adminMatchOptions"
         >
           <tui-icon [icon]="item.icon" aria-hidden="true" />
-          <span>{{ item.compactLabel ?? item.label }}</span>
+          <span>{{ item.label }}</span>
         </a>
       } @else {
         <button type="button" class="tab" disabled>
           <tui-icon [icon]="item.icon" aria-hidden="true" />
-          <span>{{ item.compactLabel ?? item.label }}</span>
+          <span>{{ item.label }}</span>
         </button>
       }
     }

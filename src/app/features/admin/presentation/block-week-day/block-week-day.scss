@@ -1,16 +1,29 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: block;
+  block-size: 100%;
 }
 
+// A row beside the date tile: weekday, then free spots, then the chips (today, status) on a third
+// line. Once the picker has room, the chips move to their own column on the right, centred on both
+// lines.
 .day {
-  display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-xs);
+  display: grid;
+  grid-template-areas:
+    'date weekday'
+    'date free'
+    'date chips';
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--univgo-space-xs) var(--univgo-space-m);
   inline-size: 100%;
-  padding: var(--univgo-space-s);
-  border: 0.0625rem solid var(--tui-border-normal);
-  border-radius: var(--tui-radius-m);
-  background: var(--tui-background-base);
+  block-size: 100%;
+  min-block-size: var(--tui-height-l);
+  padding: var(--univgo-space-s) var(--univgo-space-m);
+  border: 0.0625rem solid var(--univgo-border-control);
+  border-radius: var(--tui-radius-l);
+  background: var(--tui-background-elevation-1);
   color: inherit;
   font: inherit;
   text-align: start;
@@ -18,106 +31,136 @@
 }
 
 .day:hover {
-  border-color: var(--tui-border-hover);
   background: var(--tui-background-neutral-1-hover);
 }
 
-// The filled, brand-coloured surface belongs to whichever day the schedule below is answering for
-// right now — not to today on its own, which would leave it painted even once something else is
-// selected.
+.day:active {
+  background: var(--tui-background-neutral-1-pressed);
+}
+
+// Today is outlined, the day being shown is filled. Two treatments for two questions, so picking
+// another day never makes today look selected, nor hides which one today is.
+.day--today {
+  border-color: var(--tui-background-accent-1);
+  box-shadow: inset 0 0 0 0.0625rem var(--tui-background-accent-1);
+}
+
 .day--viewing {
   border-color: var(--tui-background-accent-1);
   background: var(--tui-background-accent-1);
-  color: var(--tui-background-base);
+  color: var(--tui-text-primary-on-accent-1);
 }
 
-.day__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--univgo-space-xs);
+.day--viewing:hover {
+  background: var(--tui-background-accent-1-hover);
 }
 
-.day__weekday {
-  color: var(--tui-text-secondary);
-  font: var(--tui-typography-body-xs);
-  text-transform: capitalize;
+.day--viewing:active {
+  background: var(--tui-background-accent-1-pressed);
 }
 
-.day--viewing .day__weekday {
-  color: inherit;
-  opacity: 0.8;
-}
-
-.day__badge-slot {
-  min-inline-size: 2.5rem;
-  min-block-size: 1.25rem;
-}
-
-// Every `tuiBadge` appearance draws a pale, low-contrast background meant to sit on a neutral card
-// surface — `--t-bg` and `--tui-text-primary` are the two custom properties every one of them reads
-// (verified in the compiled stylesheet, since Taiga does not document the pair). Redefining them
-// here, scoped to badges inside a painted card, is the same mechanism as `block-row`'s
-// `--tui-progress-color` override rather than a fight against the library's specificity.
-.day--viewing [tuiBadge] {
-  --t-bg: rgb(255 255 255 / 22%);
-  --tui-text-primary: var(--tui-background-base);
-}
-
-// No token in the system is "a label on a card that is itself brand-coloured" — the overlay has to
-// read against whatever that background is, so it is built from transparency rather than picked
-// from the palette.
-.day__today-badge {
+// Taiga's status badges draw a translucent pale fill meant for a neutral surface, which turns muddy
+// over the crimson. An opaque chip behind them keeps icon and word legible without reaching into
+// the badge's own styles (the band badge lives in another component's view).
+.day__chip {
   display: inline-flex;
-  align-items: center;
-  padding: 0 var(--univgo-space-xs);
-  border-radius: var(--tui-radius-s);
-  background: rgb(255 255 255 / 22%);
-  font: var(--tui-typography-body-xs);
-  font-weight: bold;
+  border-radius: var(--tui-radius-xl);
+}
+
+.day--viewing .day__chip {
+  background: var(--tui-background-base);
+  color: var(--tui-text-primary);
+}
+
+// A neutral status (finished, closed) carries no colour meaning, so it takes the card's own ink
+// instead of a plate. Re-pointing Taiga's badge variables reaches into the badge without touching
+// its styles.
+.day--viewing .day__chip:has([data-appearance='neutral']) {
+  --tui-background-neutral-1: var(--univgo-accent-1-tint);
+  --tui-status-neutral: var(--tui-text-primary-on-accent-1);
+  --tui-text-primary: var(--tui-text-primary-on-accent-1);
+
+  background: transparent;
+}
+
+// The crimson "Hoy" pill on a crimson card needs a ring to stand apart; drawn as a shadow so the
+// pill keeps its size whether or not the day is selected.
+.day--viewing .day__today {
+  box-shadow: 0 0 0 0.125rem var(--tui-background-base);
 }
 
 .day__date {
   display: flex;
-  align-items: baseline;
-  gap: var(--univgo-space-xs);
+  flex-direction: column;
+  align-items: center;
+  grid-area: date;
+  min-inline-size: var(--tui-height-m);
 }
 
-.day__date-number {
-  font: var(--tui-typography-heading-h5);
+.day__number {
+  font: var(--tui-typography-heading-h4);
+  font-variant-numeric: tabular-nums;
 }
 
-.day__date-month {
-  color: var(--tui-text-secondary);
+.day__month {
   font: var(--tui-typography-body-s);
   text-transform: lowercase;
 }
 
-.day--viewing .day__date-month {
-  color: inherit;
-  opacity: 0.8;
+.day__weekday {
+  grid-area: weekday;
+  min-inline-size: 0;
+  font: var(--tui-typography-ui-l);
+  font-weight: bold;
+  text-transform: capitalize;
 }
 
-.day__caption {
-  min-block-size: 1rem;
-  color: var(--tui-text-secondary);
-  font: var(--tui-typography-body-xs);
+// Without a count the weekday takes both lines, rather than sitting on top of an empty one.
+.day--no-count .day__weekday {
+  grid-row: 1 / 3;
 }
 
-.day--viewing .day__caption {
-  color: inherit;
-  opacity: 0.9;
+.day--no-count .day__free {
+  display: none;
 }
 
-.day__live {
+.day__free {
   display: inline-flex;
+  align-items: baseline;
+  gap: var(--univgo-space-xs);
+  grid-area: free;
+  font: var(--tui-typography-body-m);
+  font-variant-numeric: tabular-nums;
+}
+
+.day__free-number {
+  font: var(--tui-typography-heading-h5);
+}
+
+.day__chips {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--univgo-space-xs);
+  grid-area: chips;
 }
 
-.day__live-dot {
-  inline-size: 0.5rem;
-  block-size: 0.5rem;
-  border-radius: 50%;
-  background: var(--tui-status-positive);
+.day__status {
+  display: flex;
+  min-block-size: var(--tui-height-xs);
+}
+
+@container week (min-width: #{bp.$week-chips-beside-min}) {
+  .day {
+    grid-template-areas:
+      'date weekday chips'
+      'date free chips';
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .day__chips {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+  }
 }

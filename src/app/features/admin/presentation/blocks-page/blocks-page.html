@@ -1,39 +1,62 @@
 <header class="intro">
-  <div class="intro__text">
-    <h1 i18n="@@admin.blocks.title">Consulta de bloques</h1>
-    <p class="intro__lead" i18n="@@admin.blocks.lead">Gestión de reservas y aforo por horario.</p>
-  </div>
-  <button
-    tuiButton
-    type="button"
-    appearance="outline"
-    size="m"
-    iconStart="@tui.file-down"
-    [disabled]="exporting()"
-    (click)="exportReport()"
-  >
-    <tui-loader [loading]="exporting()" [inheritColor]="true" [overlay]="true">
-      <span i18n="@@admin.blocks.downloadReport">Descargar reporte</span>
-    </tui-loader>
-  </button>
+  <h1 i18n="@@admin.blocks.title">Ocupación del espacio</h1>
+  <p class="intro__lead" i18n="@@admin.blocks.lead">
+    Elige un día para ver cuántos lugares quedan en cada horario.
+  </p>
 </header>
 
-<app-block-week-grid
-  [days]="weekDays()"
-  [summaries]="daySummaries()"
-  [now]="now"
-  [selectedDay]="selectedDay()"
-  [loading]="summary.isLoading()"
-  [error]="summary.error()"
-  (daySelected)="selectDay($event)"
-  (retry)="summary.reload()"
-/>
+<!-- Week beside the day once there is room, so a picked day's blocks show without scrolling. -->
+<div class="layout">
+  <app-block-week-grid
+    [days]="weekDays()"
+    [summaries]="daySummaries()"
+    [now]="now"
+    [todayOver]="todayOver()"
+    [selectedDay]="selectedDay()"
+    [loading]="weekLoading()"
+    [error]="summary.error()"
+    (daySelected)="selectDay($event)"
+    (retry)="summary.reload()"
+  />
 
-<app-block-day-schedule
-  [blocks]="blocks()"
-  [now]="now"
-  [day]="dayParam()"
-  [loading]="schedule.isLoading()"
-  [error]="schedule.error()"
-  (retry)="schedule.reload()"
-/>
+  <app-block-day-schedule
+    class="layout__day"
+    [blocks]="schedule().value()"
+    [now]="now"
+    [day]="dayParam()"
+    [today]="viewingToday()"
+    [remaining]="dayRemaining()"
+    [loading]="schedule().isLoading()"
+    [error]="schedule().error()"
+    (retry)="schedule().reload()"
+  >
+    @if (!viewingToday()) {
+      <button
+        dayActions
+        tuiButton
+        type="button"
+        appearance="flat"
+        size="m"
+        iconStart="@tui.calendar"
+        (click)="backToToday()"
+        i18n="@@admin.blocks.day.backToToday"
+      >
+        Volver a hoy
+      </button>
+    }
+    <button
+      dayActions
+      tuiButton
+      type="button"
+      appearance="outline"
+      size="m"
+      iconStart="@tui.file-down"
+      [disabled]="exporting()"
+      (click)="exportReport()"
+    >
+      <tui-loader [loading]="exporting()" [inheritColor]="true" [overlay]="true">
+        <span i18n="@@admin.blocks.downloadReport">Descargar reporte del día</span>
+      </tui-loader>
+    </button>
+  </app-block-day-schedule>
+</div>

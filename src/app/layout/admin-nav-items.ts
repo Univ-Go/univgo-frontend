@@ -35,8 +35,6 @@ export const ADMIN_NAV_MATCH_OPTIONS: IsActiveMatchOptions = {
 export interface AdminNavItem {
   readonly icon: string;
   readonly label: string;
-  /** A shorter form for the bottom bar's narrow columns, where "Consulta de bloques" would wrap. */
-  readonly compactLabel?: string;
   readonly link: string | null;
 }
 
@@ -48,8 +46,7 @@ export const ADMIN_NAV_ITEMS: readonly AdminNavItem[] = [
   },
   {
     icon: '@tui.calendar-days',
-    label: $localize`:@@admin.nav.blocks:Consulta de bloques`,
-    compactLabel: $localize`:@@admin.nav.blocksShort:Bloques`,
+    label: $localize`:@@admin.nav.blocks:Ocupación`,
     link: 'blocks',
   },
   {

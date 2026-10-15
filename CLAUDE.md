@@ -873,9 +873,8 @@ Lo que no se deduce leyendo el fichero:
 
 - **El orden de rutas es distinto al de Netlify y es la trampa principal.** Vercel evalúa
   `headers` → `redirects` → ficheros estáticos → `rewrites`. Netlify evaluaba ficheros estáticos
-  primero y los redirects después, con `force` para saltárselo. Consecuencia: el proxy de `/api`
-  es un `rewrite`, así que corre **al final**, y el catch-all que manda todo a `/es/` correría
-  antes. Por eso su `source` lleva el lookahead `(?!api(?:/|$)|_vercel(?:/|$)|es(?:/|$)|en(?:/|$))`.
+  primero y los redirects después, con `force` para saltárselo. Consecuencia: el catch-all que
+  manda todo a `/es/` correría antes que el proxy de `/api`. Por eso su `source` lleva el lookahead `(?!api(?:/|$)|_vercel(?:/|$)|es(?:/|$)|en(?:/|$))`.
   **Si se quita, todas las llamadas a la API se van en 302 a `/es/api/...` y la sesión deja de
   existir.** Los sufijos `(?:/|$)` importan: sin ellos una ruta como `/enroll` entraría en la
   exclusión de `en`.
@@ -890,6 +889,13 @@ Lo que no se deduce leyendo el fichero:
   Pero `pnpm-workspace.yaml` usa `allowBuilds`, que es de pnpm 11. Hay que fijar
   **`ENABLE_EXPERIMENTAL_COREPACK=1`** como variable de entorno del proyecto, o `onlyBuiltDependencies: []`
   —la defensa de cadena de suministro descrita arriba— queda en terreno incierto.
+- **El backend se elige por entorno de Vercel, no por build.** El proxy de `/api` y `/auth` no
+  está en `vercel.json` —que no lee variables de entorno— sino en `middleware.ts` (Routing
+  Middleware), que reescribe a `BACKEND_URL`: en Production el Render de prod, en Preview acotado
+  a la rama `dev` el Render de dev. Las dos builds son idénticas y siempre llaman al `/api`
+  relativo. Sin la variable, el middleware lanza: un 500 explícito es mejor que hablar en silencio
+  con el backend equivocado. Escribe la cabecera `x-middleware-rewrite` a mano porque
+  `@vercel/functions` arrastra 15 paquetes transitivos para eso.
 - **Node** se fija a **24.x** en Project Settings. `engines` es un rango OR de tres ramas y no
   conviene depender de cómo lo interprete el proveedor.
 
@@ -902,7 +908,7 @@ nada que bloquear. Lo que sostiene eso: el backend **no** debe mandar `Domain=` 
 descartada por no coincidir con el dominio que sirve), ni redirigir a su propio dominio dentro del
 flujo de auth. Con el proxy, `SameSite=Lax` basta y es más robusto que `None`.
 
-**El proxy no puede cambiar el prefijo de una ruta cuyo cookie lleva `Path`.** El rewrite de `/api`
+**El proxy no puede cambiar el prefijo de una ruta cuyo cookie lleva `Path`.** El proxy de `/api`
 **quita** el prefijo (`/api/:path*` → backend `/:path*`), y el backend acota la cookie de refresco a
 `Path=/auth` (verificado contra producción: `univgo_session` sale con `Path=/` y `univgo_refresh`
 con `Path=/auth`, ambas `Secure; HttpOnly; SameSite=None`, sin `Domain=`). El navegador la guardaba

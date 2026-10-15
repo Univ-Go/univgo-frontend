@@ -2310,7 +2310,7 @@
         <source> Una norma por línea. Puedes dejarlo vacío si el espacio no tiene normas propias. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/presentation/space-usage-form/space-usage-form.html</context>
-          <context context-type="linenumber">43,47</context>
+          <context context-type="linenumber">46,50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="admin.spaceWizard.identity.title" datatype="html">

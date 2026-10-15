@@ -9,6 +9,7 @@ import {
   fullnessBandOf,
   groupBlocksByShift,
   isDayOpen,
+  isDayOver,
   isWithinNavigableRange,
   navigableDayRange,
   startOfWeek,
@@ -17,6 +18,7 @@ import {
   HIGH_LOAD_RATIO,
   occupancyLoadOf,
   parseBlockKey,
+  remainingDayOf,
   type SpaceDaySummary,
 } from './block-schedule';
 
@@ -415,5 +417,68 @@ describe('findBlockByKey', () => {
 
   it('returns undefined for an unreadable key', () => {
     expect(findBlockByKey(blocks, '14:00')).toBeUndefined();
+  });
+});
+
+describe('remainingDayOf', () => {
+  const day = new Date(2026, 9, 14);
+  const morning = new Date(2026, 9, 14, 8, 0);
+  const noon = new Date(2026, 9, 14, 12, 0);
+  const evening = new Date(2026, 9, 14, 18, 0);
+
+  it('adds up the blocks still to come', () => {
+    const blocks = [block(noon, { free: 5 }), block(evening, { free: 7 })];
+
+    expect(remainingDayOf(day, blocks, morning)).toEqual({
+      date: day,
+      totalCapacity: 60,
+      totalFree: 12,
+      slots: 2,
+    });
+  });
+
+  it('leaves out finished blocks but keeps the one in progress', () => {
+    const blocks = [
+      block(morning, { free: 4 }),
+      block(noon, { free: 3 }),
+      block(evening, { free: 2 }),
+    ];
+    const duringNoonBlock = new Date(2026, 9, 14, 13, 0);
+
+    expect(remainingDayOf(day, blocks, duringNoonBlock)).toMatchObject({ totalFree: 5, slots: 2 });
+  });
+
+  it('leaves out closed blocks', () => {
+    const blocks = [block(noon, { free: 30, closed: true }), block(evening, { free: 6 })];
+
+    expect(remainingDayOf(day, blocks, morning)).toMatchObject({ totalFree: 6, slots: 1 });
+  });
+
+  it('reports zero capacity once nothing is left to book', () => {
+    const afterHours = new Date(2026, 9, 14, 23, 0);
+    const remaining = remainingDayOf(day, [block(morning), block(evening)], afterHours);
+
+    expect(remaining.slots).toBe(0);
+    expect(isDayOpen(remaining)).toBe(false);
+  });
+});
+
+describe('isDayOver', () => {
+  const morning = new Date(2026, 9, 14, 8, 0);
+  const evening = new Date(2026, 9, 14, 18, 0);
+  const afterHours = new Date(2026, 9, 14, 23, 0);
+
+  it('is over once every open block has finished', () => {
+    expect(isDayOver([block(morning), block(evening)], afterHours)).toBe(true);
+  });
+
+  it('is not over while a block is still to come or in progress', () => {
+    expect(isDayOver([block(morning), block(evening)], new Date(2026, 9, 14, 18, 30))).toBe(false);
+  });
+
+  it('ignores closed blocks, so a day closed all along is not over but closed', () => {
+    expect(isDayOver([block(morning, { closed: true })], afterHours)).toBe(false);
+    expect(isDayOver([], afterHours)).toBe(false);
+    expect(isDayOver([block(morning), block(evening, { closed: true })], afterHours)).toBe(true);
   });
 });

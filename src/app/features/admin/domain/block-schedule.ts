@@ -118,6 +118,39 @@ export function isDayOpen(summary: SpaceDaySummary): boolean {
   return summary.totalCapacity > 0;
 }
 
+/** What a day still has to offer from `now` on, plus how many blocks that spreads over. */
+export interface RemainingDay extends SpaceDaySummary {
+  readonly slots: number;
+}
+
+/**
+ * A day as it can still be booked: a finished block's free seats can no longer be taken and a
+ * closed one's never could, so neither counts. A block in progress does, since it is still offered
+ * as a last-minute booking (`CLAUDE.md` §22).
+ *
+ * The server's day summary counts every block, finished ones included, and a finished block reports
+ * all its seats free once its reservations stop holding them (invariant 1). For today that would
+ * read as an empty day; this is the reading the panel shows instead. A day with nothing left reports
+ * zero capacity; `isDayOver` tells whether that is because it finished or because it was closed.
+ */
+export function remainingDayOf(date: Date, blocks: readonly AdminBlock[], now: Date): RemainingDay {
+  const ahead = blocks.filter((block) => !block.closed && blockPhaseOf(block, now) !== 'past');
+
+  return {
+    date,
+    totalCapacity: ahead.reduce((total, block) => total + Math.max(0, block.capacity), 0),
+    totalFree: ahead.reduce((total, block) => total + Math.max(0, block.free), 0),
+    slots: ahead.length,
+  };
+}
+
+/** Whether a day that did open has run through all of its blocks — finished, not closed. */
+export function isDayOver(blocks: readonly AdminBlock[], now: Date): boolean {
+  const open = blocks.filter((block) => !block.closed);
+
+  return open.length > 0 && open.every((block) => blockPhaseOf(block, now) === 'past');
+}
+
 const DAYS_PER_WEEK = 7;
 const WEEK_GRID_LENGTH_DAYS = DAYS_PER_WEEK * 2;
 

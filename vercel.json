@@ -20,8 +20,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://univgo-backend.onrender.com/:path*" },
-    { "source": "/auth/:path*", "destination": "https://univgo-backend.onrender.com/auth/:path*" },
     { "source": "/es/:path*", "destination": "/es/index.html" },
     { "source": "/en/:path*", "destination": "/en/index.html" }
   ],

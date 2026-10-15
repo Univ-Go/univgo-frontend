@@ -9,9 +9,11 @@ import type { IsActiveMatchOptions } from '@angular/router';
  *
  * `link` is `null` while the destination has not shipped: a `routerLink` pointing at a route that
  * does not exist fails the whole navigation, and the item renders disabled instead of silently
- * doing nothing when pressed. It is also `null` on `/admin/spaces`, before any space is open — a
- * destination that only exists relative to a space is exactly as unshippable as one that doesn't
- * exist yet.
+ * doing nothing when pressed.
+ *
+ * On `/admin/spaces`, before any space is open, these items are left out rather than disabled. Three
+ * greyed tabs read as something broken to a person who does not already know a space has to be
+ * picked first; the list in front of them is the one thing to do there.
  *
  * The value itself is a suffix (`'scan'`), not a full path: every destination now lives under the
  * current space (`/admin/:spaceId/scan`), so the caller composes `['/admin', spaceId, link]` rather
@@ -55,3 +57,14 @@ export const ADMIN_NAV_ITEMS: readonly AdminNavItem[] = [
     link: 'settings',
   },
 ];
+
+/**
+ * The list every other destination hangs off. Kept apart from `ADMIN_NAV_ITEMS` because it is not
+ * relative to a space: it is how a person gets back to choosing one, so it stays in the bar on every
+ * admin screen — named, not hidden behind the logo or the last option of the space switcher.
+ */
+export const ADMIN_SPACES_NAV_ITEM = {
+  icon: '@tui.layout-grid',
+  label: $localize`:@@admin.nav.spaces:Espacios`,
+  link: '/admin/spaces',
+} as const;

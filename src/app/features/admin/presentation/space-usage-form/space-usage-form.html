@@ -37,6 +37,9 @@
         [ngModel]="usage.rules"
         (ngModelChange)="setRules($event)"
       />
+      <!-- Without an item template the multi textfield prints the values as one comma-joined line,
+           which is how the rules used to read as a single run-on sentence. -->
+      <tui-input-chip *tuiItem />
     </tui-textfield>
 
     <p class="field__hint" i18n="@@admin.spaceForm.rulesHint">

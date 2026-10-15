@@ -6,8 +6,10 @@
   inline-size: 100%;
 }
 
+// Isolated so the corner icon's `z-index` below ranks against this card's own overlay and nothing outside it.
 .card {
   position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   gap: var(--univgo-space-m);
@@ -16,27 +18,33 @@
   @include cards.lift($ring: true);
 }
 
-// An archived space is still listed here so it can be restored, but it is not part of the campus
-// any more. Dimming the plate says so without relying on the badge alone being noticed.
-.card--archived app-media-plate {
-  opacity: 0.55;
+// Wider than the catalogue's 16:9: big enough to recognise a space by its photo, short enough that
+// the first card's actions still land in a phone's first screen.
+.card__plate {
+  --media-plate-ratio: 2 / 1;
+}
+
+// Still listed so it can be restored, but no longer part of the campus. Dimming the photo says so
+// without relying on the section heading alone being noticed.
+.card--archived .card__plate {
+  opacity: var(--tui-disabled-opacity);
 }
 
 .card__body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--univgo-space-s);
+  gap: var(--univgo-space-xs);
 }
 
 .card__name {
   margin: 0;
+  color: var(--tui-text-primary);
   font: var(--tui-typography-ui-l);
+  font-weight: bold;
   overflow-wrap: anywhere;
 }
 
-// The heading's link is the card's primary destination; this extends its hit area over the whole
-// surface. Anything that must stay clickable — the edit button — needs its own stacking context.
 .card__link {
   color: inherit;
   text-decoration: none;
@@ -53,68 +61,57 @@
   }
 }
 
-.card__facts {
+// Above the link's overlay so they keep their own destinations. The buttons come after the overlay
+// in the document, so being positioned is enough; the corner icon sits inside the photo, before it, and
+// needs the explicit layer.
+.card__actions a {
+  position: relative;
+}
+
+.card__corner {
+  position: relative;
+  z-index: 1;
+}
+
+.card__facts,
+.card__warnings {
   display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-s);
-  margin: 0;
-}
-
-.fact {
-  display: grid;
-  gap: var(--univgo-space-xs);
-}
-
-.fact dt {
-  color: var(--tui-text-tertiary);
-  font: var(--tui-typography-ui-xs);
-}
-
-.fact dd {
-  display: flex;
-  align-items: center;
-  gap: var(--univgo-space-xs);
+  flex-wrap: wrap;
+  column-gap: var(--univgo-space-m);
+  row-gap: var(--univgo-space-xs);
   margin: 0;
   font: var(--tui-typography-ui-s);
+}
+
+.card__facts {
+  color: var(--tui-text-secondary);
+}
+
+.card__warnings {
+  color: var(--tui-status-warning);
+}
+
+.card__fact {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--univgo-space-xs);
   overflow-wrap: anywhere;
 
   tui-icon {
     flex: none;
-    color: var(--tui-text-tertiary);
     font-size: var(--univgo-icon-inline);
   }
 }
 
-// What a space is missing is a warning and not an error: the space exists and the panel works, but
-// a student sees nothing bookable. Colour is not the only carrier — each line has its own icon and
-// its own words.
-.card__warnings {
-  display: flex;
-  flex-direction: column;
-  gap: var(--univgo-space-xs);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: var(--univgo-space-xs);
-    color: var(--tui-status-warning);
-    font: var(--tui-typography-ui-xs);
-  }
-
-  tui-icon {
-    flex: none;
-    font-size: var(--univgo-icon-inline);
-  }
+// Equal halves rather than content-sized buttons: two targets of the same width read as two
+// choices of the same weight, and neither label wraps on a phone.
+.card__actions {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: var(--univgo-space-s);
 }
 
-.card__action {
-  position: relative;
-  align-self: start;
-}
-
-.card__action-context {
+.card__context {
   @include a11y.visually-hidden;
 }

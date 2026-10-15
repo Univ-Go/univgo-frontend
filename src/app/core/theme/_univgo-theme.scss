@@ -127,6 +127,10 @@ $shadow-tint: 65, 0, 5;
   --tui-text-secondary: #{$neutral-700};
   --tui-text-tertiary: #{$neutral-600};
   --tui-text-primary-on-accent-1: #{$neutral-0};
+  // A pill drawn in the accent's own ink, faint, for a neutral status on an accent fill: tonal, so
+  // it neither glares as a light plate on the crimson nor sinks as a dark one on the dark pink.
+  // Declared per theme because the mix resolves where it is declared.
+  --univgo-accent-1-tint: color-mix(in srgb, var(--tui-text-primary-on-accent-1) 16%, transparent);
   --tui-text-primary-on-accent-2: #{$neutral-0};
   --tui-text-action: #{$brand-800};
   --tui-text-action-hover: #{$brand-700};
@@ -222,6 +226,10 @@ $shadow-tint: 65, 0, 5;
   --tui-text-secondary: #{$dark-text-variant};
   --tui-text-tertiary: #{$dark-outline};
   --tui-text-primary-on-accent-1: #68000b;
+  // A pill drawn in the accent's own ink, faint, for a neutral status on an accent fill: tonal, so
+  // it neither glares as a light plate on the crimson nor sinks as a dark one on the dark pink.
+  // Declared per theme because the mix resolves where it is declared.
+  --univgo-accent-1-tint: color-mix(in srgb, var(--tui-text-primary-on-accent-1) 16%, transparent);
   --tui-text-primary-on-accent-2: #{$teal-800};
   --tui-text-action: #{$brand-200};
   --tui-text-action-hover: #{$brand-100};
@@ -340,7 +348,13 @@ $shadow-tint: 65, 0, 5;
   --univgo-space-3xl: 4rem;
 
   --univgo-content-max-width: 80rem;
+  // Share of the student shell's side margin the panel keeps: 15% less room either side, so its
+  // denser views get more of the width.
+  --univgo-admin-side-room: 0.85;
   --univgo-layout-gutter: 1.25rem;
+  // The occupancy page's week column once it sits beside the day: wide enough for a week row to
+  // keep its chips on the right.
+  --univgo-week-picker-width: 22rem;
 
   // A form stops growing well before the page does: a label-and-field column wider than this makes
   // the eye travel from the label to its own input.

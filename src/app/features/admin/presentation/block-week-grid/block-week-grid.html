@@ -1,0 +1,83 @@
+@if (error()) {
+  <app-empty-state
+    icon="@tui.wifi-off"
+    i18n-heading="@@admin.blocks.error.heading"
+    heading="No pudimos cargar los bloques"
+    i18n-description="@@spaces.error.description"
+    description="Revisa tu conexión e inténtalo de nuevo. Si sigue fallando, prueba en unos minutos."
+  >
+    <button
+      tuiButton
+      type="button"
+      size="m"
+      appearance="outline"
+      iconStart="@tui.refresh-cw"
+      (click)="retry.emit()"
+      i18n="@@spaces.error.retry"
+    >
+      Reintentar
+    </button>
+  </app-empty-state>
+} @else {
+  <tui-segmented
+    class="weeks"
+    size="l"
+    role="group"
+    i18n-aria-label="@@admin.blocks.week.pickerLabel"
+    aria-label="Semana"
+    [(activeItemIndex)]="weekIndex"
+  >
+    @for (week of weeks(); track $index) {
+      <button type="button" [attr.aria-pressed]="$index === weekIndex()">
+        <span class="weeks__label">
+          @if ($index === 0) {
+            <span i18n="@@admin.blocks.week.thisWeek">Esta semana</span>
+          } @else {
+            <span i18n="@@admin.blocks.week.nextWeek">Próxima semana</span>
+          }
+          <span class="weeks__range" i18n="@@admin.blocks.week.range"
+            >{{ week[0] | date: 'd MMM' }} – {{ week[6] | date: 'd MMM' }}</span
+          >
+        </span>
+      </button>
+    }
+  </tui-segmented>
+
+  <ul class="days">
+    @for (day of visibleWeek(); track day.getTime()) {
+      <li>
+        <app-block-week-day
+          [day]="day"
+          [summary]="summaryOf(day)"
+          [today]="isToday(day)"
+          [past]="isPast(day)"
+          [viewing]="isSelected(day)"
+          [loading]="loading()"
+          (selected)="daySelected.emit(day)"
+        />
+      </li>
+    }
+  </ul>
+
+  <!-- Says once what the colours and icons mean, so nobody has to infer it from the cells. -->
+  <ul
+    class="legend"
+    i18n-aria-label="@@admin.blocks.legend.label"
+    aria-label="Qué significa cada estado"
+  >
+    <li><app-block-status-badge size="m" band="available" phase="upcoming" /></li>
+    <li><app-block-status-badge size="m" band="nearlyFull" phase="upcoming" /></li>
+    <li><app-block-status-badge size="m" band="full" phase="upcoming" /></li>
+    <li><app-block-status-badge size="m" band="available" phase="past" /></li>
+    <li>
+      <span
+        tuiBadge
+        appearance="neutral"
+        size="m"
+        iconStart="@tui.lock"
+        i18n="@@admin.blocks.row.closed"
+        >Cerrado</span
+      >
+    </li>
+  </ul>
+}

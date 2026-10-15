@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,12 +19,7 @@ import { EmptyState } from '../../../../shared/empty-state/empty-state';
 import type { SpaceCategory, SpaceFilter } from '../../domain/space';
 import { SPACE_CATEGORIES } from '../../domain/space';
 import { SpaceRepository } from '../../domain/space.repository';
-import {
-  countActiveFilters,
-  groupByCategory,
-  isFilterActive,
-  listSpaces,
-} from '../../domain/space-catalog';
+import { groupByCategory, isFilterActive, listSpaces } from '../../domain/space-catalog';
 import { SpaceCard } from '../space-card/space-card';
 import { spaceCategoryName } from '../space-category';
 import { SpaceShelf } from '../space-shelf/space-shelf';
@@ -85,6 +81,7 @@ function toCategory(value: unknown): SpaceCategory | null {
 @Component({
   selector: 'app-spaces-page',
   imports: [
+    DatePipe,
     EmptyState,
     FormsModule,
     SpaceCard,
@@ -139,14 +136,16 @@ export class SpacesPage {
   );
 
   /**
-   * Closed by default: four controls that answer a question most visits never ask were the first
-   * thing on the page, and on a phone they filled the screen before a single space did. The search
-   * stays out because looking for a space by name is the common errand, not narrowing by hour.
+   * Closed by default: category and start time answer a question most visits never ask, and on a
+   * phone they filled the screen before a single space did. Search and day stay out of the panel —
+   * looking for a space by name is the common errand, and which day is being answered for is the
+   * premise of every result, not a narrowing to hide.
    */
   protected readonly filtersOpen = signal(false);
 
-  protected readonly activeFilters = computed(() =>
-    countActiveFilters(this.filter(), this.today.toLocalNativeDate()),
+  /** Counts only the two controls the toggle hides — day has its own, always-visible indicator. */
+  protected readonly activeFilters = computed(
+    () => Number(this.category() !== null) + Number(this.from() !== null),
   );
 
   /**

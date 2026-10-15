@@ -1,0 +1,60 @@
+<!-- The same slots on every day (date, weekday, free spots, chips), so the rows line up and the eye
+     can run down a column. -->
+<button
+  type="button"
+  class="day"
+  [class.day--today]="today()"
+  [class.day--viewing]="viewing()"
+  [class.day--no-count]="!loading() && !showsCount()"
+  [attr.aria-pressed]="viewing()"
+  (click)="selected.emit()"
+>
+  <span class="day__date">
+    <span class="day__number">{{ day() | date: 'd' }}</span>
+    <span class="day__month">{{ day() | date: 'MMM' }}</span>
+  </span>
+
+  <span class="day__weekday">{{ day() | date: 'EEEE' }}</span>
+
+  <span class="day__free" [tuiSkeleton]="loading()">
+    @if (!loading() && showsCount()) {
+      @let spots = freeSpots();
+      <span class="day__free-number">{{ spots }}</span>
+      <span i18n="@@admin.blocks.week.freeLabel">{spots, plural, =1 {libre} other {libres}}</span>
+    }
+  </span>
+
+  <span class="day__chips">
+    @if (today()) {
+      <span class="day__chip">
+        <span
+          tuiBadge
+          appearance="primary"
+          size="m"
+          class="day__today"
+          i18n="@@admin.blocks.day.today"
+          >Hoy</span
+        >
+      </span>
+    }
+
+    <span class="day__status" [tuiSkeleton]="loading()">
+      @if (!loading()) {
+        <span class="day__chip">
+          @if (open()) {
+            <app-block-status-badge size="m" [band]="band()" [phase]="phase()" />
+          } @else {
+            <span
+              tuiBadge
+              appearance="neutral"
+              size="m"
+              iconStart="@tui.lock"
+              i18n="@@admin.blocks.row.closed"
+              >Cerrado</span
+            >
+          }
+        </span>
+      }
+    </span>
+  </span>
+</button>

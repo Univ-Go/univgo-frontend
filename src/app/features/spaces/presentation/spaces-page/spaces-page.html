@@ -37,6 +37,27 @@
         />
       </tui-textfield>
 
+      <!-- The picker is content the consumer supplies: `tuiInputDate` looks for a calendar among its
+           auxiliary providers and pushes value, min and max into it. Without one the field is a
+           masked text box that only accepts typing. It sits on the search row, not behind the
+           toggle: which day the catalogue is answering for is not a narrowing to hide, it is the
+           premise of every result on screen. -->
+      <!-- No cleaner here: availability without a day means nothing, so the filter always has one.
+           A clear button that silently puts today back would be telling the user it emptied. -->
+      <tui-textfield tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
+        <label tuiLabel for="space-date" i18n="@@spaces.filters.date">Fecha</label>
+        <input
+          id="space-date"
+          tuiInputDate
+          name="date"
+          autocomplete="off"
+          [min]="today"
+          [ngModel]="date()"
+          (ngModelChange)="setDate($event)"
+        />
+        <tui-calendar *tuiDropdown />
+      </tui-textfield>
+
       <!-- The count rides in the label rather than in a badge beside it: behind a closed panel it
            is the only thing saying the catalogue is answering a narrower question than the search
            box shows, and a number in the name survives translation without a second element. -->
@@ -56,6 +77,12 @@
         }</span>
       </button>
     </fieldset>
+
+    <!-- Day is always the premise of the results, open panel or not — spelling it out here is what
+         makes that readable without having to parse the date field's own value. -->
+    <p class="filters__date-indicator" i18n="@@spaces.filters.showingDate">
+      Mostrando disponibilidad para {{ date().toLocalNativeDate() | date: 'EEEE d MMMM' }}
+    </p>
 
     <tui-expand
       class="filters__panel"
@@ -85,25 +112,6 @@
               <button tuiOption type="button" [value]="option">{{ categoryName(option) }}</button>
             }
           </tui-data-list>
-        </tui-textfield>
-
-        <!-- The picker is content the consumer supplies: `tuiInputDate` looks for a calendar among its
-           auxiliary providers and pushes value, min and max into it. Without one the field is a
-           masked text box that only accepts typing. -->
-        <!-- No cleaner here: availability without a day means nothing, so the filter always has one.
-           A clear button that silently puts today back would be telling the user it emptied. -->
-        <tui-textfield tuiTextfieldSize="m" [tuiTextfieldCleaner]="false">
-          <label tuiLabel for="space-date" i18n="@@spaces.filters.date">Fecha</label>
-          <input
-            id="space-date"
-            tuiInputDate
-            name="date"
-            autocomplete="off"
-            [min]="today"
-            [ngModel]="date()"
-            (ngModelChange)="setDate($event)"
-          />
-          <tui-calendar *tuiDropdown />
         </tui-textfield>
 
         <tui-textfield tuiTextfieldSize="m">

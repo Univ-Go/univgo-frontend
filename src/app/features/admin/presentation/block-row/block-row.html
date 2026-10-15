@@ -1,96 +1,82 @@
 <article
-  tuiSurface
-  tuiAppearance="outline"
-  class="row"
-  [attr.data-live]="phase() === 'live' ? '' : null"
+  class="card"
+  [class.card--live]="phase() === 'live' && !block().closed"
+  [class.card--past]="phase() === 'past'"
 >
-  <div class="row__plate" aria-hidden="true">
-    <tui-icon icon="@tui.clock" />
-  </div>
-
-  <div class="row__when">
-    <p class="row__start">{{ block().start | date: 'shortTime' }}</p>
-    <p class="row__end">{{ block().end | date: 'shortTime' }}</p>
-  </div>
-
-  <div class="row__meter">
-    <p class="row__capacity">
-      <tui-icon icon="@tui.users" [attr.aria-hidden]="true" />
-      <span>{{ capacityLabel() }}</span>
-      @if (phase() !== 'past' && !block().closed) {
-        <span class="row__count">{{ occupancy().occupied }} / {{ occupancy().capacity }}</span>
-      }
+  <header class="card__header">
+    <p class="card__time">
+      {{ block().start | date: 'shortTime' }} – {{ block().end | date: 'shortTime' }}
     </p>
 
     @if (block().closed) {
-      <p class="row__caption">
+      <span
+        tuiBadge
+        appearance="negative"
+        size="m"
+        iconStart="@tui.lock"
+        i18n="@@admin.blocks.row.closed"
+        >Cerrado</span
+      >
+    } @else {
+      <app-block-status-badge size="m" [band]="band()" [phase]="phase()" />
+    }
+  </header>
+
+  @if (phase() === 'live' && !block().closed) {
+    <p class="card__now">
+      <tui-icon icon="@tui.radio" aria-hidden="true" />
+      <span i18n="@@admin.blocks.row.now">En curso ahora</span>
+    </p>
+  }
+
+  <div class="card__load">
+    @if (block().closed) {
+      <p class="card__caption">
         <span i18n="@@admin.blocks.caption.closed">El espacio está cerrado a esta hora.</span>
         @if (closureReason(); as reason) {
-          <span class="row__reason">{{ reason }}</span>
+          <span class="card__reason">{{ reason }}</span>
         }
       </p>
     } @else if (phase() === 'past') {
-      <p class="row__caption" i18n="@@admin.blocks.caption.past">
+      <!-- Reservations stop holding a seat once a block ends, so its free count would read "all
+           free"; who turned up is the roster's answer, in the detail. -->
+      <p class="card__caption" i18n="@@admin.blocks.caption.past">
         El bloque terminó. Consulta quién se presentó en su detalle.
       </p>
     } @else {
-      <!-- The count above says the same number in words, so the meter adds nothing for a screen
-           reader and is hidden from it rather than read out twice — the same call `OccupancyCard`
-           makes about its own. -->
+      @let free = occupancy().free;
+      @let capacity = occupancy().capacity;
+      <span class="card__count" i18n="@@admin.blocks.row.freeOf">{free, plural,
+        =1 {1 libre de {{capacity}}}
+        other {{{free}} libres de {{capacity}}}
+      }</span>
+      <!-- The count above says the same in words, so the meter is hidden from screen readers rather
+           than read out twice. -->
       <progress
         tuiProgressBar
         size="m"
-        class="row__bar"
+        class="card__bar"
         aria-hidden="true"
         [attr.data-load]="load()"
         [value]="occupancy().ratio"
         [max]="1"
       ></progress>
-
-      <p class="row__caption" i18n="@@admin.blocks.caption.booked">
-        {{ occupancy().occupied }} reservas confirmadas · {{ occupancy().free }} libres
-      </p>
     }
   </div>
 
-  <div class="row__flags">
-    @if (block().closed) {
-      <span
-        tuiBadge
-        appearance="negative"
-        size="s"
-        iconStart="@tui.lock"
-        i18n="@@admin.blocks.row.closed"
-        >Cerrado</span
-      >
-    } @else if (phase() === 'live') {
-      <span
-        tuiBadge
-        appearance="info"
-        size="s"
-        iconStart="@tui.radio"
-        i18n="@@admin.blocks.row.live"
-        >En curso</span
-      >
-    }
-
-    <app-block-status-badge size="s" [band]="band()" [phase]="phase()" />
-  </div>
-
-  <!-- Seven links all reading "Ver detalles" are indistinguishable to anyone tabbing the list, so
-       each carries the hours it opens. The visible label opens the accessible name rather than being
-       replaced by it — WCAG 2.5.3 needs the two to match for anyone navigating by voice. `aria-current`
-       is what says "this is the one happening now" without a visually hidden paragraph repeating the
-       badge beside it. -->
+  <!-- A visible button rather than a clickable card: it says what tapping does, which a whole card
+       that reacts would leave people to guess. The accessible name opens with the visible words so
+       voice control matches it (WCAG 2.5.3) and carries the hours so cards are told apart when
+       tabbing; `aria-current` marks the block happening now without repeating it in hidden text. -->
   <a
     tuiButton
     size="m"
-    class="row__action"
-    [appearance]="phase() === 'live' ? 'primary' : 'outline'"
+    class="card__action"
     iconEnd="@tui.arrow-right"
+    [appearance]="phase() === 'live' && !block().closed ? 'primary' : 'secondary'"
     [routerLink]="['./', key()]"
     [queryParams]="{ date: day() }"
-    [attr.aria-current]="phase() === 'live' ? 'true' : null"
+    [attr.aria-current]="phase() === 'live' ? 'time' : null"
     aria-label="Ver detalles: bloque de {{ block().start | date: 'shortTime' }} a {{
       block().end | date: 'shortTime'
     }}"

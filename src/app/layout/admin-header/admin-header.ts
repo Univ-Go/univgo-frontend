@@ -1,9 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import type { ActivatedRouteSnapshot } from '@angular/router';
-import { TUI_BREAKPOINT, TuiButton, TuiDropdown, TuiInput } from '@taiga-ui/core';
+import { TUI_BREAKPOINT, TuiButton, TuiDropdown, TuiInput, TuiLink } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { filter, map, startWith } from 'rxjs';
 import { currentAdminSpaceId } from '../../features/admin/application/admin-space-context';
@@ -14,8 +20,10 @@ import { SessionStore } from '../../features/auth/application/session-store';
 import { BrandIsotype } from '../../shared/brand/brand-isotype';
 import { BrandLogo } from '../../shared/brand/brand-logo';
 import { LanguageSelector } from '../../shared/language-selector/language-selector';
+import { ShellChrome, reportShellInset } from '../../shared/shell-chrome/shell-chrome';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { AccountMenu } from '../account-menu/account-menu';
+import { ADMIN_NAV_ITEMS, ADMIN_NAV_MATCH_OPTIONS } from '../admin-nav-items';
 
 /** The query-string key the roster reads its search from. */
 const QUERY_PARAM = 'query';
@@ -63,12 +71,14 @@ function deepest(root: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
     FormsModule,
     LanguageSelector,
     RouterLink,
+    RouterLinkActive,
     SpaceSwitcher,
     ThemeToggle,
     TuiAvatar,
     TuiButton,
     TuiDropdown,
     TuiInput,
+    TuiLink,
   ],
   templateUrl: './admin-header.html',
   styleUrl: './admin-header.scss',
@@ -79,6 +89,11 @@ export class AdminHeader {
   private readonly route = inject(ActivatedRoute);
 
   private readonly session = inject(SessionStore);
+
+  constructor() {
+    // Sticky like the student header, so a view scrolling something into place must clear it.
+    reportShellInset(inject(ShellChrome).insetBlockStart);
+  }
 
   private readonly breakpoint = inject(TUI_BREAKPOINT);
 
@@ -94,6 +109,9 @@ export class AdminHeader {
   protected readonly initials = computed(() => this.session.user()?.firstName.slice(0, 1) ?? '');
 
   protected readonly menuOpen = signal(false);
+
+  protected readonly navItems = ADMIN_NAV_ITEMS;
+  protected readonly navMatchOptions = ADMIN_NAV_MATCH_OPTIONS;
 
   /**
    * The switcher only has to offer the other spaces, and the guard on `:spaceId` has already read

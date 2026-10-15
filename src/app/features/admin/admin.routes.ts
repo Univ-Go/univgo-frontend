@@ -173,9 +173,9 @@ export const ADMIN_ROUTES: Routes = [
         path: 'blocks',
         loadComponent: () =>
           import('./presentation/blocks-page/blocks-page').then((m) => m.BlocksPage),
-        title: $localize`:@@admin.blocks.pageTitle:Consulta de bloques`,
+        title: $localize`:@@admin.blocks.pageTitle:Ocupación del espacio`,
         data: {
-          description: $localize`:@@admin.blocks.pageDescription:Consulta los bloques de un espacio para un día concreto, con su aforo previsto, quién está dentro y quién asistió.`,
+          description: $localize`:@@admin.blocks.pageDescription:Consulta cuántos lugares quedan libres en un espacio esta semana y la próxima, y en cada horario del día.`,
         },
       },
       {

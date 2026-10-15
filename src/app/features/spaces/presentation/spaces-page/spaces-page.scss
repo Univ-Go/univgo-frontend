@@ -34,8 +34,8 @@
 
 // Taiga wraps the search fieldset and gives every field an 11.25rem floor, so on a phone the
 // button drops to a line of its own — and a "Filtros" button that has left the field it belongs to
-// reads as a second, unrelated control. The row holds instead: the field gives up its floor and
-// absorbs the shrinking, and the button keeps its label intact.
+// reads as a second, unrelated control. The row holds instead: the fields give up their floor and
+// absorb the shrinking, and the button keeps its label intact.
 .filters__search {
   flex-wrap: nowrap;
 
@@ -43,9 +43,26 @@
     min-inline-size: 0;
   }
 
+  // The query field is the one worth reading in full; the date is a handful of digits and never
+  // needs as much room, so it gives up more of the shrinking first.
+  tui-textfield:first-of-type {
+    flex-grow: 2;
+  }
+
+  tui-textfield:nth-of-type(2) {
+    flex-grow: 1;
+    flex-basis: 8rem;
+  }
+
   [tuiButton] {
     flex: none;
   }
+}
+
+.filters__date-indicator {
+  margin: 0;
+  color: var(--tui-text-secondary);
+  font: var(--tui-typography-body-s);
 }
 
 // `search[tuiSearch]` gives its fieldsets `gap: inherit`, counting on the form being their parent.

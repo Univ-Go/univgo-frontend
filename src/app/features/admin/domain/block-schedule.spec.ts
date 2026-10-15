@@ -2,15 +2,24 @@ import type { AdminBlock, BlockLoad } from './attendance';
 import {
   blockKeyOf,
   blockPhaseOf,
+  blockShiftOf,
   clampToNavigableRange,
+  daysOf,
   findBlockByKey,
   fullnessBandOf,
+  groupBlocksByShift,
+  isDayOpen,
+  isDayOver,
   isWithinNavigableRange,
   navigableDayRange,
+  startOfWeek,
+  weekGridRange,
   CRITICAL_LOAD_RATIO,
   HIGH_LOAD_RATIO,
   occupancyLoadOf,
   parseBlockKey,
+  remainingDayOf,
+  type SpaceDaySummary,
 } from './block-schedule';
 
 const BLOCK_MINUTES = 120;
@@ -218,6 +227,88 @@ describe('clampToNavigableRange', () => {
   });
 });
 
+describe('startOfWeek', () => {
+  it('leaves a Monday unchanged', () => {
+    expect(startOfWeek(new Date(2026, 8, 14, 9, 0)).getDate()).toBe(14);
+  });
+
+  it("rolls a mid-week day back to that week's Monday", () => {
+    const start = startOfWeek(new Date(2026, 8, 16, 18, 0));
+
+    expect(start.getDate()).toBe(14);
+    expect(start.getHours()).toBe(0);
+  });
+
+  /** Sunday closes the week that started the Monday before it, not the one that starts the day
+   *  after — `Date#getDay()` counts from Sunday, which this has to read against. */
+  it('treats Sunday as the last day of its week, not the first of the next', () => {
+    expect(startOfWeek(new Date(2026, 8, 13)).getDate()).toBe(7);
+  });
+
+  it('crosses a month boundary', () => {
+    const start = startOfWeek(new Date(2026, 9, 1));
+
+    expect(start.getMonth()).toBe(8);
+    expect(start.getDate()).toBe(28);
+  });
+});
+
+describe('weekGridRange', () => {
+  it('spans the current week and the next one, Monday through Sunday', () => {
+    const range = weekGridRange(new Date(2026, 8, 16, 18, 0));
+
+    expect(range.from.getDate()).toBe(14);
+    expect(range.to.getDate()).toBe(27);
+    expect(range.to.getHours()).toBe(0);
+  });
+
+  /** Not "the next 14 days": asking from a Sunday would otherwise start on that Sunday and cut the
+   *  grid's first row down to a single day. */
+  it('starts on the Monday of the current week regardless of where today falls in it', () => {
+    const fromSunday = weekGridRange(new Date(2026, 8, 13));
+    const fromMonday = weekGridRange(new Date(2026, 8, 7));
+
+    expect(fromSunday.from.getTime()).toBe(fromMonday.from.getTime());
+  });
+});
+
+describe('daysOf', () => {
+  it('lists every day of a two-week range, inclusive', () => {
+    const range = weekGridRange(new Date(2026, 8, 16));
+    const days = daysOf(range);
+
+    expect(days).toHaveLength(14);
+    expect(days[0].getTime()).toBe(range.from.getTime());
+    expect(days[13].getTime()).toBe(range.to.getTime());
+  });
+
+  it('collapses to a single day when both bounds are the same', () => {
+    const day = new Date(2026, 8, 16);
+
+    expect(daysOf({ from: day, to: day })).toHaveLength(1);
+  });
+});
+
+describe('isDayOpen', () => {
+  function summary(overrides: Partial<SpaceDaySummary> = {}): SpaceDaySummary {
+    return { date: new Date(2026, 8, 16), totalCapacity: 40, totalFree: 12, ...overrides };
+  }
+
+  it('is open when the day has any capacity on record', () => {
+    expect(isDayOpen(summary())).toBe(true);
+  });
+
+  /** Zero capacity is a day the space never opened, not one that filled up — the same reading
+   *  `fullnessBandOf` gives a block with no capacity on record. */
+  it('is closed, not full, when the day has no capacity at all', () => {
+    expect(isDayOpen(summary({ totalCapacity: 0, totalFree: 0 }))).toBe(false);
+  });
+
+  it('is open even with every seat taken', () => {
+    expect(isDayOpen(summary({ totalFree: 0 }))).toBe(true);
+  });
+});
+
 describe('blockKeyOf', () => {
   it('zero-pads the hour', () => {
     expect(blockKeyOf(block(new Date(2026, 8, 13, 6, 0)))).toBe('06-00');
@@ -251,6 +342,58 @@ describe('parseBlockKey', () => {
   });
 });
 
+describe('blockShiftOf', () => {
+  it('reads midnight through 11:59 as morning', () => {
+    expect(blockShiftOf(block(new Date(2026, 8, 13, 0, 0)))).toBe('morning');
+    expect(blockShiftOf(block(new Date(2026, 8, 13, 11, 59)))).toBe('morning');
+  });
+
+  it('turns to afternoon exactly at noon', () => {
+    expect(blockShiftOf(block(new Date(2026, 8, 13, 12, 0)))).toBe('afternoon');
+    expect(blockShiftOf(block(new Date(2026, 8, 13, 17, 59)))).toBe('afternoon');
+  });
+
+  it('turns to night exactly at 18:00', () => {
+    expect(blockShiftOf(block(new Date(2026, 8, 13, 18, 0)))).toBe('night');
+    expect(blockShiftOf(block(new Date(2026, 8, 13, 23, 0)))).toBe('night');
+  });
+});
+
+describe('groupBlocksByShift', () => {
+  it('splits blocks into their shift, morning first', () => {
+    const night = block(new Date(2026, 8, 13, 19, 0));
+    const morning = block(new Date(2026, 8, 13, 8, 0));
+    const afternoon = block(new Date(2026, 8, 13, 14, 0));
+
+    const groups = groupBlocksByShift([night, morning, afternoon]);
+
+    expect(groups.map((group) => group.shift)).toEqual(['morning', 'afternoon', 'night']);
+    expect(groups[0].blocks).toEqual([morning]);
+    expect(groups[1].blocks).toEqual([afternoon]);
+    expect(groups[2].blocks).toEqual([night]);
+  });
+
+  it('omits a shift with no blocks in it', () => {
+    const morning = block(new Date(2026, 8, 13, 8, 0));
+
+    expect(groupBlocksByShift([morning]).map((group) => group.shift)).toEqual(['morning']);
+  });
+
+  it('returns nothing for an empty day', () => {
+    expect(groupBlocksByShift([])).toEqual([]);
+  });
+
+  it('spans a group from its earliest start to its latest end', () => {
+    const first = block(new Date(2026, 8, 13, 6, 0));
+    const last = block(new Date(2026, 8, 13, 10, 30));
+
+    const [group] = groupBlocksByShift([last, first]);
+
+    expect(group.from).toEqual(first.start);
+    expect(group.to).toEqual(last.end);
+  });
+});
+
 describe('findBlockByKey', () => {
   const blocks = [
     block(new Date(2026, 8, 13, 8, 0)),
@@ -274,5 +417,68 @@ describe('findBlockByKey', () => {
 
   it('returns undefined for an unreadable key', () => {
     expect(findBlockByKey(blocks, '14:00')).toBeUndefined();
+  });
+});
+
+describe('remainingDayOf', () => {
+  const day = new Date(2026, 9, 14);
+  const morning = new Date(2026, 9, 14, 8, 0);
+  const noon = new Date(2026, 9, 14, 12, 0);
+  const evening = new Date(2026, 9, 14, 18, 0);
+
+  it('adds up the blocks still to come', () => {
+    const blocks = [block(noon, { free: 5 }), block(evening, { free: 7 })];
+
+    expect(remainingDayOf(day, blocks, morning)).toEqual({
+      date: day,
+      totalCapacity: 60,
+      totalFree: 12,
+      slots: 2,
+    });
+  });
+
+  it('leaves out finished blocks but keeps the one in progress', () => {
+    const blocks = [
+      block(morning, { free: 4 }),
+      block(noon, { free: 3 }),
+      block(evening, { free: 2 }),
+    ];
+    const duringNoonBlock = new Date(2026, 9, 14, 13, 0);
+
+    expect(remainingDayOf(day, blocks, duringNoonBlock)).toMatchObject({ totalFree: 5, slots: 2 });
+  });
+
+  it('leaves out closed blocks', () => {
+    const blocks = [block(noon, { free: 30, closed: true }), block(evening, { free: 6 })];
+
+    expect(remainingDayOf(day, blocks, morning)).toMatchObject({ totalFree: 6, slots: 1 });
+  });
+
+  it('reports zero capacity once nothing is left to book', () => {
+    const afterHours = new Date(2026, 9, 14, 23, 0);
+    const remaining = remainingDayOf(day, [block(morning), block(evening)], afterHours);
+
+    expect(remaining.slots).toBe(0);
+    expect(isDayOpen(remaining)).toBe(false);
+  });
+});
+
+describe('isDayOver', () => {
+  const morning = new Date(2026, 9, 14, 8, 0);
+  const evening = new Date(2026, 9, 14, 18, 0);
+  const afterHours = new Date(2026, 9, 14, 23, 0);
+
+  it('is over once every open block has finished', () => {
+    expect(isDayOver([block(morning), block(evening)], afterHours)).toBe(true);
+  });
+
+  it('is not over while a block is still to come or in progress', () => {
+    expect(isDayOver([block(morning), block(evening)], new Date(2026, 9, 14, 18, 30))).toBe(false);
+  });
+
+  it('ignores closed blocks, so a day closed all along is not over but closed', () => {
+    expect(isDayOver([block(morning, { closed: true })], afterHours)).toBe(false);
+    expect(isDayOver([], afterHours)).toBe(false);
+    expect(isDayOver([block(morning), block(evening, { closed: true })], afterHours)).toBe(true);
   });
 });

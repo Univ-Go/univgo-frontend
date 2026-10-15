@@ -1,4 +1,7 @@
+@use 'breakpoints' as bp;
+
 :host {
+  container: page / inline-size;
   display: flex;
   flex-direction: column;
   gap: var(--univgo-space-l);
@@ -6,63 +9,46 @@
 
 .intro {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--univgo-space-l);
-}
-
-.intro__text {
-  display: flex;
   flex-direction: column;
   gap: var(--univgo-space-xs);
-  min-inline-size: 0;
+
+  h1 {
+    margin: 0;
+  }
 }
 
 .intro__lead {
   margin: 0;
   color: var(--tui-text-secondary);
-  font: var(--tui-typography-body-m);
+  font: var(--tui-typography-body-l);
 }
 
-.day {
-  // Pulls the stepper up against the heading it qualifies, instead of floating at the host's own
-  // wider rhythm halfway between the title and the list.
-  margin-block-start: calc(var(--univgo-space-s) - var(--univgo-space-l));
-}
-
-.day__status {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--univgo-space-xs);
-  margin: 0;
-  color: var(--tui-text-tertiary);
-  font: var(--tui-typography-body-s);
-  font-variant-numeric: tabular-nums;
-}
-
-// Drawn rather than typed, like every other separator in the panel: never in the accessibility
-// tree, never translated.
-.day__dot {
-  inline-size: var(--univgo-space-xs);
-  block-size: var(--univgo-space-xs);
-  border-radius: 50%;
-  background: var(--tui-text-tertiary);
-}
-
-.schedule {
+.layout {
   display: flex;
   flex-direction: column;
-  gap: var(--univgo-space-m);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  gap: var(--univgo-space-l);
 }
 
-// The structure before the data, like every other view that waits on the server: rows at the height
-// they will have, so the list does not reflow when the day arrives.
-.schedule__placeholder {
-  block-size: var(--tui-height-l);
-  border-radius: var(--tui-radius-l);
+// The line parts picking a day from that day's blocks: above them on a phone, beside them once the
+// week stands in its own column.
+.layout__day {
+  padding-block-start: var(--univgo-space-l);
+  border-block-start: 0.0625rem solid var(--tui-border-normal);
+}
+
+@container page (min-width: #{bp.$occupancy-split-min}) {
+  .layout {
+    display: grid;
+    grid-template-columns: var(--univgo-week-picker-width) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--univgo-space-xl);
+  }
+
+  .layout__day {
+    align-self: stretch;
+    padding-block-start: 0;
+    padding-inline-start: var(--univgo-space-xl);
+    border-block-start: none;
+    border-inline-start: 0.0625rem solid var(--tui-border-normal);
+  }
 }

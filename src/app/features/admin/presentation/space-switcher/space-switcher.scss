@@ -1,12 +1,17 @@
 :host {
   display: inline-flex;
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 
 // The trigger's own content sizes it, so with only a leading pin icon the trailing chevron sits
 // pinned against the space name instead of reading as the button's own trailing affordance. Pushing
 // it to the far edge is what makes it read as "this opens a picker" rather than a second label icon.
+// Capped at the host's width so a long space name ellipsizes (below) instead of pushing the header
+// past a narrow phone's viewport.
 button {
-  min-inline-size: 12rem;
+  min-inline-size: min(12rem, 100%);
+  max-inline-size: 100%;
   justify-content: space-between;
 }
 

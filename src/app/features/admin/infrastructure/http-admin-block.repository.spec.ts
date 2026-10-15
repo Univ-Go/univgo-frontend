@@ -162,6 +162,28 @@ describe('HttpAdminBlockRepository', () => {
     expect(await detail).toBeNull();
   });
 
+  it('asks for a range of days and answers with a total per day', async () => {
+    const summaries = firstValueFrom(
+      repository.summaryOf(SPACE_ID, { from: DAY, to: new Date(2026, 8, 18) }),
+    );
+
+    const request = controller.expectOne(
+      (candidate) => candidate.url === `${API_BASE_URL}/admin/spaces/${SPACE_ID}/blocks/summary`,
+    );
+
+    expect(request.request.params.get('from')).toBe('2026-09-17');
+    expect(request.request.params.get('to')).toBe('2026-09-18');
+    request.flush([
+      { date: '2026-09-17', totalCapacity: 40, totalFree: 12 },
+      { date: '2026-09-18', totalCapacity: 0, totalFree: 0 },
+    ]);
+
+    expect(await summaries).toEqual([
+      { date: new Date(2026, 8, 17), totalCapacity: 40, totalFree: 12 },
+      { date: new Date(2026, 8, 18), totalCapacity: 0, totalFree: 0 },
+    ]);
+  });
+
   it('downloads the day as a file named by the server', async () => {
     const report = firstValueFrom(repository.exportBlocks(SPACE_ID, DAY));
     const request = controller.expectOne(
